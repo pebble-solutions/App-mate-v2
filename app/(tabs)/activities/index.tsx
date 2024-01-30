@@ -28,10 +28,10 @@ export default function ActivitiesScreen() {
                                     params: item
                                 })
                             }}>
-                            <ActivityCard title={item.label} color={item.color} />
+                            <ActivityCard title={item.label} color={item.color} description={item.description} />
                         </TouchableOpacity>
                     </View>
-                )}
+                )} 
             />
         </View>
     )

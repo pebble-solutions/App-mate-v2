@@ -18,6 +18,10 @@ export const globalStyles = StyleSheet.create({
         fontFamily: 'Inter_700Bold',
     },
 
+    cardDescription: {
+        fontSize: 12,
+    },
+
     text: {
         fontFamily: 'Inter_500Medium',
     },

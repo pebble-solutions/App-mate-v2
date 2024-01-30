@@ -65,7 +65,7 @@ export default function SessionScreen() {
                         activity={item}
                         action={() => {
                             setStatus("started")
-                            setPayload(item.id)
+                            setPayload(item._id)
                         }}
                         buttonTitle="Démarrer"
                     />
