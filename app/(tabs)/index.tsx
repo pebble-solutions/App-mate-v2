@@ -49,8 +49,7 @@ export default function SessionScreen() {
                         <Button title="Pointer" variant="xl" onPress={() => {
                             setStatus("started")
                         }} />
-                        <SessionForm activity={activity} title={activity.label} />
-
+                        <SessionForm activity={activity} />
 
                         <Button title="Stopper tout !" onPress={() => {
                             resetStatus()

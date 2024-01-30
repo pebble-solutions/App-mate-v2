@@ -8,6 +8,7 @@ type RenderItemType = {
 };
 
 export default function renderItem({}) {
+    
     return (
         <View style={globalStyles.pContainer}>
             <Text style={globalStyles.text}>Variables</Text>
