@@ -1,5 +1,6 @@
 import React, {createContext, PropsWithChildren, useContext, useState} from "react";
 import {ActivityType} from "../types/ActivityType";
+import {useEffect} from "react";
 
 type ActivityContextType = {
     activities: ActivityType[],
@@ -8,20 +9,24 @@ type ActivityContextType = {
     getActivityById: (id: string) => ActivityType | undefined
 }
 
-export const ActivityContext= createContext<ActivityContextType>({
-    activities: [],
-    addActivity: (activity: ActivityType) => {},
-    removeActivity: (id: string) => {},
-    getActivityById: (id: string): ActivityType => { return {id: "", label: "", color: ""} }
-})
+const ActivityContext= createContext<ActivityContextType | null>(null)
 
-const ActivityContextProvider = ({children}: PropsWithChildren<{}>) => {
-    const [activities , setActivities] = useState<ActivityType[]>([
-        {label: "Activity 1", description: "My activity description 1", color: "blueviolet", id: "dkeo20d"},
-        {label: "Activity 2", description: "My activity description 2", color: "cadetblue", id: "d2jd03s"},
-        {label: "Activity 3", description: "My activity description 3", color: "crimson", id: "dsra00z"},
-        {label: "Activity 4", description: "My activity description 4", color: "cadetblue", id: "adkr0za"},
-    ])
+const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
+    const [activities, setActivities] = useState<ActivityType[]>([])
+
+    const fetchActivitiesFromAPI = async () => {
+        try {
+            const response = await fetch("https://api.pebble.solutions/v5/activity/"); // Remplacez URL_DE_VOTRE_API par l'URL de votre API
+            const data = await response.json();
+            setActivities(data);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des activités depuis l'API:", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchActivitiesFromAPI();
+    }, []); 
 
     const addActivity = (activity: ActivityType) => {
         setActivities([...activities, activity])
@@ -29,12 +34,12 @@ const ActivityContextProvider = ({children}: PropsWithChildren<{}>) => {
 
     const removeActivity = (id: string) => {
         setActivities((prev) => {
-            return prev.filter(e => e.id !== id)
+            return prev.filter(e => e._id !== id)
         })
     }
 
     const getActivityById = (id: string) => {
-        return activities.find(e => e.id === id)
+        return activities.find(e => e._id === id)
     }
 
     return (
