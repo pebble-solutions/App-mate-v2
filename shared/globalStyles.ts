@@ -10,7 +10,8 @@ export const globalStyles = StyleSheet.create({
     headTitle: {
         fontFamily: 'Inter_700Bold',
         fontSize: 28,
-        marginVertical: 16
+        marginVertical: 16,
+        marginTop: 40
     },
 
     cardTitle: {
