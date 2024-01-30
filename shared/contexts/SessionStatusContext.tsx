@@ -1,7 +1,7 @@
 import React, {createContext, PropsWithChildren, useContext, useState} from "react";
 import {ActivityType} from "../types/ActivityType";
 
-type StatusType = 'started' | 'paused' | 'validating';
+type StatusType = 'started' | 'paused' |'start' | 'pause'| 'validate' | 'validating';
 
 type PayloadType = string | number;
 
