@@ -7,6 +7,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import ActivityOverview from "../../components/ActivityOverview";
 import {router} from "expo-router";
 import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
+import GetValueText from "../../components/GetValueText"
 
 export default function SessionScreen() {
 
@@ -16,6 +17,7 @@ export default function SessionScreen() {
     const width = Dimensions.get('window').width;
 
     let content;
+    console.log(getStatus())
 
     if (getStatus()) {
         const status = getStatus()
@@ -43,10 +45,12 @@ export default function SessionScreen() {
 
             <Text>Vous avez démarré l'activité : {activity.label}</Text>
 
+            <GetValueText varText='toto' />
+
             <Button title="Stopper tout !" onPress={() => {
                 resetStatus()
                 resetPayload()
-            } } />
+            }} />
         </View>
     }
     else {
