@@ -8,12 +8,7 @@ type ActivityContextType = {
     getActivityById: (id: string) => ActivityType | undefined
 }
 
-export const ActivityContext= createContext<ActivityContextType>({
-    activities: [],
-    addActivity: (activity: ActivityType) => {},
-    removeActivity: (id: string) => {},
-    getActivityById: (id: string): ActivityType => { return {id: "", label: "", color: ""} }
-})
+export const ActivityContext= createContext<ActivityContextType | null>(null)
 
 const ActivityContextProvider = ({children}: PropsWithChildren<{}>) => {
     const [activities , setActivities] = useState<ActivityType[]>([

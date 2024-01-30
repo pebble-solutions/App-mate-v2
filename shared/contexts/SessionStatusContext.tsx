@@ -16,15 +16,7 @@ type SessionStatusContextType = {
     resetPayload: () => void
 }
 
-export const SessionStatusContext= createContext<SessionStatusContextType>({
-    status: undefined,
-    getStatus: () => { return undefined },
-    setStatus: (status: StatusType) => { },
-    resetStatus: () => { },
-    getPayload: () => { return undefined },
-    setPayload: (payload: PayloadType) => {},
-    resetPayload: () => {}
-})
+export const SessionStatusContext= createContext<SessionStatusContextType | null>(null)
 
 const SessionStatusContextProvider = ({children}: PropsWithChildren<{}>) => {
     const [status, setStatus] = useState<StatusType>()
