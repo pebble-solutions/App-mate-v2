@@ -13,25 +13,23 @@ export const ActivityContext= createContext<ActivityContextType>({
     activities: [],
     addActivity: (activity: ActivityType) => {},
     removeActivity: (id: string) => {},
-    getActivityById: (id: string): ActivityType => { return {id: "", label: "", color: ""} }
+    getActivityById: (id: string): ActivityType => { return {_id: "", label: "", color: ""} }
 })
 
 const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [activities, setActivities] = useState<ActivityType[]>([])
 
-    // Fonction pour récupérer les activités depuis l'API
     const fetchActivitiesFromAPI = async () => {
         try {
             const response = await fetch("https://api.pebble.solutions/v5/activity/"); // Remplacez URL_DE_VOTRE_API par l'URL de votre API
             const data = await response.json();
-            setActivities(data); // Mettez à jour l'état avec les données de l'API
+            setActivities(data);
         } catch (error) {
             console.error("Erreur lors de la récupération des activités depuis l'API:", error);
         }
     }
 
     useEffect(() => {
-        // Appelez la fonction pour récupérer les activités depuis l'API au chargement du composant
         fetchActivitiesFromAPI();
     }, []); 
 
@@ -41,12 +39,12 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
     const removeActivity = (id: string) => {
         setActivities((prev) => {
-            return prev.filter(e => e.id !== id)
+            return prev.filter(e => e._id !== id)
         })
     }
 
     const getActivityById = (id: string) => {
-        return activities.find(e => e.id === id)
+        return activities.find(e => e._id === id)
     }
 
     return (

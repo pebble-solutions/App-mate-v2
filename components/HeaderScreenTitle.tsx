@@ -13,7 +13,7 @@ export default function HeaderScreenTitle({title, addButton}: HeaderScreenTitleT
         <View style={globalStyles.topContainer}>
             <View style={globalStyles.headTitleActions}>
                 <Text style={globalStyles.headTitle}>{title}</Text>
-                <AntDesign name="pluscircleo" size={24} color="black" />
+                <AntDesign name="pluscircleo" size={26} color="black" />
             </View>
         </View>
     )

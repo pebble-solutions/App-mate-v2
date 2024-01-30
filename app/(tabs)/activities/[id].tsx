@@ -10,9 +10,9 @@ export default function ActivityScreen() {
 
     const { getActivityById } = useActivityContext()
 
-    const {id} = useLocalSearchParams<ActivityType>()
+    const {_id} = useLocalSearchParams<ActivityType>()
 
-    const activity = id ? getActivityById(id) : null
+    const activity = _id ? getActivityById(_id) : null
 
     if (!activity) {
         return (

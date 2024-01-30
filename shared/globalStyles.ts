@@ -11,11 +11,14 @@ export const globalStyles = StyleSheet.create({
         fontFamily: 'Inter_700Bold',
         fontSize: 28,
         marginVertical: 16,
-        marginTop: 40
     },
 
     cardTitle: {
         fontFamily: 'Inter_700Bold',
+    },
+
+    cardDescription: {
+        fontSize: 12,
     },
 
     text: {
@@ -60,6 +63,7 @@ export const globalStyles = StyleSheet.create({
     headTitleActions: {
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        marginTop: variables.contentMargin[3]
     }
 })

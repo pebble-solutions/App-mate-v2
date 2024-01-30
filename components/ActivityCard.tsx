@@ -6,10 +6,11 @@ import {getRGBGradientColors} from "../shared/libs/color";
 
 type CardOptions = {
     title: string,
-    color: string
+    color: string,
+    description?: string,
 }
 
-export default function ActivityCard({title, color}: CardOptions) {
+export default function ActivityCard({title, color, description}: CardOptions) {
 
     const colors = getRGBGradientColors(color)
 
@@ -21,6 +22,7 @@ export default function ActivityCard({title, color}: CardOptions) {
             style={globalStyles.card}>
             <View style={[globalStyles.cardContent]}>
                 <Text style={[globalStyles.cardTitle, globalStyles.textLight]}>{title}</Text>
+                <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{description}</Text>
             </View>
         </LinearGradient>
     )
