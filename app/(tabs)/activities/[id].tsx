@@ -38,6 +38,11 @@ export default function ActivityScreen() {
 
             <View style={[globalStyles.contentContainer]}>
                 <Text style={[globalStyles.textLight]}>{activity.description}</Text>
+                <Text style={[globalStyles.textLight]}>Crée le {activity.start}</Text>
+            </View>
+
+            <View style={globalStyles.contentContainer}>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
             </View>
         </LinearGradient>
     )
