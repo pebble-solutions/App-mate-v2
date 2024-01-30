@@ -1,7 +1,8 @@
 import {SplashScreen, Stack} from "expo-router";
 import { useFonts, Inter_500Medium, Inter_300Light, Inter_700Bold, Inter_900Black } from '@expo-google-fonts/inter';
 import {useEffect} from "react";
-import ActivityContextProvider from "../shared/contexts/ActivityContext";
+import ActivityContextProvider, {useActivityContext} from "../shared/contexts/ActivityContext";
+import SessionStatusContextProvider from "../shared/contexts/SessionStatusContext";
 
 SplashScreen.preventAutoHideAsync()
 
@@ -22,12 +23,14 @@ export default function RootLayout() {
     }
 
     return (
-        <ActivityContextProvider>
-            <Stack>
-                <Stack.Screen name="(tabs)" options={{
-                    headerShown: false
-                }} />
-            </Stack>
-        </ActivityContextProvider>
+        <SessionStatusContextProvider>
+            <ActivityContextProvider>
+                <Stack>
+                    <Stack.Screen name="(tabs)" options={{
+                        headerShown: false
+                    }} />
+                </Stack>
+            </ActivityContextProvider>
+        </SessionStatusContextProvider>
     )
 }
