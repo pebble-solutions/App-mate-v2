@@ -2,8 +2,8 @@ import {StyleSheet} from "react-native";
 
 export const variables = {
     borderRadius: [0, 6, 12, 18],
-    contentPadding: [0, 12, 24, 32],
-    contentMargin: [0, 6, 12, 24, 40],
+    contentPadding: [0, 6, 12, 24, 32, 48],
+    contentMargin: [0, 6, 12, 24, 32, 48],
     fontSize: [12, 16, 28, 32]
 }
 
@@ -80,7 +80,9 @@ export const globalStyles = StyleSheet.create({
 
     topContainer: {
         marginHorizontal: variables.contentMargin[2],
-        marginTop: variables.contentMargin[4]
+        marginTop: variables.contentMargin[5],
+        paddingHorizontal: variables.contentMargin[1],
+        
     },
 
     body: {
