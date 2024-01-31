@@ -1,9 +1,9 @@
 import {Text, View} from "react-native";
 
-export default function SettingsScreen() {
+export default function VariableScreen() {
     return (
         <View>
-            <Text>Settings</Text>
+            <Text>Variable configuration</Text>
         </View>
     )
 }

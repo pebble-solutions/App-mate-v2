@@ -6,6 +6,9 @@ export default function TabsLayout() {
         <Tabs screenOptions={{
             headerShown: false
         }}>
+             <Tabs.Screen name="variables/index" options={{
+                title: "Variables"
+            }} />
             <Tabs.Screen name="activities" options={{
                 title: "Activities"
             }} />
@@ -14,6 +17,9 @@ export default function TabsLayout() {
             }} />
             <Tabs.Screen name="summary/index" options={{
                 title: "Summary"
+            }} />
+             <Tabs.Screen name="settings/index" options={{
+                title: "Settings"
             }} />
         </Tabs>
     )
