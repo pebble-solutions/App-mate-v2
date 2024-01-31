@@ -17,7 +17,7 @@ export default function ActivitiesScreen() {
 
             <FlatList
                 style={[globalStyles.body, globalStyles.mhContainer]}
-                numColumns={2}
+                numColumns={1}
                 data={activities}
                 renderItem={({item}) => (
                     <View style={globalStyles.mContainer}>
