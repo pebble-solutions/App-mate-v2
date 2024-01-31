@@ -59,7 +59,25 @@ export const globalStyles = StyleSheet.create({
         borderRadius: variables.borderRadius[1],
         padding: variables.contentPadding[2],
         marginVertical: variables.contentMargin[1],
+        justifyContent: 'center',
+        
     },
+
+    VariableCardHeader: {
+        maxWidth: '80%',
+    },
+
+    VariableCardIconsContainer: {
+        flexDirection: 'row',
+        position: 'absolute',
+        right: 3,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    iconMargin: {
+        marginHorizontal: 3,
+      },
 
     pContainer: {
         paddingHorizontal: variables.contentMargin[1],

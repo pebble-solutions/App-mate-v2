@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
@@ -36,40 +36,42 @@ export default function ActivityScreen() {
             start={{ x: 0, y: 1 }}
             end={{ x: 1, y: 0 }}
             style={globalStyles.body}>
+
             <View style={globalStyles.contentContainer}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
             </View>
 
             <View style={[globalStyles.contentContainer]}>
-                <Text style={[globalStyles.textLight,  globalStyles.textCenter]}>
+                <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
                     Crée le {format(new Date(activity.start), 'dd.MM.yyyy')}
                 </Text>
-                <Text style={[globalStyles.textLight,  globalStyles.textCenter]}>{activity.description}</Text>
+                <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{activity.description}</Text>
             </View>
-
-            <View style={globalStyles.contentContainer}>
-                <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
-                {activity.variables.map((variable: { label: string, description: string }, index: number) => (
-                    <VariableCard
-                        key={index}
-                        label={variable.label}
-                        description={variable.description}
-                        color=""
-                    />
-                ))}
-            </View>
-            <View style={globalStyles.contentContainer}>
-                <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
-
-                {variables.map((variable: VariableType, index: number) => (
-                    <VariableCard
-                        key={index}
-                        label={variable.label}
-                        description={variable.description} // Vous pouvez ajouter la description si elle est disponible
-                        color=""
-                    />
-                ))}
-            </View>
+            <ScrollView>
+                <View style={globalStyles.contentContainer}>
+                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
+                    {activity.variables.map((variable: { label: string, description: string, mandatory: boolean }, index: number) => (
+                        <VariableCard
+                            key={index}
+                            label={variable.label}
+                            description={variable.description}
+                            mandatory={variable.mandatory}
+                            displayRemoveIcon={true}
+                        />
+                    ))}
+                </View>
+                <View style={globalStyles.contentContainer}>
+                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
+                    {variables.map((variable: VariableType, index: number) => (
+                        <VariableCard
+                            key={index}
+                            label={variable.label}
+                            description={variable.description}
+                            displayAddIcon={true}
+                        />
+                    ))}
+                </View>
+            </ScrollView>
         </LinearGradient>
     )
 }
