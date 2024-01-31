@@ -15,23 +15,25 @@ export default function SessionScreen() {
     const { activities, getActivityById } = useActivityContext()
     const { getStatus, setStatus, resetStatus, setPayload, resetPayload, getPayload } = useSessionStatusContext()
 
+    
     const width = Dimensions.get('window').width;
-
+    
     let content;
-
+    
     if (getStatus()) {
         const status = getStatus()
-
+        
         const activityId = getPayload()
-
+        
         if (!activityId || typeof activityId !== "string") {
             Alert.alert("Erreur : il n'y a pas d'ID d'activité précisée")
             resetPayload()
             resetStatus()
             return null
         }
-
-        const activity = getActivityById(activityId)
+        
+        const activity = getActivityById(activityId);
+        
         console.log(activity?.variables)
 
         if (!activity) {
@@ -41,21 +43,47 @@ export default function SessionScreen() {
             return null
         }
 
-        content = <View style={globalStyles.topContainer}>
-                        <Text>Une session est démarrée : {status}</Text>
+        content = 
+        <LinearGradient
+        style={[globalStyles.body, globalStyles.card, globalStyles.topContainer]}
+        colors={getRGBGradientColors(activity.color)}
+        start={{x: 0, y: 1}}
+        end={{x: 1, y: 0}}
+    >
+            <View style={globalStyles.topContainer}>
+                    
+                <Text style= {globalStyles.textLight}>statut: {status}</Text>
+                <Text style={globalStyles.textLight}>{activity._id} </Text>
+                <Text style={globalStyles.textLight}>{activity.description}</Text>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Nouvelle session : {activity.label}</Text>
+                <SessionForm activity={activity}  title = {activity.label} variables={activity?.variables}/>
+                
 
-                        <Text>Vous avez démarré l'activité : {activity.label}</Text>
-                        <Text>{activity._id} </Text>
-                        <Button title="Pointer" variant="xl" onPress={() => {
-                            setStatus("started")
-                        }} />
-                        <SessionForm activity={activity} />
-
-                        <Button title="Stopper tout !" onPress={() => {
-                            resetStatus()
-                            resetPayload()
-                            }} />
-                    </View>
+                {activity.variables.map((variable) => {
+                    return (
+                        <View style={globalStyles.pContainer}>
+                            <Text style={globalStyles.textLight}>variable: {variable.label}</Text>
+                            <Text style={globalStyles.textLight}>type: {variable.type}</Text>
+                            <Text style={globalStyles.textLight}>valeur: {variable.value}</Text>
+                        </View>
+                    )       
+                })}
+                
+                <View style={globalStyles.buttonContainer}>
+                    <Button
+                        style={[globalStyles.button, globalStyles.buttonAlert]}
+                        title="Annuler"
+                        onPress={() => {resetStatus(), resetPayload()}}
+                    />
+                    <Button
+                    style={[globalStyles.button, styles.test]} 
+                    title="Commencer !" 
+                    onPress={() => {setStatus("started")}}
+                    />
+                </View>
+                
+            </View>
+        </LinearGradient>
     }
     else {
         content = <View style={globalStyles.body}>
@@ -86,6 +114,17 @@ export default function SessionScreen() {
 
 const styles = StyleSheet.create({
     test: {
-        flex: 1
+        color: "white"
+    },
+    localCardContent: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    
+    
+
+    buttonLight: {
+        backgroundColor: "white"
     }
 })

@@ -96,7 +96,7 @@ export const globalStyles = StyleSheet.create({
         padding: variables.contentPadding[1],
         borderRadius: variables.borderRadius[2],
         backgroundColor: "#cdcdcd",
-        color: "blue",
+        color: "white",
         fontSize: variables.fontSize[0]
     },
 
@@ -109,10 +109,18 @@ export const globalStyles = StyleSheet.create({
         padding: variables.contentPadding[2] / 1.5,
         fontSize: variables.fontSize[2] / 1.3
     },
-
+    buttonContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    buttonAlert: {
+        backgroundColor: "red",
+        
+    },
     textLg: {
         fontSize: variables.fontSize[1]
-    },
+            },
 
     textXl: {
         fontSize: variables.fontSize[2] / 1.3
