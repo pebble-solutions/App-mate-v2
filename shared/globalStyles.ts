@@ -43,6 +43,14 @@ export const globalStyles = StyleSheet.create({
         margin: variables.contentMargin[2]
     },
 
+    VariableCardContent: {
+
+        backgroundColor: '#00000020',
+        borderRadius: variables.borderRadius[1],
+        padding: variables.contentPadding[2],
+        marginVertical: variables.contentMargin[1],
+    },
+
     pContainer: {
         paddingHorizontal: variables.contentMargin[1],
         paddingVertical: variables.contentMargin[1]

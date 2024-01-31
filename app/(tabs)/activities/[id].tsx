@@ -1,3 +1,4 @@
+import React from "react";
 import { Text, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,14 +8,12 @@ import { ActivityType } from "../../../shared/types/ActivityType";
 import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import { VariableType } from "../../../shared/types/VariableType";
 import { useVariableContext } from "../../../shared/contexts/VariableContext";
+import VariableCard from "../../../components/VariableCard";
 
 export default function ActivityScreen() {
-
-    const { getActivityById } = useActivityContext()
-
-    const { _id } = useLocalSearchParams<ActivityType>()
-
-    const activity = _id ? getActivityById(_id) : null
+    const { getActivityById } = useActivityContext();
+    const { _id } = useLocalSearchParams<ActivityType>();
+    const activity = _id ? getActivityById(_id) : null;
 
     const { variables } = useVariableContext();
 
@@ -25,10 +24,10 @@ export default function ActivityScreen() {
                     <Text>Not found</Text>
                 </View>
             </View>
-        )
+        );
     }
 
-    const colors = activity.color ? getRGBGradientColors(activity.color) : ["#fff"]
+    const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#fff"];
 
     return (
         <LinearGradient
@@ -47,19 +46,25 @@ export default function ActivityScreen() {
 
             <View style={globalStyles.contentContainer}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
-                {activity.variables.map((variable: { label: string }, index: number) => (
-                    <Text key={index} style={[globalStyles.textLight]}>
-                        {variable.label}
-                    </Text>
+                {activity.variables.map((variable: { label: string, description: string }, index: number) => (
+                    <VariableCard
+                        key={index}
+                        label={variable.label}
+                        description={variable.description}
+                        color=""
+                    />
                 ))}           
             </View>
             <View style={globalStyles.contentContainer}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
     
                 {variables.map((variable: VariableType, index: number) => (
-                    <Text key={index} style={[globalStyles.textLight]}>
-                        {variable.label}
-                    </Text>
+                    <VariableCard
+                        key={index}
+                        label={variable.label}
+                        description={variable.description} // Vous pouvez ajouter la description si elle est disponible
+                        color=""
+                    />
                 ))}       
             </View>
         </LinearGradient>
