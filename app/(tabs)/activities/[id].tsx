@@ -5,6 +5,8 @@ import { getRGBGradientColors } from "../../../shared/libs/color";
 import { globalStyles } from "../../../shared/globalStyles";
 import { ActivityType } from "../../../shared/types/ActivityType";
 import { useActivityContext } from "../../../shared/contexts/ActivityContext";
+import { VariableType } from "../../../shared/types/VariableType";
+import { useVariableContext } from "../../../shared/contexts/VariableContext";
 
 export default function ActivityScreen() {
 
@@ -13,6 +15,8 @@ export default function ActivityScreen() {
     const { _id } = useLocalSearchParams<ActivityType>()
 
     const activity = _id ? getActivityById(_id) : null
+
+    const { variables } = useVariableContext();
 
     if (!activity) {
         return (
@@ -52,10 +56,11 @@ export default function ActivityScreen() {
             <View style={globalStyles.contentContainer}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
     
-                    <Text style={[globalStyles.textLight]}>
-                        oui oui baguette
-                    
-                    </Text>      
+                {variables.map((variable: VariableType, index: number) => (
+                    <Text key={index} style={[globalStyles.textLight]}>
+                        {variable.label}
+                    </Text>
+                ))}       
             </View>
         </LinearGradient>
     )
