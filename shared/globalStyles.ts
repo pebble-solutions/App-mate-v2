@@ -3,7 +3,7 @@ import {StyleSheet} from "react-native";
 export const variables = {
     borderRadius: [0, 6, 12, 18],
     contentPadding: [0, 12, 24, 32],
-    contentMargin: [0, 6, 12, 24],
+    contentMargin: [0, 6, 12, 24, 40],
     fontSize: [12, 16, 28, 32]
 }
 
@@ -31,7 +31,8 @@ export const globalStyles = StyleSheet.create({
     },
 
     card: {
-        borderRadius: variables.borderRadius[2]
+        borderRadius: variables.borderRadius[2],
+        minHeight: 100,
     },
 
     cardLg: {
@@ -79,7 +80,7 @@ export const globalStyles = StyleSheet.create({
 
     topContainer: {
         marginHorizontal: variables.contentMargin[2],
-        marginTop: variables.contentMargin[3]
+        marginTop: variables.contentMargin[4]
     },
 
     body: {
