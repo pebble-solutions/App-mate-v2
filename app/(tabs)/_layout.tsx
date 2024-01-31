@@ -1,5 +1,6 @@
 import {router, Tabs} from "expo-router";
-import {View} from "react-native";
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default function TabsLayout() {
     return (
@@ -7,19 +8,29 @@ export default function TabsLayout() {
             headerShown: false
         }}>
              <Tabs.Screen name="variables/index" options={{
-                title: "Variables"
+                title: "Variables", tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="checkmark-done-outline" size={size} color={color} />
+                )
             }} />
             <Tabs.Screen name="activities" options={{
-                title: "Activities"
+                title: "Activities", tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="albums" size={size} color={color} />
+                )
             }} />
             <Tabs.Screen name="index" options={{
-                title: "Session"
+                title: "Session", tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="timer" size={30} color={color} />
+                )
             }} />
             <Tabs.Screen name="summary/index" options={{
-                title: "Summary"
+                title: "Summary", tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="stats-chart-outline" size={size} color={color} />
+                )
             }} />
              <Tabs.Screen name="settings/index" options={{
-                title: "Settings"
+                title: "Settings", tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="settings-outline" size={size} color={color} />
+                )
             }} />
         </Tabs>
     )
