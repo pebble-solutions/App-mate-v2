@@ -1,16 +1,16 @@
-import {Text, View} from "react-native";
-import {useLocalSearchParams} from "expo-router";
-import {LinearGradient} from "expo-linear-gradient";
-import {getRGBGradientColors} from "../../../shared/libs/color";
-import {globalStyles} from "../../../shared/globalStyles";
-import {ActivityType} from "../../../shared/types/ActivityType";
-import {useActivityContext} from "../../../shared/contexts/ActivityContext";
+import { Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
+import { getRGBGradientColors } from "../../../shared/libs/color";
+import { globalStyles } from "../../../shared/globalStyles";
+import { ActivityType } from "../../../shared/types/ActivityType";
+import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 
 export default function ActivityScreen() {
 
     const { getActivityById } = useActivityContext()
 
-    const {_id} = useLocalSearchParams<ActivityType>()
+    const { _id } = useLocalSearchParams<ActivityType>()
 
     const activity = _id ? getActivityById(_id) : null
 
@@ -29,8 +29,8 @@ export default function ActivityScreen() {
     return (
         <LinearGradient
             colors={colors}
-            start={{x: 0, y: 1}}
-            end={{x: 1, y: 0}}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 1, y: 0 }}
             style={globalStyles.body}>
             <View style={globalStyles.contentContainer}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
@@ -43,6 +43,19 @@ export default function ActivityScreen() {
 
             <View style={globalStyles.contentContainer}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
+                {activity.variables.map((variable: { label: string }, index: number) => (
+                    <Text key={index} style={[globalStyles.textLight]}>
+                        {variable.label}
+                    </Text>
+                ))}           
+            </View>
+            <View style={globalStyles.contentContainer}>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
+    
+                    <Text style={[globalStyles.textLight]}>
+                        oui oui baguette
+                    
+                    </Text>      
             </View>
         </LinearGradient>
     )

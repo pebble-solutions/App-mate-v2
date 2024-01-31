@@ -4,4 +4,5 @@ export type ActivityType = {
     description?: string,
     color: string,
     start: string,
+    variables: [],
 }
