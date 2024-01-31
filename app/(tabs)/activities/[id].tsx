@@ -9,6 +9,7 @@ import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import { VariableType } from "../../../shared/types/VariableType";
 import { useVariableContext } from "../../../shared/contexts/VariableContext";
 import VariableCard from "../../../components/VariableCard";
+import { format } from 'date-fns';
 
 export default function ActivityScreen() {
     const { getActivityById } = useActivityContext();
@@ -36,16 +37,18 @@ export default function ActivityScreen() {
             end={{ x: 1, y: 0 }}
             style={globalStyles.body}>
             <View style={globalStyles.contentContainer}>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
             </View>
 
             <View style={[globalStyles.contentContainer]}>
-                <Text style={[globalStyles.textLight]}>{activity.description}</Text>
-                <Text style={[globalStyles.textLight]}>Crée le {activity.start}</Text>
+                <Text style={[globalStyles.textLight,  globalStyles.textCenter]}>
+                    Crée le {format(new Date(activity.start), 'dd.MM.yyyy')}
+                </Text>
+                <Text style={[globalStyles.textLight,  globalStyles.textCenter]}>{activity.description}</Text>
             </View>
 
             <View style={globalStyles.contentContainer}>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
+                <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
                 {activity.variables.map((variable: { label: string, description: string }, index: number) => (
                     <VariableCard
                         key={index}
@@ -53,11 +56,11 @@ export default function ActivityScreen() {
                         description={variable.description}
                         color=""
                     />
-                ))}           
+                ))}
             </View>
             <View style={globalStyles.contentContainer}>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
-    
+                <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
+
                 {variables.map((variable: VariableType, index: number) => (
                     <VariableCard
                         key={index}
@@ -65,7 +68,7 @@ export default function ActivityScreen() {
                         description={variable.description} // Vous pouvez ajouter la description si elle est disponible
                         color=""
                     />
-                ))}       
+                ))}
             </View>
         </LinearGradient>
     )

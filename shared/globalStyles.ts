@@ -14,6 +14,13 @@ export const globalStyles = StyleSheet.create({
         marginVertical: 16
     },
 
+    CategoryTitle: {
+        fontFamily: 'Inter_700Bold',
+        fontSize: variables.fontSize[1],
+        marginVertical: 16
+    },
+    
+
     cardTitle: {
         fontFamily: 'Inter_700Bold',
     },
@@ -28,6 +35,9 @@ export const globalStyles = StyleSheet.create({
 
     textLight: {
         color: 'white'
+    },
+    textCenter: {
+        textAlign: 'center'
     },
 
     card: {
