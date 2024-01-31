@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
     },
 
     buttonLight: {
-        backgroundColor: "white"
+        backgroundColor: "white",
     }
 })

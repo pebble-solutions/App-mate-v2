@@ -5,6 +5,12 @@ export type ActivityType = {
     label: string,
     description?: string,
     status: string,
-    color: string,
-    variables: [],
+    color: string
+    variables: Array<{
+        label : string,
+        value: string | number | boolean | undefined,
+        type: string  | undefined,
+        mandatory: boolean,
+        }
+    >,
 }

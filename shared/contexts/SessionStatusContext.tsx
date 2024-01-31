@@ -1,11 +1,13 @@
 import React, {createContext, PropsWithChildren, useContext, useState} from "react";
 import {ActivityType} from "../types/ActivityType";
+import { SessionType } from "../types/SessionType";
 
 type StatusType = 'started' | 'paused' |'start' | 'pause'| 'validate' | 'validating';
-
 type PayloadType = string | number;
 
+
 type SessionStatusContextType = {
+    session?: SessionType[],
     status?: StatusType,
     payload?: PayloadType,
     getStatus: () => StatusType | undefined,

@@ -109,13 +109,28 @@ export const globalStyles = StyleSheet.create({
         padding: variables.contentPadding[2] / 1.5,
         fontSize: variables.fontSize[2] / 1.3
     },
+    cardSession: {
+        flexDirection: "column",
+        
+        borderColor: "white",
+        borderWidth: 1,
+        borderRadius: variables.borderRadius[2],
+        marginVertical: variables.contentMargin[1],
+        padding: variables.contentPadding[1],
+    },
     buttonContainer: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+        // borderColor: "white",
+        // borderWidth: 1,
+        // borderRadius: variables.borderRadius[2],
+        // marginVertical: variables.contentMargin[1],
+        // padding: variables.contentPadding[1],
     },
     buttonAlert: {
-        backgroundColor: "red",
+        backgroundColor: "white",
+    
         
     },
     textLg: {
