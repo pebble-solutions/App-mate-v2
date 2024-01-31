@@ -10,6 +10,7 @@ import { VariableType } from "../../../shared/types/VariableType";
 import { useVariableContext } from "../../../shared/contexts/VariableContext";
 import VariableCard from "../../../components/VariableCard";
 import { format } from 'date-fns';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ActivityScreen() {
     const { getActivityById } = useActivityContext();
@@ -38,6 +39,10 @@ export default function ActivityScreen() {
             style={globalStyles.body}>
 
             <View style={globalStyles.contentContainer}>
+                <View style={globalStyles.headerIcons}>
+                    <Ionicons name="settings-outline" size={28} color="white" style={{ position: 'absolute', left: 5, top: 19}} />
+                    <Ionicons name="close-outline" size={32} color="white" style={{ position: 'absolute', right: 0, top:18 }} />
+                </View>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
             </View>
 

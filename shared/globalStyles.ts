@@ -13,7 +13,9 @@ export const globalStyles = StyleSheet.create({
         fontSize: variables.fontSize[2],
         marginVertical: 16
     },
+    headerIcons: {
 
+    },
     CategoryTitle: {
         fontFamily: 'Inter_700Bold',
         fontSize: variables.fontSize[1],
