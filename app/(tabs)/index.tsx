@@ -93,21 +93,7 @@ export default function SessionScreen() {
                     <ScrollView style={globalStyles.scrollContainer}>
                         {status == "started" && 
                         <View style={globalStyles.cardSession}>
-                        <Text style={[globalStyles.textXl, globalStyles.textLight]}>La session {currentSession.label}a commencé</Text>
-                        <>
-                        
-                        {pressTimes.length ==1 && pressTimes.map((pressTime, index) => {
-                            return (
-                                <View key={index} >
-                                    <Text>a supprimer</Text>
-                                    <Text style={globalStyles.textLight}> - {pressTime.time.toLocaleTimeString()}</Text>
-                                    <Text style={globalStyles.textLight}>type: {pressTime.label}</Text>
-                                    <Text style={globalStyles.textLight}>index: {pressTime ? pressTime.index : ""}</Text>  
-                                </View>
-                            )       
-                        }
-                        )}
-                        </>
+                        <Text style={[globalStyles.textXl, globalStyles.textLight]}>{currentSession.label}</Text>
                         <PointingSession/>
                         </View>
                         }    

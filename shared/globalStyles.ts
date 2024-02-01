@@ -161,9 +161,9 @@ export const globalStyles = StyleSheet.create({
     },
     cardSession: {
         flexDirection: "column",
+        backgroundColor: '#00000020', // Changez la couleur de fond selon vos préférences
         
-        borderColor: "white",
-        borderWidth: 1,
+        
         borderRadius: variables.borderRadius[2],
         marginVertical: variables.contentMargin[1],
         padding: variables.contentPadding[1],
@@ -219,6 +219,15 @@ export const globalStyles = StyleSheet.create({
         justifyContent: 'center',
         
     },
+    buttonContainerSession: {
+        flexDirection: 'row',
+        paddingVertical: variables.contentPadding[2],
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        
+    },
+
     buttonText: {
         color: 'white', // Couleur du texte
         fontFamily: 'Inter_700Bold',
