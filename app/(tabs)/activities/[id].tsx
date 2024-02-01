@@ -16,7 +16,7 @@ import { TextInput } from "react-native-gesture-handler";
 
 export default function ActivityScreen() {
     const { getActivityById } = useActivityContext();
-    const { _id } = useLocalSearchParams<ActivityType>();
+    const { _id } = useLocalSearchParams<{_id: string}>();
     const activity = _id ? getActivityById(_id) : null;
     const { variables } = useVariableContext();
 
@@ -122,7 +122,7 @@ export default function ActivityScreen() {
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
                     <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
-                    {activity.variables.map((variable: { label: string, description: string, mandatory: boolean }, index: number) => (
+                    {activity.variables.map((variable: VariableType, index: number) => (
                         <VariableCard
                             key={index}
                             label={variable.label}

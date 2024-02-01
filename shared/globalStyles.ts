@@ -168,13 +168,7 @@ export const globalStyles = StyleSheet.create({
         marginVertical: variables.contentMargin[1],
         padding: variables.contentPadding[1],
     },
-    buttonContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
     
-    
-    },
     topCard: {
         flexDirection: "row",
         alignItems: "center",
