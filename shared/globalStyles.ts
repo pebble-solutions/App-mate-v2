@@ -14,6 +14,10 @@ export const globalStyles = StyleSheet.create({
         marginVertical: 16
     },
     headerIcons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        
+
 
     },
     CategoryTitle: {
@@ -72,13 +76,13 @@ export const globalStyles = StyleSheet.create({
     VariableCardIconsContainer: {
         flexDirection: 'row',
         position: 'absolute',
-        right: 3,
+        right: 5,
         alignItems: 'center',
         justifyContent: 'center',
     },
 
     iconMargin: {
-        marginHorizontal: 3,
+        marginHorizontal: 2,
       },
 
     pContainer: {
@@ -157,5 +161,33 @@ export const globalStyles = StyleSheet.create({
 
     textXl: {
         fontSize: variables.fontSize[2] / 1.3
-    }
+    },
+
+    input: {
+        padding: variables.contentPadding[2],
+        borderRadius: variables.borderRadius[1],
+        borderWidth: 1,
+        borderColor: "#cdcdcd",
+        marginVertical: variables.contentMargin[1],
+        backgroundColor: "#FFFFFF10",
+        color: "white",
+        fontSize: variables.fontSize[0]
+    },
+
+    buttonContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#00000050', // Changez la couleur de fond selon vos préférences
+        paddingVertical: variables.contentPadding[2],
+        paddingHorizontal: 20,
+        marginVertical: 4,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        
+    },
+    buttonText: {
+        color: 'white', // Couleur du texte
+        fontFamily: 'Inter_700Bold',
+        fontSize: variables.fontSize[0],
+    },
 })
