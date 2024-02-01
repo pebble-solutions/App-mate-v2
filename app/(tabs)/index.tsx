@@ -11,6 +11,7 @@ import PointingSession from "../../components/PointingSession";
 import RenderItem from "../../components/RenderItem";
 import {router} from "expo-router";
 import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
+import GetValueText from "../../components/GetValueText"
 import {useSessionContext} from "../../shared/contexts/SessionContext";
 import { startSession } from "../../shared/libs/session";
 
@@ -25,8 +26,6 @@ export default function SessionScreen() {
     const { getSessionById } = sessionContext
     
     const width = Dimensions.get('window').width;
-
-
     let content;
     
     if (getStatus()) {
@@ -94,7 +93,6 @@ export default function SessionScreen() {
                     <ScrollView style={globalStyles.scrollContainer}>
                         {status == "started" && 
                         <View style={globalStyles.cardSession}>
-
                         <Text style={[globalStyles.textXl, globalStyles.textLight]}>La session {currentSession.label}a commencé</Text>
                         <>
                         

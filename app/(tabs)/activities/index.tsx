@@ -7,6 +7,7 @@ import {router} from "expo-router";
 import {useActivityContext} from "../../../shared/contexts/ActivityContext";
 import HeaderScreenTitle from "../../../components/HeaderScreenTitle";
 
+
 export default function ActivitiesScreen() {
 
     const {activities} = useActivityContext()
