@@ -14,7 +14,10 @@ export default function PointingSession() {
         const newPressTime = {
             time: currentTime,
             label: getStatus(),
-            index: index
+            index: 1
+            
+
+
         };
         const updatedPressTimes = [...pressTimes, newPressTime];
         setPressTimes(updatedPressTimes);

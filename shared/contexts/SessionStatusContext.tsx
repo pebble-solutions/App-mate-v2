@@ -6,8 +6,7 @@ type StatusType = 'started' | 'paused' |'start' | 'pause'| 'validate' | 'validat
 type PayloadType = string | number;
 
 
-type SessionStatusContextType = {
-    session?: SessionType[],
+export type SessionStatusContextType = {
     status?: StatusType,
     payload?: PayloadType,
     getStatus: () => StatusType | undefined,
@@ -24,6 +23,8 @@ const SessionStatusContextProvider = ({children}: PropsWithChildren<{}>) => {
     const [status, setStatus] = useState<StatusType>()
     const [payload, setPayload] = useState<PayloadType>()
 
+
+
     const getStatus = () => {
         return status
     }
@@ -39,7 +40,8 @@ const SessionStatusContextProvider = ({children}: PropsWithChildren<{}>) => {
     const resetPayload = () => {
         setPayload(undefined)
     }
-
+    
+    
     return (
         <SessionStatusContext.Provider value={{getStatus, resetStatus, setStatus, getPayload, setPayload, resetPayload}}>
             {children}
