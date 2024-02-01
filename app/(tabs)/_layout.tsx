@@ -32,6 +32,9 @@ export default function TabsLayout() {
                     <Ionicons name="settings-outline" size={size} color={color} />
                 )
             }} />
+            <Tabs.Screen name="settings/index" options={{
+                title: "Settings"
+            }} />
         </Tabs>
     )
 }

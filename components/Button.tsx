@@ -6,13 +6,14 @@ type ButtonType = {
     onPress: () => void,
     style?: any[],
     titleStyle?: any[],
-    variant?: 'xl' | 'lg' | 'sm'
+    variant?: 'xl' | 'lg' | 'sm',
 }
 
 export default function Button({title, onPress, style, titleStyle, variant}: ButtonType) {
 
     style = style || []
     titleStyle = titleStyle || []
+
 
     if (variant === 'lg') {
         style.push(globalStyles.buttonLg)
