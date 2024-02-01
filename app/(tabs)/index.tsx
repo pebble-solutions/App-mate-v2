@@ -13,7 +13,6 @@ import {router} from "expo-router";
 import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
 import {useSessionContext} from "../../shared/contexts/SessionContext";
 import { startSession } from "../../shared/libs/session";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export default function SessionScreen() {
 
@@ -41,6 +40,7 @@ export default function SessionScreen() {
             return null
         }
         const currentSession = getSessionById(sessionId);
+        console.log(currentSession, 'current session');
         if(!currentSession) {
             Alert.alert("Erreur : session non trouvée")
             resetPayload()
@@ -59,7 +59,6 @@ export default function SessionScreen() {
         
         const activity = getActivityById(activityId);
         
-        console.log(activity?.variables)
 
         if (!activity) {
             Alert.alert("Erreur : activité non trouvée")
@@ -76,7 +75,7 @@ export default function SessionScreen() {
         end={{x: 1, y: 0}}
     >
             <View style={globalStyles.topContainer}>
-                <View style={globalStyles.buttonContainer}>
+                <View style={globalStyles.topCard}>
                     <Button
                         style={[globalStyles.button, globalStyles.buttonAlert]}
                         title="Annuler"
@@ -84,9 +83,10 @@ export default function SessionScreen() {
                         titleStyle={[{color: activity.color}]}
                         
                     />
-                    <View>
-                        <Text style={globalStyles.textLight}>{activity._id} </Text>
+                    <View style={globalStyles.topCardContent}>
+                        <Text style={globalStyles.textLight}>session :{sessionId}</Text>
                         <Text style= {globalStyles.textLight}>statut: {status}</Text>
+                        <Text style={globalStyles.textLight}> activité: {activity._id} </Text>
                     </View>
                 </View>
 
@@ -95,7 +95,7 @@ export default function SessionScreen() {
                         {status == "started" && 
                         <View style={globalStyles.cardSession}>
 
-                        <Text style={[globalStyles.textXl, globalStyles.textLight]}>La session a commencé</Text>
+                        <Text style={[globalStyles.textXl, globalStyles.textLight]}>La session {currentSession.label}a commencé</Text>
                         <>
                         
                         {pressTimes.length ==1 && pressTimes.map((pressTime, index) => {
@@ -130,14 +130,7 @@ export default function SessionScreen() {
                     <RenderItem/>
                     </ScrollView>
 
-                    {status == "start" &&
-                    <Button
-                    style={[globalStyles.button, styles.test]} 
-                    title="Commencer !" 
-                    onPress={() => {setStatus("started")}}
-                    titleStyle={[{color: 'red'}]}
-                    />
-                    }
+                    
             </View>
         </LinearGradient>
     }

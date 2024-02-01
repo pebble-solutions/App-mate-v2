@@ -10,7 +10,7 @@ export function startSession (activityId: string, sessionContext: SessionContext
         _id: r,
         type: "activity",
         type_id: activityId,
-        label: "Session",
+        label: "Pointage de John DOE",
         comment: "",
         status: "started",
         owner: {
@@ -22,6 +22,7 @@ export function startSession (activityId: string, sessionContext: SessionContext
         raw_datas: [],
         raw_variables: [],
     }
+    console.log(newSession, sessionContext, 'newSession')
     sessionContext.addSession(newSession);
     statusContext.setStatus("started");
     statusContext.setPayload(newSession._id);

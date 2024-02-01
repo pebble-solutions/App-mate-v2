@@ -2,9 +2,12 @@ import React from "react";
 import { globalStyles } from "../shared/globalStyles";import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Button from "./Button";
 import { useSessionStatusContext } from "../shared/contexts/SessionStatusContext";
+import { useSessionContext } from "../shared/contexts/SessionContext";  
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 
-export default function PointingSession() {
+export default function PointingSession({ }:object) {
+    
     const { getStatus, setStatus, resetStatus, setPayload, resetPayload, getPayload } = useSessionStatusContext()
     const [pressTimes, setPressTimes] = React.useState([{time: new Date(), label: "", index: 0}] as {time: Date, label: string, index: number}[]);
 
@@ -14,14 +17,14 @@ export default function PointingSession() {
         const newPressTime = {
             time: currentTime,
             label: getStatus(),
-            index: 1
+            index: index
             
 
 
         };
         const updatedPressTimes = [...pressTimes, newPressTime];
         setPressTimes(updatedPressTimes);
-        console.log(pressTimes, 'in session');
+        console.log(pressTimes, 'presstimes in session');
         // await savePressTimes(updatedPressTimes); // Sauvegarde des nouvelles données
     }
 

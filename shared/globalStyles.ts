@@ -127,12 +127,24 @@ export const globalStyles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        // borderColor: "white",
-        // borderWidth: 1,
-        // borderRadius: variables.borderRadius[2],
-        // marginVertical: variables.contentMargin[1],
-        // padding: variables.contentPadding[1],
+    
+    
     },
+    topCard: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        
+        
+    },
+    topCardContent: {
+        flexDirection: "column",
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+        
+        
+    },
+
     buttonAlert: {
         backgroundColor: "white",
     

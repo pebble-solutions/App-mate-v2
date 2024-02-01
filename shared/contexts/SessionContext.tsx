@@ -1,6 +1,5 @@
 import React, {createContext, PropsWithChildren, useContext, useState} from "react";
 import {SessionType} from "../types/SessionType";
-import {useEffect} from "react";
 
 export type SessionContextType = {
     sessions: SessionType[],
