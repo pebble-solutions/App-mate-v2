@@ -81,7 +81,9 @@ export const globalStyles = StyleSheet.create({
         marginHorizontal: variables.contentMargin[2],
         marginTop: variables.contentMargin[3]
     },
-
+    scrollContainer: {
+        marginBottom: 48,
+    },
     body: {
         flex: 1
     },
@@ -98,6 +100,9 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: "#cdcdcd",
         color: "white",
         fontSize: variables.fontSize[0]
+    },
+    buttonAlignSelfCenter: {
+        alignSelf: "center",
     },
 
     buttonLg: {

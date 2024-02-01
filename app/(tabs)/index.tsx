@@ -21,17 +21,18 @@ export default function SessionScreen() {
 
     
     const width = Dimensions.get('window').width;
+
     const pointing = async () => {
         const currentTime = new Date();
-        const index = pressTimes.length +1;
+        // const index = pressTimes.length +1;
         const newPressTime = {
             time: currentTime,
             label: getStatus(),
-            index: index
+            index: 1
         };
         const updatedPressTimes = [...pressTimes, newPressTime];
         setPressTimes(updatedPressTimes);
-        console.log(pressTimes);
+        console.log(pressTimes, 'in index');
         // await savePressTimes(updatedPressTimes); // Sauvegarde des nouvelles données
     };
     
@@ -68,63 +69,68 @@ export default function SessionScreen() {
         end={{x: 1, y: 0}}
     >
             <View style={globalStyles.topContainer}>
-                    
-                <Text style={globalStyles.textLight}>{activity._id} </Text>
-                <Text style= {globalStyles.textLight}>statut: {status}</Text>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label} / {activity.description}</Text>
-
-                    {status == "started" && 
-                    <View style={globalStyles.cardSession}>
-
-                    <Text style={[globalStyles.textXl, globalStyles.textLight]}>La session a commencé</Text>
-                    <>
-                    
-                    {pressTimes.length >=1 && pressTimes.map((pressTime, index) => {
-                        return (
-                            <View key={index} >
-                                <Text style={globalStyles.textLight}> - {pressTime.time.toLocaleTimeString()}</Text>
-                                <Text style={globalStyles.textLight}>type: {pressTime.label}</Text>
-                                <Text style={globalStyles.textLight}>valeur: {pressTime ? pressTime.index : ""}</Text>  
-                            </View>
-                        )       
-                    }
-                    )}
-                    </>
-                    <PointingSession/>
-                    </View>
-                    }    
-                <ScrollView style={globalStyles.cardSession}>
-                    { activity.variables.length== 0 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>Il n'y a pas de variable associée à cette activité</Text>}
-                    { activity.variables.length==1 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>{activity.variables.length} variable associée à cette activité</Text>}
-                    { activity.variables.length>1 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>{activity.variables.length} variables associées à cette activité</Text>}
-                    {activity.variables.map((variable, index) => {
-                        return (
-                            <View key={index} >
-                                <Text style={globalStyles.textLight}> - {variable.label}</Text>
-                                {/* <Text style={globalStyles.textLight}>type: {variable.type}</Text>
-                                <Text style={globalStyles.textLight}>valeur: {variable.value}</Text> */}
-                            </View>
-                        )       
-                    })}
-                </ScrollView>
-
-                    <RenderItem/>
                 <View style={globalStyles.buttonContainer}>
                     <Button
                         style={[globalStyles.button, globalStyles.buttonAlert]}
                         title="Annuler"
-                        onPress={() => {resetStatus(), resetPayload()}}
+                        onPress={() => {resetStatus(), resetPayload(), setPressTimes([])}}
                         titleStyle={[{color: activity.color}]}
                         
                     />
+                    <View>
+                        <Text style={globalStyles.textLight}>{activity._id} </Text>
+                        <Text style= {globalStyles.textLight}>statut: {status}</Text>
+                    </View>
+                </View>
+
+                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label} / {activity.description}</Text>
+                    <ScrollView style={globalStyles.scrollContainer}>
+                        {status == "started" && 
+                        <View style={globalStyles.cardSession}>
+
+                        <Text style={[globalStyles.textXl, globalStyles.textLight]}>La session a commencé</Text>
+                        <>
+                        
+                        {pressTimes.length ==1 && pressTimes.map((pressTime, index) => {
+                            return (
+                                <View key={index} >
+                                    <Text>a supprimer</Text>
+                                    <Text style={globalStyles.textLight}> - {pressTime.time.toLocaleTimeString()}</Text>
+                                    <Text style={globalStyles.textLight}>type: {pressTime.label}</Text>
+                                    <Text style={globalStyles.textLight}>index: {pressTime ? pressTime.index : ""}</Text>  
+                                </View>
+                            )       
+                        }
+                        )}
+                        </>
+                        <PointingSession/>
+                        </View>
+                        }    
+                        <View style={globalStyles.cardSession}>
+                            { activity.variables.length== 0 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>Il n'y a pas de variable associée à cette activité</Text>}
+                            { activity.variables.length==1 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>{activity.variables.length} variable associée à cette activité</Text>}
+                            { activity.variables.length>1 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>{activity.variables.length} variables associées à cette activité</Text>}
+                            {activity.variables.map((variable, index) => {
+                                return (
+                                    <View key={index} >
+                                        <Text style={globalStyles.textLight}> - {variable.label}</Text>
+                                        {/* <Text style={globalStyles.textLight}>type: {variable.type}</Text>
+                                        <Text style={globalStyles.textLight}>valeur: {variable.value}</Text> */}
+                                    </View>
+                                )       
+                            })}
+                        </View>
+                    <RenderItem/>
+                    </ScrollView>
+
+                    {status == "start" &&
                     <Button
                     style={[globalStyles.button, styles.test]} 
                     title="Commencer !" 
-                    onPress={() => {setStatus("started"), pointing("started")}}
+                    onPress={() => {setStatus("started"), pointing()}}
                     titleStyle={[{color: 'red'}]}
                     />
-                </View>
-                
+                    }
             </View>
         </LinearGradient>
     }
@@ -157,7 +163,8 @@ export default function SessionScreen() {
 
 const styles = StyleSheet.create({
     test: {
-        backgroundColor: "white"
+        backgroundColor: "white",
+        alignSelf: "center",
     },
     localCardContent: {
         flex: 1,
