@@ -126,7 +126,9 @@ export const globalStyles = StyleSheet.create({
         paddingHorizontal: variables.contentMargin[1],
         
     },
-
+    scrollContainer: {
+        marginBottom: 48,
+    },
     body: {
         flex: 1
     },
@@ -141,8 +143,11 @@ export const globalStyles = StyleSheet.create({
         padding: variables.contentPadding[1],
         borderRadius: variables.borderRadius[2],
         backgroundColor: "#cdcdcd",
-        color: "blue",
+        color: "white",
         fontSize: variables.fontSize[0]
+    },
+    buttonAlignSelfCenter: {
+        alignSelf: "center",
     },
 
     buttonLg: {
@@ -154,10 +159,39 @@ export const globalStyles = StyleSheet.create({
         padding: variables.contentPadding[2] / 1.5,
         fontSize: variables.fontSize[2] / 1.3
     },
+    cardSession: {
+        flexDirection: "column",
+        
+        borderColor: "white",
+        borderWidth: 1,
+        borderRadius: variables.borderRadius[2],
+        marginVertical: variables.contentMargin[1],
+        padding: variables.contentPadding[1],
+    },
+    
+    topCard: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        
+        
+    },
+    topCardContent: {
+        flexDirection: "column",
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+        
+        
+    },
 
+    buttonAlert: {
+        backgroundColor: "white",
+    
+        
+    },
     textLg: {
         fontSize: variables.fontSize[1]
-    },
+            },
 
     textXl: {
         fontSize: variables.fontSize[2] / 1.3
