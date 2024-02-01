@@ -54,7 +54,7 @@ export default function ActivityScreen() {
                             router.back();
                         }}
                     >
-                    <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
+                        <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
                     </TouchableOpacity>
                 </View>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
@@ -69,9 +69,7 @@ export default function ActivityScreen() {
 
             {isSettingsVisible && (
                 <View style={globalStyles.contentContainer}>
-                    {/* Contenu du dropdown */}
                     <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Settings Dropdown</Text>
-                    {/* Ajoutez ici le contenu de votre dropdown */}
                 </View>
             )}
 
@@ -79,10 +77,9 @@ export default function ActivityScreen() {
                 <TouchableOpacity
                     style={globalStyles.contentContainer}
                     onPress={() => {
-                        setSettingsVisible(false); // Fermez le dropdown lorsque vous appuyez dessus
+                        setSettingsVisible(false);
                     }}
                 >
-                    {/* Un bouton pour fermer le dropdown */}
                     <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Valider les changements</Text>
                 </TouchableOpacity>
             )}

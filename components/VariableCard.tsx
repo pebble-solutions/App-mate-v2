@@ -12,7 +12,7 @@ type VariableCardOptions = {
     mandatory?: boolean,
     displayAddIcon?: boolean,
     displayRemoveIcon?: boolean,
-    isMandatory?: boolean, // Ajoutez cette prop
+    isMandatory?: boolean, 
 }
 
 export default function VariableCard({
@@ -21,7 +21,7 @@ export default function VariableCard({
     mandatory,
     displayAddIcon,
     displayRemoveIcon,
-    isMandatory, // Ajoutez cette prop
+    isMandatory,
 }: VariableCardOptions) {
     return (
         <View style={[globalStyles.VariableCardContent]}>
