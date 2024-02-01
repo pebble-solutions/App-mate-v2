@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { globalStyles } from "../shared/globalStyles";
 import { useVariableContext } from "../shared/contexts/VariableContext";
 import { VariableType } from "../shared/types/VariableType";
@@ -12,7 +12,7 @@ type VariableCardOptions = {
     mandatory?: boolean,
     displayAddIcon?: boolean,
     displayRemoveIcon?: boolean,
-    isMandatory?: boolean, 
+    isMandatory?: boolean,
 }
 
 export default function VariableCard({
@@ -32,13 +32,25 @@ export default function VariableCard({
             <View style={globalStyles.VariableCardIconsContainer}>
                 {isMandatory !== undefined ? (
                     mandatory ? (
-                        <Ionicons name="shield-checkmark" size={25} color="white" style={{ marginHorizontal: 5 }} />
+                        <TouchableOpacity onPress={() => { }}>
+                            <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
+                        </TouchableOpacity>
                     ) : (
-                        <Ionicons name="shield-checkmark-outline" size={25} color="#00000030" style={{ marginHorizontal: 5 }} />
+                        <TouchableOpacity onPress={() => { }}>
+                            <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
+                        </TouchableOpacity>
                     )
                 ) : null}
-                {displayRemoveIcon && <Ionicons name="remove-circle-outline" size={25} color="white" />}
-                {displayAddIcon && <Ionicons name="add-circle-outline" size={25} color="white" />}
+                {displayRemoveIcon &&
+                    <TouchableOpacity onPress={() => { }}>
+                        <Ionicons name="remove-circle-outline" size={25} color="white" />
+                    </TouchableOpacity>
+                    }
+                {displayAddIcon &&
+                     <TouchableOpacity onPress={() => { }}>
+                        <Ionicons name="add-circle-outline" size={25} color="white" />
+                    </TouchableOpacity>
+                }
             </View>
         </View>
     )

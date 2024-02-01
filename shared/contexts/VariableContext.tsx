@@ -37,6 +37,7 @@ type VariableContextType = {
         return prev.filter(e => e._id !== id);
       });
     }
+    
   
     const getVariableById = (id: string) => {
       return variables.find(e => e._id === id);
