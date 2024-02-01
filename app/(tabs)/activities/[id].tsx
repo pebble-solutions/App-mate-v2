@@ -12,6 +12,7 @@ import VariableCard from "../../../components/VariableCard";
 import { format } from 'date-fns';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
+import { TextInput } from "react-native-gesture-handler";
 
 export default function ActivityScreen() {
     const { getActivityById } = useActivityContext();
@@ -20,6 +21,11 @@ export default function ActivityScreen() {
     const { variables } = useVariableContext();
 
     const [isSettingsVisible, setSettingsVisible] = useState(false);
+    const [settingsValues, setSettingsValues] = useState({
+        label: '',
+        description: '',
+        color: '',
+    });
 
     if (!activity) {
         return (
@@ -66,12 +72,25 @@ export default function ActivityScreen() {
                 </Text>
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{activity.description}</Text>
             </View>
-
+            <View style={globalStyles.contentContainer}>
             {isSettingsVisible && (
-                <View style={globalStyles.contentContainer}>
-                    <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Settings Dropdown</Text>
-                </View>
-            )}
+    <View style={globalStyles.contentContainer}>
+        <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Settings :</Text>
+        <TextInput
+            style={globalStyles.input}
+            placeholder={`Nom de l'activité :  ${activity.label}`}
+            value={settingsValues.label}
+            onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
+        />
+        <TextInput
+            style={globalStyles.input}
+            placeholder={`Description de l'activité :  ${activity.description}`}
+            value={settingsValues.description}
+            onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
+        />
+        <Text style={[globalStyles.textCenter, globalStyles.textLight]}>Sélectionnez une couleur :</Text>
+    </View>
+)}
 
             {isSettingsVisible && (
                 <TouchableOpacity
@@ -83,6 +102,7 @@ export default function ActivityScreen() {
                     <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Valider les changements</Text>
                 </TouchableOpacity>
             )}
+            </View>
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
                     <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Mes jolies variables :</Text>

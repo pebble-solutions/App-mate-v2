@@ -161,5 +161,16 @@ export const globalStyles = StyleSheet.create({
 
     textXl: {
         fontSize: variables.fontSize[2] / 1.3
-    }
+    },
+
+    input: {
+        padding: variables.contentPadding[2],
+        borderRadius: variables.borderRadius[1],
+        borderWidth: 1,
+        borderColor: "#cdcdcd",
+        marginVertical: variables.contentMargin[1],
+        backgroundColor: "#FFFFFF100",
+        color: "white",
+        fontSize: variables.fontSize[0]
+    },
 })
