@@ -40,8 +40,8 @@ export default function ActivityScreen() {
 
             <View style={globalStyles.contentContainer}>
                 <View style={globalStyles.headerIcons}>
-                    <Ionicons name="settings-outline" size={28} color="white" style={{ position: 'absolute', left: 5, top: 19}} />
-                    <Ionicons name="close-outline" size={32} color="white" style={{ position: 'absolute', right: 0, top:18 }} />
+                    <Ionicons name="settings-outline" size={28} color="white" style={{ position: 'absolute', left: 5, top: 19 }} />
+                    <Ionicons name="close-outline" size={32} color="white" style={{ position: 'absolute', right: 0, top: 18 }} />
                 </View>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
             </View>
@@ -62,6 +62,7 @@ export default function ActivityScreen() {
                             description={variable.description}
                             mandatory={variable.mandatory}
                             displayRemoveIcon={true}
+                            isMandatory={true}
                         />
                     ))}
                 </View>

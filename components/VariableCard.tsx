@@ -12,9 +12,17 @@ type VariableCardOptions = {
     mandatory?: boolean,
     displayAddIcon?: boolean,
     displayRemoveIcon?: boolean,
+    isMandatory?: boolean, // Ajoutez cette prop
 }
 
-export default function VariableCard({ label, description, mandatory, displayAddIcon, displayRemoveIcon }: VariableCardOptions) {
+export default function VariableCard({
+    label,
+    description,
+    mandatory,
+    displayAddIcon,
+    displayRemoveIcon,
+    isMandatory, // Ajoutez cette prop
+}: VariableCardOptions) {
     return (
         <View style={[globalStyles.VariableCardContent]}>
             <View style={[globalStyles.VariableCardHeader]}>
@@ -22,13 +30,15 @@ export default function VariableCard({ label, description, mandatory, displayAdd
                 <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{description}</Text>
             </View>
             <View style={globalStyles.VariableCardIconsContainer}>
-                {mandatory ? (
-                    <Ionicons name="shield-checkmark" size={25} color="white" style={[globalStyles.iconMargin]} />
-                ) : (
-                    <Ionicons name="shield-checkmark-outline" size={25} color="#00000025" style={[globalStyles.iconMargin]} />
-                )}
-                {displayRemoveIcon && <Ionicons name="remove-circle-outline" size={25} color="white" style={[globalStyles.iconMargin]} />}
-                {displayAddIcon && <Ionicons name="add-circle-outline" size={25} color="white" style={[globalStyles.iconMargin]} />}
+                {isMandatory !== undefined ? (
+                    mandatory ? (
+                        <Ionicons name="shield-checkmark" size={25} color="white" />
+                    ) : (
+                        <Ionicons name="shield-checkmark-outline" size={25} color="#00000025" />
+                    )
+                ) : null}
+                {displayRemoveIcon && <Ionicons name="remove-circle-outline" size={25} color="white" />}
+                {displayAddIcon && <Ionicons name="add-circle-outline" size={25} color="white" />}
             </View>
         </View>
     )

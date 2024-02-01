@@ -72,13 +72,13 @@ export const globalStyles = StyleSheet.create({
     VariableCardIconsContainer: {
         flexDirection: 'row',
         position: 'absolute',
-        right: 3,
+        right: 5,
         alignItems: 'center',
         justifyContent: 'center',
     },
 
     iconMargin: {
-        marginHorizontal: 3,
+        marginHorizontal: 1,
       },
 
     pContainer: {
