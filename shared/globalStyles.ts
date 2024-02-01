@@ -14,6 +14,10 @@ export const globalStyles = StyleSheet.create({
         marginVertical: 16
     },
     headerIcons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        
+
 
     },
     CategoryTitle: {

@@ -1,5 +1,5 @@
-import React from "react";
-import { Text, View, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
@@ -11,13 +11,15 @@ import { useVariableContext } from "../../../shared/contexts/VariableContext";
 import VariableCard from "../../../components/VariableCard";
 import { format } from 'date-fns';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from "expo-router";
 
 export default function ActivityScreen() {
     const { getActivityById } = useActivityContext();
     const { _id } = useLocalSearchParams<ActivityType>();
     const activity = _id ? getActivityById(_id) : null;
-
     const { variables } = useVariableContext();
+
+    const [isSettingsVisible, setSettingsVisible] = useState(false);
 
     if (!activity) {
         return (
@@ -40,8 +42,20 @@ export default function ActivityScreen() {
 
             <View style={globalStyles.contentContainer}>
                 <View style={globalStyles.headerIcons}>
-                    <Ionicons name="settings-outline" size={28} color="white" style={{ position: 'absolute', left: 5, top: 19 }} />
-                    <Ionicons name="close-outline" size={32} color="white" style={{ position: 'absolute', right: 0, top: 18 }} />
+                    <TouchableOpacity
+                        onPress={() => {
+                            setSettingsVisible(!isSettingsVisible);
+                        }}
+                    >
+                        <Ionicons name="settings-outline" size={28} color="white" style={{ position: 'relative', left: 5, top: 19 }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            router.back();
+                        }}
+                    >
+                    <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
+                    </TouchableOpacity>
                 </View>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
             </View>
@@ -52,6 +66,26 @@ export default function ActivityScreen() {
                 </Text>
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{activity.description}</Text>
             </View>
+
+            {isSettingsVisible && (
+                <View style={globalStyles.contentContainer}>
+                    {/* Contenu du dropdown */}
+                    <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Settings Dropdown</Text>
+                    {/* Ajoutez ici le contenu de votre dropdown */}
+                </View>
+            )}
+
+            {isSettingsVisible && (
+                <TouchableOpacity
+                    style={globalStyles.contentContainer}
+                    onPress={() => {
+                        setSettingsVisible(false); // Fermez le dropdown lorsque vous appuyez dessus
+                    }}
+                >
+                    {/* Un bouton pour fermer le dropdown */}
+                    <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Valider les changements</Text>
+                </TouchableOpacity>
+            )}
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
                     <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
