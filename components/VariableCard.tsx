@@ -32,9 +32,9 @@ export default function VariableCard({
             <View style={globalStyles.VariableCardIconsContainer}>
                 {isMandatory !== undefined ? (
                     mandatory ? (
-                        <Ionicons name="shield-checkmark" size={25} color="white" />
+                        <Ionicons name="shield-checkmark" size={25} color="white" style={{ marginHorizontal: 5 }} />
                     ) : (
-                        <Ionicons name="shield-checkmark-outline" size={25} color="#00000025" />
+                        <Ionicons name="shield-checkmark-outline" size={25} color="#00000030" style={{ marginHorizontal: 5 }} />
                     )
                 ) : null}
                 {displayRemoveIcon && <Ionicons name="remove-circle-outline" size={25} color="white" />}

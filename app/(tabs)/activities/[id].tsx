@@ -73,35 +73,51 @@ export default function ActivityScreen() {
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{activity.description}</Text>
             </View>
             <View style={globalStyles.contentContainer}>
-            {isSettingsVisible && (
-    <View style={globalStyles.contentContainer}>
-        <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Settings :</Text>
-        <TextInput
-            style={globalStyles.input}
-            placeholder={`Nom de l'activité :  ${activity.label}`}
-            value={settingsValues.label}
-            onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
-        />
-        <TextInput
-            style={globalStyles.input}
-            placeholder={`Description de l'activité :  ${activity.description}`}
-            value={settingsValues.description}
-            onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
-        />
-        <Text style={[globalStyles.textCenter, globalStyles.textLight]}>Sélectionnez une couleur :</Text>
-    </View>
-)}
+                {isSettingsVisible && (
+                    <View>
+                        <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Reglages de l'activité :</Text>
+                        <TextInput
+                            style={globalStyles.input}
+                            placeholder={`Nom de l'activité :  ${activity.label}`}
+                            value={settingsValues.label}
+                            onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
+                        />
+                        <TextInput
+                            style={globalStyles.input}
+                            placeholder={`Description de l'activité :  ${activity.description}`}
+                            value={settingsValues.description}
+                            onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
+                        />
+                    </View>
+                )}
 
-            {isSettingsVisible && (
-                <TouchableOpacity
-                    style={globalStyles.contentContainer}
-                    onPress={() => {
-                        setSettingsVisible(false);
-                    }}
-                >
-                    <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Valider les changements</Text>
-                </TouchableOpacity>
-            )}
+                {isSettingsVisible && (
+                    <TouchableOpacity
+
+                        onPress={() => {
+                            setSettingsVisible(false);
+                        }}
+                    >
+                        <View style={globalStyles.buttonContainer}>
+                            <Text style={globalStyles.buttonText}>Valider les changements </Text>
+                            <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
+                        </View>
+                    </TouchableOpacity>
+                )}
+
+                {isSettingsVisible && (
+                    <TouchableOpacity
+
+                        onPress={() => {
+                            setSettingsVisible(false);
+                        }}
+                    >
+                        <View style={globalStyles.buttonContainer}>
+                            <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
+                            <Ionicons name="trash-outline" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
+                        </View>
+                    </TouchableOpacity>
+                )}
             </View>
             <ScrollView>
                 <View style={globalStyles.contentContainer}>

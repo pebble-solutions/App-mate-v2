@@ -82,7 +82,7 @@ export const globalStyles = StyleSheet.create({
     },
 
     iconMargin: {
-        marginHorizontal: 1,
+        marginHorizontal: 2,
       },
 
     pContainer: {
@@ -169,8 +169,25 @@ export const globalStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#cdcdcd",
         marginVertical: variables.contentMargin[1],
-        backgroundColor: "#FFFFFF100",
+        backgroundColor: "#FFFFFF10",
         color: "white",
         fontSize: variables.fontSize[0]
+    },
+
+    buttonContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#00000050', // Changez la couleur de fond selon vos préférences
+        paddingVertical: variables.contentPadding[2],
+        paddingHorizontal: 20,
+        marginVertical: 4,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        
+    },
+    buttonText: {
+        color: 'white', // Couleur du texte
+        fontFamily: 'Inter_700Bold',
+        fontSize: variables.fontSize[0],
     },
 })
