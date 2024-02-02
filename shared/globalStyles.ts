@@ -198,14 +198,14 @@ export const globalStyles = StyleSheet.create({
     },
 
     input: {
-        padding: variables.contentPadding[2],
+        padding: variables.contentPadding[3],
         borderRadius: variables.borderRadius[1],
         borderWidth: 1,
         borderColor: "#cdcdcd",
-        marginVertical: variables.contentMargin[1],
+        marginVertical: variables.contentMargin[2],
         backgroundColor: "#FFFFFF10",
         color: "white",
-        fontSize: variables.fontSize[0]
+        fontSize: variables.fontSize[1]
     },
 
     buttonContainer: {
@@ -223,5 +223,19 @@ export const globalStyles = StyleSheet.create({
         color: 'white', // Couleur du texte
         fontFamily: 'Inter_700Bold',
         fontSize: variables.fontSize[0],
+    },
+
+    headerCloseIcon: {  
+        position: 'relative',
+        justifyContent: 'flex-end',
+        marginEnd: 10,
+        marginTop: 20,
+    },
+    
+    iconContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginBottom: 36,
     },
 });
