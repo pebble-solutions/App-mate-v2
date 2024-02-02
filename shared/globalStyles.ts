@@ -186,8 +186,6 @@ export const globalStyles = StyleSheet.create({
 
     buttonAlert: {
         backgroundColor: "white",
-    
-        
     },
     textLg: {
         fontSize: variables.fontSize[1]
@@ -253,6 +251,4 @@ export const globalStyles = StyleSheet.create({
         marginVertical: 10,
         paddingHorizontal: 60,
     },
-
-
 });
