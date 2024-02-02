@@ -79,12 +79,14 @@ export default function ActivityScreen() {
                         <TextInput
                             style={globalStyles.input}
                             placeholder={`Nom de l'activité :  ${activity.label}`}
+                            placeholderTextColor="#FFFFFF"
                             value={settingsValues.label}
                             onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
                         />
                         <TextInput
                             style={globalStyles.input}
                             placeholder={`Description de l'activité :  ${activity.description}`}
+                            placeholderTextColor="#FFFFFF"
                             value={settingsValues.description}
                             onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
                         />
