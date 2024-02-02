@@ -4,13 +4,13 @@ export const variables = {
     borderRadius: [0, 6, 12, 18],
     contentPadding: [0, 6, 12, 24, 32, 48],
     contentMargin: [0, 6, 12, 24, 32, 48],
-    fontSize: [12, 16, 28, 32]
+    fontSize: [12, 14, 16, 20, 24, 28, 32]
 }
 
 export const globalStyles = StyleSheet.create({
     headTitle: {
         fontFamily: 'Inter_700Bold',
-        fontSize: variables.fontSize[2],
+        fontSize: variables.fontSize[6],
         marginVertical: 16
     },
     headerIcons: {
@@ -22,7 +22,7 @@ export const globalStyles = StyleSheet.create({
     },
     CategoryTitle: {
         fontFamily: 'Inter_700Bold',
-        fontSize: variables.fontSize[1],
+        fontSize: variables.fontSize[4],
         marginVertical: 16
     },
     
@@ -210,7 +210,7 @@ export const globalStyles = StyleSheet.create({
 
     buttonContainer: {
         flexDirection: 'row',
-        backgroundColor: '#00000050', // Changez la couleur de fond selon vos préférences
+        backgroundColor: '#00000050',
         paddingVertical: variables.contentPadding[2],
         paddingHorizontal: 20,
         marginVertical: 4,
@@ -238,4 +238,21 @@ export const globalStyles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 36,
     },
+
+    colorButton: {
+        width: 55,
+        height: 55,
+        borderRadius: 14,
+        borderWidth: 4,
+        marginHorizontal: 7,
+    },
+
+    colorButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginVertical: 10,
+        paddingHorizontal: 60,
+    },
+
+
 });

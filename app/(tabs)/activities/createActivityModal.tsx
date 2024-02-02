@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
@@ -19,6 +19,32 @@ export default function CreateActivityModal() {
     });
     const colors = getRGBGradientColors("slategray");
 
+    const [selectedColor, setSelectedColor] = useState("#262729");
+
+    const colorOptions = [
+        "#262729",
+        "#701323",
+        "#701348",
+        "#671370",
+        "#341370",
+        "#133070",
+        "#525252",
+        "#13706d",
+        "#0f572e",
+        "#436903",
+        "#b57c02",
+        "#b81d06",
+    ];
+
+    const createActivity = () => {
+        router.back();
+        alert("Activité ajoutée");
+    };
+
+    // Divisez le tableau colorOptions en deux parties
+    const firstRowColors = colorOptions.slice(0, 6);
+    const secondRowColors = colorOptions.slice(6, 12);
+
     return (
         <LinearGradient
             colors={colors}
@@ -33,7 +59,7 @@ export default function CreateActivityModal() {
                             router.back();
                         }}
                     >
-                       <Text style={globalStyles.textLight}>annuler</Text>
+                        <Text style={globalStyles.textLight}>annuler</Text>
                     </TouchableOpacity>
                 </View>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>Nouvelle activité : </Text>
@@ -57,9 +83,36 @@ export default function CreateActivityModal() {
                     placeholderTextColor="white"
                 />
             </View>
+            <View style={globalStyles.contentContainer}>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>Choisissez une couleur : </Text>
+                <View style={globalStyles.colorButtonsContainer}>
+                    {firstRowColors.map((color, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={[
+                                globalStyles.colorButton,
+                                { backgroundColor: color, borderColor: selectedColor === color ? 'white' : 'transparent' }
+                            ]}
+                            onPress={() => setSelectedColor(color)}
+                        />
+                    ))}
+                </View>
+                <View style={globalStyles.colorButtonsContainer}>
+                    {secondRowColors.map((color, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={[
+                                globalStyles.colorButton,
+                                { backgroundColor: color, borderColor: selectedColor === color ? 'white' : 'transparent' }
+                            ]}
+                            onPress={() => setSelectedColor(color)}
+                        />
+                    ))}
+                </View>
+            </View>
             <View style={globalStyles.iconContainer}>
                 <TouchableOpacity
-                    onPress={() => { }}
+                    onPress={createActivity}
                 >
                     <Ionicons name="add-circle" size={120} color="white" />
                 </TouchableOpacity>
