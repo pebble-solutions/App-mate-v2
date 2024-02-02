@@ -224,4 +224,4 @@ export const globalStyles = StyleSheet.create({
         fontFamily: 'Inter_700Bold',
         fontSize: variables.fontSize[0],
     },
-})
+});
