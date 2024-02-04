@@ -56,9 +56,13 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     
 
     const removeActivity = (id: string) => {
-        setActivities((prev) => {
-            return prev.filter(e => e._id !== id)
-        })
+        fetch(`https://api.pebble.solutions/v5/activity/${id}`, {
+            method: "DELETE",
+        }).then(() => {
+            fetchActivitiesFromAPI();
+        }).catch((error) => {
+            console.error("Erreur lors de la suppression de l'activité:", error);
+        });
     }
 
     const getActivityById = (id: string) => {

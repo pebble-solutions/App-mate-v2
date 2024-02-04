@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, ScrollView, TouchableOpacity, Alert } from "react-native"; // Importez Alert
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
@@ -15,7 +15,7 @@ import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
 
 export default function ActivityScreen() {
-    const { getActivityById } = useActivityContext();
+    const { getActivityById, removeActivity } = useActivityContext();
     const { _id } = useLocalSearchParams<{_id: string}>();
     const activity = _id ? getActivityById(_id) : null;
     const { variables } = useVariableContext();
@@ -38,6 +38,29 @@ export default function ActivityScreen() {
     }
 
     const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#fff"];
+
+    // Fonction pour ouvrir la boîte de dialogue de confirmation
+    const showConfirmDeleteDialog = () => {
+        Alert.alert(
+            "Confirmer la suppression",
+            "Êtes-vous sûr de vouloir supprimer cette activité ?",
+            [
+                {
+                    text: "Annuler",
+                    style: "cancel",
+                },
+                {
+                    text: "Oui",
+                    onPress: () => {
+                        // Supprimer l'activité si l'utilisateur a confirmé
+                        removeActivity(activity._id);
+                        router.back();
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+    }
 
     return (
         <LinearGradient
@@ -75,7 +98,7 @@ export default function ActivityScreen() {
             <View style={globalStyles.contentContainer}>
                 {isSettingsVisible && (
                     <View>
-                        <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Reglages de l'activité :</Text>
+                        <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Réglages de l'activité :</Text>
                         <TextInput
                             style={globalStyles.input}
                             placeholder={`Nom de l'activité :  ${activity.label}`}
@@ -109,10 +132,7 @@ export default function ActivityScreen() {
 
                 {isSettingsVisible && (
                     <TouchableOpacity
-
-                        onPress={() => {
-                            setSettingsVisible(false);
-                        }}
+                        onPress={showConfirmDeleteDialog} // Utilisez la fonction de confirmation ici
                     >
                         <View style={globalStyles.buttonContainer}>
                             <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
