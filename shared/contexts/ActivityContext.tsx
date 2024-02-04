@@ -28,9 +28,31 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
         fetchActivitiesFromAPI();
     }, []); 
 
-    const addActivity = (activity: ActivityType) => {
-        setActivities([...activities, activity])
+    const addActivity = async (activity: ActivityType) => {
+        try {
+            const response = await fetch("https://api.pebble.solutions/v5/activity/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    label: activity.label,
+                    description: activity.description,
+                    color: activity.color,
+                }),
+            });
+    
+            if (response.ok) {
+                const newActivity = await response.json();
+                setActivities([...activities, newActivity]);
+            } else {
+                console.error("Erreur lors de la création de l'activité:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la création de l'activité:", error);
+        }
     }
+    
 
     const removeActivity = (id: string) => {
         setActivities((prev) => {
