@@ -1,6 +1,6 @@
-import React, {createContext, PropsWithChildren, useContext, useState} from "react";
-import {ActivityType} from "../types/ActivityType";
-import {useEffect} from "react";
+import React, { createContext, PropsWithChildren, useContext, useState } from "react";
+import { ActivityType } from "../types/ActivityType";
+import { useEffect } from "react";
 
 type ActivityContextType = {
     activities: ActivityType[],
@@ -8,9 +8,11 @@ type ActivityContextType = {
     removeActivity: (id: string) => void,
     getActivityById: (id: string) => ActivityType | undefined
     editActivity: (id: string, updatedActivity: ActivityType) => void;
+    linkVariableToActivity: (activityId: string, variableId: string) => void;
+    removeVariableFromActivity: (activityId: string, variableId: string) => void;
 }
 
-const ActivityContext= createContext<ActivityContextType | null>(null)
+const ActivityContext = createContext<ActivityContextType | null>(null)
 
 const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [activities, setActivities] = useState<ActivityType[]>([])
@@ -27,7 +29,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
     useEffect(() => {
         fetchActivitiesFromAPI();
-    }, []); 
+    }, []);
 
     const addActivity = async (activity: ActivityType) => {
         try {
@@ -43,7 +45,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
                     color: activity.color,
                 }),
             });
-    
+
             if (response.ok) {
                 const newActivity = await response.json();
                 fetchActivitiesFromAPI();
@@ -69,7 +71,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
                     color: activity.color,
                 }),
             });
-    
+
             if (response.ok) {
                 fetchActivitiesFromAPI();
             } else {
@@ -79,27 +81,68 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             console.error("Erreur lors de la modification de l'activité:", error);
         }
     }
-    
 
-    const removeActivity = (id: string) => {
-        fetch(`https://api.pebble.solutions/v5/activity/${id}`, {
-            method: "DELETE",
-        }).then(() => {
-            fetchActivitiesFromAPI();
-        }).catch((error) => {
-            console.error("Erreur lors de la suppression de l'activité:", error);
-        });
+    const linkVariableToActivity = async (activityId: string, variableId: string) => {
+        try {
+            const response = await fetch(`https://api.pebble.solutions/v5/activity/${activityId}/variable`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "variable_id": variableId,
+                    "mandatory": false,
+                }),
+            });
+
+            if (response.ok) {
+                fetchActivitiesFromAPI();
+            } else {
+                console.error("Erreur lors de la liaison de la variable à l'activité:", response.statusText);
+            }
+
+        } catch (error) {
+            console.error("Erreur lors de la liaison de la variable à l'activité:", error);
+        }
     }
 
-    const getActivityById = (id: string) => {
-        return activities.find(e => e._id === id)
+    const removeVariableFromActivity = async (activityId: string, variableId: string) => {
+        try {
+            const response = await fetch(`https://api.pebble.solutions/v5/activity/${activityId}/metric/variable/${variableId}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                fetchActivitiesFromAPI();
+            } else {
+                console.error("Erreur lors de la suppression de la liaison de la variable à l'activité:", response.statusText);
+            }
+
+        } catch (error) {
+            console.error("Erreur lors de la suppression de la liaison de la variable à l'activité:", error);
+        }
     }
 
-    return (
-        <ActivityContext.Provider value={{activities, addActivity, removeActivity, getActivityById, editActivity}}>
-            {children}
-        </ActivityContext.Provider>
-    )
+
+const removeActivity = (id: string) => {
+    fetch(`https://api.pebble.solutions/v5/activity/${id}`, {
+        method: "DELETE",
+    }).then(() => {
+        fetchActivitiesFromAPI();
+    }).catch((error) => {
+        console.error("Erreur lors de la suppression de l'activité:", error);
+    });
+}
+
+const getActivityById = (id: string) => {
+    return activities.find(e => e._id === id)
+}
+
+return (
+    <ActivityContext.Provider value={{ activities, addActivity, removeActivity, getActivityById, editActivity, linkVariableToActivity, removeVariableFromActivity}}>
+        {children}
+    </ActivityContext.Provider>
+)
 }
 
 export default ActivityContextProvider
