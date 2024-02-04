@@ -9,6 +9,7 @@ import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
+import moment from 'moment';
 
 export default function CreateActivityModal() {
     const { addActivity } = useActivityContext();
@@ -37,6 +38,21 @@ export default function CreateActivityModal() {
     ];
 
     const createActivity = () => {
+        // Créez une nouvelle activité en utilisant les valeurs de settingsValues
+        const newActivity = {
+        _id: '', 
+        start: moment().format('YYYY-MM-DD HH:mm:ss'),
+        variables: [], 
+        status: 'active',
+        label: settingsValues.label,
+        description: settingsValues.description,
+        color: selectedColor,
+        };
+
+        // Appelez la fonction addActivity pour ajouter la nouvelle activité
+        addActivity(newActivity);
+
+        // Fermez la modal ou effectuez d'autres actions nécessaires
         router.back();
         alert("Activité ajoutée");
     };
@@ -84,7 +100,7 @@ export default function CreateActivityModal() {
                 />
             </View>
             <View style={globalStyles.contentContainer}>
-              
+
                 <View style={globalStyles.colorButtonsParentContainer}>
                     {/* Première ligne de boutons de couleur */}
                     <View style={globalStyles.colorButtonsContainer}>
