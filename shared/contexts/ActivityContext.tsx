@@ -45,7 +45,6 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     
             if (response.ok) {
                 const newActivity = await response.json();
-                setActivities((prevActivities) => [...prevActivities, newActivity]);
                 fetchActivitiesFromAPI();
             } else {
                 console.error("Erreur lors de la création de l'activité:", response.statusText);
