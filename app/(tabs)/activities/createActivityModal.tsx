@@ -62,7 +62,7 @@ export default function CreateActivityModal() {
                         <Text style={globalStyles.textLight}>annuler</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>Nouvelle activité : </Text>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>Nouvelle activité</Text>
             </View>
 
             <View style={globalStyles.contentContainer}>
@@ -84,32 +84,37 @@ export default function CreateActivityModal() {
                 />
             </View>
             <View style={globalStyles.contentContainer}>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>Choisissez une couleur : </Text>
-                <View style={globalStyles.colorButtonsContainer}>
-                    {firstRowColors.map((color, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={[
-                                globalStyles.colorButton,
-                                { backgroundColor: color, borderColor: selectedColor === color ? 'white' : 'transparent' }
-                            ]}
-                            onPress={() => setSelectedColor(color)}
-                        />
-                    ))}
-                </View>
-                <View style={globalStyles.colorButtonsContainer}>
-                    {secondRowColors.map((color, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={[
-                                globalStyles.colorButton,
-                                { backgroundColor: color, borderColor: selectedColor === color ? 'white' : 'transparent' }
-                            ]}
-                            onPress={() => setSelectedColor(color)}
-                        />
-                    ))}
+              
+                <View style={globalStyles.colorButtonsParentContainer}>
+                    {/* Première ligne de boutons de couleur */}
+                    <View style={globalStyles.colorButtonsContainer}>
+                        {firstRowColors.map((color, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={[
+                                    globalStyles.colorButton,
+                                    { backgroundColor: color, borderColor: selectedColor === color ? 'white' : 'transparent' }
+                                ]}
+                                onPress={() => setSelectedColor(color)}
+                            />
+                        ))}
+                    </View>
+                    {/* Deuxième ligne de boutons de couleur */}
+                    <View style={globalStyles.colorButtonsContainer}>
+                        {secondRowColors.map((color, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={[
+                                    globalStyles.colorButton,
+                                    { backgroundColor: color, borderColor: selectedColor === color ? 'white' : 'transparent' }
+                                ]}
+                                onPress={() => setSelectedColor(color)}
+                            />
+                        ))}
+                    </View>
                 </View>
             </View>
+
             <View style={globalStyles.iconContainer}>
                 <TouchableOpacity
                     onPress={createActivity}
