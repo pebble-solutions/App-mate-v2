@@ -7,6 +7,7 @@ type ActivityContextType = {
     addActivity: (activity: ActivityType) => void,
     removeActivity: (id: string) => void,
     getActivityById: (id: string) => ActivityType | undefined
+    editActivity: (id: string, updatedActivity: ActivityType) => void;
 }
 
 const ActivityContext= createContext<ActivityContextType | null>(null)
@@ -53,6 +54,31 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             console.error("Erreur lors de la création de l'activité:", error);
         }
     }
+
+    const editActivity = async (id: string, activity: ActivityType) => {
+        try {
+            const response = await fetch(`https://api.pebble.solutions/v5/activity/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    label: activity.label,
+                    start: activity.start,
+                    description: activity.description,
+                    color: activity.color,
+                }),
+            });
+    
+            if (response.ok) {
+                fetchActivitiesFromAPI();
+            } else {
+                console.error("Erreur lors de la modification de l'activité:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la modification de l'activité:", error);
+        }
+    }
     
 
     const removeActivity = (id: string) => {
@@ -70,7 +96,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     return (
-        <ActivityContext.Provider value={{activities, addActivity, removeActivity, getActivityById}}>
+        <ActivityContext.Provider value={{activities, addActivity, removeActivity, getActivityById, editActivity}}>
             {children}
         </ActivityContext.Provider>
     )

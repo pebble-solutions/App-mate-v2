@@ -15,7 +15,7 @@ import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
 
 export default function ActivityScreen() {
-    const { getActivityById, removeActivity } = useActivityContext();
+    const { getActivityById, removeActivity, editActivity } = useActivityContext();
     const { _id } = useLocalSearchParams<{_id: string}>();
     const activity = _id ? getActivityById(_id) : null;
     const { variables } = useVariableContext();
@@ -60,6 +60,24 @@ export default function ActivityScreen() {
             ],
             { cancelable: false }
         );
+    }
+
+    const updateActivity = () => {
+        const updatedActivity = {
+            _id: activity._id,
+            label: settingsValues.label || activity.label,
+            start: activity.start,
+            description: settingsValues.description || activity.description,
+            color: activity.color || settingsValues.color,
+            variables: activity.variables,
+            status: activity.status,
+        };
+    
+        // Appelez la fonction d'édition de l'activité
+        editActivity(activity._id, updatedActivity);
+    
+        // Fermez la section des paramètres après la mise à jour
+        setSettingsVisible(false);
     }
 
     return (
@@ -120,6 +138,7 @@ export default function ActivityScreen() {
                     <TouchableOpacity
 
                         onPress={() => {
+                            updateActivity();
                             setSettingsVisible(false);
                         }}
                     >
