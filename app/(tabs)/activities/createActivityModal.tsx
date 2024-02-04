@@ -54,7 +54,7 @@ export default function CreateActivityModal() {
 
         // Fermez la modal ou effectuez d'autres actions nécessaires
         router.back();
-        alert("Activité ajoutée");
+        alert("Activité crée !");
     };
 
     // Divisez le tableau colorOptions en deux parties
