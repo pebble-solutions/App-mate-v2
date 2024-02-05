@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
 import moment from 'moment';
+import { Activity } from "../../../shared/classes/Activity";
 
 export default function CreateActivityModal() {
     const { addActivity, removeActivity } = useActivityContext();
@@ -39,15 +40,15 @@ export default function CreateActivityModal() {
 
     const createActivity = () => {
         // Créez une nouvelle activité en utilisant les valeurs de settingsValues
-        const newActivity = {
+        const newActivity = new Activity({
         _id: '', 
-        start: moment().format('YYYY-MM-DD HH:mm:ss'),
+        start: new Date(),
         variables: [], 
         status: 'active',
         label: settingsValues.label,
         description: settingsValues.description,
         color: selectedColor,
-        };
+        });
 
         // Appelez la fonction addActivity pour ajouter la nouvelle activité
         addActivity(newActivity);
