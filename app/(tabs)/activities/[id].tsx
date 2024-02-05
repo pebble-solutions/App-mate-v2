@@ -107,7 +107,7 @@ export default function ActivityScreen() {
 
             <View style={[globalStyles.contentContainer]}>
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
-                    Crée le {format(new Date(activity.start), 'dd.MM.yyyy')}
+                    Crée le {format(activity.start, 'dd.MM.yyyy')}
                 </Text>
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{activity.description}</Text>
             </View>

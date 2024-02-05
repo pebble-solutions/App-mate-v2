@@ -1,6 +1,7 @@
 import React, { createContext, PropsWithChildren, useContext, useState } from "react";
 import { ActivityType } from "../types/ActivityType";
 import { useEffect } from "react";
+import { Activity } from "../classes/Activity";
 
 type ActivityContextType = {
     activities: ActivityType[],
@@ -22,7 +23,13 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
         try {
             const response = await fetch("https://api.pebble.solutions/v5/activity/"); // Remplacez URL_DE_VOTRE_API par l'URL de votre API
             const data = await response.json();
-            setActivities(data);
+            let activitiesList: ActivityType[] = [];
+
+            data.forEach((activity: any) => {
+
+                activitiesList.push(new Activity(activity));
+            });
+            setActivities(activitiesList);
         } catch (error) {
             console.error("Erreur lors de la récupération des activités depuis l'API:", error);
         }
@@ -70,6 +77,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
                     start: activity.start,
                     description: activity.description,
                     color: activity.color,
+
                 }),
             });
 
