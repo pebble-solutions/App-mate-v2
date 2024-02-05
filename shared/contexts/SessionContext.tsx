@@ -5,7 +5,8 @@ export type SessionContextType = {
     sessions: SessionType[],
     addSession: (session: SessionType) => void,
     removeSession: (id: string) => void,
-    getSessionById: (id: string) => SessionType | undefined
+    getSessionById: (id: string) => SessionType | undefined,
+    updateSession: (id: string, newSession: SessionType) => void
 }
 
 const SessionContext= createContext<SessionContextType | null>(null)
@@ -23,12 +24,25 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         })
     }
 
+    const updateSession = (id: string, newSession: SessionType) => {
+        let sessionsList = [...sessions]
+        let prevIndex = sessionsList.findIndex(e => e._id === id)
+        if (prevIndex !== -1) {
+            sessionsList.splice(prevIndex, 1, newSession)
+        } else {
+            sessionsList.push(newSession)
+        }
+        setSessions(sessionsList)
+    }
+        
+
+
     const getSessionById = (id: string) => {
         return sessions.find(e => e._id === id)
     }
 
     return (
-        <SessionContext.Provider value={{sessions, addSession, removeSession, getSessionById}}>
+        <SessionContext.Provider value={{sessions, addSession, removeSession, getSessionById, updateSession}}>
             {children}
         </SessionContext.Provider>
     )

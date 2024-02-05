@@ -18,7 +18,7 @@ export type OwnerType = {
     matricule: string,
 }
 export type RawDataType = {
-    index: number,
+    index?: number,
     start: Date,
     end: Date,
 }

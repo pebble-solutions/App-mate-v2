@@ -3,17 +3,18 @@ import { globalStyles } from "../shared/globalStyles";import { StyleSheet, Text,
 import Button from "./Button";
 import { useSessionStatusContext } from "../shared/contexts/SessionStatusContext";
 import { useSessionContext } from "../shared/contexts/SessionContext";  
+import { SessionType } from "../shared/types/SessionType";
 
 
-export default function PointingSession({ }:object) {
+export default function PointingSession({currentSession}:{currentSession: SessionType}) {
     
     const sessionContext = useSessionContext()
     const { getStatus, setStatus, resetStatus, setPayload, resetPayload, getPayload } = useSessionStatusContext()
     const [pressTimes, setPressTimes] = React.useState([{time: new Date(), label: "début", index: 1}] as {time: Date, label: string, index: number}[]);
     const [intervalWork, setIntervalWork] = React.useState(0);
     const [intervalPause, setIntervalPause] = React.useState(0);
-    const [rawDatas, setRawDatas] = React.useState([] as {time: Date, label: string, index: number}[]);
-
+    const [rawDatas, setRawDatas] = React.useState([] as {end: Date, start: Date}[]);
+    let sessionCopy = {...currentSession};
 
     const pointing = async () => {
         const currentTime = new Date();
@@ -44,19 +45,22 @@ export default function PointingSession({ }:object) {
         if (pressTimes.length % 2 === 0) {
             const NewInterval: number = currentTime.getTime() - pressTimes[pressTimes.length - 1].time.getTime();
             setIntervalPause(intervalPause + NewInterval);
-            console.log(intervalPause, pressTimes, 'intersetIntervalPause');
+            console.log(intervalPause, 'intersetIntervalPause');
 
             console.log(updatedPressTimes, 'presstimes round 1');
             return intervalPause
         } else {
             const NewInterval: number = currentTime.getTime() - pressTimes[pressTimes.length - 1].time.getTime();
             setIntervalWork(intervalWork + NewInterval);
-            console.log(intervalWork, pressTimes, 'intervalWork');
+            setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: new Date(currentTime)}]);    
+            console.log(rawDatas, 'rawDatas');
+            sessionContext.updateSession(sessionCopy._id, {...sessionCopy, raw_datas: rawDatas});
+            console.log(intervalWork, 'intervalWork');
             console.log(updatedPressTimes, 'presstimes round 2');
+
             return intervalWork
           // await savePressTimes(updatedPressTimes); // Sauvegarde des nouvelles données
         }
-        const Total: number = intervalWork + intervalPause;
       };
       
 

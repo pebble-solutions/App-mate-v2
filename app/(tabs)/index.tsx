@@ -92,7 +92,7 @@ export default function SessionScreen() {
                         {status == "started" && 
                         <View style={globalStyles.cardSession}>
                         <Text style={[globalStyles.textXl, globalStyles.textLight]}>{currentSession.label}</Text>
-                        <PointingSession/>
+                        <PointingSession currentSession={currentSession}/>
                         </View>
                         }    
                         <View style={globalStyles.cardSession}>
