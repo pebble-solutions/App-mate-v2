@@ -89,7 +89,8 @@ export const globalStyles = StyleSheet.create({
     },
 
     button: {
-        padding: variables.contentPadding[1],
+        paddingVertical: variables.contentPadding[1],
+        paddingHorizontal: variables.contentPadding[1],
         borderRadius: variables.borderRadius[2],
         backgroundColor: "#cdcdcd",
         color: "blue",
@@ -97,12 +98,14 @@ export const globalStyles = StyleSheet.create({
     },
 
     buttonLg: {
-        padding: variables.contentPadding[1],
+        paddingVertical: variables.contentPadding[1],
+        paddingHorizontal: variables.contentPadding[1],
         fontSize: variables.fontSize[1]
     },
 
     buttonXl: {
-        padding: variables.contentPadding[2] / 1.5,
+        paddingVertical: variables.contentPadding[2] / 1.5,
+        paddingHorizontal: variables.contentPadding[2],
         fontSize: variables.fontSize[2] / 1.3
     },
 

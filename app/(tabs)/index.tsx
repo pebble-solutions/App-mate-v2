@@ -7,6 +7,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import ActivityOverview from "../../components/ActivityOverview";
 import {router} from "expo-router";
 import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
+import {useEffect} from "react";
 
 export default function SessionScreen() {
 
