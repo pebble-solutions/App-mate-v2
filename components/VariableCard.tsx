@@ -30,11 +30,11 @@ export default function VariableCard({
 
     const { linkVariableToActivity, removeVariableFromActivity, toggleMandatory } = useActivityContext();
 
-    const addVariableToActivity = (variableId: string) => {
+    const addVariableToActivity = (activityId: string, variableId: string) => {
         linkVariableToActivity(activityId, variableId);
     }
 
-    const removeVariable = (variableId: string) => {
+    const removeVariable = (activityId: string, variableId: string) => {
         removeVariableFromActivity(activityId, variableId);
     }
 
@@ -61,12 +61,12 @@ export default function VariableCard({
                     )
                 ) : null}
                 {displayRemoveIcon &&
-                    <TouchableOpacity onPress={() => { }}>
+                    <TouchableOpacity onPress={() => { removeVariable(activityId, variableId) }}>
                         <Ionicons name="remove-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
                 }
                 {displayAddIcon &&
-                    <TouchableOpacity onPress={() => { }}>
+                    <TouchableOpacity onPress={() => { addVariableToActivity(activityId, variableId) }}>
                         <Ionicons name="add-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
                 }

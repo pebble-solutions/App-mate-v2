@@ -104,25 +104,25 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
     const linkVariableToActivity = async (activityId: string, variableId: string) => {
         try {
-            const response = await fetch(`https://api.pebble.solutions/v5/activity/${activityId}/variable`, {
+            const response = await fetch(`https://api.pebble.solutions/v5/activity/${activityId}/metric/variable`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     "variable_id": variableId,
-                    "mandatory": false,
+                    "mandatory": true
                 }),
             });
 
             if (response.ok) {
                 fetchActivitiesFromAPI();
             } else {
-                console.error("Erreur lors de la liaison de la variable à l'activité:", response.statusText);
+                console.error("Erreur1 lors de la liaison de la variable à l'activité:", response.statusText);
             }
 
         } catch (error) {
-            console.error("Erreur lors de la liaison de la variable à l'activité:", error);
+            console.error("Erreur2 lors de la liaison de la variable à l'activité:", error);
         }
     }
 
