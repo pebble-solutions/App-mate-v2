@@ -1,11 +1,12 @@
 import React, {createContext, PropsWithChildren, useContext, useState} from "react";
 import {ActivityType} from "../types/ActivityType";
+import { SessionType } from "../types/SessionType";
 
-type StatusType = 'started' | 'paused' | 'validating';
-
+type StatusType = 'started' | 'paused' |'start' | 'pause'| 'validate' | 'validating';
 type PayloadType = string | number;
 
-type SessionStatusContextType = {
+
+export type SessionStatusContextType = {
     status?: StatusType,
     payload?: PayloadType,
     getStatus: () => StatusType | undefined,
@@ -22,6 +23,8 @@ const SessionStatusContextProvider = ({children}: PropsWithChildren<{}>) => {
     const [status, setStatus] = useState<StatusType>()
     const [payload, setPayload] = useState<PayloadType>()
 
+
+
     const getStatus = () => {
         return status
     }
@@ -37,7 +40,8 @@ const SessionStatusContextProvider = ({children}: PropsWithChildren<{}>) => {
     const resetPayload = () => {
         setPayload(undefined)
     }
-
+    
+    
     return (
         <SessionStatusContext.Provider value={{getStatus, resetStatus, setStatus, getPayload, setPayload, resetPayload}}>
             {children}

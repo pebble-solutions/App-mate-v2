@@ -1,8 +1,11 @@
-import {SplashScreen, Stack} from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { useFonts, Inter_500Medium, Inter_300Light, Inter_700Bold, Inter_900Black } from '@expo-google-fonts/inter';
-import {useEffect} from "react";
-import ActivityContextProvider, {useActivityContext} from "../shared/contexts/ActivityContext";
+import { useEffect } from "react";
+import ActivityContextProvider from "../shared/contexts/ActivityContext";
+import VariableContextProvider from "../shared/contexts/VariableContext";
 import SessionStatusContextProvider from "../shared/contexts/SessionStatusContext";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import SessionContextProvider from "../shared/contexts/SessionContext";
 
 SplashScreen.preventAutoHideAsync()
 
@@ -23,14 +26,20 @@ export default function RootLayout() {
     }
 
     return (
-        <SessionStatusContextProvider>
-            <ActivityContextProvider>
-                <Stack>
-                    <Stack.Screen name="(tabs)" options={{
-                        headerShown: false
-                    }} />
-                </Stack>
-            </ActivityContextProvider>
-        </SessionStatusContextProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <SessionContextProvider>
+                <SessionStatusContextProvider>
+                    <VariableContextProvider>
+                        <ActivityContextProvider>
+                            <Stack>
+                                <Stack.Screen name="(tabs)" options={{
+                                    headerShown: false
+                                }} />
+                            </Stack>
+                        </ActivityContextProvider>
+                    </VariableContextProvider>
+                </SessionStatusContextProvider>
+            </SessionContextProvider>
+        </GestureHandlerRootView>
     )
 }

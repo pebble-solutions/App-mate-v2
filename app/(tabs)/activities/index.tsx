@@ -7,6 +7,7 @@ import {router} from "expo-router";
 import {useActivityContext} from "../../../shared/contexts/ActivityContext";
 import HeaderScreenTitle from "../../../components/HeaderScreenTitle";
 
+
 export default function ActivitiesScreen() {
 
     const {activities} = useActivityContext()
@@ -17,7 +18,7 @@ export default function ActivitiesScreen() {
 
             <FlatList
                 style={[globalStyles.body, globalStyles.mhContainer]}
-                numColumns={2}
+                numColumns={1}
                 data={activities}
                 renderItem={({item}) => (
                     <View style={globalStyles.mContainer}>
@@ -28,10 +29,10 @@ export default function ActivitiesScreen() {
                                     params: item
                                 })
                             }}>
-                            <ActivityCard title={item.label} color={item.color} />
+                            <ActivityCard title={item.label} color={item.color} description={item.description} />
                         </TouchableOpacity>
                     </View>
-                )}
+                )} 
             />
         </View>
     )

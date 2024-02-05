@@ -2,20 +2,37 @@ import {StyleSheet} from "react-native";
 
 export const variables = {
     borderRadius: [0, 6, 12, 18],
-    contentPadding: [0, 12, 24, 32],
-    contentMargin: [0, 6, 12, 24],
-    fontSize: [12, 16, 28, 32]
+    contentPadding: [0, 6, 12, 24, 32, 48],
+    contentMargin: [0, 6, 12, 24, 32, 48],
+    fontSize: [12, 14, 16, 20, 24, 28, 32]
 }
 
 export const globalStyles = StyleSheet.create({
     headTitle: {
         fontFamily: 'Inter_700Bold',
-        fontSize: variables.fontSize[2],
+        fontSize: variables.fontSize[5],
         marginVertical: 16
     },
+    headerIcons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        
+
+
+    },
+    CategoryTitle: {
+        fontFamily: 'Inter_700Bold',
+        fontSize: variables.fontSize[4],
+        marginVertical: 16
+    },
+    
 
     cardTitle: {
         fontFamily: 'Inter_700Bold',
+    },
+
+    cardDescription: {
+        fontSize: 12,
     },
 
     text: {
@@ -25,9 +42,13 @@ export const globalStyles = StyleSheet.create({
     textLight: {
         color: 'white'
     },
+    textCenter: {
+        textAlign: 'center'
+    },
 
     card: {
-        borderRadius: variables.borderRadius[2]
+        borderRadius: variables.borderRadius[2],
+        minHeight: 100,
     },
 
     cardLg: {
@@ -37,6 +58,32 @@ export const globalStyles = StyleSheet.create({
     cardContent: {
         margin: variables.contentMargin[2]
     },
+
+    VariableCardContent: {
+
+        backgroundColor: '#00000020',
+        borderRadius: variables.borderRadius[1],
+        padding: variables.contentPadding[2],
+        marginVertical: variables.contentMargin[1],
+        justifyContent: 'center',
+        
+    },
+
+    VariableCardHeader: {
+        maxWidth: '80%',
+    },
+
+    VariableCardIconsContainer: {
+        flexDirection: 'row',
+        position: 'absolute',
+        right: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    iconMargin: {
+        marginHorizontal: 2,
+      },
 
     pContainer: {
         paddingHorizontal: variables.contentMargin[1],
@@ -75,9 +122,13 @@ export const globalStyles = StyleSheet.create({
 
     topContainer: {
         marginHorizontal: variables.contentMargin[2],
-        marginTop: variables.contentMargin[3]
+        marginTop: variables.contentMargin[5],
+        paddingHorizontal: variables.contentMargin[1],
+        
     },
-
+    scrollContainer: {
+        marginBottom: 48,
+    },
     body: {
         flex: 1
     },
@@ -93,8 +144,11 @@ export const globalStyles = StyleSheet.create({
         paddingHorizontal: variables.contentPadding[1],
         borderRadius: variables.borderRadius[2],
         backgroundColor: "#cdcdcd",
-        color: "blue",
+        color: "white",
         fontSize: variables.fontSize[0]
+    },
+    buttonAlignSelfCenter: {
+        alignSelf: "center",
     },
 
     buttonLg: {
@@ -108,12 +162,101 @@ export const globalStyles = StyleSheet.create({
         paddingHorizontal: variables.contentPadding[2],
         fontSize: variables.fontSize[2] / 1.3
     },
+    cardSession: {
+        flexDirection: "column",
+        
+        borderColor: "white",
+        borderWidth: 1,
+        borderRadius: variables.borderRadius[2],
+        marginVertical: variables.contentMargin[1],
+        padding: variables.contentPadding[1],
+    },
+    
+    topCard: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        
+        
+    },
+    topCardContent: {
+        flexDirection: "column",
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+        
+        
+    },
 
+    buttonAlert: {
+        backgroundColor: "white",
+    },
     textLg: {
         fontSize: variables.fontSize[1]
-    },
+            },
 
     textXl: {
         fontSize: variables.fontSize[2] / 1.3
-    }
-})
+    },
+
+    input: {
+        padding: variables.contentPadding[2],
+        borderRadius: variables.borderRadius[1],
+        borderWidth: 1,
+        borderColor: "#cdcdcd",
+        marginVertical: variables.contentMargin[2],
+        backgroundColor: "#FFFFFF10",
+        color: "white",
+        fontSize: variables.fontSize[1]
+    },
+
+    buttonContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#00000050',
+        paddingVertical: variables.contentPadding[2],
+        paddingHorizontal: 20,
+        marginVertical: 4,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        
+    },
+    buttonText: {
+        color: 'white', // Couleur du texte
+        fontFamily: 'Inter_700Bold',
+        fontSize: variables.fontSize[0],
+    },
+
+    headerCloseIcon: {  
+        position: 'relative',
+        justifyContent: 'flex-end',
+        marginEnd: 10,
+        marginTop: 20,
+    },
+    
+    iconContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginBottom: 36,
+    },
+
+    colorButton: {
+        width: "14%", 
+        aspectRatio: 1, 
+        borderRadius: 100, 
+        borderWidth: 4,
+        marginHorizontal: "2%",
+      },
+      
+      colorButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginVertical: 10,
+        paddingHorizontal: 10,
+      },
+      colorButtonsParentContainer: {
+        justifyContent: 'center',
+        marginVertical: 10,
+      },
+      
+});

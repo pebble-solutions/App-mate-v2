@@ -1,6 +1,12 @@
+import { VariableType } from "./VariableType"
+
 export type ActivityType = {
-    id: string,
+    _id: string,
     label: string,
     description?: string,
-    color: string
+    color: string,
+    start: string,
+    variables: VariableType[],
+    status: string,
 }
+
