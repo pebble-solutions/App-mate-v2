@@ -64,13 +64,13 @@ export default function PointingSession({ }:object) {
     return (
         <View>
                                 <View style={globalStyles.buttonContainerSession}>
-                                    <Text style={globalStyles.textLight}>durée session: {(intervalWork + intervalPause/1000)} s</Text>
+                                    <Text style={globalStyles.textLight}>durée session: {Math.round(intervalWork + intervalPause/1000)} s</Text>
                                 </View>
                                 <View style={globalStyles.buttonContainerSession}>
-                                    <Text style={globalStyles.textLight}>durée travail: { intervalWork/1000 } s</Text>
+                                    <Text style={globalStyles.textLight}>durée travail: { (intervalWork/1000) } s</Text>
                                 </View>
                                 <View style={globalStyles.buttonContainerSession}>
-                                    <Text style={globalStyles.textLight}>durée pause: {intervalPause/1000} s</Text>
+                                    <Text style={globalStyles.textLight}>durée pause: {(intervalPause/1000)} s</Text>
                                 </View>
             {pressTimes.length >= 1 && pressTimes.map((pressTime, index) => {
                         return (
