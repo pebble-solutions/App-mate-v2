@@ -16,9 +16,19 @@ import { TextInput } from "react-native-gesture-handler";
 
 export default function ActivityScreen() {
     const { getActivityById, removeActivity, editActivity } = useActivityContext();
-    const { _id } = useLocalSearchParams<{_id: string}>();
+    const { _id } = useLocalSearchParams<{ _id: string }>();
     const activity = _id ? getActivityById(_id) : null;
+
     const { variables } = useVariableContext();
+    if (!activity) {
+        return (
+            <View style={globalStyles.body}>
+                <View style={globalStyles.contentContainer}>
+                    <Text>Activité non trouvée</Text>
+                </View>
+            </View>
+        );
+    }
 
     const [isSettingsVisible, setSettingsVisible] = useState(false);
     const [settingsValues, setSettingsValues] = useState({
@@ -27,19 +37,8 @@ export default function ActivityScreen() {
         color: '',
     });
 
-    if (!activity) {
-        return (
-            <View style={globalStyles.body}>
-                <View style={globalStyles.contentContainer}>
-                    <Text>Not found</Text>
-                </View>
-            </View>
-        );
-    }
-
     const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#fff"];
 
-    // Fonction pour ouvrir la boîte de dialogue de confirmation
     const showConfirmDeleteDialog = () => {
         Alert.alert(
             "Confirmer la suppression",
@@ -52,7 +51,6 @@ export default function ActivityScreen() {
                 {
                     text: "Oui",
                     onPress: () => {
-                        // Supprimer l'activité si l'utilisateur a confirmé
                         removeActivity(activity._id);
                         router.back();
                     },
@@ -72,12 +70,12 @@ export default function ActivityScreen() {
             variables: activity.variables,
             status: activity.status,
         };
-    
-        // Appelez la fonction d'édition de l'activité
+
+        console.log("variables", activity.variables);
+
         editActivity(activity._id, updatedActivity);
-    
-        // Fermez la section des paramètres après la mise à jour
         setSettingsVisible(false);
+
     }
 
     return (
@@ -151,7 +149,7 @@ export default function ActivityScreen() {
 
                 {isSettingsVisible && (
                     <TouchableOpacity
-                        onPress={showConfirmDeleteDialog} // Utilisez la fonction de confirmation ici
+                        onPress={showConfirmDeleteDialog}
                     >
                         <View style={globalStyles.buttonContainer}>
                             <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
@@ -171,6 +169,8 @@ export default function ActivityScreen() {
                             mandatory={variable.mandatory}
                             displayRemoveIcon={true}
                             isMandatory={true}
+                            activityId={activity._id}
+                            variableId={variable._id} // Passer l'ID de la variable ici
                         />
                     ))}
                 </View>
@@ -182,6 +182,8 @@ export default function ActivityScreen() {
                             label={variable.label}
                             description={variable.description}
                             displayAddIcon={true}
+                            activityId={activity._id}
+                            variableId={variable._id} // Passer l'ID de la variable ici
                         />
                     ))}
                 </View>

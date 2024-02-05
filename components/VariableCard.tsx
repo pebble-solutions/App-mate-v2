@@ -13,6 +13,8 @@ type VariableCardOptions = {
     displayAddIcon?: boolean,
     displayRemoveIcon?: boolean,
     isMandatory?: boolean,
+    activityId: string,
+    variableId: string,
 }
 
 export default function VariableCard({
@@ -22,7 +24,24 @@ export default function VariableCard({
     displayAddIcon,
     displayRemoveIcon,
     isMandatory,
+    activityId,
+    variableId,
 }: VariableCardOptions) {
+
+    const { linkVariableToActivity, removeVariableFromActivity, toggleMandatory } = useActivityContext();
+
+    const addVariableToActivity = (variableId: string) => {
+        linkVariableToActivity(activityId, variableId);
+    }
+
+    const removeVariable = (variableId: string) => {
+        removeVariableFromActivity(activityId, variableId);
+    }
+
+    const toggle_Mandatory = (activityId: string, variableId: string, mandatory: boolean) => {
+        toggleMandatory(activityId, variableId, mandatory);
+    }
+
     return (
         <View style={[globalStyles.VariableCardContent]}>
             <View style={[globalStyles.VariableCardHeader]}>
@@ -32,11 +51,11 @@ export default function VariableCard({
             <View style={globalStyles.VariableCardIconsContainer}>
                 {isMandatory !== undefined ? (
                     mandatory ? (
-                        <TouchableOpacity onPress={() => { }}>
+                        <TouchableOpacity onPress={() => { toggle_Mandatory(activityId, variableId, false) }}>
                             <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
                         </TouchableOpacity>
                     ) : (
-                        <TouchableOpacity onPress={() => { }}>
+                        <TouchableOpacity onPress={() => { toggle_Mandatory(activityId, variableId, true) }}>
                             <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
                         </TouchableOpacity>
                     )
@@ -45,9 +64,9 @@ export default function VariableCard({
                     <TouchableOpacity onPress={() => { }}>
                         <Ionicons name="remove-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
-                    }
+                }
                 {displayAddIcon &&
-                     <TouchableOpacity onPress={() => { }}>
+                    <TouchableOpacity onPress={() => { }}>
                         <Ionicons name="add-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
                 }

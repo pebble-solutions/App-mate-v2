@@ -10,6 +10,7 @@ type ActivityContextType = {
     editActivity: (id: string, updatedActivity: ActivityType) => void;
     linkVariableToActivity: (activityId: string, variableId: string) => void;
     removeVariableFromActivity: (activityId: string, variableId: string) => void;
+    toggleMandatory: (activityId: string, variableId: string, mandatory: boolean) => void;
 }
 
 const ActivityContext = createContext<ActivityContextType | null>(null)
@@ -82,6 +83,25 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
         }
     }
 
+    const toggleMandatory = async (activityId: string, variableId: string, mandatory: boolean) => {
+        try {
+            const response = await fetch(`https://api.pebble.solutions/v5/activity/${activityId}/metric/variable/${variableId}/toggle_mandatory`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.ok) {
+                fetchActivitiesFromAPI();
+            } else {
+                console.error("Erreur1 lors de la modification de la variable:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Erreur2 lors de la modification de la variable:", error);
+        }
+    }
+
     const linkVariableToActivity = async (activityId: string, variableId: string) => {
         try {
             const response = await fetch(`https://api.pebble.solutions/v5/activity/${activityId}/variable`, {
@@ -139,7 +159,16 @@ const getActivityById = (id: string) => {
 }
 
 return (
-    <ActivityContext.Provider value={{ activities, addActivity, removeActivity, getActivityById, editActivity, linkVariableToActivity, removeVariableFromActivity}}>
+    <ActivityContext.Provider value={{
+        activities,
+        addActivity,
+        removeActivity,
+        getActivityById,
+        editActivity,
+        linkVariableToActivity,
+        removeVariableFromActivity,
+        toggleMandatory
+        }}>
         {children}
     </ActivityContext.Provider>
 )
