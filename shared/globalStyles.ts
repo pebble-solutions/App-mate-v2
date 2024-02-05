@@ -4,13 +4,13 @@ export const variables = {
     borderRadius: [0, 6, 12, 18],
     contentPadding: [0, 6, 12, 24, 32, 48],
     contentMargin: [0, 6, 12, 24, 32, 48],
-    fontSize: [12, 16, 28, 32]
+    fontSize: [12, 14, 16, 20, 24, 28, 32]
 }
 
 export const globalStyles = StyleSheet.create({
     headTitle: {
         fontFamily: 'Inter_700Bold',
-        fontSize: variables.fontSize[2],
+        fontSize: variables.fontSize[5],
         marginVertical: 16
     },
     headerIcons: {
@@ -22,7 +22,7 @@ export const globalStyles = StyleSheet.create({
     },
     CategoryTitle: {
         fontFamily: 'Inter_700Bold',
-        fontSize: variables.fontSize[1],
+        fontSize: variables.fontSize[4],
         marginVertical: 16
     },
     
@@ -140,7 +140,8 @@ export const globalStyles = StyleSheet.create({
     },
 
     button: {
-        padding: variables.contentPadding[1],
+        paddingVertical: variables.contentPadding[1],
+        paddingHorizontal: variables.contentPadding[1],
         borderRadius: variables.borderRadius[2],
         backgroundColor: "#cdcdcd",
         color: "white",
@@ -151,12 +152,14 @@ export const globalStyles = StyleSheet.create({
     },
 
     buttonLg: {
-        padding: variables.contentPadding[1],
+        paddingVertical: variables.contentPadding[1],
+        paddingHorizontal: variables.contentPadding[1],
         fontSize: variables.fontSize[1]
     },
 
     buttonXl: {
-        padding: variables.contentPadding[2] / 1.5,
+        paddingVertical: variables.contentPadding[2] / 1.5,
+        paddingHorizontal: variables.contentPadding[2],
         fontSize: variables.fontSize[2] / 1.3
     },
     cardSession: {
@@ -184,8 +187,6 @@ export const globalStyles = StyleSheet.create({
 
     buttonAlert: {
         backgroundColor: "white",
-    
-        
     },
     textLg: {
         fontSize: variables.fontSize[1]
@@ -200,15 +201,15 @@ export const globalStyles = StyleSheet.create({
         borderRadius: variables.borderRadius[1],
         borderWidth: 1,
         borderColor: "#cdcdcd",
-        marginVertical: variables.contentMargin[1],
+        marginVertical: variables.contentMargin[2],
         backgroundColor: "#FFFFFF10",
         color: "white",
-        fontSize: variables.fontSize[0]
+        fontSize: variables.fontSize[1]
     },
 
     buttonContainer: {
         flexDirection: 'row',
-        backgroundColor: '#00000050', // Changez la couleur de fond selon vos préférences
+        backgroundColor: '#00000050',
         paddingVertical: variables.contentPadding[2],
         paddingHorizontal: 20,
         marginVertical: 4,
@@ -230,4 +231,38 @@ export const globalStyles = StyleSheet.create({
         fontFamily: 'Inter_700Bold',
         fontSize: variables.fontSize[0],
     },
-})
+
+    headerCloseIcon: {  
+        position: 'relative',
+        justifyContent: 'flex-end',
+        marginEnd: 10,
+        marginTop: 20,
+    },
+    
+    iconContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginBottom: 36,
+    },
+
+    colorButton: {
+        width: "14%", 
+        aspectRatio: 1, 
+        borderRadius: 100, 
+        borderWidth: 4,
+        marginHorizontal: "2%",
+      },
+      
+      colorButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginVertical: 10,
+        paddingHorizontal: 10,
+      },
+      colorButtonsParentContainer: {
+        justifyContent: 'center',
+        marginVertical: 10,
+      },
+      
+});
