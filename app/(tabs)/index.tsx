@@ -9,9 +9,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import ActivityOverview from "../../components/ActivityOverview";
 import PointingSession from "../../components/PointingSession";
 import RenderItem from "../../components/RenderItem";
-import {router} from "expo-router";
 import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
-import GetValueText from "../../components/GetValueText"
 import {useSessionContext} from "../../shared/contexts/SessionContext";
 import { startSession } from "../../shared/libs/session";
 
