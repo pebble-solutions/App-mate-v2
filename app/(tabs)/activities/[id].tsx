@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, ScrollView, TouchableOpacity, Alert } from "react-native"; // Importez Alert
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
@@ -15,10 +15,20 @@ import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
 
 export default function ActivityScreen() {
-    const { getActivityById } = useActivityContext();
-    const { _id } = useLocalSearchParams<{_id: string}>();
+    const { getActivityById, removeActivity, editActivity } = useActivityContext();
+    const { _id } = useLocalSearchParams<{ _id: string }>();
     const activity = _id ? getActivityById(_id) : null;
+
     const { variables } = useVariableContext();
+    if (!activity) {
+        return (
+            <View style={globalStyles.body}>
+                <View style={globalStyles.contentContainer}>
+                    <Text>Activité non trouvée</Text>
+                </View>
+            </View>
+        );
+    }
 
     const [isSettingsVisible, setSettingsVisible] = useState(false);
     const [settingsValues, setSettingsValues] = useState({
@@ -27,17 +37,46 @@ export default function ActivityScreen() {
         color: '',
     });
 
-    if (!activity) {
-        return (
-            <View style={globalStyles.body}>
-                <View style={globalStyles.contentContainer}>
-                    <Text>Not found</Text>
-                </View>
-            </View>
+    const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#fff"];
+
+    const showConfirmDeleteDialog = () => {
+        Alert.alert(
+            "Confirmer la suppression",
+            "Êtes-vous sûr de vouloir supprimer cette activité ?",
+            [
+                {
+                    text: "Annuler",
+                    style: "cancel",
+                },
+                {
+                    text: "Oui",
+                    onPress: () => {
+                        removeActivity(activity._id);
+                        router.back();
+                    },
+                },
+            ],
+            { cancelable: false }
         );
     }
 
-    const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#fff"];
+    const updateActivity = () => {
+        const updatedActivity = {
+            _id: activity._id,
+            label: settingsValues.label || activity.label,
+            start: activity.start,
+            description: settingsValues.description || activity.description,
+            color: activity.color || settingsValues.color,
+            variables: activity.variables,
+            status: activity.status,
+        };
+
+        console.log("variables", activity.variables);
+
+        editActivity(activity._id, updatedActivity);
+        setSettingsVisible(false);
+
+    }
 
     return (
         <LinearGradient
@@ -75,7 +114,7 @@ export default function ActivityScreen() {
             <View style={globalStyles.contentContainer}>
                 {isSettingsVisible && (
                     <View>
-                        <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Reglages de l'activité :</Text>
+                        <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Réglages de l'activité :</Text>
                         <TextInput
                             style={globalStyles.input}
                             placeholder={`Nom de l'activité :  ${activity.label}`}
@@ -97,6 +136,7 @@ export default function ActivityScreen() {
                     <TouchableOpacity
 
                         onPress={() => {
+                            updateActivity();
                             setSettingsVisible(false);
                         }}
                     >
@@ -109,10 +149,7 @@ export default function ActivityScreen() {
 
                 {isSettingsVisible && (
                     <TouchableOpacity
-
-                        onPress={() => {
-                            setSettingsVisible(false);
-                        }}
+                        onPress={showConfirmDeleteDialog}
                     >
                         <View style={globalStyles.buttonContainer}>
                             <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
@@ -132,6 +169,8 @@ export default function ActivityScreen() {
                             mandatory={variable.mandatory}
                             displayRemoveIcon={true}
                             isMandatory={true}
+                            activityId={activity._id}
+                            variableId={variable._id} // Passer l'ID de la variable ici
                         />
                     ))}
                 </View>
@@ -143,6 +182,8 @@ export default function ActivityScreen() {
                             label={variable.label}
                             description={variable.description}
                             displayAddIcon={true}
+                            activityId={activity._id}
+                            variableId={variable._id} // Passer l'ID de la variable ici
                         />
                     ))}
                 </View>
