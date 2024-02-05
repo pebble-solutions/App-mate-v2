@@ -73,7 +73,7 @@ export default function SessionScreen() {
         start={{x: 0, y: 1}}
         end={{x: 1, y: 0}}
     >
-            <View style={globalStyles.topContainer}>
+            <ScrollView style={globalStyles.topContainer}>
                 <View style={globalStyles.topCard}>
                     <Button
                         style={[globalStyles.button, globalStyles.buttonAlert]}
@@ -89,8 +89,8 @@ export default function SessionScreen() {
                     </View>
                 </View>
 
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label} / {activity.description}</Text>
-                    <ScrollView style={globalStyles.scrollContainer}>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
+                    <View style={globalStyles.scrollContainer}>
                         {status == "started" && 
                         <View style={globalStyles.cardSession}>
                         <Text style={[globalStyles.textXl, globalStyles.textLight]}>{currentSession.label}</Text>
@@ -101,7 +101,7 @@ export default function SessionScreen() {
                             { activity.variables.length== 0 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>Il n'y a pas de variable associée à cette activité</Text>}
                             { activity.variables.length==1 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>{activity.variables.length} variable associée à cette activité</Text>}
                             { activity.variables.length>1 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>{activity.variables.length} variables associées à cette activité</Text>}
-                            {activity.variables.map((variable, index) => {
+                        { activity.variables.map((variable, index) => {
                                 return (
                                     <View key={index} >
                                         <Text style={globalStyles.textLight}> - {variable.label}</Text>
@@ -112,10 +112,10 @@ export default function SessionScreen() {
                             })}
                         </View>
                     <RenderItem/>
-                    </ScrollView>
+                    </View>
 
                     
-            </View>
+            </ScrollView>
         </LinearGradient>
     }
     else {
