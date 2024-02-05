@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, Alert, StyleSheet } from 'react-native';
 import { globalStyles } from "../shared/globalStyles";
 
-// Type définissant les propriétés attendues par le composant
+
 type ResponseTextType = {
   varText: {
     _id: string;
@@ -11,23 +11,22 @@ type ResponseTextType = {
     max_length: number;
     question: string;
     mandatory: boolean;
+    getValue?: (text: string) => void;
   };
 }
 
-// Composant de réponse textuelle
 const ResponseText: React.FC<ResponseTextType> = ({ varText }) => {
   console.log(varText, 'varText');
 
-  // State pour suivre la réponse de l'utilisateur
   const [response, setResponse] = React.useState({
     'id': varText._id,
     'label': varText.label,
     'value': ''
   });
 
-  // Fonction appelée lorsqu'il y a un changement dans le TextInput
+
   const handleChange = (text: string) => {
-    // Met à jour la réponse dans le state
+
     if (text.length <= varText.max_length) {
       setResponse(prev => ({ ...prev, value: text }));
     } else {
@@ -41,7 +40,7 @@ const ResponseText: React.FC<ResponseTextType> = ({ varText }) => {
         {varText.question}
       </Text>
       <TextInput
-        // style={globalStyles.input}
+        style={globalStyles.input}
         placeholder={`Saisissez votre réponse ici (max ${varText.max_length} caractères)`}
         value={response.value}
         onChangeText={(text) => handleChange(text)}
