@@ -1,11 +1,12 @@
 import React, {createContext, PropsWithChildren, useContext, useState} from "react";
 import {SessionType} from "../types/SessionType";
+import {Session} from "../classes/Session";
 
 export type SessionContextType = {
     sessions: SessionType[],
     addSession: (session: SessionType) => void,
     removeSession: (id: string) => void,
-    getSessionById: (id: string) => SessionType | undefined
+    getSessionById: (id: string) => Session | undefined
 }
 
 const SessionContext= createContext<SessionContextType | null>(null)
@@ -24,7 +25,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     const getSessionById = (id: string) => {
-        return sessions.find(e => e._id === id)
+        const session = sessions.find(e => e._id === id)
+        return session ? new Session(session) : undefined
     }
 
     return (

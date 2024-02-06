@@ -47,7 +47,7 @@ export default function SessionScreen() {
 
         const activityId = currentSession.type_id
         
-        if (!activityId || typeof activityId !== "string") {
+        if (!activityId) {
             Alert.alert("Erreur : il n'y a pas d'ID d'activité précisée")
             resetPayload()
             resetStatus()
