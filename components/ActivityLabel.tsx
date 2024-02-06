@@ -6,10 +6,9 @@ import {ActivityType} from "../shared/types/ActivityType";
 import {router} from "expo-router";
 import {Href} from "expo-router/build/link/href";
 import Button from "./Button";
-import { Activity } from "../shared/classes/Activity";
 
 type ActivityOverviewType = {
-    activity: Activity,
+    activity: ActivityType,
     action?: () => void,
     buttonTitle?: string
 }
@@ -27,16 +26,6 @@ export default function ActivityOverview({ activity, action, buttonTitle }: Acti
         >
             <View style={[globalStyles.cardContent, styles.localCardContent]}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
-                <Text style={globalStyles.textLight}>{activity.description}</Text>
-
-                {action ? <View style={globalStyles.pv2Container}>
-                            <Button
-                                title={buttonTitle}
-                                onPress={() => action() }
-                                style={[styles.buttonLight]}
-                                variant="xl"
-                                titleStyle={[{color: activity.color}]} />
-                            </View>: null}
             </View>
         </LinearGradient>
     )

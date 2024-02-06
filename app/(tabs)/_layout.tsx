@@ -22,7 +22,7 @@ export default function TabsLayout() {
                     <Ionicons name="timer" size={30} color={color} />
                 )
             }} />
-            <Tabs.Screen name="summary/index" options={{
+            <Tabs.Screen name="summary" options={{
                 title: "Summary", tabBarIcon: ({ color, size }) => (
                     <Ionicons name="stats-chart-outline" size={size} color={color} />
                 )
