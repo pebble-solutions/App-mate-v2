@@ -27,7 +27,7 @@ const ResponseDate: React.FC<ResponseDateType> = ({ onDateChange }) => {
 
   return (
     <View>
-      <Text >Sélectionnez une date :</Text>
+      <Text style={globalStyles.textLight} >Sélectionnez une date :</Text>
       <TouchableOpacity onPress={showDatepicker}>
         <Text>
           {selectedDate.toLocaleDateString('fr-FR', {

@@ -1,21 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Alert} from 'react-native';
+import { VariableType } from '../shared/types/VariableType';
 import { globalStyles } from "../shared/globalStyles";
-
+import Button from "./Button";
 
 type ResponseTextType = {
-  varText: {
-    _id: string;
-    label: string;
-    min_length: number;
-    max_length: number;
-    question: string;
-    mandatory: boolean;
-    getValue?: (text: string) => void;
-  };
+
+  varText:VariableType 
+  getValue: (text: string) => void;
 }
 
-const ResponseText: React.FC<ResponseTextType> = ({ varText }) => {
+const ResponseText: React.FC<ResponseTextType> = ({ varText, getValue }) => {
   console.log(varText, 'varText');
 
   const [response, setResponse] = React.useState({
@@ -26,11 +21,14 @@ const ResponseText: React.FC<ResponseTextType> = ({ varText }) => {
 
 
   const handleChange = (text: string) => {
-
-    if (text.length <= varText.max_length) {
-      setResponse(prev => ({ ...prev, value: text }));
-    } else {
-      Alert.alert(`La réponse ne peut pas dépasser ${varText.max_length} caractères`);
+    if (varText.max_length){
+      if (text.length  <= varText.max_length) {
+        setResponse(prev => ({ ...prev, value: text }));
+      } else {
+        Alert.alert(`La réponse ne peut pas dépasser ${varText.max_length} caractères`);
+      } 
+    }else{
+        setResponse(prev => ({ ...prev, value: text }))
     }
   };
 
@@ -45,6 +43,7 @@ const ResponseText: React.FC<ResponseTextType> = ({ varText }) => {
         value={response.value}
         onChangeText={(text) => handleChange(text)}
       />
+      <Button title="valider"  onPress={() => console.log("Bouton cliqué")} variant='lg' />
     </View>
   );
 };
