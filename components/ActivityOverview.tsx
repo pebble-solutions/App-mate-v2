@@ -6,9 +6,10 @@ import {ActivityType} from "../shared/types/ActivityType";
 import {router} from "expo-router";
 import {Href} from "expo-router/build/link/href";
 import Button from "./Button";
+import { Activity } from "../shared/classes/Activity";
 
 type ActivityOverviewType = {
-    activity: ActivityType,
+    activity: Activity,
     action?: () => void,
     buttonTitle?: string
 }

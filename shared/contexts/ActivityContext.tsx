@@ -73,7 +73,8 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
                 },
                 body: JSON.stringify({
                     label: activity.label,
-                    start: activity.start,
+
+                    start: activity.start.toISOString(),
                     description: activity.description,
                     color: activity.color,
 
