@@ -1,5 +1,6 @@
-import React, {createContext, PropsWithChildren, useContext, useState} from "react";
-import {SessionType} from "../types/SessionType";
+import React, { createContext, PropsWithChildren, useContext, useState } from "react";
+import { SessionType } from "../types/SessionType";
+import { Session } from "../classes/Session";
 
 export type SessionContextType = {
     sessions: SessionType[],
@@ -8,9 +9,10 @@ export type SessionContextType = {
     getSessionById: (id: string) => SessionType | undefined,
     updateSession: (id: string, newSession: SessionType) => void
     postSession: (id: string, session: SessionType) => void
+    fetchSessionsFromAPI: () => void
 }
 
-const SessionContext= createContext<SessionContextType | null>(null)
+const SessionContext = createContext<SessionContextType | null>(null)
 
 const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [sessions, setSessions] = useState<SessionType[]>([])
@@ -18,7 +20,21 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const addSession = (session: SessionType) => {
         setSessions([...sessions, session])
     }
-    const postSessionViaApi = async ( session: SessionType) => {
+    const fetchSessionsFromAPI = async () => {
+        try {
+        const response = await fetch("https://api.pebble.solutions/v5/metric/?label=Pointage%20de%20John%20DOE", {method: "GET"});
+            const data = await response.json();
+            let sessionApiList: SessionType[] = [];
+            data.forEach((incomingSession: any) => {
+                sessionApiList.push(new Session(incomingSession));
+            });
+            setSessions(sessionApiList);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des sessions depuis l'API:", error);
+        }
+    }
+
+    const postSessionViaApi = async (session: SessionType) => {
         try {
             const response = await fetch("https://api.pebble.solutions/v5/metric/", {
                 method: "POST",
@@ -27,7 +43,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
                 },
                 body: JSON.stringify({
                     _id: session._id,
-                    label:session.label,
+                    label: session.label,
                     type: session.type,
                     type_id: session.type_id,
                     start: session.start,
@@ -71,7 +87,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         }
         setSessions(sessionsList)
     }
-        
+
 
 
     const getSessionById = (id: string) => {
@@ -79,7 +95,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     return (
-        <SessionContext.Provider value={{sessions, addSession, removeSession, getSessionById, updateSession, postSession}}>
+        <SessionContext.Provider value={{ sessions, addSession, removeSession, getSessionById, updateSession, postSession, fetchSessionsFromAPI }}>
             {children}
         </SessionContext.Provider>
     )

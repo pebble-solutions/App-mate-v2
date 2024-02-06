@@ -24,7 +24,6 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             const response = await fetch("https://api.pebble.solutions/v5/activity/"); // Remplacez URL_DE_VOTRE_API par l'URL de votre API
             const data = await response.json();
             let activitiesList: ActivityType[] = [];
-            console.log(data, 'data');
             data.forEach((incomingActivity: any) => {
                 activitiesList.push(new Activity(incomingActivity));
             });

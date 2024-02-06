@@ -265,5 +265,16 @@ export const globalStyles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 10,
       },
+
+
+      sessionContainer: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    sessionText: {
+        fontSize: 16,
+        color: 'black',
+    },
       
 });

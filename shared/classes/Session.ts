@@ -17,7 +17,7 @@ export class Session implements SessionType {
     constructor(session?: any) {
 
         if (session.type && session.type !== "activity") {
-            console.warn("Le type de session n'est ("+session.type+") pas pris en charge, initialisation d'une " +
+            console.warn("Le type de session ("+session.type+") n'est pas pris en charge, initialisation d'une " +
                 "session vide.")
             session = {}
         }
