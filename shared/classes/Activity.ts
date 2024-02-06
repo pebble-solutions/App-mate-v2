@@ -8,19 +8,16 @@ export class Activity implements ActivityType {
     color: string;
     start: Date;
     variables: VariableType[];
-    status: string;
+    is_active: boolean;
 
     constructor(activity: any) {
         this._id = activity._id;
         this.label = activity.label;
         this.description = activity.description;
-        this.color = activity.color;
-        if (!this.isValidColor(this.color)) {
-            this.color = '#262729';
-        }
+        this.color = !activity.color || !this.isValidColor(activity.color) ? "#262729" : activity.color;
         this.start = new Date(activity.start);
         this.variables = activity.variables;
-        this.status = activity.status;
+        this.is_active = activity.is_active;
     }
 
     setColor(color: string) {

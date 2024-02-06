@@ -37,7 +37,7 @@ export default function ActivityScreen() {
         color: '',
     });
 
-    const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#fff"];
+    const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#262729"];
 
     const showConfirmDeleteDialog = () => {
         Alert.alert(
@@ -66,12 +66,10 @@ export default function ActivityScreen() {
             label: settingsValues.label || activity.label,
             start: activity.start,
             description: settingsValues.description || activity.description,
-            color: activity.color || settingsValues.color,
+            color: settingsValues.color || activity.color,
             variables: activity.variables,
-            status: activity.status,
+            is_active: activity.is_active,
         };
-
-        console.log("variables", activity.variables);
 
         editActivity(activity._id, updatedActivity);
         setSettingsVisible(false);
@@ -107,7 +105,7 @@ export default function ActivityScreen() {
 
             <View style={[globalStyles.contentContainer]}>
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
-                    Crée le {format(activity.start, 'dd.MM.yyyy')}
+                    Crée le {activity.start ? format(activity.start, 'dd.MM.yyyy') : ''}
                 </Text>
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{activity.description}</Text>
             </View>
@@ -170,7 +168,7 @@ export default function ActivityScreen() {
                             displayRemoveIcon={true}
                             isMandatory={true}
                             activityId={activity._id}
-                            variableId={variable._id} // Passer l'ID de la variable ici
+                            variableId={variable._id}
                         />
                     ))}
                 </View>
@@ -183,7 +181,7 @@ export default function ActivityScreen() {
                             description={variable.description}
                             displayAddIcon={true}
                             activityId={activity._id}
-                            variableId={variable._id} // Passer l'ID de la variable ici
+                            variableId={variable._id}
                         />
                     ))}
                 </View>

@@ -4,9 +4,9 @@ export type ActivityType = {
     _id: string,
     label: string,
     description?: string,
-    color: string,
-    start: Date,
+    color: string | null,
+    start: Date ,
     variables: VariableType[],
-    status: string,
+    is_active: boolean
 }
 

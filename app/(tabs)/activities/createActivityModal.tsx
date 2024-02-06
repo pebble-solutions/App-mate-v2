@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -9,7 +9,6 @@ import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
-import moment from 'moment';
 import { Activity } from "../../../shared/classes/Activity";
 
 export default function CreateActivityModal() {
@@ -19,9 +18,8 @@ export default function CreateActivityModal() {
         description: '',
         color: '',
     });
-    const colors = getRGBGradientColors("slategray");
-
     const [selectedColor, setSelectedColor] = useState("#262729");
+    const colors = getRGBGradientColors(selectedColor); // Utilisez selectedColor ici
 
     const colorOptions = [
         "#262729",
@@ -39,35 +37,31 @@ export default function CreateActivityModal() {
     ];
 
     const createActivity = () => {
-        // Créez une nouvelle activité en utilisant les valeurs de settingsValues
         const newActivity = new Activity({
-        _id: '', 
-        start: new Date(),
-        variables: [], 
-        status: 'active',
-        label: settingsValues.label,
-        description: settingsValues.description,
-        color: selectedColor,
+            _id: '', 
+            start: new Date(),
+            variables: [], 
+            status: 'active',
+            label: settingsValues.label,
+            description: settingsValues.description,
+            color: selectedColor,
         });
 
-        // Appelez la fonction addActivity pour ajouter la nouvelle activité
         addActivity(newActivity);
-
-        // Fermez la modal ou effectuez d'autres actions nécessaires
         router.back();
-        alert("Activité crée !");
+        alert("Activité créée !");
     };
 
-    // Divisez le tableau colorOptions en deux parties
     const firstRowColors = colorOptions.slice(0, 6);
     const secondRowColors = colorOptions.slice(6, 12);
 
     return (
         <LinearGradient
-            colors={colors}
+            colors={colors} // Utilisez colors ici
             start={{ x: 0, y: 1 }}
             end={{ x: 1, y: 0 }}
-            style={globalStyles.body}>
+            style={globalStyles.body}
+        >
 
             <View style={globalStyles.contentContainer}>
                 <View style={[globalStyles.headerCloseIcon, { justifyContent: 'flex-end', alignItems: 'flex-end' }]}>

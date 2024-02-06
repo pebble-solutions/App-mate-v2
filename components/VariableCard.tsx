@@ -51,7 +51,7 @@ export default function VariableCard({
             <View style={globalStyles.VariableCardIconsContainer}>
                 {isMandatory !== undefined ? (
                     mandatory ? (
-                        <TouchableOpacity onPress={() => { toggle_Mandatory(activityId, variableId, false) }}>
+                        <TouchableOpacity onPress={() => { toggleMandatory(activityId, variableId, false) }}>
                             <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
                         </TouchableOpacity>
                     ) : (

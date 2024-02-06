@@ -14,7 +14,7 @@ export default function ActivitiesScreen() {
 
     return (
         <View style={globalStyles.body}>
-            <HeaderScreenTitle title="Manage activities" />
+            <HeaderScreenTitle title="Manage activities" addButton />
 
             <FlatList
                 style={[globalStyles.body, globalStyles.mhContainer]}
