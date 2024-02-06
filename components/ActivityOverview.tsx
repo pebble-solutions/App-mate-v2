@@ -27,7 +27,6 @@ export default function ActivityOverview({ activity, action, buttonTitle }: Acti
             <View style={[globalStyles.cardContent, styles.localCardContent]}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
                 <Text style={globalStyles.textLight}>{activity.description}</Text>
-                <Text style={globalStyles.textLight}>{activity.status} </Text>
 
                 {action ? <View style={globalStyles.pv2Container}>
                             <Button

@@ -68,7 +68,7 @@ export default function ActivityScreen() {
             description: settingsValues.description || activity.description,
             color: settingsValues.color || activity.color,
             variables: activity.variables,
-            status: activity.status,
+            is_active: activity.is_active,
         };
 
         editActivity(activity._id, updatedActivity);
@@ -105,7 +105,7 @@ export default function ActivityScreen() {
 
             <View style={[globalStyles.contentContainer]}>
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
-                    Crée le {format(activity.start, 'dd.MM.yyyy')}
+                    Crée le {activity.start ? format(activity.start, 'dd.MM.yyyy') : ''}
                 </Text>
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{activity.description}</Text>
             </View>
