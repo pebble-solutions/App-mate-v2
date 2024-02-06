@@ -9,6 +9,8 @@ export function startSession (activityId: string, sessionContext: SessionContext
     const newSession: SessionType = {
         _id: r,
         type: "activity",
+        start: new Date(),
+        end: undefined,
         type_id: activityId,
         label: "Pointage de John DOE",
         comment: "",
@@ -17,7 +19,7 @@ export function startSession (activityId: string, sessionContext: SessionContext
             _id: "1",
             firstName: "John",
             lastName: "Doe",
-            matricule: "123456",
+            matricule: "ANDROID-1234",
         },
         raw_datas: [],
         raw_variables: [],

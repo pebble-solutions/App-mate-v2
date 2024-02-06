@@ -8,7 +8,7 @@ export class Activity implements ActivityType {
     color: string;
     start: Date;
     variables: VariableType[];
-    status: string;
+    is_active: boolean;
 
     constructor(activity: any) {
         this._id = activity._id;
@@ -20,7 +20,7 @@ export class Activity implements ActivityType {
         }
         this.start = new Date(activity.start);
         this.variables = activity.variables;
-        this.status = activity.status;
+        this.is_active = activity.is_active;
     }
 
     setColor(color: string) {

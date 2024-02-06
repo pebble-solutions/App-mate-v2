@@ -18,7 +18,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const addSession = (session: SessionType) => {
         setSessions([...sessions, session])
     }
-    const postSessionViaApi = async (session: SessionType) => {
+    const postSessionViaApi = async ( session: SessionType) => {
         try {
             const response = await fetch("https://api.pebble.solutions/v5/metric/", {
                 method: "POST",
@@ -27,6 +27,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
                 },
                 body: JSON.stringify({
                     _id: session._id,
+                    label:session.label,
                     type: session.type,
                     type_id: session.type_id,
                     start: session.start,
@@ -50,6 +51,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         }
     }
     const postSession = (id: string, session: SessionType) => {
+        console.log(session, 'session');
         postSessionViaApi(session)
     }
 

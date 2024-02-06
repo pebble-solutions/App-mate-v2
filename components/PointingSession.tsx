@@ -4,6 +4,7 @@ import Button from "./Button";
 import { useSessionStatusContext } from "../shared/contexts/SessionStatusContext";
 import { useSessionContext } from "../shared/contexts/SessionContext";  
 import { SessionType } from "../shared/types/SessionType";
+import RenderItem from "./RenderItem";
 
 
 export default function PointingSession({currentSession}:{currentSession: SessionType}) {
@@ -17,7 +18,10 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
     let sessionCopy = {...currentSession};
     
     const validate = async () => {
-            setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: new Date()}]);    
+        const currentTime = new Date();
+            sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
+            sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
+            setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: currentTime}]);    
             console.log(rawDatas, 'rawDatas');
             sessionContext.postSession(currentSession._id, {...currentSession});
       }
@@ -44,21 +48,17 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
         if (pressTimes.length % 2 === 0) {
             const NewInterval: number = currentTime.getTime() - pressTimes[pressTimes.length - 1].time.getTime();
             setIntervalPause(intervalPause + NewInterval);
-            console.log(intervalPause, 'intersetIntervalPause');
-
-            console.log(updatedPressTimes, 'presstimes round 1');
-            return intervalPause
+            console.log('apusetravaile en cours')
+                  return intervalPause
         } else {
             const NewInterval: number = currentTime.getTime() - pressTimes[pressTimes.length - 1].time.getTime();
             setIntervalWork(intervalWork + NewInterval);
             setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: new Date(currentTime)}]);    
             console.log(rawDatas, 'rawDatas');
+            console.log('en pause')
             sessionContext.updateSession(sessionCopy._id, {...sessionCopy, raw_datas: rawDatas});
-            console.log(intervalWork, 'intervalWork');
-            console.log(updatedPressTimes, 'presstimes round 2');
 
             return intervalWork
-          // await savePressTimes(updatedPressTimes); // Sauvegarde des nouvelles données
         }
       };
       
@@ -66,28 +66,28 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
 
     return (
         <View>
-                                <View style={globalStyles.buttonContainerSession}>
-                                    <Text style={globalStyles.textLight}>durée session: {Math.round(intervalWork + intervalPause/1000)} s</Text>
-                                </View>
-                                <View style={globalStyles.buttonContainerSession}>
-                                    <Text style={globalStyles.textLight}>durée travail: { (intervalWork/1000) } s</Text>
-                                </View>
-                                <View style={globalStyles.buttonContainerSession}>
-                                    <Text style={globalStyles.textLight}>durée pause: {(intervalPause/1000)} s</Text>
-                                </View>
+            <View style={globalStyles.buttonContainerSession}>
+                <Text style={globalStyles.textLight}>durée session: {Math.round(intervalWork + intervalPause/1000)} s</Text>
+            </View>
+            <View style={globalStyles.buttonContainerSession}>
+                <Text style={globalStyles.textLight}>durée travail: { (intervalWork/1000) } s</Text>
+            </View>
+            <View style={globalStyles.buttonContainerSession}>
+                <Text style={globalStyles.textLight}>durée pause: {(intervalPause/1000)} s</Text>
+            </View>
             {pressTimes.length >= 1 && pressTimes.map((pressTime, index) => {
-                        return (
-                            <View key={index}>
-                                <View style={globalStyles.buttonContainerSession}>
-                                    {/* <Text style={globalStyles.textLight}>{pressTime ? pressTime.index : ""}</Text>   */}
-                                    <Text style={globalStyles.textLight}>{pressTime.label}</Text>
-                                    <Text style={globalStyles.textLight}>{pressTime.time.toLocaleTimeString()}</Text>
-                                </View>
-                                {/* {pressTimes.length%2 === 0 && <Text style={globalStyles.textLight}>Début - {pressTime.time.toLocaleTimeString()}</Text>}
-                                {pressTimes.length%2 === 1 && <Text style={globalStyles.textLight}>Fin - {pressTime.time.toLocaleTimeString()}</Text>} */}
-                            </View>
-                        )       
-                    })}
+                return (
+                    <View key={index}>
+                        <View style={globalStyles.buttonContainerSession}>
+                            {/* <Text style={globalStyles.textLight}>{pressTime ? pressTime.index : ""}</Text>   */}
+                            <Text style={globalStyles.textLight}>{pressTime.label}</Text>
+                            <Text style={globalStyles.textLight}>{pressTime.time.toLocaleTimeString()}</Text>
+                        </View>
+                        {/* {pressTimes.length%2 === 0 && <Text style={globalStyles.textLight}>Début - {pressTime.time.toLocaleTimeString()}</Text>} */}
+                        {/* {pressTimes.length%2 === 1 && <Text style={globalStyles.textLight}>Fin - {pressTime.time.toLocaleTimeString()}</Text>}  */}
+                    </View>
+                    )       
+                })}
             
             <View style={globalStyles.buttonContainerSession}>
                 <Button
@@ -106,9 +106,8 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
                     titleStyle={[{color: 'green'}]}
                     />
                 }
-
-
             </View>
+            <RenderItem />
         </View>
                 
     )
