@@ -4,7 +4,7 @@ export type SessionType = {
     type_id: string,
     label: string,
     comment: string,
-    start?: Date,
+    start: Date,
     end?: Date,
     status: string,
     owner: OwnerType,

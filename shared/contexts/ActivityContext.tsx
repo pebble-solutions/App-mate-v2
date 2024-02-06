@@ -25,9 +25,8 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             const data = await response.json();
             let activitiesList: ActivityType[] = [];
 
-            data.forEach((activity: any) => {
-
-                activitiesList.push(new Activity(activity));
+            data.forEach((incomingActivity: any) => {
+                activitiesList.push(new Activity(incomingActivity));
             });
             setActivities(activitiesList);
         } catch (error) {
