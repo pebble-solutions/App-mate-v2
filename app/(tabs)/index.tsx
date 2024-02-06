@@ -109,7 +109,7 @@ export default function SessionScreen() {
                                 )       
                             })}
                         </View>
-                    <RenderItem/>
+                        <RenderItem/>
                     </View>
 
                     

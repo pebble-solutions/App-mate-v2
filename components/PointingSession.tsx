@@ -15,7 +15,12 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
     const [intervalPause, setIntervalPause] = React.useState(0);
     const [rawDatas, setRawDatas] = React.useState([] as {end: Date, start: Date}[]);
     let sessionCopy = {...currentSession};
-
+    
+    const validate = async () => {
+            setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: new Date()}]);    
+            console.log(rawDatas, 'rawDatas');
+            sessionContext.postSession(currentSession._id, {...currentSession});
+      }
     const pointing = async () => {
         const currentTime = new Date();
         const index = pressTimes.length + 1;
@@ -26,13 +31,7 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
           else
             return "fin";
         };
-      
-        const getLabelButton = () => {
-          if (pressTimes.length % 2 === 0)
-            return "reprendre";
-          else
-            return "valider";
-        };
+
       
         const newPressTime = {
           time: currentTime,
@@ -103,7 +102,7 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
                 <Button
                     style={[globalStyles.button, globalStyles.buttonAlignSelfCenter]} 
                     title="valider"
-                    onPress={() => {setStatus("validate"), pointing()}}
+                    onPress={() => {setStatus("validate"), validate()}}
                     titleStyle={[{color: 'green'}]}
                     />
                 }

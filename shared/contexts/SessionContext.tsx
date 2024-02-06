@@ -7,6 +7,7 @@ export type SessionContextType = {
     removeSession: (id: string) => void,
     getSessionById: (id: string) => SessionType | undefined,
     updateSession: (id: string, newSession: SessionType) => void
+    postSession: (id: string, session: SessionType) => void
 }
 
 const SessionContext= createContext<SessionContextType | null>(null)
@@ -16,6 +17,40 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
     const addSession = (session: SessionType) => {
         setSessions([...sessions, session])
+    }
+    const postSessionViaApi = async (session: SessionType) => {
+        try {
+            const response = await fetch("https://api.pebble.solutions/v5/metric/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    _id: session._id,
+                    type: session.type,
+                    type_id: session.type_id,
+                    start: session.start,
+                    end: session.end,
+                    owner: session.owner,
+                    raw_datas: session.raw_datas,
+                    raw_variables: session.raw_variables,
+                }),
+            });
+
+            if (response.ok) {
+                const newSession = await response.json();
+                console.log(newSession)
+                addSession(newSession)
+                console.log(sessions)
+            } else {
+                console.error("Erreur lors de la création de la session")
+            }
+        } catch (error) {
+            console.error("Erreur lors de la création de la session", error);
+        }
+    }
+    const postSession = (id: string, session: SessionType) => {
+        postSessionViaApi(session)
     }
 
     const removeSession = (id: string) => {
@@ -42,7 +77,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     return (
-        <SessionContext.Provider value={{sessions, addSession, removeSession, getSessionById, updateSession}}>
+        <SessionContext.Provider value={{sessions, addSession, removeSession, getSessionById, updateSession, postSession}}>
             {children}
         </SessionContext.Provider>
     )
