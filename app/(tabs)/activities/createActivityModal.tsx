@@ -9,7 +9,6 @@ import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
-import moment from 'moment';
 import { Activity } from "../../../shared/classes/Activity";
 
 export default function CreateActivityModal() {

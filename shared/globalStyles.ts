@@ -201,10 +201,11 @@ export const globalStyles = StyleSheet.create({
         borderRadius: variables.borderRadius[1],
         borderWidth: 1,
         borderColor: "#cdcdcd",
-        marginVertical: variables.contentMargin[2],
+        marginVertical: variables.contentMargin[1],
         backgroundColor: "#FFFFFF10",
         color: "white",
-        fontSize: variables.fontSize[1]
+        fontSize: variables.fontSize[1],
+        
     },
 
     buttonContainer: {
@@ -228,8 +229,8 @@ export const globalStyles = StyleSheet.create({
 
     buttonText: {
         color: 'white', // Couleur du texte
-        fontFamily: 'Inter_700Bold',
-        fontSize: variables.fontSize[0],
+     
+        fontSize: variables.fontSize[1],
     },
 
     headerCloseIcon: {  

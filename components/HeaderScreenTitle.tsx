@@ -6,7 +6,7 @@ import { router } from "expo-router";
 
 type HeaderScreenTitleType = {
     title: string,
-    addButton?: boolean
+    addButton: boolean
 }
 
 export default function HeaderScreenTitle({ title, addButton }: HeaderScreenTitleType) {
@@ -14,14 +14,14 @@ export default function HeaderScreenTitle({ title, addButton }: HeaderScreenTitl
         <View style={globalStyles.topContainer}>
             <View style={globalStyles.headTitleActions}>
                 <Text style={globalStyles.headTitle}>{title}</Text>
-                <TouchableOpacity
+                {addButton && <TouchableOpacity
                     onPress={() => {
                         router.push({
                             pathname: "/activities/createActivityModal",
                         })
                     }}>
                     <AntDesign name="pluscircleo" size={26} color="black" />
-                </TouchableOpacity>
+                </TouchableOpacity>}
             </View>
         </View>
     )
