@@ -140,9 +140,10 @@ export const globalStyles = StyleSheet.create({
     },
 
     button: {
-        paddingVertical: variables.contentPadding[1],
+        paddingVertical: variables.contentPadding[2],
         paddingHorizontal: variables.contentPadding[1],
-        borderRadius: variables.borderRadius[2],
+        marginVertical: variables.contentMargin[1],
+        borderRadius: variables.borderRadius[1],
         backgroundColor: "#cdcdcd",
         color: "white",
         fontSize: variables.fontSize[0]
@@ -164,23 +165,39 @@ export const globalStyles = StyleSheet.create({
     },
     cardSession: {
         flexDirection: "column",
-        backgroundColor: '#00000020', // Changez la couleur de fond selon vos préférences
+        backgroundColor: '#00000010', // Changez la couleur de fond selon vos préférences
         borderRadius: variables.borderRadius[2],
         marginVertical: variables.contentMargin[1],
         padding: variables.contentPadding[1],
+    },
+    cardSessionContent: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        padding: variables.contentPadding[2],
     },
     
     topCard: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        
-        
     },
+    topCardActivity: {
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    topCardActivityItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    
     topCardContent: {
         flexDirection: "column",
-        alignItems: "flex-end",
+        alignItems: "flex-start",
         justifyContent: "space-between",
+        padding: variables.contentPadding[2],
         
         
     },

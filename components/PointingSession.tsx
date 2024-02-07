@@ -15,13 +15,16 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
     const [intervalWork, setIntervalWork] = React.useState(0);
     const [intervalPause, setIntervalPause] = React.useState(0);
     const [rawDatas, setRawDatas] = React.useState([] as {end: Date, start: Date}[]);
+    const [rawVariables, setRawVariables] = React.useState([] as {_id: string, comment_value:string, label: string, value: string |number}[]);
+    const [isVisible, setIsVisible] = React.useState(false);
     let sessionCopy = {...currentSession};
     
     const validate = async () => {
         const currentTime = new Date();
             sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
             sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
-            setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: currentTime}]);    
+            setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: currentTime}]);  
+            setRawVariables([...rawVariables, ]);  
             console.log(rawDatas, 'rawDatas');
             sessionContext.postSession(currentSession._id, {...currentSession});
       }
@@ -66,48 +69,58 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
 
     return (
         <View>
-            <View style={globalStyles.buttonContainerSession}>
-                <Text style={globalStyles.textLight}>durée session: {Math.round(intervalWork + intervalPause/1000)} s</Text>
+            <View >
+                <View style={globalStyles.cardSession}>
+                    <Text style={globalStyles.textLight}>Activité: { (intervalWork/1000) } s</Text>
+                    <Text style={globalStyles.textLight}>pause: {(intervalPause/1000)} s</Text>
+                    <Text style={[globalStyles.textLight, globalStyles.cardTitle]}>Total session: {Math.round(intervalWork + intervalPause/1000)} s</Text>
+                </View>
             </View>
-            <View style={globalStyles.buttonContainerSession}>
-                <Text style={globalStyles.textLight}>durée travail: { (intervalWork/1000) } s</Text>
-            </View>
-            <View style={globalStyles.buttonContainerSession}>
-                <Text style={globalStyles.textLight}>durée pause: {(intervalPause/1000)} s</Text>
-            </View>
-            {pressTimes.length >= 1 && pressTimes.map((pressTime, index) => {
-                return (
-                    <View key={index}>
-                        <View style={globalStyles.buttonContainerSession}>
-                            {/* <Text style={globalStyles.textLight}>{pressTime ? pressTime.index : ""}</Text>   */}
-                            <Text style={globalStyles.textLight}>{pressTime.label}</Text>
-                            <Text style={globalStyles.textLight}>{pressTime.time.toLocaleTimeString()}</Text>
+            <View style={globalStyles.cardSession}>
+                {/* {pressTimes.length >= 1 && pressTimes.map((pressTime, index) => {
+                    return (
+                        <View key={index} style={globalStyles.cardSessionContent}>
+                                <Text style={globalStyles.textLight}>{pressTime ? pressTime.index : ""}</Text>  
+                                <Text style={globalStyles.textLight}>{pressTime.label}</Text>
+                                <Text style={globalStyles.textLight}>{pressTime.time.toLocaleTimeString()}</Text>
                         </View>
-                        {/* {pressTimes.length%2 === 0 && <Text style={globalStyles.textLight}>Début - {pressTime.time.toLocaleTimeString()}</Text>} */}
-                        {/* {pressTimes.length%2 === 1 && <Text style={globalStyles.textLight}>Fin - {pressTime.time.toLocaleTimeString()}</Text>}  */}
-                    </View>
-                    )       
-                })}
+                        )       
+                    })} */}
+                {rawDatas.length >= 1 && rawDatas.map((rawData, index) => {
+                    return (
+                        <View key={index} style={globalStyles.cardSessionContent}>
+                                <Text style={globalStyles.textLight}>de {rawData.start.toLocaleTimeString()}</Text>  
+                                <Text style={globalStyles.textLight}>à {rawData.end.toLocaleTimeString()}</Text>
+                        </View>
+                        )       
+                    }
+                )
+                }
+            </View>
+        
             
             <View style={globalStyles.buttonContainerSession}>
                 <Button
                         style={[globalStyles.button, globalStyles.buttonAlignSelfCenter]} 
-                        title= {pressTimes.length%2 === 1 ? "en cours" : "reprendre"}
+                        title= {pressTimes.length%2 === 1 ? "pointage en cours" : "reprendre le pointage"}
                         onPress={() => {pointing() }}
                         titleStyle={[{color: 'red'}]}
                         />
 
                 {pressTimes.length%2 === 0 &&
-
-                <Button
-                    style={[globalStyles.button, globalStyles.buttonAlignSelfCenter]} 
-                    title="valider"
-                    onPress={() => {setStatus("validate"), validate()}}
-                    titleStyle={[{color: 'green'}]}
-                    />
-                }
+                    <Button
+                        style={[globalStyles.button, globalStyles.buttonAlignSelfCenter]} 
+                        title="valider les horaires"
+                        onPress={() => {setStatus("validate"), validate()}}
+                        titleStyle={[{color: 'green'}]}
+                        />
+                    }
             </View>
-            <RenderItem />
+        
+                <RenderItem isVisible={isVisible}/>
+            
+
+            
         </View>
                 
     )
