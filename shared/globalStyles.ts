@@ -165,7 +165,7 @@ export const globalStyles = StyleSheet.create({
     },
     cardSession: {
         flexDirection: "column",
-        backgroundColor: '#00000010', // Changez la couleur de fond selon vos préférences
+        backgroundColor: '#00000050', // Changez la couleur de fond selon vos préférences
         borderRadius: variables.borderRadius[2],
         marginVertical: variables.contentMargin[1],
         padding: variables.contentPadding[1],

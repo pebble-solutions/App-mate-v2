@@ -88,7 +88,6 @@ export default function SessionScreen() {
                 <View style={globalStyles.scrollContainer}>
                     {status == "started" && 
                     <View >
-                        <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{currentSession.label}</Text>
                         <View>
                             <PointingSession currentSession={currentSession}/>  
                         </View>
