@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 
 export const variables = {
     borderRadius: [0, 6, 12, 18],
@@ -16,7 +16,7 @@ export const globalStyles = StyleSheet.create({
     headerIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        
+
 
 
     },
@@ -25,7 +25,7 @@ export const globalStyles = StyleSheet.create({
         fontSize: variables.fontSize[4],
         marginVertical: 16
     },
-    
+
 
     cardTitle: {
         fontFamily: 'Inter_700Bold',
@@ -51,6 +51,10 @@ export const globalStyles = StyleSheet.create({
         minHeight: 100,
     },
 
+    recapCarrouselCard: {
+        borderRadius: variables.borderRadius[2],
+    },
+
     cardLg: {
         borderRadius: variables.borderRadius[3]
     },
@@ -66,7 +70,7 @@ export const globalStyles = StyleSheet.create({
         padding: variables.contentPadding[2],
         marginVertical: variables.contentMargin[1],
         justifyContent: 'center',
-        
+
     },
 
     VariableCardHeader: {
@@ -83,7 +87,7 @@ export const globalStyles = StyleSheet.create({
 
     iconMargin: {
         marginHorizontal: 2,
-      },
+    },
 
     pContainer: {
         paddingHorizontal: variables.contentMargin[1],
@@ -112,6 +116,9 @@ export const globalStyles = StyleSheet.create({
         flex: 1
     },
 
+    sContainer: {
+        flex: 1,
+    },
     mhContainer: {
         marginHorizontal: variables.contentMargin[1]
     },
@@ -119,19 +126,35 @@ export const globalStyles = StyleSheet.create({
     contentContainer: {
         marginHorizontal: variables.contentMargin[2]
     },
+    RecapContentContainer: {
+        marginVertical: variables.contentMargin[2],
+        marginHorizontal: variables.contentMargin[2],
+        padding: variables.contentPadding[2],
+
+        borderRadius: variables.borderRadius[2],
+        borderColor: "grey",
+        borderWidth: 2,
+    },
+
 
     topContainer: {
         marginHorizontal: variables.contentMargin[2],
         marginTop: variables.contentMargin[5],
         paddingHorizontal: variables.contentMargin[1],
-        
+
     },
     scrollContainer: {
         marginBottom: 48,
     },
     body: {
-        flex: 1
+        flex: 1,
     },
+
+    recapBody: {
+        flex: 1,
+        paddingBottom: 250,
+    },
+
 
     headTitleActions: {
         flexDirection: "row",
@@ -169,20 +192,20 @@ export const globalStyles = StyleSheet.create({
         marginVertical: variables.contentMargin[1],
         padding: variables.contentPadding[1],
     },
-    
+
     topCard: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        
-        
+
+
     },
     topCardContent: {
         flexDirection: "column",
         alignItems: "flex-end",
         justifyContent: "space-between",
-        
-        
+
+
     },
 
     buttonAlert: {
@@ -190,7 +213,7 @@ export const globalStyles = StyleSheet.create({
     },
     textLg: {
         fontSize: variables.fontSize[1]
-            },
+    },
 
     textXl: {
         fontSize: variables.fontSize[2] / 1.3
@@ -205,7 +228,7 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: "#FFFFFF10",
         color: "white",
         fontSize: variables.fontSize[1],
-        
+
     },
 
     buttonContainer: {
@@ -217,7 +240,7 @@ export const globalStyles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
-        
+
     },
     buttonContainerSession: {
         flexDirection: 'row',
@@ -225,21 +248,21 @@ export const globalStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    
+
 
     buttonText: {
         color: 'white', // Couleur du texte
-     
+
         fontSize: variables.fontSize[1],
     },
 
-    headerCloseIcon: {  
+    headerCloseIcon: {
         position: 'relative',
         justifyContent: 'flex-end',
         marginEnd: 10,
         marginTop: 20,
     },
-    
+
     iconContainer: {
         flex: 1,
         justifyContent: 'flex-end',
@@ -248,33 +271,43 @@ export const globalStyles = StyleSheet.create({
     },
 
     colorButton: {
-        width: "14%", 
-        aspectRatio: 1, 
-        borderRadius: 100, 
+        width: "14%",
+        aspectRatio: 1,
+        borderRadius: 100,
         borderWidth: 4,
         marginHorizontal: "2%",
-      },
-      
-      colorButtonsContainer: {
+    },
+
+    colorButtonsContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         marginVertical: 10,
         paddingHorizontal: 10,
-      },
-      colorButtonsParentContainer: {
+    },
+    colorButtonsParentContainer: {
         justifyContent: 'center',
         marginVertical: 10,
-      },
-
-
-      sessionContainer: {
+    },
+    sessionContainer: {
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
+    },
+    sessionTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginVertical: 10,
+        color: 'black',
     },
     sessionText: {
         fontSize: 16,
         color: 'black',
     },
-      
+    recapHeadTitle: {
+        fontFamily: 'Inter_500Medium',
+        fontSize: variables.fontSize[3],
+        textAlign: 'center',
+    },
+
+
 });

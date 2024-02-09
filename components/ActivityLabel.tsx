@@ -9,23 +9,22 @@ import Button from "./Button";
 
 type ActivityOverviewType = {
     activity: ActivityType,
-    action?: () => void,
     buttonTitle?: string
 }
 
-export default function ActivityOverview({ activity, action, buttonTitle }: ActivityOverviewType) {
+export default function ActivityLabel({ activity, buttonTitle }: ActivityOverviewType) {
 
     buttonTitle = buttonTitle || "Consulter"
 
     return (
         <LinearGradient
-            style={[globalStyles.body, globalStyles.card, globalStyles.mContainer]}
+            style={[globalStyles.body, globalStyles.recapCarrouselCard, globalStyles.sContainer]}
             colors={getRGBGradientColors(activity.color)}
             start={{x: 0, y: 1}}
             end={{x: 1, y: 0}}
         >
             <View style={[globalStyles.cardContent, styles.localCardContent]}>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
+                <Text style={[globalStyles.recapHeadTitle, globalStyles.textLight]}>{activity.label}</Text>
             </View>
         </LinearGradient>
     )
