@@ -124,16 +124,20 @@ export const globalStyles = StyleSheet.create({
     },
 
     contentContainer: {
-        marginHorizontal: variables.contentMargin[2]
+        marginHorizontal: variables.contentMargin[2],
+    },
+    recapContentContainer: {
+        marginHorizontal: variables.contentMargin[2],
+        alignItems: 'center',
     },
     RecapContentContainer: {
-        marginVertical: variables.contentMargin[2],
-        marginHorizontal: variables.contentMargin[2],
-        padding: variables.contentPadding[2],
-
+        marginVertical: variables.contentMargin[1],
+        marginHorizontal: variables.contentMargin[1],
+        paddingVertical: variables.contentMargin[3],
         borderRadius: variables.borderRadius[2],
-        borderColor: "grey",
-        borderWidth: 2,
+        borderColor: "lightgrey",
+        borderWidth: 1,
+        minHeight: "72%",
     },
 
 
@@ -294,7 +298,15 @@ export const globalStyles = StyleSheet.create({
         borderBottomColor: '#ddd',
     },
     sessionTitle: {
-        fontSize: 18,
+        fontSize: 20,
+        fontWeight: "bold",
+        marginVertical: 15,
+        marginBottom: 20,
+        color: 'black',
+    },
+
+    sessionSubTitle: {
+        fontSize: 16,
         fontWeight: "bold",
         marginVertical: 10,
         color: 'black',

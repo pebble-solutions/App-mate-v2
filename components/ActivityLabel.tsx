@@ -9,7 +9,7 @@ import Button from "./Button";
 
 type ActivityOverviewType = {
     activity: ActivityType,
-    buttonTitle?: string
+    buttonTitle?: string,
 }
 
 export default function ActivityLabel({ activity, buttonTitle }: ActivityOverviewType) {
