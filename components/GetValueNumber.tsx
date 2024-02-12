@@ -37,16 +37,17 @@ const ResponseNumber: React.FC<ResponseNumberType> = ({ varNumber }) => {
 
   return (
     <View>
-      <Text>
+      <Text style={globalStyles.textLight}>
         {varNumber.question}
       </Text>
       <TextInput
-    //    style={globalStyles.input}
+        style={globalStyles.input}
         placeholder="Saisissez un nombre"
         keyboardType="numeric"
         inputMode="numeric"
         value={response.value}
         onChangeText={(number) => handleChange(number)}
+        placeholderTextColor={'#ffffff80'}
       />
     </View>
   );

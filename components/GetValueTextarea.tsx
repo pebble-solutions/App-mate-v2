@@ -58,15 +58,17 @@ const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea }) => {
 
   return (
     <View>
-      <Text>
+      <Text style={globalStyles.textLight}>
         {varTextArea.question}
       </Text>
       <TextInput
-        // style={globalStyles.input}
+        style={globalStyles.input}
         placeholder={`Saisissez votre réponse ici (max ${varTextArea.max_length} caractères)`}
         value={response.value}
         multiline={true}
         onChangeText={(text) => handleChange(text)}
+        placeholderTextColor={'#ffffff80'}
+
       />
     </View>
   );

@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { globalStyles } from "../shared/globalStyles";import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Button from "./Button";
 import { useSessionStatusContext } from "../shared/contexts/SessionStatusContext";
 import { useSessionContext } from "../shared/contexts/SessionContext";  
 import { SessionType } from "../shared/types/SessionType";
-import RenderItem from "./RenderItem";
-import { numberToTimeString } from "../shared/libs/date";
+import { numberToTimeString } from "../shared/libs/date";   
 
 export default function PointingSession({currentSession}:{currentSession: SessionType}) {
     
@@ -17,22 +16,30 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
     const [rawDatas, setRawDatas] = React.useState([] as {end: Date, start: Date}[]);
     const [rawVariables, setRawVariables] = React.useState([] as {_id: string, comment_value:string, label: string, info: string, value: string |number}[]);
     const [isVisible, setIsVisible] = React.useState(false);
+    const [elapsedTime, setElapsedTime] = React.useState(0);
     let sessionCopy = {...currentSession};
+    
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setElapsedTime(prevElapsedTime => prevElapsedTime + 1000);
+        }, 1000);
+        return () => clearInterval(timer);
+    },[]);
+    
     
     const validate = async () => {
         const currentTime = new Date();
-            sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
-            sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
             setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: currentTime}]);  
             setRawVariables([...rawVariables, ]);  
             console.log(rawDatas, 'rawDatas');
+            sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
             sessionContext.postSession(currentSession._id, {...currentSession});
       }
     const pointing = async () => {
         const currentTime = new Date();
         const index = pressTimes.length + 1;
         console.log(currentSession, 'currentSession')
-        console
+        
       
         const getLabel = () => {
           if (pressTimes.length % 2 === 0)
@@ -46,8 +53,6 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
             else
               return "en pause";
           }
-
-
       
         const newPressTime = {
           time: currentTime,
@@ -57,21 +62,20 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
         };
       
         const updatedPressTimes = [...pressTimes, newPressTime];
+
         setPressTimes(updatedPressTimes);
         if (pressTimes.length % 2 === 0) {
             const NewInterval: number = currentTime.getTime() - pressTimes[pressTimes.length - 1].time.getTime();
             setIntervalPause(intervalPause + NewInterval);
-            console.log('apusetravaile en cours')
-                  return intervalPause
+            return intervalPause/1000
         } else {
             const NewInterval: number = currentTime.getTime() - pressTimes[pressTimes.length - 1].time.getTime();
             setIntervalWork(intervalWork + NewInterval);
             setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: new Date(currentTime)}]);    
             console.log(rawDatas, 'rawDatas');
-            console.log('en pause')
-            sessionContext.updateSession(sessionCopy._id, {...sessionCopy, raw_datas: rawDatas});
-
-            return intervalWork
+            // sessionContext.updateSession(sessionCopy._id, {...sessionCopy, raw_datas: rawDatas});
+            sessionContext.updateSession(currentSession._id, {...currentSession, raw_datas: rawDatas});
+            return intervalWork/1000
         }
       };
       
@@ -82,65 +86,35 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
             <View >
                 <View style={globalStyles.cardSession}>
 
-                    <Text style={[globalStyles.headTitle, globalStyles.textLight]}>Session du {currentSession.start.toLocaleDateString()}</Text>
-                    <Text style={[globalStyles.headTitle, globalStyles.textLight]}>début :{currentSession.start.toLocaleTimeString()}</Text>
+                    <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{currentSession.start.toLocaleString('fr-FR')}</Text>
+                    <Text style={globalStyles.textLight}>Session: {numberToTimeString(elapsedTime)}</Text>
+                    <Text style={globalStyles.textLight}>Activité: { numberToTimeString(intervalWork)}</Text>
+                    {/* <Text style={[globalStyles.headTitle, globalStyles.textLight]}>début :{currentSession.start.toLocaleTimeString('fr-FR')}</Text> */}
 
                     {pressTimes.length >=1 && 
                         <View>
-                            <Text style={[globalStyles.headTitle, globalStyles.textLight]}>dernier pointage : {pressTimes[pressTimes.length -1].time.toLocaleTimeString()}</Text>
-                            <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{pressTimes[pressTimes.length -1].info}</Text>
+                            <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{pressTimes[pressTimes.length -1].info} </Text>
+                            <Text style={[globalStyles.headTitle, globalStyles.textLight]}>depuis {pressTimes[pressTimes.length -1].time.toLocaleTimeString('fr-FR')}</Text>
                         </View>
                     }
                 </View>
                 <Button
-                    style={[globalStyles.button, globalStyles.buttonAlignSelfCenter]} 
+                    style={[globalStyles.button, globalStyles.buttonContainerSession]} 
                     title= {pressTimes.length%2 === 1 ? "STOP" : "REPRENDRE"}
                     onPress={() => {pointing() }}
                     titleStyle={[{color: 'red'}]}
                     />
-
-                <View style={globalStyles.cardSession}>
-                    <Text style={globalStyles.textLight}>Activité: { (intervalWork/1000) } s</Text>
-                    <Text style={globalStyles.textLight}>pause: {(intervalPause/1000)} s... {numberToTimeString(intervalPause)} </Text>
-                    <Text style={[globalStyles.textLight, globalStyles.cardTitle]}>Total session: {Math.round(intervalWork/1000 + intervalPause/1000)} s</Text>
-                </View>
             </View>
-            <View style={globalStyles.cardSession}>
-                {/* {pressTimes.length >= 1 && pressTimes.map((pressTime, index) => {
-                    return (
-                        <View key={index} style={globalStyles.cardSessionContent}>
-                                <Text style={globalStyles.textLight}>{pressTime ? pressTime.index : ""}</Text>  
-                                <Text style={globalStyles.textLight}>{pressTime.label}</Text>
-                                <Text style={globalStyles.textLight}>{pressTime.time.toLocaleTimeString()}</Text>
-                        </View>
-                        )       
-                    })} */}
-                {/* {rawDatas.length >= 1 && rawDatas.map((rawData, index) => {
-                    return (
-                        <View key={index} style={globalStyles.cardSessionContent}>
-                                <Text style={globalStyles.textLight}>de {rawData.start.toLocaleTimeString()}</Text>  
-                                <Text style={globalStyles.textLight}>à {rawData.end.toLocaleTimeString()}</Text>
-                        </View>
-                        )       
-                    }
-                )
-                } */}
-            </View>
-        
-            
-            <View style={globalStyles.buttonContainerSession}>
 
                 {pressTimes.length%2 === 0 &&
                     <Button
-                        style={[globalStyles.button, globalStyles.buttonAlignSelfCenter]} 
-                        title="valider les horaires"
-                        onPress={() => {setStatus("validate"), validate()}}
-                        titleStyle={[{color: 'green'}]}
-                        />
-                    }
-            </View>
+                    style={[globalStyles.button, globalStyles.buttonContainerSession]} 
+                    title="valider les horaires"
+                    onPress={() => {setStatus("validate"), validate()}}
+                    titleStyle={[{color: 'green'}]}
+                    />
+                }
         
-                <RenderItem isVisible={isVisible}/>
             
 
             
