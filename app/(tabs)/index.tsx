@@ -11,12 +11,12 @@ import PointingSession from "../../components/PointingSession";
 import RenderItem from "../../components/RenderItem";
 import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
 import {useSessionContext} from "../../shared/contexts/SessionContext";
+import {VariableType} from "../../shared/types/VariableType";
 import { startSession } from "../../shared/libs/session";
 
 export default function SessionScreen() {
 
     const [pressTimes, setPressTimes] = React.useState([{time: new Date(), label: "", index: 0}] as {time: Date, label: string, index: number}[]);
-
     const { activities, getActivityById } = useActivityContext()
     const statusContext = useSessionStatusContext()
     const { getStatus, setStatus, resetStatus, setPayload, resetPayload, getPayload} = statusContext
@@ -56,14 +56,21 @@ export default function SessionScreen() {
         
         const activity = getActivityById(activityId);
         
-
+        
+        
         if (!activity) {
             Alert.alert("Erreur : activité non trouvée")
             resetPayload()
             resetStatus()
             return null
         }
-
+        if (!activity.variables) {
+            
+            return null
+        }
+        
+        const variables = activity.variables;   
+        
         content = 
         <LinearGradient
         style={[globalStyles.body, globalStyles.card, globalStyles.topContainer]}
@@ -71,48 +78,38 @@ export default function SessionScreen() {
         start={{x: 0, y: 1}}
         end={{x: 1, y: 0}}
     >
-            <ScrollView style={globalStyles.topContainer}>
-                <View style={globalStyles.topCard}>
-                    <Button
-                        style={[globalStyles.button, globalStyles.buttonAlert]}
-                        title="Annuler"
-                        onPress={() => {resetStatus(), resetPayload(), setPressTimes([])}}
-                        titleStyle={[{color: activity.color}]}
-                        
-                    />
+            <View>
+                
                     <View style={globalStyles.topCardContent}>
-                        <Text style={globalStyles.textLight}>session :{sessionId}</Text>
                         <Text style= {globalStyles.textLight}>statut: {status}</Text>
-                        <Text style={globalStyles.textLight}> activité: {activity._id} </Text>
+                        <Text style={ globalStyles.textLight}>{activity.label}</Text>
+                        <Button
+                            style={[globalStyles.button]}
+                            title="Annuler"
+                            onPress={() => {resetStatus(), resetPayload(), setPressTimes([])}}
+                            titleStyle={[{color: activity.color}]}
+                        />
                     </View>
+                
+
+                <View style={globalStyles.scrollContainer}>
+                    {status == "started" && 
+                        <View >
+                            <View>
+                                <PointingSession currentSession={currentSession}/>  
+                            </View>
+                        </View>
+                    }    
                 </View>
-
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
-                    <View style={globalStyles.scrollContainer}>
-                        {status == "started" && 
-                        <View style={globalStyles.cardSession}>
-                        <Text style={[globalStyles.textXl, globalStyles.textLight]}>{currentSession.label}</Text>
-                        <PointingSession currentSession={currentSession}/>
+                <View>
+                    {status == "validate" &&
+                        <View>
+                            <RenderItem variables={variables} />
                         </View>
-                        }    
-                        <View style={globalStyles.cardSession}>
-                            { activity.variables.length== 0 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>Il n'y a pas de variable associée à cette activité</Text>}
-                            { activity.variables.length==1 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>{activity.variables.length} variable associée à cette activité</Text>}
-                            { activity.variables.length>1 && <Text style={[globalStyles.textXl, globalStyles.textLight]}>{activity.variables.length} variables associées à cette activité</Text>}
-                        { activity.variables.map((variable, index) => {
-                                return (
-                                    <View key={index} >
-                                        <Text style={globalStyles.textLight}> - {variable.label}</Text>
-                                        {/* <Text style={globalStyles.textLight}>type: {variable.type}</Text>
-                                        <Text style={globalStyles.textLight}>valeur: {variable.value}</Text> */}
-                                    </View>
-                                )       
-                            })}
-                        </View>
-                    </View>
-
-                    
-            </ScrollView>
+                    }
+                </View>
+                
+            </View>
         </LinearGradient>
     }
     else {

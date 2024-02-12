@@ -37,14 +37,15 @@ const ResponseText: React.FC<ResponseTextType> = ({ varText }) => {
 
   return (
     <View>
-      <Text>
+      <Text style={globalStyles.textLight}>
         {varText.question}
       </Text>
       <TextInput
-        // style={globalStyles.input}
+        style={globalStyles.input}
         placeholder={`Saisissez votre réponse ici (max ${varText.max_length} caractères)`}
         value={response.value}
         onChangeText={(text) => handleChange(text)}
+        placeholderTextColor={'#ffffff80'}
       />
     </View>
   );

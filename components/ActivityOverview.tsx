@@ -9,7 +9,7 @@ import Button from "./Button";
 import { Activity } from "../shared/classes/Activity";
 
 type ActivityOverviewType = {
-    activity: Activity,
+    activity: ActivityType,
     action?: () => void,
     buttonTitle?: string
 }

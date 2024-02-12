@@ -23,6 +23,6 @@ export type VariableType = {
     ref_out?: null,
     list_params?: null,
     interval?: null,
-    status: "active" | "inactive",
+    isActive: boolean,
     mandatory?: boolean,
 }

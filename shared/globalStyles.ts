@@ -16,10 +16,8 @@ export const globalStyles = StyleSheet.create({
     headerIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-
-
-
     },
+
     CategoryTitle: {
         fontFamily: 'Inter_700Bold',
         fontSize: variables.fontSize[4],
@@ -64,13 +62,16 @@ export const globalStyles = StyleSheet.create({
     },
 
     VariableCardContent: {
-
         backgroundColor: '#00000020',
         borderRadius: variables.borderRadius[1],
         padding: variables.contentPadding[2],
         marginVertical: variables.contentMargin[1],
         justifyContent: 'center',
 
+    },
+    variableCardTitle: {
+        fontSize: variables.fontSize[4],
+        fontFamily: 'Inter_700Bold',
     },
 
     VariableCardHeader: {
@@ -148,7 +149,7 @@ export const globalStyles = StyleSheet.create({
 
     },
     scrollContainer: {
-        marginBottom: 48,
+        marginBottom: 200,
     },
     body: {
         flex: 1,
@@ -167,12 +168,14 @@ export const globalStyles = StyleSheet.create({
     },
 
     button: {
-        paddingVertical: variables.contentPadding[1],
+        paddingVertical: variables.contentPadding[2],
         paddingHorizontal: variables.contentPadding[1],
-        borderRadius: variables.borderRadius[2],
+        marginVertical: variables.contentMargin[1],
+        borderRadius: variables.borderRadius[1],
         backgroundColor: "#cdcdcd",
         color: "white",
-        fontSize: variables.fontSize[0]
+        fontSize: variables.fontSize[0],
+        width: "100%",
     },
     buttonAlignSelfCenter: {
         alignSelf: "center",
@@ -191,25 +194,41 @@ export const globalStyles = StyleSheet.create({
     },
     cardSession: {
         flexDirection: "column",
-        backgroundColor: '#00000020', // Changez la couleur de fond selon vos préférences
+        backgroundColor: '#00000050', // Changez la couleur de fond selon vos préférences
         borderRadius: variables.borderRadius[2],
         marginVertical: variables.contentMargin[1],
         padding: variables.contentPadding[1],
     },
-
+    cardSessionContent: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        padding: variables.contentPadding[2],
+    },
+    
     topCard: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-
-
     },
+    topCardActivity: {
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    topCardActivityItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    
     topCardContent: {
         flexDirection: "column",
-        alignItems: "flex-end",
+        alignItems: "flex-start",
         justifyContent: "space-between",
-
-
+        padding: variables.contentPadding[2],
+        
+        
     },
 
     buttonAlert: {
@@ -229,10 +248,10 @@ export const globalStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#cdcdcd",
         marginVertical: variables.contentMargin[1],
-        backgroundColor: "#FFFFFF10",
+        backgroundColor: "#FFFFFF30",
         color: "white",
         fontSize: variables.fontSize[1],
-
+            
     },
 
     buttonContainer: {
@@ -250,7 +269,8 @@ export const globalStyles = StyleSheet.create({
         flexDirection: 'row',
         borderRadius: 5,
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+
     },
 
 
