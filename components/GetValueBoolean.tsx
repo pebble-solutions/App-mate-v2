@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Switch as RNSwitch, View, Text, SwitchProps } from 'react-native';
 import { globalStyles } from "../shared/globalStyles";
 import { VariableType } from "../shared/types/VariableType";
+import ButtonPrevNext from "./TunnelsButton";
+import { router } from "expo-router";
 
 interface BooleanResponse {
   _id: string;
@@ -49,6 +51,12 @@ const ResponseBoolean: React.FC<ResponseBooleanProps> = ({ varBoolean }) => {
           value={isEnabled}
         />
       </View>
+      <ButtonPrevNext 
+        onPress1={() =>  router.back() }
+        onPress2={()=> console.log('suivant')}
+        buttonName1="< Précédent"
+        buttonName2="Suivant >"
+        />  
     </View>
   );
 }

@@ -1,18 +1,25 @@
 
 import React, { useState } from "react";
 import { View, Text, TextInput, Alert, StyleSheet } from 'react-native';
+// import { useSessionStatusContext } from "../shared/contexts/SessionStatusContext";
+// import { useSessionContext } from "../shared/contexts/SessionContext";
 import { globalStyles } from "../shared/globalStyles";
 import { VariableType } from "../shared/types/VariableType";
+import ButtonPrevNext from "./TunnelsButton";
+import { router } from "expo-router";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 // Type définissant les propriétés attendues par le composant
 type ResponseTextAreaType = {
   varTextArea: VariableType
-
 }
-
+// const statusContext = useSessionStatusContext()
+// const { getStatus, setStatus, resetStatus, setPayload, resetPayload, getPayload} = statusContext
+// const sessionContext = useSessionContext()
+// console.log(sessionContext, 'sessionContext')
+// console.log(getStatus, 'getStatus')
 // Composant de réponse textuelle
 const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea }) => {
-  console.log(varTextArea, 'varTextArea');
 
   // State pour suivre la réponse de l'utilisateur
   const [response, setResponse] = React.useState({
@@ -25,6 +32,7 @@ const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea }) => {
   const handleChange = (text: string) => {
     // Met à jour la réponse dans le state
     setResponse(prev => ({ ...prev, value: text }));
+    console.log(response, 'response'   )
   };
 
   return (
@@ -41,6 +49,12 @@ const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea }) => {
         placeholderTextColor={'#ffffff80'}
 
       />
+       <ButtonPrevNext 
+        onPress1={() =>  router.back() }
+        onPress2={()=> console.log('suivant')}
+        buttonName1="< Précédent"
+        buttonName2="Suivant >"
+        />  
     </View>
   );
 };

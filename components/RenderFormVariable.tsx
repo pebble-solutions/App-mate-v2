@@ -14,25 +14,6 @@ import { VariableType } from "../shared/types/VariableType";
 
 interface RenderFormProps {
     item: VariableType
-    // {
-    //     _id: string,
-    //     label: string,
-    //     type: string,
-    //     min_length: number,
-    //     max_length: number,
-    //     question: string,
-    //     mandatory: boolean,
-    //     min_value: number,
-    //     max_value: number,
-    //     min_date: string,
-    //     max_date: string,
-    //     min_time: string,
-    //     max_time: string,
-    //     min_dateTime: string,
-    //     max_dateTime: string,
-    //     min_dateRange: string,
-    //     max_dateRange: string,
-    // }
 }
 
 const RenderForm : FC<RenderFormProps>  = ({item}) => {
