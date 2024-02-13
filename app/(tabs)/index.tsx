@@ -11,7 +11,6 @@ import PointingSession from "../../components/PointingSession";
 import RenderItem from "../../components/RenderItem";
 import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
 import {useSessionContext} from "../../shared/contexts/SessionContext";
-import {VariableType} from "../../shared/types/VariableType";
 import { startSession } from "../../shared/libs/session";
 
 export default function SessionScreen() {
@@ -56,8 +55,6 @@ export default function SessionScreen() {
         
         const activity = getActivityById(activityId);
         
-        
-        
         if (!activity) {
             Alert.alert("Erreur : activité non trouvée")
             resetPayload()
@@ -73,11 +70,11 @@ export default function SessionScreen() {
         
         content = 
         <LinearGradient
-        style={[globalStyles.body, globalStyles.card, globalStyles.topContainer]}
-        colors={getRGBGradientColors(activity.color)}
-        start={{x: 0, y: 1}}
-        end={{x: 1, y: 0}}
-    >
+            style={[globalStyles.body, globalStyles.card, globalStyles.topContainer]}
+            colors={getRGBGradientColors(activity.color)}
+            start={{x: 0, y: 1}}
+            end={{x: 1, y: 0}}
+        >
             <View>
                 
                     <View style={globalStyles.topCardContent}>
@@ -148,8 +145,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    
-    
 
     buttonLight: {
         backgroundColor: "white"
