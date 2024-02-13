@@ -7,7 +7,6 @@ import { globalStyles } from "../shared/globalStyles";
 import { VariableType } from "../shared/types/VariableType";
 import ButtonPrevNext from "./TunnelsButton";
 import { router } from "expo-router";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 // Type définissant les propriétés attendues par le composant
 type ResponseTextAreaType = {
