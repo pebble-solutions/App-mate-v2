@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Alert, StyleSheet,TouchableOpacity } from 'react-native';
 import {globalStyles} from "../shared/globalStyles";
+import ButtonPrevNext from "./TunnelsButton";
+import { router } from "expo-router";
+import { VariableType } from "../shared/types/VariableType";
 
 // type définissant les propriétés attendues par le composant
 type ResponseNumberType = {
-  varNumber: {
-    _id: string;
-    label: string;
-    min_value: number;
-    max_value: number;
-    question: string;
-    mandatory: boolean;
-  };
+  varNumber: VariableType
+//   {
+//     _id: string;
+//     label: string;
+//     min_value: number;
+//     max_value: number;
+//     question: string;
+//     mandatory: boolean;
+//   };
 }
 // Composant de réponse numérique
 const ResponseNumber: React.FC<ResponseNumberType> = ({ varNumber }) => {
@@ -49,6 +53,12 @@ const ResponseNumber: React.FC<ResponseNumberType> = ({ varNumber }) => {
         onChangeText={(number) => handleChange(number)}
         placeholderTextColor={'#ffffff80'}
       />
+       <ButtonPrevNext 
+        onPress1={() =>  router.back() }
+        onPress2={()=> console.log('suivant')}
+        buttonName1="< Précédent"
+        buttonName2="Suivant >"
+        />  
     </View>
   );
 };

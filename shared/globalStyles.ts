@@ -265,6 +265,32 @@ export const globalStyles = StyleSheet.create({
         justifyContent: 'center',
 
     },
+    buttonContainerTunnel: {
+        flexDirection: 'row',
+        backgroundColor: '#00000000',
+        padding: variables.contentPadding[1],
+        margin: variables.contentMargin[1],
+        borderRadius: 5,
+        justifyContent: 'space-evenly',
+
+    },
+    buttonTunnel: {
+        padding: variables.contentPadding[2],
+        margin: variables.contentMargin[1],
+        borderRadius: variables.borderRadius[1],
+        backgroundColor: "grey",
+        color: "white",
+        fontSize: variables.fontSize[0],
+        width: "40%",
+        alignItems: 'center',
+    },
+    buttonTextTunnel: {
+        color: 'white', // Couleur du texte
+
+
+        fontSize: variables.fontSize[2],
+    },
+
     buttonContainerSession: {
         flexDirection: 'row',
         borderRadius: 5,
@@ -273,10 +299,8 @@ export const globalStyles = StyleSheet.create({
 
     },
 
-
     buttonText: {
         color: 'white', // Couleur du texte
-
         fontSize: variables.fontSize[1],
     },
 

@@ -1,16 +1,29 @@
 import React, { useState } from "react";
-import { Switch as RNSwitch, View, Text } from 'react-native';
+import { Switch as RNSwitch, View, Text, SwitchProps } from 'react-native';
 import { globalStyles } from "../shared/globalStyles";
+import { VariableType } from "../shared/types/VariableType";
 
-const ResponseBoolean = ({ varBoolean }) => {
-  const [response, setResponse] = React.useState({
-    'id': varBoolean._id,
-    'label': varBoolean.label,
-    'value': '',
+interface BooleanResponse {
+  _id: string;
+  label: string;
+  question: string;
+  // Ajoutez d'autres propriétés au besoin
+}
+
+interface ResponseBooleanProps {
+  varBoolean: VariableType;
+}
+
+const ResponseBoolean: React.FC<ResponseBooleanProps> = ({ varBoolean }) => {
+  const [response, setResponse] = React.useState<BooleanResponse>({
+    _id: varBoolean._id,
+    label: varBoolean.label,
+    question: varBoolean.question,
+    value: '',
   });
-  console.log(response, ' response')
-  const [isEnabled, setIsEnabled] = useState();
-  const [displayText, setDisplayText] = useState("Non");
+
+  const [isEnabled, setIsEnabled] = useState<boolean>(false);
+  const [displayText, setDisplayText] = useState<string>("Non");
 
   const toggleSwitch = () => {
     const newEnabledState = !isEnabled;
@@ -19,10 +32,8 @@ const ResponseBoolean = ({ varBoolean }) => {
     setDisplayText(newEnabledState ? "Oui" : "Non");
     setResponse((prevResponse) => ({
       ...prevResponse,
-      value: newEnabledState,
-
+      value: newEnabledState.toString(),
     }));
-    console.log(newEnabledState, 'value finale')
   };
 
   return (
@@ -43,6 +54,3 @@ const ResponseBoolean = ({ varBoolean }) => {
 }
 
 export default ResponseBoolean;
-
-
-  

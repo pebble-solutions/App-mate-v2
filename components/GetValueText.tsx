@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Alert, StyleSheet } from 'react-native';
 import { globalStyles } from "../shared/globalStyles";
+import ButtonPrevNext from "./TunnelsButton";
+import { router } from "expo-router";
+import { VariableType } from "../shared/types/VariableType";
 
 // Type définissant les propriétés attendues par le composant
 type ResponseTextType = {
-  varText: {
-    _id: string;
-    label: string;
-    min_length: number;
-    max_length: number;
-    question: string;
-    mandatory: boolean;
-  };
+  varText: VariableType
+//   {
+//     _id: string;
+//     label: string;
+//     min_length: number;
+//     max_length: number;
+//     question: string;
+//     mandatory: boolean;
+//   };
 }
 
 // Composant de réponse textuelle
@@ -47,6 +51,14 @@ const ResponseText: React.FC<ResponseTextType> = ({ varText }) => {
         onChangeText={(text) => handleChange(text)}
         placeholderTextColor={'#ffffff80'}
       />
+      <View >
+        </View>
+      <ButtonPrevNext 
+        onPress1={() =>  router.back() }
+        onPress2={()=> console.log('suivant')}
+        buttonName1="< Précédent"
+        buttonName2="Suivant >"
+        />  
     </View>
   );
 };
