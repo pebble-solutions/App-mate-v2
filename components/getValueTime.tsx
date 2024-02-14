@@ -2,20 +2,48 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';  
+import { VariableType } from '../shared/types/VariableType';
+import ButtonPrevNext from './TunnelsButton';
+import { router } from 'expo-router';
+import { RawVariableType } from '../shared/types/SessionType';
 
-const ResponseTime = ({ onTimeChange, varTime }) => {
-  const [selectedTime, setSelectedTime] = useState(new Date());
-  const [showTimePicker, setShowTimePicker] = useState(false);
+type ResponseTimeType = {
+  onTimeChange: (time: Date) => void;
+  onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
+  varTime: VariableType; // Assurez-vous de définir correctement le type de varTime
+  response: RawVariableType;
+}
 
-  const handleTimeChange = (time) => {
+const ResponseTime: React.FC<ResponseTimeType> = ({ onTimeChange, varTime, onRawVariablesChange }) => {
+  console.log(varTime, 'varNumber');
+    const [response, setResponse] = React.useState({
+        '_id': varTime._id,
+        'label': varTime.label,
+        'value': new Date()
+        
+    });
+  const [selectedTime, setSelectedTime] = useState<Date>(new Date());
+  const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
+  const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
+
+  const handleChange = (time: Date) => {
+    setResponse(prev => ({ ...prev, value: time }));
+};
+
+  const handleTimeChange = (time?: Date) => {
     if (Platform.OS === 'android') {
       setShowTimePicker(false);
     }
-
     if (time !== undefined) {
       setSelectedTime(time);
       onTimeChange(time);
+      console.log(time, 'time');
     }
+  };
+  const validate = () => {
+    setRawVariables([...rawVariables, response])
+    console.log(rawVariables);
+    onRawVariablesChange(rawVariables);
   };
 
   const showTimepicker = () => {
@@ -24,7 +52,12 @@ const ResponseTime = ({ onTimeChange, varTime }) => {
 
   return (
     <View>
-      <Text>{varTime.question}</Text>
+        {rawVariables.map((rawVariable, index) => (
+        <Text key={index} style={globalStyles.textLight}>
+            {rawVariable.label}: {rawVariable.value}
+        </Text>
+        ))}
+      <Text style={globalStyles.textLight}>{varTime.question}</Text>
       <View style={globalStyles.input}>
         <Text style={globalStyles.textLight}>Sélectionnez une heure :</Text>
         <TouchableOpacity onPress={showTimepicker}>
@@ -44,7 +77,14 @@ const ResponseTime = ({ onTimeChange, varTime }) => {
             onChange={handleTimeChange}
           />
         )}
+     
       </View>
+      <ButtonPrevNext
+        onPress1={() => router.back()}
+        onPress2={validate}
+        buttonName1="< ANNULER"
+        buttonName2="VALIDER >"
+      />
     </View>
   );
 };

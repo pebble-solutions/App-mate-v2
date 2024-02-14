@@ -1,46 +1,44 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Alert, StyleSheet,TouchableOpacity } from 'react-native';
-import {globalStyles} from "../shared/globalStyles";
+import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { globalStyles } from "../shared/globalStyles";
 import ButtonPrevNext from "./TunnelsButton";
 import { router } from "expo-router";
 import { VariableType } from "../shared/types/VariableType";
+import { RawVariableType } from "../shared/types/SessionType";
 
-// type définissant les propriétés attendues par le composant
 type ResponseNumberType = {
-  varNumber: VariableType
-//   {
-//     _id: string;
-//     label: string;
-//     min_value: number;
-//     max_value: number;
-//     question: string;
-//     mandatory: boolean;
-//   };
+  varNumber: VariableType;
+  onRawVariablesChange: (rawVariables: RawVariableType[]) => void;
 }
-// Composant de réponse numérique
-const ResponseNumber: React.FC<ResponseNumberType> = ({ varNumber }) => {
-  console.log(varNumber, 'varNumber');
-   // State pour suivre la réponse de l'utilisateur
-  const [response, setResponse] = React.useState({
-    'id': varNumber._id,
+
+const ResponseNumber: React.FC<ResponseNumberType> = ({ varNumber, onRawVariablesChange }) => {
+  const [response, setResponse] = useState({
+    '_id': varNumber._id,
     'label': varNumber.label,
     'value': ''
   });
-// Fonction appelée lorsqu'il y a un changement dans le TextInput
-  const handleChange = (number: string) => {
-    // Convertit la valeur entrée en nombre
-    const parsedNumber = parseFloat(number);
-    // Met à jour la réponse dans le state si le nombre est valide
 
-    if (!isNaN(parsedNumber) && parsedNumber >= varNumber.min_value && parsedNumber <= varNumber.max_value) {
-      setResponse(prev => ({ ...prev, value: parsedNumber.toString() }));
-    } else {
-      Alert.alert(`Veuillez saisir un nombre compris entre ${varNumber.min_value} et ${varNumber.max_value}`);
-    }
+  const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
+
+  const handleChange = (number: string) => {
+    setResponse(prev => ({ ...prev, value: number }));
+  };
+
+  const validate = () => {
+    const updatedRawVariables = [...rawVariables, response]; // Mettre à jour les rawVariables avec la nouvelle réponse
+    setRawVariables(updatedRawVariables); // Mettre à jour le state rawVariables
+
+    // Appeler la fonction de rappel avec les rawVariables mises à jour
+    onRawVariablesChange(updatedRawVariables);
   };
 
   return (
     <View>
+      {rawVariables.map((rawVariable, index) => (
+        <Text key={index} style={globalStyles.textLight}>
+          {rawVariable.label}: {rawVariable.value}
+        </Text>
+      ))}
       <Text style={globalStyles.textLight}>
         {varNumber.question}
       </Text>
@@ -53,12 +51,12 @@ const ResponseNumber: React.FC<ResponseNumberType> = ({ varNumber }) => {
         onChangeText={(number) => handleChange(number)}
         placeholderTextColor={'#ffffff80'}
       />
-       <ButtonPrevNext 
-        onPress1={() =>  router.back() }
-        onPress2={()=> console.log('suivant')}
-        buttonName1="< Précédent"
-        buttonName2="Suivant >"
-        />  
+      <ButtonPrevNext
+        onPress1={() => router.back()}
+        onPress2={validate}
+        buttonName1="< ANNULER"
+        buttonName2="VALIDER >"
+      />
     </View>
   );
 };

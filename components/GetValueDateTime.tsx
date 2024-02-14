@@ -4,12 +4,23 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';
 import ButtonPrevNext from './TunnelsButton';
 import { router } from 'expo-router';
+import { VariableType } from '../shared/types/VariableType';
+import { RawVariableType } from '../shared/types/SessionType';
 
-const ResponseDateTime = ({ onDateTimeChange, varDateTime }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(new Date());
-  const [isDatePickerVisible, setDatePickerVisible] = useState(false);
-  const [isTimePickerVisible, setTimePickerVisible] = useState(false);
+type ResponseDateTimeType = {
+  onDateTimeChange: (dateTime: Date) => void;
+  onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
+ 
+  varDateTime: VariableType; 
+}
+
+const ResponseDateTime: React.FC<ResponseDateTimeType> = ({ onDateTimeChange, varDateTime, onRawVariablesChange }) => {
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedTime, setSelectedTime] = useState<Date>(new Date());
+  const [isDatePickerVisible, setDatePickerVisible] = useState<boolean>(false);
+  const [isTimePickerVisible, setTimePickerVisible] = useState<boolean>(false);
+  const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
+
 
   const showDatePicker = () => {
     setDatePickerVisible(true);
@@ -27,68 +38,76 @@ const ResponseDateTime = ({ onDateTimeChange, varDateTime }) => {
     setTimePickerVisible(false);
   };
 
-  const handleDateChange = (event, date) => {
+  const handleDateChange = (event: Event, date?: Date) => {
     hideDatePicker();
 
     if (date !== undefined) {
       setSelectedDate(date);
       showTimePicker();
+      console.log(selectedDate, 'selectedDate')
     }
   };
 
-  const handleTimeChange = (event, time) => {
+  const handleTimeChange = (event: Event, time?: Date) => {
     hideTimePicker();
 
     if (time !== undefined) {
       setSelectedTime(time);
-      onDateTimeChange(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time.getHours(), time.getMinutes()));
+      const dateTime = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time.getHours(), time.getMinutes());
+      onDateTimeChange(dateTime);
+      console.log(dateTime, 'dateTime')
     }
   };
-
+  const validate = () => {
+    // setRawVariables([...rawVariables, selectedDate, selectedTime])
+    onRawVariablesChange(rawVariables);
+  };
   return (
     <View>
-        <Text>{varDateTime.question}</Text>
-        <View style={globalStyles.input}>
-            <Text style={globalStyles.textLight}>
-                Sélectionnez une date et une heure :
-            </Text>
-            <TouchableOpacity onPress={showDatePicker}>
-                <Text style={globalStyles.textLight}>
-                {selectedDate.toLocaleDateString('fr-FR') +
-                    ' ' +
-                    selectedTime.toLocaleTimeString('fr-FR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    })}
-                </Text>
-            </TouchableOpacity>
-    
-            {isDatePickerVisible && (
-                <DateTimePicker
-                value={selectedDate}
-                mode="date"
-                display="spinner"
-                onChange={handleDateChange}
-                />
-            )}
-    
-            {isTimePickerVisible && (
-                <DateTimePicker
-                value={selectedTime}
-                mode="time"
-                display="spinner"
-                onChange={handleTimeChange}
-                />
-            )}
-             <ButtonPrevNext 
-                onPress1={() =>  router.back() }
-                onPress2={()=> console.log('suivant')}
-                buttonName1="< Précédent"
-                buttonName2="Suivant >"
-            />  
-        </View>
-  </View>
-  
+      <Text style={globalStyles.textLight}>{varDateTime.question}</Text>
+      <Text style={globalStyles.textLight}>{varDateTime.description}</Text>
+
+      <View style={globalStyles.input}>
+        <TouchableOpacity onPress={showDatePicker}>
+          <Text style={globalStyles.textLight}>
+        <Text style={globalStyles.textLight}>
+          Sélectionnez une date et une heure :
+        </Text>
+            {/* {selectedDate.toLocaleDateString('fr-FR') +
+              ' ' +
+              selectedTime.toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })} */}
+              VVVV
+          </Text>
+        </TouchableOpacity>
+
+        {isDatePickerVisible && (
+          <DateTimePicker
+            value={selectedDate}
+            mode="date"
+            display="spinner"
+            onChange={handleDateChange}
+          />
+        )}
+
+        {isTimePickerVisible && (
+          <DateTimePicker
+            value={selectedTime}
+            mode="time"
+            display="spinner"
+            onChange={handleTimeChange}
+          />
+        )}
+      </View>
+      <ButtonPrevNext
+        onPress1={() => router.back()}
+        onPress2={validate}
+        buttonName1="< ANNULER"
+        buttonName2="VALIDER >"
+      />
+    </View>
   );
 };
 

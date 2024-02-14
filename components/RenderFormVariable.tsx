@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FC } from "react";
 import { Text, View, TextInput } from "react-native";
 import { globalStyles } from "../shared/globalStyles";
@@ -11,73 +11,74 @@ import ResponseDate from "./GetValueDate";
 import ResponseDateRange from "./GetValueDateRange";
 import ResponseDateTime from "./GetValueDateTime";
 import ResponseTime from "./getValueTime";
-// import ResponseDate from "./formVariable/variableDate";
-// import ResponseTime from "./formVariable/variableTime";
-// import ResponseDateTime from "./formVariable/variableDateTime";
-// import ResponseDateRange from "./formVariable/variableDateRange";
+import { RawVariableType } from "../shared/types/SessionType";
 
-interface RenderFormProps {
-    item: VariableType
+type RenderFormType = {
+    item: VariableType;
+  onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
+
 }
 
-const RenderForm : FC<RenderFormProps>  = ({item}) => {
-    
+const RenderForm : FC<RenderFormType>  = ({item, onRawVariablesChange}) => {
+    // State pour suivre les réponses brutes
+    const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
+
+    // Fonction de rappel pour recevoir les valeurs de rawVariables des composants enfants
+    const handleRawVariablesChange = (newRawVariables: RawVariableType[]) => {
+        // Mettre à jour les rawVariables dans le state
+        setRawVariables(newRawVariables);
+    };
+
     console.log(item, ' item')
     if(item.type === 'text'){
         return (
-            <View>
-                <ResponseText  varText={item}/>
-            </View>
+            <ResponseText varText={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'textarea'){
         return (
-            <ResponseTextArea  varTextArea={item}/>
-
+            <ResponseTextArea varTextArea={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'number'){
         return (
-            <ResponseNumber varNumber={item}/>
-
+            <ResponseNumber varNumber={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'boolean'){
         return (
-            <ResponseBoolean varBoolean={item} />
+            <ResponseBoolean varBoolean={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'date'){
         return (
-            <ResponseDate varDate={item}/>
-      
+
+            <ResponseDate varDate={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'time'){
         return (
-            <ResponseTime varTime={item}/>
-      
+
+            <ResponseTime varTime={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'datetime'){
         return (
-            <ResponseDateTime varDateTime={item}/>
-      
+
+            <ResponseDateTime varDateTime={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'daterange'){
         return (
-            <ResponseDateRange varDateRange={item}/>
-      
+
+            <ResponseDateRange varDateRange={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else{
         return (
-        <Text style={globalStyles.textLight}> Ce type de variable n'est pas traité dans cette application: {item.type} XXX</Text>
+            <Text style={globalStyles.textLight}> Ce type de variable n'est pas traité dans cette application: {item.type} XXX</Text>
         )
     }
-    
 }
 
-
-export default RenderForm
+export default RenderForm;

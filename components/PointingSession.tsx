@@ -14,7 +14,6 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
     const [intervalWork, setIntervalWork] = React.useState(0);
     const [intervalPause, setIntervalPause] = React.useState(0);
     const [rawDatas, setRawDatas] = React.useState([] as {end: Date, start: Date}[]);
-    const [rawVariables, setRawVariables] = React.useState([] as {_id: string, comment_value:string, label: string, info: string, value: string |number}[]);
     const [isVisible, setIsVisible] = React.useState(false);
     const [elapsedTime, setElapsedTime] = React.useState(0);
     let sessionCopy = {...currentSession};
@@ -30,7 +29,6 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
     const validate = async () => {
         const currentTime = new Date();
             setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: currentTime}]);  
-            setRawVariables([...rawVariables, ]);  
             console.log(rawDatas, 'rawDatas');
             sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
             sessionContext.postSession(currentSession._id, {...currentSession});
@@ -113,6 +111,15 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
                     onPress={() => {setStatus("validate"), validate()}}
                     titleStyle={[{color: 'green'}]}
                     />
+                }
+                {rawDatas.length > 0 &&
+                    
+                rawDatas.map((rawData, index) => ( 
+                        <View key={index} style={globalStyles.cardSession}>
+                            <Text style={globalStyles.textLight}>Début: {rawData.start.toLocaleTimeString('fr-FR')}</Text>
+                            <Text style={globalStyles.textLight}>Fin: {rawData.end.toLocaleTimeString('fr-FR')}</Text>  
+                        </View>
+                    ))
                 }
         
             

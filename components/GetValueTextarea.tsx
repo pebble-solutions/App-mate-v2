@@ -7,35 +7,43 @@ import { globalStyles } from "../shared/globalStyles";
 import { VariableType } from "../shared/types/VariableType";
 import ButtonPrevNext from "./TunnelsButton";
 import { router } from "expo-router";
+import { RawVariableType } from "../shared/types/SessionType";
 
 // Type définissant les propriétés attendues par le composant
 type ResponseTextAreaType = {
-  varTextArea: VariableType
+  varTextArea: VariableType;
+  onRawVariablesChange: (rawVariables: RawVariableType[]) => void;
+
 }
-// const statusContext = useSessionStatusContext()
-// const { getStatus, setStatus, resetStatus, setPayload, resetPayload, getPayload} = statusContext
-// const sessionContext = useSessionContext()
-// console.log(sessionContext, 'sessionContext')
-// console.log(getStatus, 'getStatus')
-// Composant de réponse textuelle
-const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea }) => {
+
+const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea, onRawVariablesChange }) => {
 
   // State pour suivre la réponse de l'utilisateur
   const [response, setResponse] = React.useState({
-    'id': varTextArea._id,
+    '_id': varTextArea._id,
     'label': varTextArea.label,
     'value': ''
   });
+  const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
 
   // Fonction appelée lorsqu'il y a un changement dans le TextInput
   const handleChange = (text: string) => {
     // Met à jour la réponse dans le state
     setResponse(prev => ({ ...prev, value: text }));
-    console.log(response, 'response'   )
   };
 
+ const validate = () => {
+    setRawVariables([...rawVariables, response])
+    console.log(response);
+    onRawVariablesChange(rawVariables);
+  };
   return (
     <View>
+        {rawVariables.map((rawVariable, index) => (
+        <Text key={index} style={globalStyles.textLight}>
+            {rawVariable.label}: {rawVariable.value}
+        </Text>
+        ))}
       <Text style={globalStyles.textLight}>
         {varTextArea.question}
       </Text>
@@ -48,12 +56,12 @@ const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea }) => {
         placeholderTextColor={'#ffffff80'}
 
       />
-       <ButtonPrevNext 
-        onPress1={() =>  router.back() }
-        onPress2={()=> console.log('suivant')}
-        buttonName1="< Précédent"
-        buttonName2="Suivant >"
-        />  
+        <ButtonPrevNext
+        onPress1={() => router.back()}
+        onPress2={validate}
+        buttonName1="< ANNULER"
+        buttonName2="VALIDER >"
+      />
     </View>
   );
 };

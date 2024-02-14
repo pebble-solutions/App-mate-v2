@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {globalStyles} from '../shared/globalStyles';
+import { globalStyles } from '../shared/globalStyles';
+import { VariableType } from '../shared/types/VariableType';
 
-const ResponseDateRange = ({ onDateRangeChange, varDateRange }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
-  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
+interface ResponseDateRangeProps {
+  onDateRangeChange: (startDate: Date, endDate: Date) => void;
+  varDateRange: VariableType; 
+}
 
-  const handleStartDateChange = (date) => {
+const ResponseDateRange: React.FC<ResponseDateRangeProps> = ({ onDateRangeChange, varDateRange }) => {
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [showStartDatePicker, setShowStartDatePicker] = useState<boolean>(false);
+  const [showEndDatePicker, setShowEndDatePicker] = useState<boolean>(false);
+
+  const handleStartDateChange = (event: Event, date?: Date) => {
     if (Platform.OS === 'android') {
       setShowStartDatePicker(false);
     }
 
     if (date !== undefined) {
       setStartDate(date);
-      onDateRangeChange(startDate, date);
+      onDateRangeChange(date, endDate);
     }
   };
 
-  const handleEndDateChange = (date) => {
+  const handleEndDateChange = (event: Event, date?: Date) => {
     if (Platform.OS === 'android') {
       setShowEndDatePicker(false);
     }

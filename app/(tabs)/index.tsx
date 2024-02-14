@@ -101,7 +101,7 @@ export default function SessionScreen() {
                         </View>
                     }    
                 </View>
-                <View>
+                <View style={globalStyles.scrollContainer}>
                     {status == "validate" &&
                         <View>
                             <RenderItem variables={variables} />
