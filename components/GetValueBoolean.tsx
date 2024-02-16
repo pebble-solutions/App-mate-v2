@@ -4,26 +4,37 @@ import { globalStyles } from "../shared/globalStyles";
 import { VariableType } from "../shared/types/VariableType";
 import ButtonPrevNext from "./TunnelsButton";
 import { router } from "expo-router";
+import { RawVariableType } from "../shared/types/SessionType";
 
-interface BooleanResponse {
-  _id: string;
-  label: string;
-  question: string;
-  // Ajoutez d'autres propriétés au besoin
-}
 
-interface ResponseBooleanProps {
+
+
+type ResponseBooleanType = {
   varBoolean: VariableType;
+  onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
+
 }
 
-const ResponseBoolean: React.FC<ResponseBooleanProps> = ({ varBoolean }) => {
-  const [response, setResponse] = React.useState<BooleanResponse>({
+const ResponseBoolean: React.FC<ResponseBooleanType> = ({ varBoolean, onRawVariablesChange }) => {
+  const [response, setResponse] = React.useState({
     _id: varBoolean._id,
     label: varBoolean.label,
     question: varBoolean.question,
     value: '',
   });
+  const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
+  const handleChange = (text: string) => {
+    setResponse(prev => ({ ...prev, value: text }));
+  };
+  
 
+  const validate = () => {
+    // Ajoute la réponse au tableau des réponses brutes
+    setRawVariables(prev => [...prev, response]);
+    console.log(response);
+    onRawVariablesChange(rawVariables);
+
+  };
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const [displayText, setDisplayText] = useState<string>("Non");
 
@@ -51,14 +62,18 @@ const ResponseBoolean: React.FC<ResponseBooleanProps> = ({ varBoolean }) => {
           value={isEnabled}
         />
       </View>
-      <ButtonPrevNext 
-        onPress1={() =>  router.back() }
-        onPress2={()=> console.log('suivant')}
-        buttonName1="< Précédent"
-        buttonName2="Suivant >"
-        />  
+      <ButtonPrevNext
+        onPress1={() => router.back()}
+        onPress2={validate}
+        buttonName1="< ANNULER"
+        buttonName2="VALIDER >"
+      />
     </View>
   );
 }
 
 export default ResponseBoolean;
+function setRawVariables(arg0: (prev: any) => any[]) {
+    throw new Error("Function not implemented.");
+}
+

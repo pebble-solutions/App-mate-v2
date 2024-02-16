@@ -187,6 +187,15 @@ export const globalStyles = StyleSheet.create({
         paddingHorizontal: variables.contentMargin[1],
 
     },
+
+    scrollContainer: {
+        marginBottom: 200,
+    },
+    scrollContainerVariable: {
+        
+        marginBottom: 600,
+    },
+
     body: {
         flex: 1,
     },

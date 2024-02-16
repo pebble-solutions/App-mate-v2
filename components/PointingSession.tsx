@@ -14,7 +14,6 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
     const [intervalWork, setIntervalWork] = React.useState(0);
     const [intervalPause, setIntervalPause] = React.useState(0);
     const [rawDatas, setRawDatas] = React.useState([] as {end: Date, start: Date}[]);
-    const [rawVariables, setRawVariables] = React.useState([] as {_id: string, comment_value:string, label: string, info: string, value: string |number}[]);
     const [isVisible, setIsVisible] = React.useState(false);
     const [elapsedTime, setElapsedTime] = React.useState(0);
     let sessionCopy = {...currentSession};
@@ -30,7 +29,6 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
     const validate = async () => {
         const currentTime = new Date();
             setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: currentTime}]);  
-            setRawVariables([...rawVariables, ]);  
             console.log(rawDatas, 'rawDatas');
             sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
             sessionContext.postSession(currentSession._id, {...currentSession});
@@ -103,14 +101,19 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
               <View style={localStyle.buttonsBox}>
                   <Button
                       title= {pressTimes.length%2 === 1 ? "STOP" : "REPRENDRE"}
-                      onPress={() => {pointing() }}
+                      onPress={async () => {
+                          await pointing()
+                      }}
                       titleStyle={[{color: 'red'}]}
                   />
 
                   {pressTimes.length%2 === 0 &&
                       <Button
                           title="valider les horaires"
-                          onPress={() => {setStatus("validate"), validate()}}
+                          onPress={async () => {
+                              setStatus("validate");
+                              await validate()
+                          }}
                           titleStyle={[{color: 'green'}]}
                       />
                   }
