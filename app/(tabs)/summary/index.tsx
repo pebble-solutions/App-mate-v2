@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
 import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import Carousel from 'react-native-reanimated-carousel';
-import ActivityLabel from "../../../components/ActivityLabel";
+import ActivityLabel from "../../../components/Activity/ActivityLabel";
 import { useSessionContext } from "../../../shared/contexts/SessionContext";
 import { globalStyles } from "../../../shared/globalStyles";
 import HeaderScreenTitle from "../../../components/HeaderScreenTitle";

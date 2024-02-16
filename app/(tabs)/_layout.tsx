@@ -7,17 +7,19 @@ export default function TabsLayout() {
         <Tabs screenOptions={{
             headerShown: false
         }}>
-             <Tabs.Screen name="variables/index" options={{
-                title: "Variables", tabBarIcon: ({ color, size }) => (
+            <Tabs.Screen name="variables/index" options={{
+                title: "Variables",
+                tabBarIcon: ({ color, size }) => (
                     <Ionicons name="checkmark-done-outline" size={size} color={color} />
                 )
             }} />
             <Tabs.Screen name="activities" options={{
-                title: "Activities", tabBarIcon: ({ color, size }) => (
+                title: "Activities",
+                tabBarIcon: ({ color, size }) => (
                     <Ionicons name="albums" size={size} color={color} />
                 )
             }} />
-            <Tabs.Screen name="index" options={{
+            <Tabs.Screen name="session" options={{
                 title: "Session", tabBarIcon: ({ color, size }) => (
                     <Ionicons name="timer" size={30} color={color} />
                 )
@@ -27,10 +29,14 @@ export default function TabsLayout() {
                     <Ionicons name="stats-chart-outline" size={size} color={color} />
                 )
             }} />
-             <Tabs.Screen name="settings/index" options={{
-                title: "Settings", tabBarIcon: ({ color, size }) => (
+            <Tabs.Screen name="settings/index" options={{
+                title: "Settings",
+                tabBarIcon: ({ color, size }) => (
                     <Ionicons name="settings-outline" size={size} color={color} />
                 )
+            }} />
+            <Tabs.Screen name="index" options={{
+                href: null
             }} />
         </Tabs>
     )

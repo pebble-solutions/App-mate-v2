@@ -1,12 +1,13 @@
-import {globalStyles} from "../shared/globalStyles";
-import {getRGBGradientColors} from "../shared/libs/color";
+import {globalStyles} from "../../shared/globalStyles";
+import {getRGBGradientColors} from "../../shared/libs/color";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
-import {ActivityType} from "../shared/types/ActivityType";
+import {ActivityType} from "../../shared/types/ActivityType";
 import {router} from "expo-router";
 import {Href} from "expo-router/build/link/href";
-import Button from "./Button";
-import { Activity } from "../shared/classes/Activity";
+import Button from "../Button";
+import { Activity } from "../../shared/classes/Activity";
+import ActivityGradient from "./ActivityGradient";
 
 type ActivityOverviewType = {
     activity: ActivityType,
@@ -19,26 +20,23 @@ export default function ActivityOverview({ activity, action, buttonTitle }: Acti
     buttonTitle = buttonTitle || "Consulter"
 
     return (
-        <LinearGradient
-            style={[globalStyles.body, globalStyles.card, globalStyles.mContainer]}
-            colors={getRGBGradientColors(activity.color)}
-            start={{x: 0, y: 1}}
-            end={{x: 1, y: 0}}
-        >
+        <ActivityGradient
+            activity={activity}
+            style={[globalStyles.body, globalStyles.card]}>
             <View style={[globalStyles.cardContent, styles.localCardContent]}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
                 <Text style={globalStyles.textLight}>{activity.description}</Text>
 
                 {action ? <View style={globalStyles.pv2Container}>
-                            <Button
-                                title={buttonTitle}
-                                onPress={() => action() }
-                                style={[styles.buttonLight]}
-                                variant="xl"
-                                titleStyle={[{color: activity.color}]} />
-                            </View>: null}
+                    <Button
+                        title={buttonTitle}
+                        onPress={() => action() }
+                        style={[styles.buttonLight]}
+                        variant="xl"
+                        titleStyle={[{color: activity.color}]} />
+                </View>: null}
             </View>
-        </LinearGradient>
+        </ActivityGradient>
     )
 }
 

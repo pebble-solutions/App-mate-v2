@@ -82,8 +82,8 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
       
       
       return (
-          <View>
-            <View >
+          <View style={[globalStyles.body]}>
+            <View style={[globalStyles.body]}>
                 <View style={globalStyles.cardSession}>
 
                     <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{currentSession.start.toLocaleString('fr-FR')}</Text>
@@ -98,27 +98,32 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
                         </View>
                     }
                 </View>
-                <Button
-                    style={[globalStyles.button, globalStyles.buttonContainerSession]} 
-                    title= {pressTimes.length%2 === 1 ? "STOP" : "REPRENDRE"}
-                    onPress={() => {pointing() }}
-                    titleStyle={[{color: 'red'}]}
-                    />
             </View>
 
-                {pressTimes.length%2 === 0 &&
-                    <Button
-                    style={[globalStyles.button, globalStyles.buttonContainerSession]} 
-                    title="valider les horaires"
-                    onPress={() => {setStatus("validate"), validate()}}
-                    titleStyle={[{color: 'green'}]}
-                    />
-                }
-        
-            
+              <View style={localStyle.buttonsBox}>
+                  <Button
+                      title= {pressTimes.length%2 === 1 ? "STOP" : "REPRENDRE"}
+                      onPress={() => {pointing() }}
+                      titleStyle={[{color: 'red'}]}
+                  />
 
+                  {pressTimes.length%2 === 0 &&
+                      <Button
+                          title="valider les horaires"
+                          onPress={() => {setStatus("validate"), validate()}}
+                          titleStyle={[{color: 'green'}]}
+                      />
+                  }
+              </View>
             
         </View>
                 
     )
 }
+
+const localStyle = StyleSheet.create({
+    buttonsBox: {
+        flexDirection: "row-reverse",
+        alignItems: "center"
+    }
+})

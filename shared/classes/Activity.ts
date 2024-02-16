@@ -2,6 +2,9 @@ import { ActivityType } from "../types/ActivityType";
 import { VariableType } from "../types/VariableType";
 
 export class Activity implements ActivityType {
+
+    static DEFAULT_COLOR = "#262729";
+
     _id: string;
     label: string;
     description?: string;
@@ -14,7 +17,7 @@ export class Activity implements ActivityType {
         this._id = activity._id;
         this.label = activity.label;
         this.description = activity.description;
-        this.color = !activity.color || !this.isValidColor(activity.color) ? "#262729" : activity.color;
+        this.color = !activity.color || !this.isValidColor(activity.color) ? Activity.DEFAULT_COLOR : activity.color;
         this.start = new Date(activity.start);
         this.variables = activity.variables;
         this.is_active = activity.is_active;

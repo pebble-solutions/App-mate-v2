@@ -6,6 +6,8 @@ import VariableContextProvider from "../shared/contexts/VariableContext";
 import SessionStatusContextProvider from "../shared/contexts/SessionStatusContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SessionContextProvider from "../shared/contexts/SessionContext";
+import {SafeAreaView} from "react-native";
+import {globalStyles} from "../shared/globalStyles";
 
 SplashScreen.preventAutoHideAsync()
 

@@ -1,5 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {globalStyles} from "../shared/globalStyles";
+import {globalStyles, variables} from "../shared/globalStyles";
+import {ReactNode} from "react";
 
 type ButtonType = {
     title: string,
@@ -7,21 +8,31 @@ type ButtonType = {
     style?: any[],
     titleStyle?: any[],
     variant?: 'xl' | 'lg' | 'sm',
+    icon?: ReactNode,
+    options?: ButtonOptions
 }
 
-export default function Button({title, onPress, style, titleStyle, variant}: ButtonType) {
+type ButtonOptions = {
+    displayTitle?: boolean
+}
+
+export default function Button({title, onPress, style, titleStyle, variant, icon, options}: ButtonType) {
 
     style = style || []
     titleStyle = titleStyle || []
 
+    options = {
+        displayTitle: true,
+        ...options
+    }
 
     if (variant === 'lg') {
-        style.push(globalStyles.buttonLg)
+        style.push(localStyle.lg)
         titleStyle.push(globalStyles.textLg)
     }
 
     else if (variant === 'xl') {
-        style.push(globalStyles.buttonXl)
+        style.push(localStyle.xl)
         titleStyle.push(globalStyles.textXl)
     }
 
@@ -30,9 +41,34 @@ export default function Button({title, onPress, style, titleStyle, variant}: But
             onPress={() => onPress()}
         >
             <View
-                style={[globalStyles.button, ...style]}>
-                <Text style={titleStyle}>{title}</Text>
+                style={[localStyle.button, ...style]}>
+                {icon && icon}
+                {options.displayTitle && <Text style={titleStyle}>{title}</Text>}
             </View>
         </TouchableOpacity>
     )
 }
+
+const localStyle = StyleSheet.create({
+    button: {
+        paddingVertical: variables.contentPadding[2],
+        paddingHorizontal: variables.contentPadding[3],
+        marginVertical: variables.contentMargin[1],
+        borderRadius: variables.borderRadius[3],
+        backgroundColor: "#cdcdcd",
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center"
+    },
+
+    lg: {
+        paddingVertical: variables.contentPadding[1],
+        paddingHorizontal: variables.contentPadding[1]
+    },
+
+    xl: {
+        paddingVertical: variables.contentPadding[2],
+        paddingHorizontal: variables.contentPadding[3]
+    },
+})
