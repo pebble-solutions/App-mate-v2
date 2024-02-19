@@ -1,25 +1,21 @@
 import React, { useState } from "react";
 import { Switch as RNSwitch, View, Text, SwitchProps } from 'react-native';
 import { globalStyles } from "../shared/globalStyles";
-import { VariableType } from "../shared/types/VariableType";
-import ButtonPrevNext from "./TunnelsButton";
-import { router } from "expo-router";
 import { RawVariableType } from "../shared/types/SessionType";
 
 
 
 
 type ResponseBooleanType = {
-  varBoolean: VariableType;
+  varBoolean: RawVariableType;
   onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
 
 }
 
-const ResponseBoolean: React.FC<ResponseBooleanType> = ({ varBoolean, onRawVariablesChange }) => {
+const GetValueBoolean: React.FC<ResponseBooleanType> = ({ varBoolean, onRawVariablesChange }) => {
   const [response, setResponse] = React.useState({
     _id: varBoolean._id,
     label: varBoolean.label,
-    question: varBoolean.question,
     value: '',
   });
   const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
@@ -51,7 +47,6 @@ const ResponseBoolean: React.FC<ResponseBooleanType> = ({ varBoolean, onRawVaria
 
   return (
     <View>
-      <Text style={globalStyles.textLight}>{varBoolean.question}</Text>
       <View style={globalStyles.input}>
         <Text style={globalStyles.textLight}>{displayText}</Text>
         <RNSwitch
@@ -62,17 +57,12 @@ const ResponseBoolean: React.FC<ResponseBooleanType> = ({ varBoolean, onRawVaria
           value={isEnabled}
         />
       </View>
-      <ButtonPrevNext
-        onPress1={() => router.back()}
-        onPress2={validate}
-        buttonName1="< ANNULER"
-        buttonName2="VALIDER >"
-      />
+     
     </View>
   );
 }
 
-export default ResponseBoolean;
+export default GetValueBoolean;
 function setRawVariables(arg0: (prev: any) => any[]) {
     throw new Error("Function not implemented.");
 }

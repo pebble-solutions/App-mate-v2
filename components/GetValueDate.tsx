@@ -2,19 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';
-import ButtonPrevNext from './TunnelsButton';
-import { router } from 'expo-router';
-import { VariableType } from '../shared/types/VariableType';
 import { RawVariableType } from '../shared/types/SessionType';
 
 type ResponseDateType = {
   onDateChange: (date: Date) => void;
-  varDate: VariableType;
+  varDate: RawVariableType;
   onRawVariablesChange: (rawVariables: RawVariableType[]) => void; 
+  toLocaleDateString: (date: Date) => string;
 
 }
 
-const ResponseDate: React.FC<ResponseDateType> = ({ onDateChange, varDate, onRawVariablesChange }) => {
+const GetValueDate: React.FC<ResponseDateType> = ({ varDate, onRawVariablesChange, onDateChange}) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
@@ -31,7 +29,6 @@ const ResponseDate: React.FC<ResponseDateType> = ({ onDateChange, varDate, onRaw
 
     if (date !== undefined) {
       setSelectedDate(date);
-      onDateChange(date);
       console.log(selectedDate, 'date');
     }
   };
@@ -46,22 +43,19 @@ const ResponseDate: React.FC<ResponseDateType> = ({ onDateChange, varDate, onRaw
 
   return (
     <View>
-         {rawVariables.map((rawVariable, index) => (
-        <Text key={index} style={globalStyles.textLight}>
-            {rawVariable.label}: {rawVariable.value}
-        </Text>
-        ))}
-      <Text style={globalStyles.textLight}>{varDate.question}</Text>
+        
+    
       <View style={globalStyles.input}>
-        <Text style={globalStyles.textLight}>Sélectionnez une date :</Text>
         <TouchableOpacity onPress={showDatepicker}>
           <Text style={globalStyles.textLight}>
+            
             {selectedDate.toLocaleDateString('fr-FR', {
               year: 'numeric',
               month: '2-digit',
               day: '2-digit',
             })}
           </Text>
+        <Text style={globalStyles.textLight}>Sélectionnez une date ..</Text>
         </TouchableOpacity>
 
         {showDatePicker && (
@@ -73,14 +67,9 @@ const ResponseDate: React.FC<ResponseDateType> = ({ onDateChange, varDate, onRaw
           />
         )}
         </View>
-        <ButtonPrevNext
-        onPress1={() => router.back()}
-        onPress2={validate}
-        buttonName1="< ANNULER"
-        buttonName2="VALIDER >"
-      />
+        
     </View>
   );
 };
 
-export default ResponseDate;
+export default GetValueDate;

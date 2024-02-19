@@ -2,19 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';  
-import { VariableType } from '../shared/types/VariableType';
-import ButtonPrevNext from './TunnelsButton';
-import { router } from 'expo-router';
 import { RawVariableType } from '../shared/types/SessionType';
 
 type ResponseTimeType = {
   onTimeChange: (time: Date) => void;
   onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
-  varTime: VariableType; // Assurez-vous de définir correctement le type de varTime
+  varTime: RawVariableType; // Assurez-vous de définir correctement le type de varTime
   response: RawVariableType;
 }
 
-const ResponseTime: React.FC<ResponseTimeType> = ({ onTimeChange, varTime, onRawVariablesChange }) => {
+const GetValueTime: React.FC<ResponseTimeType> = ({ onTimeChange, varTime, onRawVariablesChange }) => {
   console.log(varTime, 'varNumber');
     const [response, setResponse] = React.useState({
         '_id': varTime._id,
@@ -42,7 +39,6 @@ const ResponseTime: React.FC<ResponseTimeType> = ({ onTimeChange, varTime, onRaw
   };
   const validate = () => {
     setRawVariables([...rawVariables, response])
-    console.log(rawVariables);
     onRawVariablesChange(rawVariables);
   };
 
@@ -79,14 +75,9 @@ const ResponseTime: React.FC<ResponseTimeType> = ({ onTimeChange, varTime, onRaw
         )}
      
       </View>
-      <ButtonPrevNext
-        onPress1={() => router.back()}
-        onPress2={validate}
-        buttonName1="< ANNULER"
-        buttonName2="VALIDER >"
-      />
+     
     </View>
   );
 };
 
-export default ResponseTime;
+export default GetValueTime;

@@ -1,22 +1,17 @@
 
 import React, { useState } from "react";
 import { View, Text, TextInput, Alert, StyleSheet } from 'react-native';
-// import { useSessionStatusContext } from "../shared/contexts/SessionStatusContext";
-// import { useSessionContext } from "../shared/contexts/SessionContext";
 import { globalStyles } from "../shared/globalStyles";
-import { VariableType } from "../shared/types/VariableType";
-import ButtonPrevNext from "./TunnelsButton";
-import { router } from "expo-router";
 import { RawVariableType } from "../shared/types/SessionType";
 
 // Type définissant les propriétés attendues par le composant
-type ResponseTextAreaType = {
-  varTextArea: VariableType;
+type GetValueTextAreaType = {
+  varTextArea: RawVariableType;
   onRawVariablesChange: (rawVariables: RawVariableType[]) => void;
 
 }
 
-const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea, onRawVariablesChange }) => {
+const GetValueTextArea: React.FC<GetValueTextAreaType> = ({ varTextArea, onRawVariablesChange }) => {
 
   // State pour suivre la réponse de l'utilisateur
   const [response, setResponse] = React.useState({
@@ -39,14 +34,6 @@ const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea, onRawVa
   };
   return (
     <View>
-        {rawVariables.map((rawVariable, index) => (
-        <Text key={index} style={globalStyles.textLight}>
-            {rawVariable.label}: {rawVariable.value}
-        </Text>
-        ))}
-      <Text style={globalStyles.textLight}>
-        {varTextArea.question}
-      </Text>
       <TextInput
         style={globalStyles.input}
         placeholder={`Saisissez votre réponse ici (max ${varTextArea.max_length} caractères)`}
@@ -56,16 +43,10 @@ const ResponseTextArea: React.FC<ResponseTextAreaType> = ({ varTextArea, onRawVa
         placeholderTextColor={'#ffffff80'}
 
       />
-        <ButtonPrevNext
-        onPress1={() => router.back()}
-        onPress2={validate}
-        buttonName1="< ANNULER"
-        buttonName2="VALIDER >"
-      />
     </View>
   );
 };
 
-export default ResponseTextArea;
+export default GetValueTextArea;
 
 

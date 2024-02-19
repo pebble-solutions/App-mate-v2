@@ -2,24 +2,24 @@ import React, { useState } from "react";
 import { FC } from "react";
 import { Text, View, TextInput } from "react-native";
 import { globalStyles } from "../shared/globalStyles";
-import ResponseTextArea from "./GetValueTextarea";
-import ResponseText from "./GetValueText";
-import ResponseNumber from "./GetValueNumber";
-import ResponseBoolean from "./GetValueBoolean";
-import { VariableType } from "../shared/types/VariableType";
-import ResponseDate from "./GetValueDate";
-import ResponseDateRange from "./GetValueDateRange";
-import ResponseDateTime from "./GetValueDateTime";
-import ResponseTime from "./getValueTime";
+import GetValueText from "./GetValueText";
+import GetValueTextArea from "./GetValueTextarea";
+import GetValueBoolean from "./GetValueBoolean";
+import GetValueNumber from "./GetValueNumber";
+import GetValueTime from "./getValueTime";
+import GetValueDate from "./GetValueDate";
+import GetValueDateTime from "./GetValueDateTime";
+import GetValueDateRange from "./GetValueDateRange";
 import { RawVariableType } from "../shared/types/SessionType";
+import ButtonPrevNext from "./TunnelsButton";
 
 type RenderFormType = {
-    item: VariableType;
-  onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
+    item: RawVariableType ; // La variable à afficher
+    onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
 
 }
 
-const RenderForm : FC<RenderFormType>  = ({item, onRawVariablesChange}) => {
+const RenderForm : FC<RenderFormType>  = ({item, onValidate, onCancel}) => {
     // State pour suivre les réponses brutes
     const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
 
@@ -29,56 +29,74 @@ const RenderForm : FC<RenderFormType>  = ({item, onRawVariablesChange}) => {
         setRawVariables(newRawVariables);
     };
 
-    console.log(item, ' item')
+    let component;
+
     if(item.type === 'text'){
-        return (
-            <ResponseText varText={item} onRawVariablesChange={handleRawVariablesChange} />
+        component = (
+            <GetValueText varText={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'textarea'){
-        return (
-            <ResponseTextArea varTextArea={item} onRawVariablesChange={handleRawVariablesChange} />
+        component = (
+            <GetValueTextArea varTextArea={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'number'){
-        return (
-            <ResponseNumber varNumber={item} onRawVariablesChange={handleRawVariablesChange} />
+        component = (
+            <GetValueNumber varNumber={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'boolean'){
-        return (
-            <ResponseBoolean varBoolean={item} onRawVariablesChange={handleRawVariablesChange} />
+        component = (
+            <GetValueBoolean varBoolean={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'date'){
-        return (
+        component =  (
 
-            <ResponseDate varDate={item} onRawVariablesChange={handleRawVariablesChange} />
+            <GetValueDate varDate={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'time'){
-        return (
+        component =  (
 
-            <ResponseTime varTime={item} onRawVariablesChange={handleRawVariablesChange} />
+            <GetValueTime varTime={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'datetime'){
-        return (
+        component =  (
 
-            <ResponseDateTime varDateTime={item} onRawVariablesChange={handleRawVariablesChange} />
+            <GetValueDateTime varDateTime={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'daterange'){
-        return (
+        component =  (
 
-            <ResponseDateRange varDateRange={item} onRawVariablesChange={handleRawVariablesChange} />
+            <GetValueDateRange varDateRange={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else{
-        return (
+        component =  (
             <Text style={globalStyles.textLight}> Ce type de variable n'est pas traité dans cette application: {item.type} XXX</Text>
         )
     }
+    return (
+        //label
+        <View>
+            <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>{item.label}</Text>
+            {component}
+            <ButtonPrevNext
+                onPress2={() => onValidate(rawVariables)}
+                onPress1={() => onCancel()}
+                buttonName1="< retour"
+                buttonName2="Valider >"
+            />
+        </View>
+    )
+    // ici on affiche les boutons suiv et précédent
+    // suivant déclenche la fonction on validate et et passe la valeur active de la réponse en paramètre onValidate(newValue)
+    // précédent déclenche la fonction onCancel et ne passe rien en paramètre
+
 }
 
 export default RenderForm;

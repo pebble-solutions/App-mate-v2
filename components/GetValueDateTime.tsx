@@ -2,19 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';
-import ButtonPrevNext from './TunnelsButton';
-import { router } from 'expo-router';
-import { VariableType } from '../shared/types/VariableType';
 import { RawVariableType } from '../shared/types/SessionType';
 
 type ResponseDateTimeType = {
   onDateTimeChange: (dateTime: Date) => void;
   onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
  
-  varDateTime: VariableType; 
+  varDateTime: RawVariableType; 
 }
 
-const ResponseDateTime: React.FC<ResponseDateTimeType> = ({ onDateTimeChange, varDateTime, onRawVariablesChange }) => {
+const GetValueDateTime: React.FC<ResponseDateTimeType> = ({varDateTime, onRawVariablesChange, onDateTimeChange }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<Date>(new Date());
   const [isDatePickerVisible, setDatePickerVisible] = useState<boolean>(false);
@@ -64,23 +61,20 @@ const ResponseDateTime: React.FC<ResponseDateTimeType> = ({ onDateTimeChange, va
   };
   return (
     <View>
-      <Text style={globalStyles.textLight}>{varDateTime.question}</Text>
-      <Text style={globalStyles.textLight}>{varDateTime.description}</Text>
 
       <View style={globalStyles.input}>
         <TouchableOpacity onPress={showDatePicker}>
           <Text style={globalStyles.textLight}>
-        <Text style={globalStyles.textLight}>
-          Sélectionnez une date et une heure :
-        </Text>
-            {/* {selectedDate.toLocaleDateString('fr-FR') +
-              ' ' +
-              selectedTime.toLocaleTimeString('fr-FR', {
-                hour: '2-digit',
-                minute: '2-digit',
-              })} */}
-              VVVV
+                Sélectionnez une date et une heure :
           </Text>
+            <Text style={globalStyles.textLight}>
+                {selectedDate.toLocaleDateString('fr-FR') +
+                ' ' +
+                selectedTime.toLocaleTimeString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                })}
+            </Text>
         </TouchableOpacity>
 
         {isDatePickerVisible && (
@@ -101,14 +95,9 @@ const ResponseDateTime: React.FC<ResponseDateTimeType> = ({ onDateTimeChange, va
           />
         )}
       </View>
-      <ButtonPrevNext
-        onPress1={() => router.back()}
-        onPress2={validate}
-        buttonName1="< ANNULER"
-        buttonName2="VALIDER >"
-      />
+     
     </View>
   );
 };
 
-export default ResponseDateTime;
+export default GetValueDateTime;
