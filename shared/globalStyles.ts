@@ -6,8 +6,13 @@ export const variables = {
     contentMargin: [0, 6, 12, 24, 32, 48],
     fontSize: [12, 14, 16, 20, 24, 28, 32],
     color: {
+        black: "#0b161e",
         dark: "#11212D",
-        white: "#ffffff"
+        grey: "#2b4660",
+        lightGrey: "#59759f",
+        white: "#ffffff",
+        danger: "#cb3c3c",
+        success: "#5aab42"
     }
 }
 
@@ -144,6 +149,62 @@ export const globalStyles = StyleSheet.create({
         marginBottom: variables.contentMargin[1]
     },
 
+    mhContainer: {
+        marginHorizontal: variables.contentMargin[1]
+    },
+
+    mh2Container: {
+        marginHorizontal: variables.contentMargin[2]
+    },
+
+    mh3Container: {
+        marginHorizontal: variables.contentMargin[3]
+    },
+
+    mh4Container: {
+        marginHorizontal: variables.contentMargin[4]
+    },
+
+    mvContainer: {
+        marginVertical: variables.contentMargin[1]
+    },
+
+    mv2Container: {
+        marginVertical: variables.contentMargin[2]
+    },
+
+    mv3Container: {
+        marginVertical: variables.contentMargin[3]
+    },
+
+    mv4Container: {
+        marginVertical: variables.contentMargin[4]
+    },
+
+    mtContainer: {
+        marginTop: variables.contentMargin[1]
+    },
+
+    mt2Container: {
+        marginTop: variables.contentMargin[2]
+    },
+
+    mt3Container: {
+        marginTop: variables.contentMargin[3]
+    },
+
+    mt4Container: {
+        marginTop: variables.contentMargin[4]
+    },
+
+    msContainer: {
+        marginLeft: variables.contentMargin[1]
+    },
+
+    meContainer: {
+        marginRight: variables.contentMargin[1]
+    },
+
     mb2Container: {
         marginBottom: variables.contentMargin[2]
     },
@@ -159,10 +220,6 @@ export const globalStyles = StyleSheet.create({
     sContainer: {
         flex: 1,
     },
-    mhContainer: {
-        marginHorizontal: variables.contentMargin[1]
-    },
-
     contentContainer: {
         marginHorizontal: variables.contentMargin[2],
     },
@@ -393,5 +450,28 @@ export const globalStyles = StyleSheet.create({
         textAlign: 'center',
     },
 
+    centeredContainer: {
+        alignItems: "center"
+    },
+
+    textDanger: {
+        color: variables.color.danger
+    },
+
+    textSuccess: {
+        color: variables.color.success
+    },
+
+    textDark: {
+        color: variables.color.dark
+    },
+
+    textGrey: {
+        color: variables.color.grey
+    },
+
+    textLightGrey: {
+        color: variables.color.lightGrey
+    },
 
 });
