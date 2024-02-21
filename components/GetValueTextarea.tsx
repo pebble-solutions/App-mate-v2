@@ -1,25 +1,29 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { View, Text, TextInput, Alert, StyleSheet } from 'react-native';
 import { globalStyles } from "../shared/globalStyles";
 import { RawVariableType } from "../shared/types/SessionType";
 
 // Type définissant les propriétés attendues par le composant
-type GetValueTextAreaType = {
+type ResponseTextARea = {
   varTextArea: RawVariableType;
-  onRawVariablesChange: (rawVariables: RawVariableType[]) => void;
+  onRawVariablesChange: (response: RawVariableType) => void;
+};
 
-}
-
-const GetValueTextArea: React.FC<GetValueTextAreaType> = ({ varTextArea, onRawVariablesChange }) => {
+const GetValueTextArea: React.FC<ResponseTextARea> = ({ varTextArea, onRawVariablesChange }) => {
 
   // State pour suivre la réponse de l'utilisateur
-  const [response, setResponse] = React.useState({
-    '_id': varTextArea._id,
-    'label': varTextArea.label,
-    'value': ''
+  const [response, setResponse] = useState({
+    _id: varTextArea._id,
+    label: varTextArea.label,
+    value: '',
+    type: varTextArea.type,
   });
-  const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
+
+  useEffect(() => {
+    onRawVariablesChange(response);
+    }, [response]);
+    
 
   // Fonction appelée lorsqu'il y a un changement dans le TextInput
   const handleChange = (text: string) => {
@@ -27,21 +31,16 @@ const GetValueTextArea: React.FC<GetValueTextAreaType> = ({ varTextArea, onRawVa
     setResponse(prev => ({ ...prev, value: text }));
   };
 
- const validate = () => {
-    setRawVariables([...rawVariables, response])
-    console.log(response);
-    onRawVariablesChange(rawVariables);
-  };
+ 
   return (
     <View>
       <TextInput
         style={globalStyles.input}
-        placeholder={`Saisissez votre réponse ici (max ${varTextArea.max_length} caractères)`}
+        placeholder={`Saisissez votre réponse ici `}
         value={response.value}
         multiline={true}
         onChangeText={(text) => handleChange(text)}
         placeholderTextColor={'#ffffff80'}
-
       />
     </View>
   );

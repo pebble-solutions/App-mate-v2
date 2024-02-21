@@ -3,11 +3,12 @@ import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';
 import { RawVariableType } from '../shared/types/SessionType';
+import {format} from 'date-fns';
+import {fr} from 'date-fns/locale';
 
 type ResponseDateTimeType = {
   onDateTimeChange: (dateTime: Date) => void;
   onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
- 
   varDateTime: RawVariableType; 
 }
 
@@ -67,14 +68,18 @@ const GetValueDateTime: React.FC<ResponseDateTimeType> = ({varDateTime, onRawVar
           <Text style={globalStyles.textLight}>
                 Sélectionnez une date et une heure :
           </Text>
-            <Text style={globalStyles.textLight}>
+            {/* <Text style={globalStyles.textLight}>
                 {selectedDate.toLocaleDateString('fr-FR') +
                 ' ' +
                 selectedTime.toLocaleTimeString('fr-FR', {
                     hour: '2-digit',
                     minute: '2-digit',
                 })}
+            </Text> */}
+            <Text style={globalStyles.textLight}>
+                {format(selectedDate, 'PP', {locale: fr})+ ' ' + format(selectedTime, 'p', {locale: fr})}
             </Text>
+
         </TouchableOpacity>
 
         {isDatePickerVisible && (

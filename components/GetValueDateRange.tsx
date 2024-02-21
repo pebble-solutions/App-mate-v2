@@ -48,7 +48,7 @@ const GetValueDateRange : React.FC<ResponseDateRangeProps> = ({ onDateRangeChang
 
   return (
     <View>
-      <Text>{varDateRange.question}</Text>
+      <Text>{varDateRange.label}</Text>
       <View style={globalStyles.input}>
         <Text style={globalStyles.textLight}>
           Sélectionnez une date de début :

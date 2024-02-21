@@ -14,6 +14,7 @@ import Title from "../../../components/Title";
 import VariableTest from "../../../components/composantTest";
 import { set } from "date-fns";
 import RenderForm from "../../../components/RenderFormVariable";
+import RenderRecapSession from "../../../components/RenderRecapSession";
 
 export default function ValidateScreen() {
     
@@ -23,6 +24,8 @@ export default function ValidateScreen() {
     const { status, resetStatus, resetPayload } = useSessionStatusContext()
     const [ exitStatus, setExistStatus ] = React.useState(false);
     let [i, setI] = React.useState<number>(0);
+    const [raw_variables, setRaw_variables] = React.useState<RawVariableType[]>([]);
+    const [currentResponse, setCurrentResponse] = React.useState<RawVariableType>({} as RawVariableType);
     
     
     useEffect(() => {
@@ -47,7 +50,9 @@ export default function ValidateScreen() {
             }));
             setRawVariables(newRawVariables);
         }
+
         
+    
         
         return (
             <View style={globalStyles.mainContainer}>
@@ -70,22 +75,34 @@ export default function ValidateScreen() {
                 </GradientHeader>
 
                 <View style={[globalStyles.body, globalStyles.darkBg]}>
-                    {rawVariables.length>0 && <RenderForm item={rawVariables[i]}
-                        onRawVariablesChange={setRawVariables} 
-                        onValidate={() => {
-                            if(i < rawVariables.length - 1){
-                                setI(i+1);
-                            }
-                            else{
-                                Alert.alert("Fin de la session");
-                            }
-                        }}
-                        onCancel={() => {
-                            if(i > 0){
-                                setI(i-1);
-                            }
-                        }}
-                    />}
+                    <Text style={globalStyles.textLight}> {i+1} / {rawVariables.length} </Text>
+
+                    {rawVariables.length > 0 &&
+                        <RenderForm item={rawVariables[i]}
+                            onRawVariablesChange={(newResponse: RawVariableType) => {
+                                setCurrentResponse(newResponse);
+                                console.log(newResponse, 'newResponsevalidate');
+                            }}
+                            onValidate={() => {
+                                setRaw_variables([...raw_variables, currentResponse]);
+                                // raw_variables.push(currentResponse);
+                                console.log(raw_variables, 'rawvariblesvalidees');
+                                if (i < rawVariables.length - 1) {
+
+                                    setI(i + 1);
+                                }
+                                else {
+                                    Alert.alert("Fin de la session");
+                                }
+                            }}
+                            onCancel={() => {
+                                if (i > 0) {
+                                    setI(i - 1);
+                                }
+                            }}
+                        />
+                    }
+                    <RenderRecapSession raw_variables={raw_variables}/>
                 </View>
             </View>
         )

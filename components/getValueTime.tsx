@@ -27,7 +27,7 @@ const GetValueTime: React.FC<ResponseTimeType> = ({ onTimeChange, varTime, onRaw
     setResponse(prev => ({ ...prev, value: time }));
 };
 
-  const handleTimeChange = (time?: Date) => {
+  const handleTimeChange = (event: Event,time?: Date) => {
     if (Platform.OS === 'android') {
       setShowTimePicker(false);
     }
