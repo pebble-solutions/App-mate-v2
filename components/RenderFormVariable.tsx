@@ -12,7 +12,6 @@ import GetValueDateTime from "./GetValueDateTime";
 import GetValueDateRange from "./GetValueDateRange";
 import { RawVariableType } from "../shared/types/SessionType";
 import ButtonPrevNext from "./TunnelsButton";
-import { set } from "date-fns";
 
 type RenderFormType = {
     item: RawVariableType ; // La variable à afficher
@@ -29,8 +28,6 @@ const RenderForm : FC<RenderFormType>  = ({item, onRawVariablesChange, onValidat
 
     // Fonction de rappel pour recevoir les valeurs de rawVariables des composants enfants
     const handleRawVariablesChange = (response: RawVariableType) => {
-        // Mettre à jour les rawVariables dans le state
-        //setRawVariables(newRawVariables);
         setResponse(response);
         onRawVariablesChange(response);
     };
@@ -100,9 +97,6 @@ const RenderForm : FC<RenderFormType>  = ({item, onRawVariablesChange, onValidat
             
         </View>
     )
-    // ici on affiche les boutons suiv et précédent
-    // suivant déclenche la fonction on validate et et passe la valeur active de la réponse en paramètre onValidate(newValue)
-    // précédent déclenche la fonction onCancel et ne passe rien en paramètre
 
 }
 

@@ -12,7 +12,7 @@ const GetValueNumber: React.FC<ResponseNumberType> = ({ varNumber, onRawVariable
     const [response, setResponse] = useState({
         _id: varNumber._id,
         label: varNumber.label,
-        value: varNumber.value,
+        value: '',
         type: varNumber.type,
     });
 
@@ -20,8 +20,8 @@ const GetValueNumber: React.FC<ResponseNumberType> = ({ varNumber, onRawVariable
         onRawVariablesChange(response);
     }, [response]);
 
-    const handleChange = (number:Number) => {
-        setResponse(prev => ({ ...prev, value: number}));
+    const handleChange = (text:string) => {
+        setResponse(prev => ({ ...prev, value: text}));
     };
 
 
@@ -32,8 +32,8 @@ const GetValueNumber: React.FC<ResponseNumberType> = ({ varNumber, onRawVariable
             placeholder="Saisissez un nombre"
             keyboardType="numeric"
             inputMode="numeric"
-            value={response.value}  
-            onChangeText={(number) => handleChange(Number(number))}
+            value={response.value?.toString()}  
+            onChangeText={(text) => handleChange(text)}
             placeholderTextColor={'#ffffff80'}
         />
     </View>

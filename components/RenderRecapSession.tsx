@@ -4,10 +4,9 @@ import { globalStyles } from "../shared/globalStyles";
 import { RawVariableType } from "../shared/types/SessionType";
 
 type renderRecapSessionType = { 
-
     raw_variables: RawVariableType[];
-    };
-const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables }) => {
+};
+const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables, okForPost }) => {
 
     return (
         <ScrollView>

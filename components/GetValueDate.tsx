@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';
@@ -17,7 +17,12 @@ type ResponseDateType = {
 const GetValueDate: React.FC<ResponseDateType> = ({ varDate, onRawVariablesChange}) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [rawVariables, setRawVariables] = useState<RawVariableType>();
+
+  useEffect(() => {
+    setResponse(prev => ({ ...prev, value: selectedDate }));
+    onRawVariablesChange(response);
+  }, [selectedDate]);
+
   const [response, setResponse] = useState<RawVariableType>({
     _id: varDate._id,
     label: varDate.label,
@@ -25,41 +30,17 @@ const GetValueDate: React.FC<ResponseDateType> = ({ varDate, onRawVariablesChang
     type: varDate.type,
   });
 
-//   const handleDateChange = (event: Event,date?: Date) => {
-//     if (Platform.OS === 'android') {
-//       setShowDatePicker(false);
-//     }
-
-//     if (date !== undefined) {
-//       setSelectedDate(date);
-//       setResponse({...prev, selectedDate });
-//         onDateChange(date);
-//         console.log(date, 'date');
-//         console.log(response, 'response');
-//         console.log(selectedDate, 'selectedDate');
-//       validate()
-//     }
-//     console.log(date, 'date');
-//   };
-//   const validate = () => {
-//     onRawVariablesChange(response);
-//   };
+ 
 const handleDateChange = (_event: DateTimePickerEvent, date?: Date) => {
     if (Platform.OS === 'android') {
       setShowDatePicker(false);
     }
 
-    if (date !== undefined) {
+    if (date) {
       setSelectedDate(date);
-    
-      setResponse({...response, value: selectedDate});
-      validate();
-      
     }
   };
-  const validate = () => {
-    onRawVariablesChange(response);
-  };
+
   const showDatepicker = () => {
     setShowDatePicker(true);
   };
@@ -67,20 +48,20 @@ const handleDateChange = (_event: DateTimePickerEvent, date?: Date) => {
   return (
     <View>
         
-    
+
       <View >
         <TouchableOpacity style={globalStyles.input} onPress={showDatepicker}>
-          <Text style={globalStyles.textLight}>
-            {format(selectedDate, 'PP', {locale: fr})}
-          </Text>
-        <Text style={globalStyles.textLight}>Sélectionnez une date ..</Text>
+            <Text style={globalStyles.textLight}>Sélectionnez une date ..</Text>
+            <Text style={globalStyles.textLight}>
+                {format(selectedDate, 'PP', {locale: fr})}
+            </Text>
         </TouchableOpacity>
 
         {showDatePicker && (
           <DateTimePicker
-            value={selectedDate}
+            value={selectedDate}  
             mode="date"
-            display="calendar"
+            display="spinner"
             onChange={handleDateChange}
           />
         )}

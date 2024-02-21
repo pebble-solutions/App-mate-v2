@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';
 import { RawVariableType } from '../shared/types/SessionType';
 import {format} from 'date-fns';
@@ -8,7 +8,7 @@ import {fr} from 'date-fns/locale';
 
 type ResponseDateTimeType = {
   onDateTimeChange: (dateTime: Date) => void;
-  onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
+  onRawVariablesChange: (rawVariables: RawVariableType) => void; // Fonction de rappel pour passer les rawVariables au composant parent
   varDateTime: RawVariableType; 
 }
 
@@ -17,8 +17,17 @@ const GetValueDateTime: React.FC<ResponseDateTimeType> = ({varDateTime, onRawVar
   const [selectedTime, setSelectedTime] = useState<Date>(new Date());
   const [isDatePickerVisible, setDatePickerVisible] = useState<boolean>(false);
   const [isTimePickerVisible, setTimePickerVisible] = useState<boolean>(false);
-  const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
 
+const [response, setResponse] = useState({
+    _id: varDateTime._id,
+    label: varDateTime.label,
+    value: '',
+    type: varDateTime.type,
+    });
+
+useEffect(() => {
+    onRawVariablesChange(response);
+    }, [response]);
 
   const showDatePicker = () => {
     setDatePickerVisible(true);
@@ -36,7 +45,7 @@ const GetValueDateTime: React.FC<ResponseDateTimeType> = ({varDateTime, onRawVar
     setTimePickerVisible(false);
   };
 
-  const handleDateChange = (event: Event, date?: Date) => {
+  const handleDateChange = (event: DateTimePickerEvent, date?: Date) => {
     hideDatePicker();
 
     if (date !== undefined) {
@@ -46,7 +55,7 @@ const GetValueDateTime: React.FC<ResponseDateTimeType> = ({varDateTime, onRawVar
     }
   };
 
-  const handleTimeChange = (event: Event, time?: Date) => {
+  const handleTimeChange = (event: DateTimePickerEvent, time?: Date) => {
     hideTimePicker();
 
     if (time !== undefined) {
@@ -56,10 +65,7 @@ const GetValueDateTime: React.FC<ResponseDateTimeType> = ({varDateTime, onRawVar
       console.log(dateTime, 'dateTime')
     }
   };
-  const validate = () => {
-    // setRawVariables([...rawVariables, selectedDate, selectedTime])
-    onRawVariablesChange(rawVariables);
-  };
+ 
   return (
     <View>
 

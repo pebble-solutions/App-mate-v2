@@ -1,6 +1,7 @@
 import {Alert, Text, View} from "react-native";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
+import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {router} from "expo-router";
 import { AntDesign } from '@expo/vector-icons';
 import Button from "../../../components/Button";
@@ -12,18 +13,20 @@ import GradientHeader from "../../../components/Activity/GradientHeader";
 import { globalStyles } from "../../../shared/globalStyles";
 import Title from "../../../components/Title";
 import VariableTest from "../../../components/composantTest";
-import { set } from "date-fns";
 import RenderForm from "../../../components/RenderFormVariable";
 import RenderRecapSession from "../../../components/RenderRecapSession";
+import { set } from "date-fns";
+import { setStatusBarBackgroundColor } from "expo-status-bar";
 
 export default function ValidateScreen() {
     
 
-
+    const sessionContext = useSessionContext();
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
-    const { status, resetStatus, resetPayload } = useSessionStatusContext()
+    const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
     const [ exitStatus, setExistStatus ] = React.useState(false);
     let [i, setI] = React.useState<number>(0);
+    const [isRaw_Variables, setIsRaw_Variables] = React.useState<boolean>(false);
     const [raw_variables, setRaw_variables] = React.useState<RawVariableType[]>([]);
     const [currentResponse, setCurrentResponse] = React.useState<RawVariableType>({} as RawVariableType);
     
@@ -35,7 +38,6 @@ export default function ValidateScreen() {
     try {
         const currentSession = getCurrentSession()
         const currentActivity = getCurrentActivity()
-        // const newRawVariables: RawVariableType[] = [];
         const variables = currentActivity.variables;
         
         
@@ -49,6 +51,20 @@ export default function ValidateScreen() {
                 value: undefined
             }));
             setRawVariables(newRawVariables);
+        }
+        useEffect(() => {
+            if (i < rawVariables.length) {
+                setCurrentResponse(rawVariables[i]);
+            }
+        
+        }
+        , [i]);
+
+        const postSession =  async (raw_variables: RawVariableType[]) => {
+            sessionContext.updateSession(currentSession._id, {...currentSession, raw_variables: raw_variables});
+            sessionContext.postSession(currentSession._id, {...currentSession});
+            setExistStatus(true);
+            resetStatus();
         }
 
         
@@ -76,8 +92,9 @@ export default function ValidateScreen() {
 
                 <View style={[globalStyles.body, globalStyles.darkBg]}>
                     <Text style={globalStyles.textLight}> {i+1} / {rawVariables.length} </Text>
+                    <Text style={globalStyles.textLight}> {status} </Text>
 
-                    {rawVariables.length > 0 &&
+                    {rawVariables.length > 0 && i <rawVariables.length  && isRaw_Variables === false &&
                         <RenderForm item={rawVariables[i]}
                             onRawVariablesChange={(newResponse: RawVariableType) => {
                                 setCurrentResponse(newResponse);
@@ -85,14 +102,29 @@ export default function ValidateScreen() {
                             }}
                             onValidate={() => {
                                 setRaw_variables([...raw_variables, currentResponse]);
-                                // raw_variables.push(currentResponse);
-                                console.log(raw_variables, 'rawvariblesvalidees');
                                 if (i < rawVariables.length - 1) {
-
                                     setI(i + 1);
                                 }
                                 else {
-                                    Alert.alert("Fin de la session");
+                                    Alert.alert("Fin de la session", "Voulez-vous valider ces informations ?", [
+                                        {
+                                            text: "Annuler",
+                                            onPress: () => {
+                                                setIsRaw_Variables(false);
+                                                setRaw_variables([]);
+                                                setI(0);
+                                            }
+                                        },
+                                        {
+                                            text: "OK",
+                                            onPress: () => {
+                                                setIsRaw_Variables(true);
+                                                sessionContext.updateSession(currentSession._id, {...currentSession, raw_variables: raw_variables}); 
+                                                console.log(currentSession, 'session après ok');
+                                            }
+                                        },
+                                    ]);
+
                                 }
                             }}
                             onCancel={() => {
@@ -102,7 +134,16 @@ export default function ValidateScreen() {
                             }}
                         />
                     }
-                    <RenderRecapSession raw_variables={raw_variables}/>
+                    <RenderRecapSession raw_variables={raw_variables} />
+                    {isRaw_Variables && 
+                        <Button
+                            title="Valider cette sesssion"
+                            onPress={async () => {
+                                await postSession(raw_variables);
+                            }
+                            }
+                        />
+                    }
                 </View>
             </View>
         )

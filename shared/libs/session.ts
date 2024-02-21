@@ -21,7 +21,7 @@ export function startSession (activityId: string, sessionContext: SessionContext
         start: new Date(),
         end: undefined,
         type_id: activityId,
-        label: "Pointage de John DOE",
+        label: "Nouveau Pointage de John DOE",
         comment: "",
         status: "started",
         owner: {

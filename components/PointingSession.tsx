@@ -30,7 +30,7 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
         const currentTime = new Date();
             setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: currentTime}]);  
             sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
-            sessionContext.postSession(currentSession._id, {...currentSession});
+            // sessionContext.postSession(currentSession._id, {...currentSession});
       }
     const pointing = async () => {
         const currentTime = new Date();
