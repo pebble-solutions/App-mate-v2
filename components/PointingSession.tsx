@@ -4,7 +4,7 @@ import Button from "./Button";
 import { useSessionStatusContext } from "../shared/contexts/SessionStatusContext";
 import { useSessionContext } from "../shared/contexts/SessionContext";  
 import { SessionType } from "../shared/types/SessionType";
-import { numberToTimeString } from "../shared/libs/date";   
+import { secondsToTimeString } from "../shared/libs/date";
 
 export default function PointingSession({currentSession}:{currentSession: SessionType}) {
     
@@ -85,8 +85,8 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
                 <View style={globalStyles.cardSession}>
 
                     <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{currentSession.start.toLocaleString('fr-FR')}</Text>
-                    <Text style={globalStyles.textLight}>Session: {numberToTimeString(elapsedTime)}</Text>
-                    <Text style={globalStyles.textLight}>Activité: { numberToTimeString(intervalWork)}</Text>
+                    <Text style={globalStyles.textLight}>Session: {secondsToTimeString(elapsedTime)}</Text>
+                    <Text style={globalStyles.textLight}>Activité: { secondsToTimeString(intervalWork)}</Text>
                     {/* <Text style={[globalStyles.headTitle, globalStyles.textLight]}>début :{currentSession.start.toLocaleTimeString('fr-FR')}</Text> */}
 
                     {pressTimes.length >=1 && 

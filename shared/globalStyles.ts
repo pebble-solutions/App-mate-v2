@@ -58,8 +58,7 @@ export const globalStyles = StyleSheet.create({
     },
 
     card: {
-        borderRadius: variables.borderRadius[3],
-        minHeight: 100,
+        borderRadius: variables.borderRadius[3]
     },
 
     recapCarrouselCard: {
@@ -122,6 +121,14 @@ export const globalStyles = StyleSheet.create({
 
     ph2Container: {
         paddingHorizontal: variables.contentMargin[2]
+    },
+
+    ph3Container: {
+        paddingHorizontal: variables.contentMargin[3]
+    },
+
+    ph4Container: {
+        paddingHorizontal: variables.contentMargin[4]
     },
 
     pbContainer: {

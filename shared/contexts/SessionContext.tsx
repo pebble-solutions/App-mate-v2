@@ -9,7 +9,8 @@ export type SessionContextType = {
     getSessionById: (id: string) => SessionType | undefined,
     updateSession: (id: string, newSession: SessionType) => void
     postSession: (id: string, session: SessionType) => void
-    fetchSessionsFromAPI: () => void
+    fetchSessionsFromAPI: () => void,
+    getSessionsFromActivity: (activityId: string) => SessionType[]
 }
 
 const SessionContext = createContext<SessionContextType | null>(null)
@@ -94,8 +95,12 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         return sessions.find(e => e._id === id)
     }
 
+    const getSessionsFromActivity = (activityId: string) => {
+        return sessions.filter(e => e.type_id === activityId && e.type === "activity")
+    }
+
     return (
-        <SessionContext.Provider value={{ sessions, addSession, removeSession, getSessionById, updateSession, postSession, fetchSessionsFromAPI }}>
+        <SessionContext.Provider value={{ sessions, addSession, removeSession, getSessionById, updateSession, postSession, fetchSessionsFromAPI, getSessionsFromActivity }}>
             {children}
         </SessionContext.Provider>
     )

@@ -1,6 +1,7 @@
-import {SequenceItemType} from "../types/SequenceType";
+import {SequenceItemType} from "../../shared/types/SequenceType";
 import {StyleSheet, Text, View} from "react-native";
 import {globalStyles, variables} from "../../shared/globalStyles";
+import {diffDateToTime} from "../../shared/libs/date";
 
 type SequenceItemOptions = {
     item: SequenceItemType
@@ -15,7 +16,9 @@ export function SequenceItem({item}: SequenceItemOptions) {
 
             {item[1] ? (
                 <>
-                    <View style={localStyle.box}><Text>Durée</Text></View>
+                    <View style={localStyle.box}>
+                        <Text style={globalStyles.textLightGrey}>{diffDateToTime(item[0], item[1], {hours: true, minutes: true, seconds: true})}</Text>
+                    </View>
 
                     <View style={localStyle.box}>
                         <TimeBox label={"Fin"} date={item[1]} />

@@ -185,6 +185,27 @@ export default function SwiperToggle(options: SwiperToggleOptionsType) {
         };
     });
 
+    const onLabelAnimation = useAnimatedStyle(() => {
+        return {
+            opacity: interpolate(
+                translateY.value,
+                [0, SWIPE_RANGE * -1],
+                [1, 0]
+            )
+        }
+    })
+
+    const offLabelAnimation = useAnimatedStyle(() => {
+        return {
+            opacity: interpolate(
+                translateY.value,
+                [0, SWIPE_RANGE * -1],
+                [0, 1]
+            )
+        }
+    })
+
+
     const handlerVariableStyle = {
         width: HANDLER_SIZE,
         height: HANDLER_SIZE,
@@ -205,7 +226,7 @@ export default function SwiperToggle(options: SwiperToggleOptionsType) {
     return (
         <View style={[localStyle.container, containerVariableStyle]}>
             <View style={[localStyle.swiper, swiperVariableStyle]}>
-                <Text style={[localStyle.onLabel, globalStyles.mbContainer]}>{onLabel}</Text>
+                <Animated.View style={onLabelAnimation}><Text style={[localStyle.onLabel, globalStyles.mbContainer]}>{onLabel}</Text></Animated.View>
                 <LinearGradient
                     colors={[variables.color.dark, variables.color.grey]}
                     start={{x: 0, y: 1}}
@@ -216,7 +237,7 @@ export default function SwiperToggle(options: SwiperToggleOptionsType) {
                         <Text style={localStyle.handlerLabel}>{handlerLabel}</Text>
                     </Animated.View>
                 </PanGestureHandler>
-                <Text style={[localStyle.onLabel, globalStyles.mtContainer]}>{offLabel}</Text>
+                <Animated.View style={offLabelAnimation}><Text style={[localStyle.onLabel, globalStyles.mtContainer]}>{offLabel}</Text></Animated.View>
             </View>
         </View>
     )

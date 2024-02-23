@@ -1,20 +1,33 @@
+type TimeFormatOptionsType = {
+    hours?: boolean,
+    minutes?: boolean,
+    seconds?: boolean
+}
+
+class TimeFormatOptions {
+    hours: boolean
+    minutes: boolean
+    seconds: boolean
+
+    constructor(options?: TimeFormatOptionsType) {
+        this.hours = options?.hours || true
+        this.minutes = options?.minutes || true
+        this.seconds = options?.seconds || false
+    }
+
+}
+
 /**
- * Retourne la durée entre deux date au format H:MM
- * 
- * @param {string} sd       
- * @param {string} sf 
- * 
+ * Retourne la durée entre deux date au format H:MM:SS
+ *
+ * @param {Date} start
+ * @param {Date} end
+ * @param {TimeFormatOptionsType} options
+ *
  * @return {string}
  */
-export function calculateDiffDate(sd: string, sf: string): string| null{
-    let diff = diffDate(sd, sf);
-    if(diff) {
-        if (diff < 0) diff = 0;
-    
-        return numberToTimeString(diff);
-
-    }
-    return null
+export function diffDateToTime(start: Date, end: Date, options?: TimeFormatOptionsType): string {
+    return secondsToTimeString(diffDate(start, end) / 1000, options);
 }
 
 
@@ -47,45 +60,49 @@ export function sqlDateToIso(date: string): string | null  {
 /**
  * Retourne l'intervalle entre deux dates en millisecondes
  * 
- * @param {String} sd Date de début de l'intervalle 
- * @param {String} ed Date de fin de l'intervalle 
+ * @param {Date} start        Date de début de l'intervalle
+ * @param {Date} end          Date de fin de l'intervalle
  * 
  * @returns {number} La diférence en milliseconde
  */
-export function diffDate(sd: string, ed: string): number| null{
-    const startDate = sqlDateToIso(sd);
-    const endDate = sqlDateToIso(ed);
-    
-    if(startDate && endDate) {
-        let dd = new Date(sd);
-        let df = new Date(ed);
-
-        let diff = df.getTime() - dd.getTime();
-
-        return diff;
-    }
-    return null;
+export function diffDate(start: Date, end: Date): number {
+    return end.getTime() - start.getTime();
 }
+
 /**
- * Convertie un nombre entier ou flottant en durée.
+ * Convertie un nombre de secondes (entier ou décimal) en durée.
  * Ex : 65 => 1:05
  * 
- * @param {number} time Nombre à convertir
+ * @param {number} time         Temps en secondes
+ * @param {string} options      Format retourné
+ *
  * @returns {string}
  */
-export function numberToTimeString(time: number): string {
-    let minutes = Math.floor((time / (1000 * 60)) % 60),
-        hours = Math.floor((time / (1000 * 60 * 60)) % 24);
+export function secondsToTimeString(time: number, options?: TimeFormatOptionsType): string {
+    options = new TimeFormatOptions(options)
 
-    if(!minutes) {
-        minutes = 0;
+    const hours = Math.floor(time / 3600);
+    time %= 3600;
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.round(time % 60);
+
+    let val = ""
+
+    if (options.hours) {
+        val += hours.toString()
     }
 
-    if(!hours) {    
-        hours = 0;
+    if (options.minutes) {
+        if (val) val += ":"
+        val += padTime(minutes)
     }
 
-    return hours + ":" + padTime(minutes); 
+    if (options.seconds) {
+        if (val) val += ":"
+        val += padTime(seconds)
+    }
+
+    return val;
 }
 
 /**

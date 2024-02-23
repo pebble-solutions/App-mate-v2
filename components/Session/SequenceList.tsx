@@ -1,4 +1,4 @@
-import {SequenceType} from "../types/SequenceType";
+import {SequenceType} from "../../shared/types/SequenceType";
 import {FlatList, StyleSheet, View} from "react-native";
 import {SequenceItem} from "./SequenceItem";
 import {variables} from "../../shared/globalStyles";

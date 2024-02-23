@@ -4,17 +4,18 @@ import {View, Text, TouchableOpacity, StyleSheet} from "react-native";
 type StopWatchOptions = {
     started?: boolean,
     dispatchAction?: ActionsType,
-    style?: object[]
+    style?: object[],
+    initialTime?: number
 }
 
 type ActionsType = "start" | "pause" | "reset"
 
-export function StopWatch({started, dispatchAction, style}: StopWatchOptions) {
+export function StopWatch({started, dispatchAction, style, initialTime}: StopWatchOptions) {
 
     style = style || []
+    initialTime = initialTime || 0
 
-    const [time, setTime] = useState(0)
-    const [running, setRunning] = useState(false)
+    const [time, setTime] = useState(initialTime)
 
     const intervalRef = useRef<any>(null)
     const startTimeRef = useRef(0)
@@ -39,18 +40,15 @@ export function StopWatch({started, dispatchAction, style}: StopWatchOptions) {
         intervalRef.current = setInterval(() => {
             setTime(Math.floor((Date.now() - startTimeRef.current) / 1000));
         }, 1000);
-        setRunning(true);
     };
 
     const pause = () => {
         clearInterval(intervalRef.current);
-        setRunning(false);
     };
 
     const reset = () => {
         clearInterval(intervalRef.current);
         setTime(0);
-        setRunning(false);
     };
 
     return (

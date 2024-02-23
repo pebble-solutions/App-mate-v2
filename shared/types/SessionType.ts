@@ -1,15 +1,17 @@
+import {MetricSequence} from "../classes/MetricSequence";
+
 export type SessionType = {
     _id: string,
     type: string,
     type_id: string,
     label: string,
-    comment: string,
+    comment: string | null,
     start: Date,
-    end?: Date,
-    status: string,
+    end?: Date | null,
     owner: OwnerType,
-    raw_datas: RawDataType[],
+    raw_datas: MetricSequence,
     raw_variables: RawVariableType[],
+    is_active: boolean
 }
 export type OwnerType = {
     _id: string,
@@ -20,7 +22,7 @@ export type OwnerType = {
 export type RawDataType = {
     index?: number,
     start: Date,
-    end: Date,
+    end?: Date | null,
 }
 export type RawVariableType = {
     _id: string,

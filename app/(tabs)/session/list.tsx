@@ -1,7 +1,7 @@
 import {globalStyles} from "../../../shared/globalStyles";
 import Carousel from "react-native-reanimated-carousel";
 import ActivityOverview from "../../../components/Activity/ActivityOverview";
-import {navigate, startSession} from "../../../shared/libs/session";
+import {navigate, newSession, openSession} from "../../../shared/libs/session";
 import {Dimensions, SafeAreaView, Text, View} from "react-native";
 import React, {useEffect} from "react";
 import {useActivityContext} from "../../../shared/contexts/ActivityContext";
@@ -13,6 +13,7 @@ import FullscreenLoader from "../../../components/FullscreenLoader";
 export default function ListScreen() {
     const { activities, loading } = useActivityContext()
     const sessionContext = useSessionContext()
+    const { getSessionsFromActivity } = sessionContext
     const statusContext = useSessionStatusContext()
     const { status } = statusContext
 
@@ -38,8 +39,12 @@ export default function ListScreen() {
                     renderItem={({item}) => (
                         <ActivityOverview
                             activity={item}
-                            action={() => {
-                                startSession(item._id, sessionContext, statusContext)
+                            sessions={getSessionsFromActivity(item._id)}
+                            onNewPress={() => {
+                                newSession(item._id, sessionContext, statusContext)
+                            }}
+                            onSessionPress={(session) => {
+                                openSession(session._id, sessionContext, statusContext)
                             }}
                             buttonTitle="Démarrer"
                         />

@@ -10,33 +10,28 @@ import {useActivityContext} from "../contexts/ActivityContext";
 import {NoActivityIdError} from "./errors/NoActivityIdError";
 import {InvalidSessionTypeError} from "./errors/InvalidSessionTypeError";
 import {ActivityNotFoundError} from "./errors/ActivityNotFoundError";
+import {Session} from "../classes/Session";
 
-export function startSession (activityId: string, sessionContext: SessionContextType, statusContext: SessionStatusContextType){
-    if (statusContext.getStatus()) throw new Error("Session already started");
+export function newSession (activityId: string, sessionContext: SessionContextType, statusContext: SessionStatusContextType){
     let r = (Math.random() + 1).toString(36).substring(7);
 
-    const newSession: SessionType = {
+    const newSession = new Session({
         _id: r,
         type: "activity",
         start: new Date(),
-        end: undefined,
         type_id: activityId,
         label: "Pointage de John DOE",
-        comment: "",
-        status: "started",
-        owner: {
-            _id: "1",
-            firstName: "John",
-            lastName: "Doe",
-            matricule: "ANDROID-1234",
-        },
-        raw_datas: [],
-        raw_variables: [],
-    }
-    console.log(newSession, sessionContext, 'newSession')
+        status: "started"
+    })
+
     sessionContext.addSession(newSession);
+    openSession(newSession._id, sessionContext, statusContext);
+}
+
+export function openSession(sessionId: string, sessionContext: SessionContextType, statusContext: SessionStatusContextType) {
+    if (statusContext.getStatus()) throw new Error("Session already started");
     statusContext.setStatus("started");
-    statusContext.setPayload(newSession._id);
+    statusContext.setPayload(sessionId);
 }
 
 /**
@@ -109,8 +104,8 @@ export default function getCurrentSession() {
  * @throws ActivityNotFoundError
  */
 export function getCurrentActivity() {
-    const session = getCurrentSession()
     const { getActivityById } = useActivityContext()
+    const session = getCurrentSession()
 
     if (!session.type_id) {
         throw new NoActivityIdError()
