@@ -75,11 +75,11 @@ useEffect(() => {
   return (
     <View>
 
-      <View style={globalStyles.input}>
-        <TouchableOpacity onPress={showDatePicker}>
           <Text style={globalStyles.textLight}>
                 Sélectionnez une date et une heure :
           </Text>
+      <View style={globalStyles.input}>
+        <TouchableOpacity onPress={showDatePicker}>
             {/* <Text style={globalStyles.textLight}>
                 {selectedDate.toLocaleDateString('fr-FR') +
                 ' ' +

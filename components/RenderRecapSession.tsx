@@ -18,15 +18,17 @@ const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables}) 
     return (
         <ScrollView>
             <View >
-            {raw_variables.length > 0 && <Text style={[globalStyles.textLight, globalStyles.CategoryTitle]}>Vos informations complémentaires</Text>}
+            {raw_variables.length > 0 && <Text style={[globalStyles.textLight, globalStyles.CategoryTitle]}>Vos informations</Text>}
             {raw_variables.map((item: RawVariableType, index:number) => {
                 return (
-                    <View style={globalStyles.cardContent} key={item._id}>
+                    <View style={globalStyles.VariableCardContent} key={item._id}>
+                        {/* <Text style={globalStyles.textLight}>{index+1}</Text>     */}
                         <Text style={globalStyles.textLight}>{item.label}</Text>
-                        <Text style={globalStyles.textLight}>{item._id}</Text>
-                        <Text style={globalStyles.textLight}>item.type:  {item.type}</Text>
+                        {/* <Text style={globalStyles.textLight}>{item._id}</Text> */}
+                        {/* <Text style={globalStyles.textLight}>item.type:  {item.type}</Text> */}
                         <Text style={globalStyles.textLight}>typeof: {typeof item.value}</Text>
                         {renderItemValue(item)}
+                        <Text style={globalStyles.textLight}>item.value: {item.value}</Text>
                     </View>
                 )
             })}

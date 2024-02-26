@@ -7,7 +7,6 @@ import { RawVariableType } from '../shared/types/SessionType';
 type ResponseTimeType = {
   onRawVariablesChange: (rawVariables: RawVariableType) => void; // Fonction de rappel pour passer les rawVariables au composant parent
   varTime: RawVariableType; // Assurez-vous de définir correctement le type de varTime
-  response: RawVariableType;
 }
 
 const GetValueTime: React.FC<ResponseTimeType> = ({ varTime, onRawVariablesChange }) => {
@@ -51,8 +50,8 @@ const handleTimeChange = (event: DateTimePickerEvent ,time?: Date) => {
   return (
     <View>
     
-      <View style={globalStyles.input}>
         <Text style={globalStyles.textLight}>Sélectionnez une heure :</Text>
+      <View style={globalStyles.input}>
         <TouchableOpacity onPress={showTimepicker}>
           <Text style={globalStyles.textLight}>
             {selectedTime.toLocaleTimeString('fr-FR', {

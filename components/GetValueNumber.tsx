@@ -67,7 +67,7 @@ const GetValueNumber: React.FC<ResponseNumberType> = ({ varNumber, onRawVariable
     
 
     return (
-    <View>
+    <View >
         <TextInput
             style={globalStyles.input}
             placeholder="Saisissez un nombre"

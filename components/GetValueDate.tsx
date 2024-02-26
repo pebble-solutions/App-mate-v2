@@ -61,12 +61,12 @@ const GetValueDate: React.FC<ResponseDateType> = ({ varDate, onRawVariablesChang
         
 
       <View >
-        <TouchableOpacity style={globalStyles.input} onPress={showDatepicker}>
             <Text style={globalStyles.textLight}>Sélectionnez une date ..</Text>
+        <TouchableOpacity style={globalStyles.input} onPress={showDatepicker}>
             <Text style={globalStyles.textLight}>
                 {/* {format(selectedDate, 'PP', {locale: fr})}
                  */}
-                 {selectedDate.toLocaleDateString()}
+                 {selectedDate.toLocaleDateString('fr-Fr')}
             </Text>
         </TouchableOpacity>
 

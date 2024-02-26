@@ -66,25 +66,21 @@ const RenderForm : FC<RenderFormType>  = ({item, onRawVariablesChange, onValidat
     }
     else if(item.type === 'date'){
         component =  (
-
             <GetValueDate key={item._id} varDate={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'time'){
         component =  (
-
             <GetValueTime varTime={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'datetime'){
         component =  (
-
             <GetValueDateTime varDateTime={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     // else if(item.type === 'daterange'){
     //     component =  (
-
     //         <GetValueDateRange varDateRange={item} onRawVariablesChange={handleRawVariablesChange} />
     //     )
     // }
@@ -94,17 +90,15 @@ const RenderForm : FC<RenderFormType>  = ({item, onRawVariablesChange, onValidat
         )
     }
     return (
-        //label
-        <View>
+        <View style={globalStyles.VariableCardContent}>
             <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>{item.label}</Text>
             {component}
             <ButtonPrevNext
                 onPress2={() => onValidate(rawVariables)}
                 onPress1={() => onCancel()}
-                buttonName1="< retour"
-                buttonName2="Valider >"
+                buttonName1="< RETOUR"
+                buttonName2="VALIDER >"
             />
-            
         </View>
     )
 
