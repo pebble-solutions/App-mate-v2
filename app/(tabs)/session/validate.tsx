@@ -24,7 +24,7 @@ export default function ValidateScreen() {
     const sessionContext = useSessionContext();
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
     const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
-    const [ exitStatus, setExistStatus ] = React.useState(false);
+    const [ exitStatus, setExitStatus ] = React.useState(false);
     let [i, setI] = React.useState<number>(0);
     const [isRaw_Variables, setIsRaw_Variables] = React.useState<boolean>(false);
     const [raw_variables, setRaw_variables] = React.useState<RawVariableType[]>([]);
@@ -34,7 +34,11 @@ export default function ValidateScreen() {
     useEffect(() => {
         navigate(status || null, router)
     }, [status])
-    
+    const exit = () => {
+        setExitStatus(true)
+        resetPayload()
+        resetStatus()
+    }
     try {
         const currentSession = getCurrentSession()
         const currentActivity = getCurrentActivity()
@@ -62,9 +66,9 @@ export default function ValidateScreen() {
 
         const postSession =  async (raw_variables: RawVariableType[]) => {
             sessionContext.updateSession(currentSession._id, {...currentSession, raw_variables: raw_variables});
-            sessionContext.postSession(currentSession._id, {...currentSession});
-            setExistStatus(true);
-            resetStatus();
+            await sessionContext.postSession(currentSession._id, {...currentSession});
+            exit()
+            
         }
 
         
@@ -77,7 +81,7 @@ export default function ValidateScreen() {
                         title="Quitter"
                         style={[globalStyles.transparentBg]}
                         onPress={() => {
-                            setExistStatus(true)
+                            setExitStatus(true)
                             resetStatus()
                             resetPayload()
                         }}
@@ -138,11 +142,14 @@ export default function ValidateScreen() {
                     {isRaw_Variables && 
                         <Button
                             title="Valider cette sesssion"
-                            onPress={async () => {
-                                await postSession(raw_variables);
+                            // onPress={async () => {
+                            //     await postSession(raw_variables);
+                            // }
+                            onPress= {() => {
+                                console.log(raw_variables, 'raw_variables');
+                                }
                             }
-                            }
-                        />
+                    />
                     }
                 </View>
             </View>

@@ -16,6 +16,8 @@ const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables, o
                 return (
                     <View style={globalStyles.cardContent} key={item._id}>
                         <Text style={globalStyles.textLight}>{item.label}</Text>
+                        <Text style={globalStyles.textLight}>{item._id}</Text>
+                        <Text style={globalStyles.textLight}>- {item.type}</Text>
                         <Text style={globalStyles.textLight}>- {item.value}</Text>
                     </View>
                 )

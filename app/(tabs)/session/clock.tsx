@@ -13,7 +13,7 @@ import GradientHeader from "../../../components/Activity/GradientHeader";
 export default function ClockScreen() {
 
     const { status, resetStatus, resetPayload } = useSessionStatusContext()
-    const [ exitStatus, setExistStatus ] = useState(false)
+    const [ exitStatus, setExitStatus ] = useState(false)
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function ClockScreen() {
                         title="Quitter"
                         style={[globalStyles.transparentBg]}
                         onPress={() => {
-                            setExistStatus(true)
+                            setExitStatus(true)
                             resetStatus()
                             resetPayload()
                         }}

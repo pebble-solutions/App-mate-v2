@@ -46,38 +46,48 @@ const RenderForm : FC<RenderFormType>  = ({item, onRawVariablesChange, onValidat
     }
     else if(item.type === 'number'){
         component = (
-            <GetValueNumber varNumber={item} onRawVariablesChange={handleRawVariablesChange} />
+            <GetValueNumber key={item._id} varNumber={item} onRawVariablesChange={handleRawVariablesChange} />
+        )
+    }
+    else if (item.type === 'float'){
+        component = (
+            <GetValueNumber key={item._id} varNumber={item} onRawVariablesChange={handleRawVariablesChange} />
+        )
+    }
+    else if(item.type === 'integer'){
+        component = (
+            <GetValueNumber key={item._id} varNumber={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'boolean'){
         component = (
-            <GetValueBoolean varBoolean={item} onRawVariablesChange={handleRawVariablesChange} />
+            <GetValueBoolean key={item._id} varBoolean={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
     else if(item.type === 'date'){
         component =  (
 
-            <GetValueDate varDate={item} onRawVariablesChange={handleRawVariablesChange} />
+            <GetValueDate key={item._id} varDate={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
-    else if(item.type === 'time'){
-        component =  (
+    // else if(item.type === 'time'){
+    //     component =  (
 
-            <GetValueTime varTime={item} onRawVariablesChange={handleRawVariablesChange} />
-        )
-    }
-    else if(item.type === 'datetime'){
-        component =  (
+    //         <GetValueTime varTime={item} onRawVariablesChange={handleRawVariablesChange} />
+    //     )
+    // }
+    // else if(item.type === 'datetime'){
+    //     component =  (
 
-            <GetValueDateTime varDateTime={item} onRawVariablesChange={handleRawVariablesChange} />
-        )
-    }
-    else if(item.type === 'daterange'){
-        component =  (
+    //         <GetValueDateTime varDateTime={item} onRawVariablesChange={handleRawVariablesChange} />
+    //     )
+    // }
+    // else if(item.type === 'daterange'){
+    //     component =  (
 
-            <GetValueDateRange varDateRange={item} onRawVariablesChange={handleRawVariablesChange} />
-        )
-    }
+    //         <GetValueDateRange varDateRange={item} onRawVariablesChange={handleRawVariablesChange} />
+    //     )
+    // }
     else{
         component =  (
             <Text style={globalStyles.textLight}> Ce type de variable n'est pas traité dans cette application: {item.type} XXX</Text>

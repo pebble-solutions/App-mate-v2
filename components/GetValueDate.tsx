@@ -5,6 +5,7 @@ import { globalStyles } from '../shared/globalStyles';
 import { RawVariableType } from '../shared/types/SessionType';
 import {format} from 'date-fns';
 import {fr} from 'date-fns/locale';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 type ResponseDateType = {
 //   onDateChange: (date: Date) => void;
@@ -18,29 +19,42 @@ const GetValueDate: React.FC<ResponseDateType> = ({ varDate, onRawVariablesChang
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
-  useEffect(() => {
-    setResponse(prev => ({ ...prev, value: selectedDate }));
-    onRawVariablesChange(response);
-  }, [selectedDate]);
-
   const [response, setResponse] = useState<RawVariableType>({
-    _id: varDate._id,
-    label: varDate.label,
-    value: undefined,
-    type: varDate.type,
-  });
+      _id: varDate._id,
+      label: varDate.label,
+      value: selectedDate,
+      type: varDate.type,
+    });
+    
+    useEffect(() => {
+        onRawVariablesChange(response);
+      }, [response]);
+    
 
- 
-const handleDateChange = (_event: DateTimePickerEvent, date?: Date) => {
-    if (Platform.OS === 'android') {
-      setShowDatePicker(false);
-    }
-
-    if (date) {
-      setSelectedDate(date);
-    }
-  };
-
+    
+    
+    const handleDateChange = (_event: DateTimePickerEvent, date?: Date) => {
+        if (Platform.OS === 'android') {
+            setShowDatePicker(false);
+        }
+        if (date) {
+            console.log(_event, 'event')
+            console.log(date, 'date')
+            let selectedDateCopy = { ...selectedDate };
+            console.log(selectedDateCopy, 'selectedDateCopy')
+            const selectedDateUpdate = new Date(date) as Date;
+            console.log(selectedDateUpdate, 'selectedDateUpdate')   
+            selectedDateCopy = selectedDateUpdate;
+            console.log(selectedDateCopy, 'selectedDateCopy')   
+            setSelectedDate(selectedDateUpdate);
+            console.log(selectedDate, 'selectedDatedans hendleDateChange')
+            const responseCopy = { ...response };
+            const responseCopyUpdate = { ...responseCopy, value: selectedDateUpdate };
+            setResponse(responseCopyUpdate);
+            console.log(response, 'responsein handleDateChange')
+        }
+    };
+    
   const showDatepicker = () => {
     setShowDatePicker(true);
   };
@@ -58,8 +72,8 @@ const handleDateChange = (_event: DateTimePickerEvent, date?: Date) => {
         </TouchableOpacity>
 
         {showDatePicker && (
-          <DateTimePicker
-            value={selectedDate}  
+          <RNDateTimePicker
+             value={selectedDate}  
             mode="date"
             display="spinner"
             onChange={handleDateChange}
