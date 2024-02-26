@@ -25,8 +25,14 @@ export type RawDataType = {
 export type RawVariableType = {
     _id: string,
     label: string,
-    value: string | number | boolean | Date,
+    value: string | number | boolean | Date | undefined,
     type:  string,
+}
+export type itemType = {
+    _id: string,
+    label: string,
+    type: string,
+    value: string,
 }
 
 

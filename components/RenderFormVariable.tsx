@@ -70,18 +70,18 @@ const RenderForm : FC<RenderFormType>  = ({item, onRawVariablesChange, onValidat
             <GetValueDate key={item._id} varDate={item} onRawVariablesChange={handleRawVariablesChange} />
         )
     }
-    // else if(item.type === 'time'){
-    //     component =  (
+    else if(item.type === 'time'){
+        component =  (
 
-    //         <GetValueTime varTime={item} onRawVariablesChange={handleRawVariablesChange} />
-    //     )
-    // }
-    // else if(item.type === 'datetime'){
-    //     component =  (
+            <GetValueTime varTime={item} onRawVariablesChange={handleRawVariablesChange} />
+        )
+    }
+    else if(item.type === 'datetime'){
+        component =  (
 
-    //         <GetValueDateTime varDateTime={item} onRawVariablesChange={handleRawVariablesChange} />
-    //     )
-    // }
+            <GetValueDateTime varDateTime={item} onRawVariablesChange={handleRawVariablesChange} />
+        )
+    }
     // else if(item.type === 'daterange'){
     //     component =  (
 

@@ -5,9 +5,16 @@ import { RawVariableType } from "../shared/types/SessionType";
 
 type renderRecapSessionType = { 
     raw_variables: RawVariableType[];
-};
-const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables, okForPost }) => {
-
+}
+const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables}) => {
+    console.log(raw_variables, 'raw_variables') 
+    const renderItemValue = (item: RawVariableType) => {
+        if (item.value && typeof item.value === "object") {
+            console.log(item.value)
+            return <Text style={globalStyles.textLight}>{item.value.toLocaleString()}</Text>;
+        }
+        return <Text  style={globalStyles.textLight}>?{typeof item.value}</Text>
+    }
     return (
         <ScrollView>
             <View >
@@ -17,13 +24,20 @@ const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables, o
                     <View style={globalStyles.cardContent} key={item._id}>
                         <Text style={globalStyles.textLight}>{item.label}</Text>
                         <Text style={globalStyles.textLight}>{item._id}</Text>
-                        <Text style={globalStyles.textLight}>- {item.type}</Text>
-                        <Text style={globalStyles.textLight}>- {item.value}</Text>
+                        <Text style={globalStyles.textLight}>item.type:  {item.type}</Text>
+                        <Text style={globalStyles.textLight}>typeof: {typeof item.value}</Text>
+                        {renderItemValue(item)}
                     </View>
                 )
             })}
             </View>
         </ScrollView>
     );
-}    
+
+}
+
+
+
+    
+ 
 export default RenderRecapSession;   

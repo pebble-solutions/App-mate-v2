@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';
 import { RawVariableType } from '../shared/types/SessionType';
-import {format} from 'date-fns';
+import {format, set} from 'date-fns';
 import {fr} from 'date-fns/locale';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 
@@ -22,36 +22,33 @@ const GetValueDate: React.FC<ResponseDateType> = ({ varDate, onRawVariablesChang
   const [response, setResponse] = useState<RawVariableType>({
       _id: varDate._id,
       label: varDate.label,
-      value: selectedDate,
+      value: new Date(),
       type: varDate.type,
     });
     
     useEffect(() => {
+        console.log(response, 'response')
         onRawVariablesChange(response);
       }, [response]);
     
 
-    
-    
+    useEffect(() => {
+        handleDateChange;
+        console.log(selectedDate, 'selectedDate afteruse')
+    }
+    , [selectedDate]);
     const handleDateChange = (_event: DateTimePickerEvent, date?: Date) => {
         if (Platform.OS === 'android') {
             setShowDatePicker(false);
         }
         if (date) {
-            console.log(_event, 'event')
-            console.log(date, 'date')
             let selectedDateCopy = { ...selectedDate };
             console.log(selectedDateCopy, 'selectedDateCopy')
             const selectedDateUpdate = new Date(date) as Date;
-            console.log(selectedDateUpdate, 'selectedDateUpdate')   
             selectedDateCopy = selectedDateUpdate;
-            console.log(selectedDateCopy, 'selectedDateCopy')   
             setSelectedDate(selectedDateUpdate);
-            console.log(selectedDate, 'selectedDatedans hendleDateChange')
-            const responseCopy = { ...response };
-            const responseCopyUpdate = { ...responseCopy, value: selectedDateUpdate };
-            setResponse(responseCopyUpdate);
-            console.log(response, 'responsein handleDateChange')
+            setResponse(prev => ({ ...prev, value: selectedDateUpdate }));
+            
         }
     };
     
@@ -67,13 +64,16 @@ const GetValueDate: React.FC<ResponseDateType> = ({ varDate, onRawVariablesChang
         <TouchableOpacity style={globalStyles.input} onPress={showDatepicker}>
             <Text style={globalStyles.textLight}>Sélectionnez une date ..</Text>
             <Text style={globalStyles.textLight}>
-                {format(selectedDate, 'PP', {locale: fr})}
+                {/* {format(selectedDate, 'PP', {locale: fr})}
+                 */}
+                 {selectedDate.toLocaleDateString()}
             </Text>
         </TouchableOpacity>
 
         {showDatePicker && (
           <RNDateTimePicker
-             value={selectedDate}  
+            //  value={response.value?.toLocaleString() ? response.value.toLocaleString() : new Date().toLocaleString() } 
+             value = {selectedDate}
             mode="date"
             display="spinner"
             onChange={handleDateChange}

@@ -1,46 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';  
 import { RawVariableType } from '../shared/types/SessionType';
 
 type ResponseTimeType = {
-  onTimeChange: (time: Date) => void;
-  onRawVariablesChange: (rawVariables: RawVariableType[]) => void; // Fonction de rappel pour passer les rawVariables au composant parent
+  onRawVariablesChange: (rawVariables: RawVariableType) => void; // Fonction de rappel pour passer les rawVariables au composant parent
   varTime: RawVariableType; // Assurez-vous de définir correctement le type de varTime
   response: RawVariableType;
 }
 
-const GetValueTime: React.FC<ResponseTimeType> = ({ onTimeChange, varTime, onRawVariablesChange }) => {
-  console.log(varTime, 'varNumber');
+const GetValueTime: React.FC<ResponseTimeType> = ({ varTime, onRawVariablesChange }) => {
     const [response, setResponse] = React.useState({
         '_id': varTime._id,
         'label': varTime.label,
-        'value': new Date()
+        'value': new Date(),
+        'type': varTime.type,
         
     });
   const [selectedTime, setSelectedTime] = useState<Date>(new Date());
   const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
-  const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
 
-  const handleChange = (time: Date) => {
-    setResponse(prev => ({ ...prev, value: time }));
-};
+    useEffect(() => {
+        onRawVariablesChange(response);
+        }   
+        , [response]);
 
-  const handleTimeChange = (event: Event,time?: Date) => {
+    useEffect(() => {
+        handleTimeChange;
+        }
+        , [selectedTime]);
+
+
+const handleTimeChange = (event: DateTimePickerEvent ,time?: Date) => {
     if (Platform.OS === 'android') {
-      setShowTimePicker(false);
+        setShowTimePicker(false);
     }
     if (time !== undefined) {
-      setSelectedTime(time);
-      onTimeChange(time);
-      console.log(time, 'time');
+        setSelectedTime(time);
+        console.log(time, 'time');
+        setResponse(prev => ({ ...prev, value: time }));
     }
   };
-  const validate = () => {
-    setRawVariables([...rawVariables, response])
-    onRawVariablesChange(rawVariables);
-  };
+
 
   const showTimepicker = () => {
     setShowTimePicker(true);
@@ -48,12 +50,7 @@ const GetValueTime: React.FC<ResponseTimeType> = ({ onTimeChange, varTime, onRaw
 
   return (
     <View>
-        {rawVariables.map((rawVariable, index) => (
-        <Text key={index} style={globalStyles.textLight}>
-            {rawVariable.label}: {rawVariable.value}
-        </Text>
-        ))}
-      <Text style={globalStyles.textLight}>{varTime.question}</Text>
+    
       <View style={globalStyles.input}>
         <Text style={globalStyles.textLight}>Sélectionnez une heure :</Text>
         <TouchableOpacity onPress={showTimepicker}>

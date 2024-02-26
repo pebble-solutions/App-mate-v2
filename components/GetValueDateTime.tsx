@@ -7,12 +7,12 @@ import {format} from 'date-fns';
 import {fr} from 'date-fns/locale';
 
 type ResponseDateTimeType = {
-  onDateTimeChange: (dateTime: Date) => void;
+//   onDateTimeChange: (dateTime: Date) => void;
   onRawVariablesChange: (rawVariables: RawVariableType) => void; // Fonction de rappel pour passer les rawVariables au composant parent
   varDateTime: RawVariableType; 
 }
 
-const GetValueDateTime: React.FC<ResponseDateTimeType> = ({varDateTime, onRawVariablesChange, onDateTimeChange }) => {
+const GetValueDateTime: React.FC<ResponseDateTimeType> = ({varDateTime, onRawVariablesChange }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<Date>(new Date());
   const [isDatePickerVisible, setDatePickerVisible] = useState<boolean>(false);
@@ -21,13 +21,20 @@ const GetValueDateTime: React.FC<ResponseDateTimeType> = ({varDateTime, onRawVar
 const [response, setResponse] = useState({
     _id: varDateTime._id,
     label: varDateTime.label,
-    value: '',
+    value: new Date(),
     type: varDateTime.type,
     });
 
 useEffect(() => {
     onRawVariablesChange(response);
     }, [response]);
+useEffect(() => {
+    handleDateChange;
+    }, [selectedDate]);
+useEffect(() => {
+    handleTimeChange;
+    }, [selectedTime]);
+
 
   const showDatePicker = () => {
     setDatePickerVisible(true);
@@ -51,7 +58,6 @@ useEffect(() => {
     if (date !== undefined) {
       setSelectedDate(date);
       showTimePicker();
-      console.log(selectedDate, 'selectedDate')
     }
   };
 
@@ -61,8 +67,8 @@ useEffect(() => {
     if (time !== undefined) {
       setSelectedTime(time);
       const dateTime = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), time.getHours(), time.getMinutes());
-      onDateTimeChange(dateTime);
-      console.log(dateTime, 'dateTime')
+        setResponse(prev => ({ ...prev, value: dateTime }));
+        console.log(response, 'response')
     }
   };
  

@@ -105,7 +105,11 @@ export default function ValidateScreen() {
                                 console.log(newResponse, 'newResponsevalidate');
                             }}
                             onValidate={() => {
+                                console.log(currentResponse, 'currentResponse');
+                                console.log(raw_variables, 'raw_variables');
                                 setRaw_variables([...raw_variables, currentResponse]);
+                                console.log(raw_variables, 'raw_variables');
+                                
                                 if (i < rawVariables.length - 1) {
                                     setI(i + 1);
                                 }
