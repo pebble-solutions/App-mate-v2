@@ -1,25 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Dimensions, StyleSheet, Text, View, FlatList } from "react-native";
-
+import { Alert, Dimensions, StyleSheet, Text, View, FlatList, SafeAreaView } from "react-native";
 import { useSessionContext } from "../../../shared/contexts/SessionContext";
 import { globalStyles } from "../../../shared/globalStyles";
 import moment from 'moment';
 import 'moment/locale/fr';
 import { useActivityContext } from "../../../shared/contexts/ActivityContext";
+import ActivityOverview from "../../../components/Activity/ActivityOverview";
+import {navigate, newSession, openSession} from "../../../shared/libs/session";
 import HeaderScreenTitle from "../../../components/HeaderScreenTitle";
 import Carousel from "react-native-reanimated-carousel";
 import ActivityLabel from "../../../components/Activity/ActivityLabel";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
+import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
+import {router} from "expo-router";
+import SummaryOverview from "../../../components/Summary/SummaryOverView";
+
+
 
 moment.locale('fr');
 
 export default function RecapScreen() {
-    const { activities } = useActivityContext();
+    const { activities, loading } = useActivityContext();
     const {fetchSessionsFromAPI, sessions } = useSessionContext();
+    const {getSessionsFromActivity} = useSessionContext();
     const width = Dimensions.get('window').width;
     const [selectedActivityColor, setSelectedActivityColor] = useState("");
-
 
     useEffect(() => {
         fetchSessionsFromAPI();
@@ -42,7 +48,7 @@ export default function RecapScreen() {
         );
     } else {
         content = (
-            <View style={globalStyles.body}>
+            <SafeAreaView style={globalStyles.body}>
                 <HeaderScreenTitle title="Tableau de bord" addButton={false} />
                 <Carousel
                     mode="parallax"
@@ -52,26 +58,40 @@ export default function RecapScreen() {
                     }}
                     pagingEnabled={true}
                     width={width}
-                    height={72}
                     data={activities}
                     onSnapToItem={(index) => handleActivitySelect(activities[index].color)}
-                    renderItem={({ item }) => (
-                        <ActivityLabel
+                    // renderItem={({ item }) => (
+                    //     <ActivityLabel
+                    //         activity={item}
+                    //         key={item._id}
+                    //     />
+                    // )}
+                    renderItem={({item}) => (
+                        <SummaryOverview
                             activity={item}
-                            key={item._id}
+                            sessions={getSessionsFromActivity(item._id)}
+                            onNewPress={() => {
+                                newSession(item._id, useSessionContext(), useSessionStatusContext())
+                            }}
+                            onSessionPress={(session) => {
+                                openSession(session._id, useSessionContext(), useSessionStatusContext())
+                            }}
+                            buttonTitle="Démarrer"
                         />
-
                     )}
                 />
-                <View style={globalStyles.recapContentContainer}>
+                
+                {/* <View style={globalStyles.recapContentContainer}>
                     <Carousel
                         mode="parallax"
                         modeConfig={{
                             parallaxScrollingScale: 0.91,
-                            parallaxScrollingOffset: 50,
+                            parallaxScrollingOffset: 40,
                         }}
                         pagingEnabled={true}
                         width={width}
+                        height={450}
+
                         
                         data={sessions}
                         renderItem={({ item }) => (
@@ -85,14 +105,15 @@ export default function RecapScreen() {
                                     }
                                 </Text>
                                 <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Label: {item.label}</Text>
-                                {/* <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Comment: {item.comment}</Text> */}
-                                {/* <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Status: {item.status}</Text> */}
+                                <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Comment: {item.comment}</Text>
+                                <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Status: {item.status}</Text>
                                 <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Start: {moment(item.start).format("DD/MM/YYYY HH:mm")}</Text>
                                 {item.end && <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>End: {moment(item.end).format("DD/MM/YYYY HH:mm")}</Text>}
                                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Informations extrapolées :</Text>
-                                {/* <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Durée: {calculateDuration(item.start, item.end)}</Text> */}
-                                {/* <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Nombre de données brutes: {item.raw_datas.length}</Text> */}
+                                <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Durée: {calculateDuration(item.start, item.end)}</Text>
+                                <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Nombre de données brutes: {item.raw_datas.length}</Text>
                                 <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Nombre de variables brutes: {item.raw_variables.length}</Text>
+                                
                                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Statistiques :</Text>
                                 <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Ici de jolies statistiques</Text>
                                 <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Ici de jolies statistiques</Text>
@@ -106,10 +127,10 @@ export default function RecapScreen() {
 
                         )}
                     />
-                </View>
+                </View> */}
                 
 
-                <View style={globalStyles.recapContentContainer}>
+                {/* <View style={globalStyles.recapContentContainer}>
                     <FlatList
                         data={sessions}
                         keyExtractor={item => item._id}
@@ -123,8 +144,8 @@ export default function RecapScreen() {
                             </View>
                         )}
                     />
-                </View>
-            </View>
+                </View> */}
+            </SafeAreaView>
         );
         
     }
@@ -135,7 +156,7 @@ export default function RecapScreen() {
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "lightgrey",
+        backgroundColor: "grey",
         alignItems: "center",
         justifyContent: "center",
         color: "black",
