@@ -1,86 +1,153 @@
-import React, { useState } from 'react';
+// import React, { useState, useEffect } from 'react';
+// import { View, Text, TouchableOpacity, Platform } from 'react-native';
+// import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+// import { globalStyles } from '../shared/globalStyles';
+// import { RawVariableType } from '../shared/types/SessionType';
+// import {format, set} from 'date-fns';
+// import {fr} from 'date-fns/locale';
+// import RNDateTimePicker from '@react-native-community/datetimepicker';
+
+// type ResponseDateType = {
+// //   onDateChange: (date: Date) => void;
+//   varDate: RawVariableType;
+//   onRawVariablesChange: (rawVariables: RawVariableType) => void; 
+// //   toLocaleDateString: (date: Date) => string;
+
+// }
+
+// const GetValueDate: React.FC<ResponseDateType> = ({ varDate, onRawVariablesChange}) => {
+//   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+//   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+
+//   const [response, setResponse] = useState<RawVariableType>({
+//       _id: varDate._id,
+//       label: varDate.label,
+//       value: new Date(),
+//       type: varDate.type,
+//     });
+    
+//     useEffect(() => {
+//         console.log(response, 'response')
+//         onRawVariablesChange(response);
+//       }, [response]);
+    
+
+//     useEffect(() => {
+//         handleDateChange;
+//         console.log(selectedDate, 'selectedDate afteruse')
+//     }
+//     , [selectedDate]);
+//     const handleDateChange = (_event: DateTimePickerEvent, date?: Date) => {
+//         if (Platform.OS === 'android') {
+//             setShowDatePicker(false);
+//         }
+//         if (date) {
+//             let selectedDateCopy = { ...selectedDate };
+//             console.log(selectedDateCopy, 'selectedDateCopy')
+//             const selectedDateUpdate = new Date(date) as Date;
+//             selectedDateCopy = selectedDateUpdate;
+//             setSelectedDate(selectedDateUpdate);
+//             setResponse(prev => ({ ...prev, value: selectedDateUpdate }));
+            
+//         }
+//     };
+    
+//   const showDatepicker = () => {
+//     setShowDatePicker(true);
+//   };
+
+//   return (
+//     <View>
+        
+
+//       <View >
+//             <Text style={globalStyles.textLight}>Sélectionnez une date ..</Text>
+//         <TouchableOpacity style={globalStyles.input} onPress={showDatepicker}>
+//             <Text style={globalStyles.textLight}>
+//                 {/* {format(selectedDate, 'PP', {locale: fr})}
+//                  */}
+//                  {selectedDate.toLocaleDateString('fr-Fr')}
+//             </Text>
+//         </TouchableOpacity>
+
+//         {showDatePicker && (
+//           <RNDateTimePicker
+//             //  value={response.value?.toLocaleString() ? response.value.toLocaleString() : new Date().toLocaleString() } 
+//              value = {selectedDate}
+//             mode="date"
+//             display="spinner"
+//             onChange={handleDateChange}
+//           />
+//         )}
+//         </View>
+        
+//     </View>
+//   );
+// };
+
+// export default GetValueDate;
+
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { globalStyles } from '../shared/globalStyles';
-import ButtonPrevNext from './TunnelsButton';
-import { router } from 'expo-router';
-import { VariableType } from '../shared/types/VariableType';
 import { RawVariableType } from '../shared/types/SessionType';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 type ResponseDateType = {
-  onDateChange: (date: Date) => void;
-  varDate: VariableType;
-  onRawVariablesChange: (rawVariables: RawVariableType[]) => void; 
-
+  varDate: RawVariableType;
+  onRawVariablesChange: (rawVariables: RawVariableType) => void; 
 }
 
-const ResponseDate: React.FC<ResponseDateType> = ({ onDateChange, varDate, onRawVariablesChange }) => {
+const GetValueDate: React.FC<ResponseDateType> = ({ varDate, onRawVariablesChange }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [rawVariables, setRawVariables] = useState<RawVariableType[]>([]);
-  const [response, setResponse] = useState<{ _id: string; label: string; value: Date | undefined}>({
-    _id: varDate._id,
-    label: varDate.label,
-    value: undefined,
-  });
 
-  const handleDateChange = ( date?: Date) => {
+  useEffect(() => {
+    onRawVariablesChange({
+      _id: varDate._id,
+      label: varDate.label,
+      value: selectedDate,
+      type: varDate.type,
+    });
+  }, [selectedDate]);
+
+  const handleDateChange = (_event: DateTimePickerEvent, date?: Date) => {
     if (Platform.OS === 'android') {
       setShowDatePicker(false);
     }
-
-    if (date !== undefined) {
+    if (date) {
       setSelectedDate(date);
-      onDateChange(date);
-      console.log(selectedDate, 'date');
     }
   };
-  const validate = () => {
-    setRawVariables(prev => [...prev, selectedDate]);
-    console.log(selectedDate);
-    onRawVariablesChange(rawVariables);
-  };
+  
   const showDatepicker = () => {
     setShowDatePicker(true);
   };
 
   return (
     <View>
-         {rawVariables.map((rawVariable, index) => (
-        <Text key={index} style={globalStyles.textLight}>
-            {rawVariable.label}: {rawVariable.value}
-        </Text>
-        ))}
-      <Text style={globalStyles.textLight}>{varDate.question}</Text>
-      <View style={globalStyles.input}>
-        <Text style={globalStyles.textLight}>Sélectionnez une date :</Text>
-        <TouchableOpacity onPress={showDatepicker}>
+      <View>
+        <Text style={globalStyles.textLight}>Sélectionnez une date ..</Text>
+        <TouchableOpacity style={globalStyles.input} onPress={showDatepicker}>
           <Text style={globalStyles.textLight}>
-            {selectedDate.toLocaleDateString('fr-FR', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            })}
+            {format(selectedDate, 'PP', { locale: fr })}
           </Text>
         </TouchableOpacity>
 
         {showDatePicker && (
-          <DateTimePicker
+          <RNDateTimePicker
             value={selectedDate}
             mode="date"
             display="spinner"
             onChange={handleDateChange}
           />
         )}
-        </View>
-        <ButtonPrevNext
-        onPress1={() => router.back()}
-        onPress2={validate}
-        buttonName1="< ANNULER"
-        buttonName2="VALIDER >"
-      />
+      </View>
     </View>
   );
 };
 
-export default ResponseDate;
+export default GetValueDate;

@@ -8,8 +8,8 @@ export type SessionContextType = {
     removeSession: (id: string) => void,
     getSessionById: (id: string) => SessionType | undefined,
     updateSession: (id: string, newSession: SessionType) => void
-    postSession: (id: string, session: SessionType) => void
-    fetchSessionsFromAPI: () => void,
+    postSession: (id: string, session: SessionType) => Promise<void>
+    fetchSessionsFromAPI: () => void
     getSessionsFromActivity: (activityId: string) => SessionType[]
 }
 
@@ -23,7 +23,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
     const fetchSessionsFromAPI = async () => {
         try {
-        const response = await fetch("https://api.pebble.solutions/v5/metric/?label=Pointage%20de%20John%20DOE", {method: "GET"});
+        const response = await fetch("https://api.pebble.solutions/v5/metric/", {method: "GET"});
             const data = await response.json();
             let sessionApiList: SessionType[] = [];
             data.forEach((incomingSession: any) => {
@@ -67,9 +67,9 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             console.error("Erreur lors de la création de la session", error);
         }
     }
-    const postSession = (id: string, session: SessionType) => {
+    const postSession = async (id: string, session: SessionType) => {
         console.log(session, 'session');
-        postSessionViaApi(session)
+        await postSessionViaApi(session)
     }
 
     const removeSession = (id: string) => {

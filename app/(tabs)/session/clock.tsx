@@ -18,9 +18,9 @@ import {useSessionContext} from "../../../shared/contexts/SessionContext";
 
 export default function ClockScreen() {
 
-    const { status, resetStatus, resetPayload } = useSessionStatusContext()
+    const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
     const { removeSession } = useSessionContext()
-    const [ exitStatus, setExistStatus ] = useState(false)
+    const [ exitStatus, setExitStatus ] = useState(false)
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
@@ -61,15 +61,19 @@ export default function ClockScreen() {
     }
 
     const exit = () => {
-        setExistStatus(true)
+        setExitStatus(true)
         resetPayload()
         resetStatus()
     }
 
     const cancel = () => {
-        setExistStatus(true)
+        setExitStatus(true)
         removeSession(currentSession._id)
         exit()
+    }
+
+    const validate = () => {
+        setStatus("validate")
     }
 
     const start = () => {
@@ -134,9 +138,7 @@ export default function ClockScreen() {
                 <SessionActionsBar
                     onCancel={cancel}
                     onExit={exit}
-                    onValidate={() => {
-                        console.log("validate")
-                    }}
+                    onValidate={validate}
                     onEnd={stop}
                     onStart={start}
                     style={[globalStyles.mb3Container]}

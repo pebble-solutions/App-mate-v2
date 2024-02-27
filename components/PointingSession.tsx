@@ -29,14 +29,12 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
     const validate = async () => {
         const currentTime = new Date();
             setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: currentTime}]);  
-            console.log(rawDatas, 'rawDatas');
             sessionContext.updateSession(currentSession._id, {...currentSession, end: new Date(),   raw_datas: rawDatas});
-            sessionContext.postSession(currentSession._id, {...currentSession});
+            // sessionContext.postSession(currentSession._id, {...currentSession});
       }
     const pointing = async () => {
         const currentTime = new Date();
         const index = pressTimes.length + 1;
-        console.log(currentSession, 'currentSession')
         
       
         const getLabel = () => {
@@ -70,7 +68,6 @@ export default function PointingSession({currentSession}:{currentSession: Sessio
             const NewInterval: number = currentTime.getTime() - pressTimes[pressTimes.length - 1].time.getTime();
             setIntervalWork(intervalWork + NewInterval);
             setRawDatas([...rawDatas, {start: pressTimes[pressTimes.length - 1].time, end: new Date(currentTime)}]);    
-            console.log(rawDatas, 'rawDatas');
             // sessionContext.updateSession(sessionCopy._id, {...sessionCopy, raw_datas: rawDatas});
             sessionContext.updateSession(currentSession._id, {...currentSession, raw_datas: rawDatas});
             return intervalWork/1000

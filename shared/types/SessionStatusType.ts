@@ -1,1 +1,1 @@
-export type SessionStatusType = 'started' | 'paused' |'start' | 'pause'| 'validate' | 'validating';
+export type SessionStatusType = 'started' | 'paused' |'start' | 'pause'| 'validate' | 'validating' 

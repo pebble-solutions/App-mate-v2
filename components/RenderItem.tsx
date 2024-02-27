@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView, SafeAreaView } from "react-native";
 import { globalStyles } from "../shared/globalStyles";
 import { VariableType } from "../shared/types/VariableType";
 import { useSessionContext } from "../shared/contexts/SessionContext";
@@ -7,21 +7,26 @@ import { useSessionStatusContext } from "../shared/contexts/SessionStatusContext
 import RenderForm from "./RenderFormVariable";
 import { RawVariableType, SessionType } from "../shared/types/SessionType";
 
-export default function RenderItem({ variables }: { variables: VariableType[] }, currentSession: SessionType) {
+type RenderItemOptions = {
+    variables: VariableType[];
+    session: SessionType;
+};
+
+export default function RenderItem( { variables, session }: RenderItemOptions) {
   const sessionContext = useSessionContext();
   const { getStatus, setStatus, resetStatus, setPayload, resetPayload, getPayload } = useSessionStatusContext();
   const [isVisible, setIsVisible] = React.useState(true);
   const [formGetValue, setformGetValue] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState<VariableType | null>(null);
   const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
-  let sessionCopy = {...currentSession};
-
+    
 
   const handleRawVariablesChange = (newRawVariables: RawVariableType[]) => {
     setRawVariables(newRawVariables);
   };
 
   const handlePress = (variable: VariableType) => {
+
     setIsVisible(!isVisible);
     setformGetValue(!formGetValue);
     setSelectedItem(variable);
@@ -30,25 +35,16 @@ export default function RenderItem({ variables }: { variables: VariableType[] },
   const renderFormItem = () => {
     if (!selectedItem) return null;
     else {
-      console.log('handlepress', selectedItem);
       return (
         <View style={globalStyles.cardSession}>
-          {rawVariables.map((rawVariable, index) => (
-            <Text key={index} style={globalStyles.textLight}>
-                {rawVariable.label}: {rawVariable.value}
-            </Text>
-            ))}
           {formGetValue && <RenderForm item={selectedItem} onRawVariablesChange={handleRawVariablesChange} />}
-        
         </View>
       );
     }
   };
 
-  console.log(variables, 'variables');
   return (
-    <View >
-        
+    <SafeAreaView >
       {isVisible && (
         <View>
           <View>
@@ -56,7 +52,7 @@ export default function RenderItem({ variables }: { variables: VariableType[] },
             {variables.length == 1 && <Text style={[globalStyles.variableCardTitle, globalStyles.textLight]}>{variables.length} variable associée à renseigner</Text>}
             {variables.length > 1 && <Text style={[globalStyles.variableCardTitle, globalStyles.textLight]}>{variables.length} variables à renseigner</Text>}
           </View>
-          <ScrollView style={globalStyles.scrollContainerVariable} >
+          <ScrollView  >
           {variables.map((variable, index) => {
             return (
                 <View key={index}>
@@ -74,6 +70,6 @@ export default function RenderItem({ variables }: { variables: VariableType[] },
         </View>
       )}
       {renderFormItem()}
-    </View>
+    </SafeAreaView>
   );
 }

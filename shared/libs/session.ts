@@ -20,10 +20,18 @@ export function newSession (activityId: string, sessionContext: SessionContextTy
         type: "activity",
         start: new Date(),
         type_id: activityId,
-        label: "Pointage de John DOE",
-        status: "started"
+        label: "Nouveau Pointage de John DOE",
+        comment: "",
+        status: "started",
+        owner: {
+            _id: "1",
+            firstName: "John",
+            lastName: "Doe",
+            matricule: "ANDROID-1234",
+        },
+        raw_datas: [],
+        raw_variables: []
     })
-
     sessionContext.addSession(newSession);
     openSession(newSession._id, sessionContext, statusContext);
 }
