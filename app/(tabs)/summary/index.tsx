@@ -85,7 +85,7 @@ export default function RecapScreen() {
                                     }
                                 </Text>
                                 <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Label: {item.label}</Text>
-                                <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Comment: {item.comment}</Text>
+                                {/* <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Comment: {item.comment}</Text> */}
                                 {/* <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Status: {item.status}</Text> */}
                                 <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>Start: {moment(item.start).format("DD/MM/YYYY HH:mm")}</Text>
                                 {item.end && <Text style={[globalStyles.sessionText, globalStyles.textCenter, globalStyles.textLight]}>End: {moment(item.end).format("DD/MM/YYYY HH:mm")}</Text>}
