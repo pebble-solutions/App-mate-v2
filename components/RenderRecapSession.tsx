@@ -9,7 +9,7 @@ type renderRecapSessionType = {
 const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables}) => {
     console.log(raw_variables, 'raw_variables') 
     const renderItemValue = (item: RawVariableType) => {
-        if (item.value && typeof item.value === "object") {
+        if (item.value instanceof Date) {
             console.log(item.value)
             return <Text style={globalStyles.textLight}>{item.value.toLocaleString()}</Text>;
         }
@@ -24,11 +24,12 @@ const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables}) 
                     <View style={globalStyles.VariableCardContent} key={item._id}>
                         {/* <Text style={globalStyles.textLight}>{index+1}</Text>     */}
                         <Text style={globalStyles.textLight}>{item.label}</Text>
-                        {/* <Text style={globalStyles.textLight}>{item._id}</Text> */}
+                        <Text style={globalStyles.textLight}>{item._id}</Text>
                         {/* <Text style={globalStyles.textLight}>item.type:  {item.type}</Text> */}
                         <Text style={globalStyles.textLight}>typeof: {typeof item.value}</Text>
                         {renderItemValue(item)}
-                        <Text style={globalStyles.textLight}>item.value: {item.value}</Text>
+                        {/* <Text style={globalStyles.textLight}>item.value: {item.value}</Text> */}
+                        {renderItemValue(item)}
                     </View>
                 )
             })}

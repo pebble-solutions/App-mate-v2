@@ -107,7 +107,20 @@ export default function ValidateScreen() {
                             onValidate={() => {
                                 console.log(currentResponse, 'currentResponse');
                                 console.log(raw_variables, 'raw_variables');
-                                setRaw_variables([...raw_variables, currentResponse]);
+                                // vérifie si la réponse est déjà enregistrée
+                                const responseExists = raw_variables.some(item => item._id === currentResponse._id);
+                                if(responseExists) {
+                                    const newRawVariables = raw_variables.map(item => {
+                                        if (item._id === currentResponse._id) {
+                                            return currentResponse;
+                                        }
+                                        return item;
+                                    });
+                                    setRaw_variables(newRawVariables);
+                                }
+                                else {
+                                    setRaw_variables([...raw_variables, currentResponse]);
+                                }
                                 console.log(raw_variables, 'raw_variables');
                                 
                                 if (i < rawVariables.length - 1) {

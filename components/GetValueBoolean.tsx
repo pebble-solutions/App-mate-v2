@@ -24,10 +24,7 @@ const GetValueBoolean: React.FC<ResponseBooleanType> = ({ varBoolean, onRawVaria
     onRawVariablesChange(response);
     }, [response]);
 
-//   const handleChange = (text: string) => {
-//     setResponse(prev => ({ ...prev, value: text }));
-//     onRawVariablesChange(response);
-//   };
+
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const [displayText, setDisplayText] = useState<string>("Non");
 
@@ -47,7 +44,7 @@ const GetValueBoolean: React.FC<ResponseBooleanType> = ({ varBoolean, onRawVaria
   return (
     <View>
       <View style={globalStyles.input}>
-        <Text style={globalStyles.textLight}>{displayText}</Text>
+          <Text style={globalStyles.textLight}>{displayText}</Text>
         <RNSwitch
           trackColor={{ false: '#767577', true: '	#90EE90' }}
           thumbColor={isEnabled ? '#7FFF00' : '#f4f3f4'}
