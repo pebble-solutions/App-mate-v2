@@ -76,7 +76,6 @@ export default function RecapScreen() {
                             onSessionPress={(session) => {
                                 openSession(session._id, useSessionContext(), useSessionStatusContext())
                             }}
-                            buttonTitle="Démarrer"
                         />
                     )}
                 />

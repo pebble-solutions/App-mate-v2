@@ -1,6 +1,6 @@
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {getRGBGradientColors} from "../../shared/libs/color";
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, StyleSheet, Text, Dimensions, TouchableOpacity, View} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import {ActivityType} from "../../shared/types/ActivityType";
 import {router} from "expo-router";
@@ -10,35 +10,85 @@ import { Activity } from "../../shared/classes/Activity";
 import ActivityGradient from "../Activity/ActivityGradient";
 import {SessionType} from "../../shared/types/SessionType";
 import {SessionCard} from "../Session/SessionCard";
+import { Ionicons } from '@expo/vector-icons';
+import { SummaryCard } from "./SummaryCard";
+import Carousel from "react-native-reanimated-carousel";
+
 
 type SummaryOverviewType = {
     activity: ActivityType,
     onNewPress?: () => void,
-    buttonTitle?: string,
     sessions?: SessionType[],
     onSessionPress?: (session: SessionType) => void
 }
 
-export default function SummaryOverview({ activity, onNewPress, onSessionPress, buttonTitle, sessions }: SummaryOverviewType) {
-    buttonTitle = buttonTitle || "Consulter"
+export default function SummaryOverview({ activity, onNewPress, onSessionPress, sessions }: SummaryOverviewType) {
+    const {height, width} = Dimensions.get('window');
+
 
     return (
         <ActivityGradient
             activity={activity}
             style={[globalStyles.body, globalStyles.card]}>
-            <View style={[globalStyles.cardContent, styles.localCardContent]}>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.description}</Text>
+            <View style={[globalStyles.cardContent]}>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight,globalStyles.textCenter]}>{activity.label}</Text>
+                        <View style={[globalStyles.pContainer, {opacity: .5}]}>
+                <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity.description}</Text>
+                        </View>
 
                 {sessions?.length ? (
                     <>
-                        <View style={[globalStyles.mt3Container, {opacity: .5}]}>
-                            <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{sessions.length} session{sessions.length > 1 && "s"} enregistrées</Text>
+                    {/* //COMPOSANT sélection jour semeine ... */}
+                    <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{sessions.length} session{sessions.length > 1 && "s"} enregistrées</Text>
+                    
+                        <View style={[ styles.buttonContainerTunnel]}>
+                                    <TouchableOpacity onPress={() => console.log({sessions})}
+                                        style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
+                                    >
+                                    <Text style={[globalStyles.textLight, {color: activity.color}]}>jour</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => console.log("semaine")}
+                                        style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
+                                    >
+                                    <Text style={[globalStyles.textLight, {color: activity.color}]}>semaine</Text>
+
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => console.log("mois")}
+                                        style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
+                                    >
+                                    <Text style={[globalStyles.textLight, {color: activity.color}]}>mois</Text>
+
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => console.log("choix dans la date")}
+                                        style={[{backgroundColor: "white", paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
+                                    >
+                                        <Ionicons name="calendar" size={24} color={activity.color} />
+                                    </TouchableOpacity>
                         </View>
+                        <Carousel
+                        mode="parallax"
+                        modeConfig={{
+                            parallaxScrollingScale: 0.9,
+                            parallaxScrollingOffset: 20,
+                        }}
+                        pagingEnabled={true}
+                        width={width}
+                        height={height}
+                        data={sessions}
+                        renderItem={({ item }) => <SummaryCard session={item} onPress={() => onSessionPress?.(item)} />}
                         
+                        />
+                        {/* <FlatList
+                            data={sessions}
+                            renderItem={({ item }) => <SummaryCard session={item} onPress={() => onSessionPress?.(item)} />}
+                            keyExtractor={(item) => item._id}
+                        /> */}
                     </>
                 )
                 : null}
+                {sessions?.length === 0 && (
+                    <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>Aucune session enregistrée</Text>
+                )}
 
                 
             </View>
@@ -56,5 +106,13 @@ const styles = StyleSheet.create({
 
     buttonLight: {
         backgroundColor: "white",
+    },
+    buttonContainerTunnel: {
+        flexDirection: 'row',
+        backgroundColor: '#00000000',
+        padding: variables.contentPadding[1],
+        margin: variables.contentMargin[1],
+        justifyContent: 'space-around',
+
     }
 })
