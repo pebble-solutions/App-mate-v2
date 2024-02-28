@@ -1,3 +1,4 @@
+import React from "react";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {getRGBGradientColors} from "../../shared/libs/color";
 import {FlatList, StyleSheet, Text, Dimensions, TouchableOpacity, View} from "react-native";
@@ -13,6 +14,8 @@ import {SessionCard} from "../Session/SessionCard";
 import { Ionicons } from '@expo/vector-icons';
 import { SummaryCard } from "./SummaryCard";
 import Carousel from "react-native-reanimated-carousel";
+import { useState } from "react";
+import { set } from "date-fns";
 
 
 type SummaryOverviewType = {
@@ -23,7 +26,12 @@ type SummaryOverviewType = {
 }
 
 export default function SummaryOverview({ activity, onNewPress, onSessionPress, sessions }: SummaryOverviewType) {
+    const [isVisible, setIsVisible] = useState(false);
     const {height, width} = Dimensions.get('window');
+
+    const handleDay = () => {
+        setIsVisible(true);
+    }
 
 
     return (
@@ -36,13 +44,13 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
                 <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity.description}</Text>
                         </View>
 
-                {sessions?.length ? (
+                {sessions?.length ?  (
                     <>
                     {/* //COMPOSANT sélection jour semeine ... */}
                     <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{sessions.length} session{sessions.length > 1 && "s"} enregistrées</Text>
                     
                         <View style={[ styles.buttonContainerTunnel]}>
-                                    <TouchableOpacity onPress={() => console.log({sessions})}
+                                    <TouchableOpacity onPress={() => handleDay()}
                                         style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
                                     >
                                     <Text style={[globalStyles.textLight, {color: activity.color}]}>jour</Text>
@@ -65,19 +73,25 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
                                         <Ionicons name="calendar" size={24} color={activity.color} />
                                     </TouchableOpacity>
                         </View>
-                        <Carousel
-                        mode="parallax"
-                        modeConfig={{
-                            parallaxScrollingScale: 0.9,
-                            parallaxScrollingOffset: 20,
-                        }}
-                        pagingEnabled={true}
-                        width={width}
-                        height={height}
-                        data={sessions}
-                        renderItem={({ item }) => <SummaryCard session={item} onPress={() => onSessionPress?.(item)} />}
-                        
-                        />
+                        {isVisible && (
+                            
+                            <View style={[styles.localCardContent]}>
+                                <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Aucune session enregistrée</Text>
+                                <Carousel
+                                mode="parallax"
+                                modeConfig={{
+                                    parallaxScrollingScale: 0.9,
+                                    parallaxScrollingOffset: 20,
+                                }}
+                                pagingEnabled={true}
+                                width={width}
+                                height={height}
+                                data={sessions}
+                                renderItem={({ item }) => <SummaryCard key={item._id} session={item} onPress={() => onSessionPress?.(item)} />}
+                                
+                                />
+                            </View>
+                        )}
                         {/* <FlatList
                             data={sessions}
                             renderItem={({ item }) => <SummaryCard session={item} onPress={() => onSessionPress?.(item)} />}

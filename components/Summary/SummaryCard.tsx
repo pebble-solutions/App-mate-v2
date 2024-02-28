@@ -1,35 +1,62 @@
-import {SessionType} from "../../shared/types/SessionType";
+import {RawVariableType, SessionType} from "../../shared/types/SessionType";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { AntDesign } from '@expo/vector-icons';
+import {format} from 'date-fns';
+import {fr} from 'date-fns/locale';
+import { Session } from "../../shared/classes/Session";
+import { VariableType } from "../../shared/types/VariableType";
 
 type SummaryCardOptions = {
     onPress?: () => void,
-    session: SessionType
+    session: SessionType,
 }
 
 export function SummaryCard({session, onPress}: SummaryCardOptions) {
+    const renderItemValue = (item: RawVariableType) => {
+        console.log(item, 'item')
+        if (item.value instanceof Date) {
+            console.log(item.value)
+            return  <View>
+                    <Text style={globalStyles.textLight}>{item.label}: </Text>
+                    <Text>{item.value.toLocaleString()}</Text>;
+                </View>
+        }
+        return <Text  style={globalStyles.textLight}>{item.label}: {item.value}</Text>
+    }
     return (
-        <TouchableOpacity onPress={onPress} style={[localStyle.cardContent]}>
-                <View style={[ localStyle.container]}>
-                    <AntDesign name="left" size={24} color={variables.color.success} />
-                        <Text style={[globalStyles.textLight]}>{session.start.toLocaleDateString()}</Text>
-                    <AntDesign name="right" size={24} color={variables.color.success} />
-                </View>
-                <View style={[ localStyle.container]}>
-                    <Text style={[globalStyles.textLight]}>Timeline</Text>
-                    <Text style={[globalStyles.textLight]}>MetricSeqeunce</Text>
-                </View>
-                <>
+        <View>
 
+            <View style={[localStyle.cardContent]}>
+                <View style={[ localStyle.container]}>
+                    <AntDesign name="left" size={24} color={'white'} />
+                        <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>
+                            {format(session.start, ' d MMM yyy', {locale: fr})}
+                        </Text>
+                        <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>
+                            {/* {format(session.end, 'HH:mm', {locale: fr})} */}
+                        </Text>
+                    <AntDesign name="right" size={24} color={'white'} />
+                </View>
+                <View style={[ localStyle.container]}>
+                    {/* <Text style={[globalStyles.textLight]}>Timeline</Text> */}
+                    {session.raw_datas && (
+                        <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Metric Sequence</Text>
+                        
+                    )}
+                </View>
+
+            </View>
+                <View style={[localStyle.cardContent]}>
+                    <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Informations et variables</Text>
                 {session.raw_variables.length > 0 && (
                     <View style={[ localStyle.content]}>
                         <Text style={[globalStyles.textLight]}>Nombre de variables brutes: {session.raw_variables.length}</Text>
                         {session.raw_variables.map((variable, index) => (
                             <>
-                            <Text key={index} style={[globalStyles.textLight]}>{variable.label} : {variable.value}</Text>
+                            {renderItemValue(variable as RawVariableType)}
+                            {/* <Text key={index} style={[globalStyles.textLight]}>{variable.label} : {variable.value}</Text> */}
                             </>
-                            
                         ))}
                     </View>
                 )}
@@ -38,8 +65,10 @@ export function SummaryCard({session, onPress}: SummaryCardOptions) {
                         <Text style={[globalStyles.textLight]}>Pas de variable</Text>
                     </View>
                 )}
-                </>
-        </TouchableOpacity>
+
+                </View>
+        </View>
+
     )
 }
 
@@ -47,17 +76,14 @@ const localStyle = StyleSheet.create({
     card: {
         width: "100%",
         backgroundColor: "transparent",
-        shadowRadius: 12,
-        shadowOffset: {
-            width: 0,
-            height: 10
-        },
+        
     },
 
     container: {
         flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center"
+        justifyContent: "space-around",
+        alignItems: "center",
+        padding: variables.contentPadding[1],   
     },
     content: {
         borderRadius: variables.borderRadius[1],
@@ -68,7 +94,7 @@ const localStyle = StyleSheet.create({
 
     
     cardContent: {
-        backgroundColor: '#00000020',
+        backgroundColor: '#00000050',
         borderRadius: variables.borderRadius[1],
         padding: variables.contentPadding[2],
         marginVertical: variables.contentMargin[2],
