@@ -6,6 +6,9 @@ export default function SummaryLayout() {
             <Stack.Screen name="index" options={{
                 headerShown: false
             }} />
+            <Stack.Screen name="day" options={{
+                headerShown: false
+            }} />
         </Stack>
     )
 }

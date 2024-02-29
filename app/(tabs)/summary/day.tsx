@@ -75,15 +75,15 @@ export default function SummaryScreen() {
                 </View>
                 <View>
 
-                    <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
+                    <Text style={[globalStyles.sessionSubTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
                     <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{activity.description}</Text>
                     {sessions.length > 0 && (
-                    <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>
+                    <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
                         {sessions.length} session{sessions.length > 1 && "s"} enregistrée{sessions.length > 1 && "s"}
                     </Text>
                     )}
                     {sessions.length === 0 && (
-                        <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>Aucune session enregistrée</Text>
+                        <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Aucune session enregistrée</Text>
                     )}
                         <Carousel
                         mode="parallax"

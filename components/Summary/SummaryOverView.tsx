@@ -35,11 +35,11 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
         router.push({
             pathname: "/summary/day/",
             params:activity
+            
         })
     }
     const handleWeek =()=> {
         setIsVisible(true);
-        
     }
 
 

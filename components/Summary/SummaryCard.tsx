@@ -44,10 +44,16 @@ export function SummaryCard({session}: SummaryCardOptions) {
                         
                     <AntDesign name="right" size={24} color={'white'} />
                 </View>
-                
+                <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Séquences</Text>
+                <Text style={[globalStyles.textLight,globalStyles.textCenter]}>Nombre de séquences: {session.raw_datas.records.length}</Text>
+                {session.raw_datas.records.map((sequence, index) => (
+                    <View style={[localStyle.cardContent]}>
+                        <Text style={globalStyles.textLight}>{session.raw_datas.currentIndex}</Text>
+                        </View>
+                ))}
             </View>
             <View style={[localStyle.card]}>
-                <Text style={[globalStyles.textCenter, globalStyles.textLight]}>Informations et variables</Text>
+                <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Informations et variables</Text>
                 {session.raw_variables.length > 0 && (
                     <View >
                         <Text style={[globalStyles.textLight,globalStyles.textCenter]}>Nombre de variables: {session.raw_variables.length}</Text>
@@ -92,7 +98,7 @@ const localStyle = StyleSheet.create({
         padding: variables.contentPadding[1],
     },
     card: {
-        backgroundColor: "#00000050",
+        backgroundColor: "#00000010",
         borderRadius: variables.borderRadius[1],
         justifyContent: 'center',
         margin: variables.contentMargin[1],
