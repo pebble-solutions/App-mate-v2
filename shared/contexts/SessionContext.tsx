@@ -9,7 +9,7 @@ export type SessionContextType = {
     getSessionById: (id: string) => SessionType | undefined,
     updateSession: (id: string, newSession: SessionType) => void
     postSession: (id: string, session: SessionType) => Promise<void>
-    fetchSessionsFromAPI: () => void
+    fetchSessionsFromAPI: () => Promise<void>
     getSessionsFromActivity: (activityId: string) => SessionType[]
 }
 

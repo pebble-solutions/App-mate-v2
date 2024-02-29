@@ -6,15 +6,19 @@ import {format} from 'date-fns';
 import {fr} from 'date-fns/locale';
 import { Session } from "../../shared/classes/Session";
 import { VariableType } from "../../shared/types/VariableType";
+import { SequenceType } from "../../shared/types/SequenceType";
+import { useState } from "react";
 
 type SummaryCardOptions = {
     onPress?: () => void,
     session: SessionType,
 }
 
-export function SummaryCard({session, onPress}: SummaryCardOptions) {
+export function SummaryCard({session}: SummaryCardOptions) {
+    console.log(session, 'session') 
+
     const renderItemValue = (item: RawVariableType) => {
-        console.log(item, 'item')
+        console.log(item, 'itemincard')
         if (item.value instanceof Date) {
             console.log(item.value)
             return  <View>
@@ -24,9 +28,10 @@ export function SummaryCard({session, onPress}: SummaryCardOptions) {
         }
         return <Text  style={globalStyles.textLight}>{item.label}: {item.value}</Text>
     }
+    
+
     return (
         <View>
-
             <View style={[localStyle.cardContent]}>
                 <View style={[ localStyle.container]}>
                     <AntDesign name="left" size={24} color={'white'} />
@@ -38,14 +43,7 @@ export function SummaryCard({session, onPress}: SummaryCardOptions) {
                         </Text>
                     <AntDesign name="right" size={24} color={'white'} />
                 </View>
-                <View style={[ localStyle.container]}>
-                    {/* <Text style={[globalStyles.textLight]}>Timeline</Text> */}
-                    {session.raw_datas && (
-                        <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Metric Sequence</Text>
-                        
-                    )}
-                </View>
-
+                
             </View>
                 <View style={[localStyle.cardContent]}>
                     <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Informations et variables</Text>

@@ -16,6 +16,7 @@ import { SummaryCard } from "./SummaryCard";
 import Carousel from "react-native-reanimated-carousel";
 import { useState } from "react";
 import { set } from "date-fns";
+import { useNavigation } from "@react-navigation/native";   
 
 
 type SummaryOverviewType = {
@@ -29,8 +30,16 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
     const [isVisible, setIsVisible] = useState(false);
     const {height, width} = Dimensions.get('window');
 
-    const handleDay = () => {
+    const handleDay =()=> {
+        const id = activity._id;
+        router.push({
+            pathname: "/summary/day/",
+            params:activity
+        })
+    }
+    const handleWeek =()=> {
         setIsVisible(true);
+        
     }
 
 
@@ -46,16 +55,16 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
 
                 {sessions?.length ?  (
                     <>
-                    {/* //COMPOSANT sélection jour semeine ... */}
+                    {/* //COMPOSANT sélection jour semaine ... */}
                     <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{sessions.length} session{sessions.length > 1 && "s"} enregistrées</Text>
                     
                         <View style={[ styles.buttonContainerTunnel]}>
-                                    <TouchableOpacity onPress={() => handleDay()}
+                                    <TouchableOpacity onPress={() => handleDay()}   
                                         style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
                                     >
                                     <Text style={[globalStyles.textLight, {color: activity.color}]}>jour</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => console.log("semaine")}
+                                    <TouchableOpacity onPress={() => handleWeek()}
                                         style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
                                     >
                                     <Text style={[globalStyles.textLight, {color: activity.color}]}>semaine</Text>
@@ -74,7 +83,6 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
                                     </TouchableOpacity>
                         </View>
                         {isVisible && (
-                            
                             <View style={[styles.localCardContent]}>
                                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Aucune session enregistrée</Text>
                                 <Carousel
@@ -92,11 +100,7 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
                                 />
                             </View>
                         )}
-                        {/* <FlatList
-                            data={sessions}
-                            renderItem={({ item }) => <SummaryCard session={item} onPress={() => onSessionPress?.(item)} />}
-                            keyExtractor={(item) => item._id}
-                        /> */}
+                        
                     </>
                 )
                 : null}

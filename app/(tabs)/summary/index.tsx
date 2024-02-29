@@ -26,9 +26,12 @@ export default function RecapScreen() {
     const {getSessionsFromActivity} = useSessionContext();
     const width = Dimensions.get('window').width;
     const [selectedActivityColor, setSelectedActivityColor] = useState("");
+    const [sessionsLoaded, setSessionsLoaded] = useState(false);
 
-    useEffect(() => {
-        fetchSessionsFromAPI();
+    useEffect( () => {
+        fetchSessionsFromAPI().then(() => {
+            setSessionsLoaded(true);
+        });
     }, []);
     const handleActivitySelect = (color: string | null ) => {
         if (color) {
@@ -50,35 +53,32 @@ export default function RecapScreen() {
         content = (
             <SafeAreaView style={globalStyles.body}>
                 <HeaderScreenTitle title="Tableau de bord" addButton={false} />
-                <Carousel
-                    mode="parallax"
-                    modeConfig={{
-                        parallaxScrollingScale: 0.9,
-                        parallaxScrollingOffset: 50,
-                    }}
-                    pagingEnabled={true}
-                    width={width}
-                    data={activities}
-                    onSnapToItem={(index) => handleActivitySelect(activities[index].color)}
-                    // renderItem={({ item }) => (
-                    //     <ActivityLabel
-                    //         activity={item}
-                    //         key={item._id}
-                    //     />
-                    // )}
-                    renderItem={({item}) => (
-                        <SummaryOverview
-                            activity={item}
-                            sessions={getSessionsFromActivity(item._id)}
-                            onNewPress={() => {
-                                newSession(item._id, useSessionContext(), useSessionStatusContext())
-                            }}
-                            onSessionPress={(session) => {
-                                openSession(session._id, useSessionContext(), useSessionStatusContext())
-                            }}
-                        />
-                    )}
-                />
+                {sessionsLoaded ?
+                    <Carousel
+                        mode="parallax"
+                        modeConfig={{
+                            parallaxScrollingScale: 0.9,
+                            parallaxScrollingOffset: 50,
+                        }}
+                        pagingEnabled={true}
+                        width={width}
+                        data={activities}
+                        onSnapToItem={(index) => handleActivitySelect(activities[index].color)}
+                    
+                        renderItem={({item}) => (
+                            <SummaryOverview
+                                activity={item}
+                                sessions={getSessionsFromActivity(item._id)}
+                                onNewPress={() => {
+                                    newSession(item._id, useSessionContext(), useSessionStatusContext())
+                                }}
+                                onSessionPress={(session) => {
+                                    openSession(session._id, useSessionContext(), useSessionStatusContext())
+                                }}
+                            />
+                        )}
+                    /> : <View><Text>Chargement des sessions ...</Text></View>
+                }
                 
                 {/* <View style={globalStyles.recapContentContainer}>
                     <Carousel
