@@ -14,6 +14,7 @@ type ButtonType = {
 
 type ButtonOptions = {
     displayTitle?: boolean
+    disabled?: boolean
 }
 
 export default function Button({title, onPress, style, titleStyle, variant, icon, options}: ButtonType) {
@@ -36,9 +37,16 @@ export default function Button({title, onPress, style, titleStyle, variant, icon
         titleStyle.push(globalStyles.textXl)
     }
 
+    if (options.disabled) {
+        style.push(localStyle.disabled)
+    }
+
     return (
         <TouchableOpacity
-            onPress={() => onPress()}
+            onPress={() => {
+                if (!options?.disabled) onPress()
+            }}
+            disabled={options.disabled}
         >
             <View
                 style={[localStyle.button, ...style]}>
@@ -71,4 +79,8 @@ const localStyle = StyleSheet.create({
         paddingVertical: variables.contentPadding[2],
         paddingHorizontal: variables.contentPadding[3]
     },
+
+    disabled: {
+        opacity: .3
+    }
 })

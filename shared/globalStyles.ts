@@ -12,7 +12,8 @@ export const variables = {
         lightGrey: "#59759f",
         white: "#ffffff",
         danger: "#cb3c3c",
-        success: "#5aab42"
+        success: "#5aab42",
+        active: "#0184d5"
     }
 }
 

@@ -113,7 +113,8 @@ export default function ClockScreen() {
                     titleStyle={[globalStyles.textLight]}
                     icon={<AntDesign name="back" size={24} color="white" />}
                     options={{
-                        displayTitle: false
+                        displayTitle: false,
+                        disabled: started
                     }}
                 />
                 <Title title={currentActivity.label} style={[globalStyles.textLight, globalStyles.textCenter]} size="lg" />
