@@ -4,7 +4,7 @@ import { globalStyles } from "../shared/globalStyles";
 import { VariableType } from "../shared/types/VariableType";
 import { useSessionContext } from "../shared/contexts/SessionContext";
 import { useSessionStatusContext } from "../shared/contexts/SessionStatusContext";
-import RenderForm from "./RenderFormVariable";
+import RenderForm from "./Form/FormInput";
 import { RawVariableType, SessionType } from "../shared/types/SessionType";
 
 type RenderItemOptions = {

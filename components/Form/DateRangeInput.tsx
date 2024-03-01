@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { globalStyles } from '../shared/globalStyles';
-import { RawVariableType } from '../shared/types/SessionType';
+import { globalStyles } from '../../shared/globalStyles';
+import { RawVariableType } from '../../shared/types/SessionType';
 
 interface ResponseDateRangeProps {
   onDateRangeChange: (startDate: Date, endDate: Date) => void;
@@ -10,7 +10,7 @@ interface ResponseDateRangeProps {
   onRawVariablesChange: (rawVariables: RawVariableType[]) => void;
 }
 
-const GetValueDateRange : React.FC<ResponseDateRangeProps> = ({ onDateRangeChange, varDateRange, onRawVariablesChange }) => {
+const DateRangeInput : React.FC<ResponseDateRangeProps> = ({ onDateRangeChange, varDateRange, onRawVariablesChange }) => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [showStartDatePicker, setShowStartDatePicker] = useState<boolean>(false);
@@ -98,4 +98,4 @@ const GetValueDateRange : React.FC<ResponseDateRangeProps> = ({ onDateRangeChang
   );
 };
 
-export default GetValueDateRange;
+export default DateRangeInput;

@@ -3,10 +3,11 @@ import Svg, {Circle, G} from "react-native-svg";
 import {StyleSheet, TouchableOpacity, View, Animated} from "react-native";
 import {variables} from "../../shared/globalStyles";
 import { Feather } from '@expo/vector-icons';
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 
-export default function ValidationButton({items, currentIndex, inactiveColor, activeColor, size, onPress}: ValidationButtonOptions) {
+export default function ValidationButton({items, currentIndex, inactiveColor, activeColor, size, onPress, validationColor, validationIndex}: ValidationButtonOptions) {
 
+    const [actionColor, setActionColor] = useState(activeColor || variables.color.active)
     const getPercentage = () => (currentIndex + 1) * (100 / items)
 
     size = size || 100
@@ -15,22 +16,22 @@ export default function ValidationButton({items, currentIndex, inactiveColor, ac
     const radius = center - strokeWidth / 2
     const circumference = 2 * Math.PI * radius
 
-    const buttonStyle = {...localStyle.button, backgroundColor: activeColor || variables.color.active}
-
     const progressAnimation = useRef(new Animated.Value(0)).current
     const progressRef = useRef<Circle | null>(null)
 
+    const isValidationTheme = () => typeof validationIndex !== "undefined" && currentIndex === validationIndex
+
     useEffect(() => {
         animation(getPercentage())
+        setActionColor((prev) => {
+            return isValidationTheme() ? validationColor || variables.color.success : activeColor || variables.color.active
+        })
     }, [currentIndex]);
 
     useEffect(() => {
         progressAnimation.addListener((value) => {
             const strokeDashoffset = circumference - (circumference * value.value) / 100
-
-            if (progressRef.current) {
-                progressRef.current.setNativeProps({strokeDashoffset})
-            }
+            progressRef.current?.setNativeProps({strokeDashoffset})
         })
 
         return () => progressAnimation.removeAllListeners()
@@ -56,7 +57,7 @@ export default function ValidationButton({items, currentIndex, inactiveColor, ac
                         fill={"transparent"}
                     />
                     <Circle
-                        stroke={activeColor || variables.color.active}
+                        stroke={actionColor}
                         cx={center} cy={center}
                         r={radius}
                         strokeWidth={strokeWidth}
@@ -66,7 +67,7 @@ export default function ValidationButton({items, currentIndex, inactiveColor, ac
                     />
                 </G>
             </Svg>
-            <TouchableOpacity style={buttonStyle} onPress={onPress}>
+            <TouchableOpacity onPress={onPress} style={[localStyle.button, {backgroundColor: actionColor}]}>
                 <Feather name="arrow-right" size={32} color="white" />
             </TouchableOpacity>
         </View>

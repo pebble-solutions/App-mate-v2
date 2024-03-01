@@ -1,5 +1,5 @@
 import Timeline from "./Timeline";
-import {Animated, FlatList, StyleSheet, useWindowDimensions, View} from "react-native";
+import {Animated, FlatList, StyleSheet, useWindowDimensions, View, ViewToken} from "react-native";
 import ValidationButton from "./ValidationButton";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
@@ -9,19 +9,26 @@ import {Feather} from "@expo/vector-icons";
 type OnboardingControllerOptions = {
     activeColor?: string,
     inactiveColor?: string,
-    items: ReactNode[]
+    items: ReactNode[],
+    validationColor?: string,
+    validationIndex?: number
 }
 
-export default function OnboardingController({activeColor, inactiveColor, items}: OnboardingControllerOptions) {
+export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex}: OnboardingControllerOptions) {
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const { width } = useWindowDimensions()
 
     const scrollX = useRef(new Animated.Value(0)).current
+    const slidesRef = useRef<FlatList | null>(null)
+
+    const viewableItemsChanged = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
+        setCurrentIndex(viewableItems[0].index || 0)
+    }).current;
 
     const goToIndex = (index: number) => {
-        if (index >= 0 && index < 6) {
-            setCurrentIndex(() => index)
+        if (index >= 0 && index < items.length) {
+            slidesRef.current?.scrollToIndex({index})
         }
     }
 
@@ -38,7 +45,7 @@ export default function OnboardingController({activeColor, inactiveColor, items}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled
-                scrollEnabled={true}
+                scrollEnabled={false}
                 bounces={false}
                 onScroll={Animated.event([{
                     nativeEvent: {
@@ -47,13 +54,18 @@ export default function OnboardingController({activeColor, inactiveColor, items}
                         }
                     }
                 }], { useNativeDriver: false })}
+                onViewableItemsChanged={viewableItemsChanged}
+                scrollEventThrottle={32}
+                ref={slidesRef}
             />
             
             <Timeline
-                items={6}
+                items={items.length}
                 currentIndex={currentIndex}
                 activeColor={activeColor}
                 inactiveColor={inactiveColor}
+                validationColor={validationColor}
+                validationIndex={validationIndex}
             />
 
             <View style={localStyle.actionsContainer}>
@@ -71,11 +83,13 @@ export default function OnboardingController({activeColor, inactiveColor, items}
 
                 <View style={localStyle.buttonContainer}>
                     <ValidationButton
-                        items={6}
+                        items={items.length}
                         currentIndex={currentIndex}
                         activeColor={activeColor}
                         inactiveColor={inactiveColor}
                         onPress={nextStep}
+                        validationIndex={validationIndex}
+                        validationColor={validationColor}
                     />
                 </View>
 
