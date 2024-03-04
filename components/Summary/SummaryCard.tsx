@@ -16,19 +16,18 @@ type SummaryCardOptions = {
     index: number,
 }
 
-export function SummaryCard({session, index}: SummaryCardOptions) {
+export function SummaryCard({session}: SummaryCardOptions) {
     console.log(session, 'session') 
     console.log(session.raw_datas.records, 'sessionrecords')
-    console.log(index, 'index')
     const previous = () => {
         console.log('previous', session._id)
     }
     const following = () => {
-        console.log('following', index)
+        console.log('following', session._id)
     }
 
     const renderItemValue = (item: RawVariableType) => {
-        console.log(item, 'itemincard')
+        // console.log(item, 'itemincard')
         if (item.value instanceof Date) {
             console.log(item.value)
             return  <View style={localStyle.cardContent}>

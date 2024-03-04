@@ -156,12 +156,12 @@ export default function ValidateScreen() {
                     {isRaw_Variables && 
                         <Button
                             title="Valider cette sesssion"
-                            // onPress={async () => {
-                            //     await postSession(raw_variables);
-                            // }
-                            onPress= {() => {
-                                console.log(raw_variables, 'raw_variables');
-                                }
+                            onPress={async () => {
+                                await postSession(raw_variables);
+                            }
+                            // onPress= {() => {
+                            //     console.log(raw_variables, 'raw_variables');
+                            //     }
                             }
                     />
                     }

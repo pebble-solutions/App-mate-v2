@@ -33,6 +33,7 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
 
     const handleDay =()=> {
         const id = activity._id;
+        console.log(id, 'id')
         router.push({
             pathname: "/summary/day/",
             params:activity
@@ -46,8 +47,7 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
     const renderItem = ({ item, index }: { item: any, index: number }) => {
         return (
             <View key={index}>
-                <Text>{item}</Text>
-                <Text>Index: {index}</Text> {/* Affiche l'index de l'élément */}
+                console.log(activity._id, 'item')
             </View>
         );
     };
@@ -57,6 +57,7 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
             style={[globalStyles.body, globalStyles.card]}>
             <View style={[globalStyles.cardContent]}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight,globalStyles.textCenter]}>{activity.label}</Text>
+                <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity._id}</Text>
                         <View style={[globalStyles.pContainer, {opacity: .5}]}>
                 <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity.description}</Text>
                         </View>
@@ -103,7 +104,7 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
                                 width={width}
                                 height={height}
                                 data={sessions}
-                                renderItem={({ item, index }) => <SummaryCard key={item._id} session={item} onPress={() => onSessionPress?.(item)} />}
+                                renderItem={({ item}) => <SummaryCard key={item._id} session={item} onPress={() => onSessionPress?.(item)} />}
 
                                 
                                 />
