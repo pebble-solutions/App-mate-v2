@@ -24,6 +24,7 @@ type SummaryOverviewType = {
     onNewPress?: () => void,
     sessions?: SessionType[],
     onSessionPress?: (session: SessionType) => void
+    index:number
 }
 
 export default function SummaryOverview({ activity, onNewPress, onSessionPress, sessions }: SummaryOverviewType) {
@@ -42,7 +43,14 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
         setIsVisible(true);
     }
 
-
+    const renderItem = ({ item, index }: { item: any, index: number }) => {
+        return (
+            <View key={index}>
+                <Text>{item}</Text>
+                <Text>Index: {index}</Text> {/* Affiche l'index de l'élément */}
+            </View>
+        );
+    };
     return (
         <ActivityGradient
             activity={activity}
@@ -95,7 +103,8 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
                                 width={width}
                                 height={height}
                                 data={sessions}
-                                renderItem={({ item }) => <SummaryCard key={item._id} session={item} onPress={() => onSessionPress?.(item)} />}
+                                renderItem={({ item, index }) => <SummaryCard key={item._id} session={item} onPress={() => onSessionPress?.(item)} />}
+
                                 
                                 />
                             </View>

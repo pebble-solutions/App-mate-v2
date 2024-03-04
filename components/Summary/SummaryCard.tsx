@@ -1,6 +1,6 @@
 import {RawVariableType, SessionType} from "../../shared/types/SessionType";
 import {globalStyles, variables} from "../../shared/globalStyles";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, Touchable, TouchableOpacity, View} from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import {format} from 'date-fns';
 import {fr} from 'date-fns/locale';
@@ -8,14 +8,24 @@ import { Session } from "../../shared/classes/Session";
 import { VariableType } from "../../shared/types/VariableType";
 import { SequenceType } from "../../shared/types/SequenceType";
 import { useState } from "react";
+import { SequenceList } from "../Session/SequenceList";
 
 type SummaryCardOptions = {
     onPress?: () => void,
     session: SessionType,
+    index: number,
 }
 
-export function SummaryCard({session}: SummaryCardOptions) {
+export function SummaryCard({session, index}: SummaryCardOptions) {
     console.log(session, 'session') 
+    console.log(session.raw_datas.records, 'sessionrecords')
+    console.log(index, 'index')
+    const previous = () => {
+        console.log('previous', session._id)
+    }
+    const following = () => {
+        console.log('following', index)
+    }
 
     const renderItemValue = (item: RawVariableType) => {
         console.log(item, 'itemincard')
@@ -36,19 +46,27 @@ export function SummaryCard({session}: SummaryCardOptions) {
     return (
         <View>
             <View style={[localStyle.card]}>
+                        <Text style={[globalStyles.sessionTitle, globalStyles.textCenter, globalStyles.textLight]}>{session.label}</Text>
                 <View style={[ localStyle.container]}>
-                    <AntDesign name="left" size={24} color={'white'} />
-                        <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>
-                            {format(session.start, ' d MMM yyy', {locale: fr})}
-                        </Text>
-                        
-                    <AntDesign name="right" size={24} color={'white'} />
+                    <TouchableOpacity onPress={previous}>
+                        <AntDesign name="left" size={24} color={'white'} />
+                    </TouchableOpacity>
+                    <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>
+                        {format(session.start, ' d MMM yyy', {locale: fr})}
+                    </Text>
+                    <TouchableOpacity onPress={following}>
+                        <AntDesign name="right" size={24} color={'white'} />    
+                    </TouchableOpacity>
                 </View>
                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Séquences</Text>
                 <Text style={[globalStyles.textLight,globalStyles.textCenter]}>Nombre de séquences: {session.raw_datas.records.length}</Text>
                 {session.raw_datas.records.map((sequence, index) => (
-                    <View style={[localStyle.cardContent]}>
-                        <Text style={globalStyles.textLight}>{session.raw_datas.currentIndex}</Text>
+                    <View key={index} style={[localStyle.cardContent]}>
+                        {/* <SequenceList sequence={sequence}/> */}
+                        <Text style={globalStyles.textLight}>ici l'index {index}</Text>
+                        
+
+                        
                         </View>
                 ))}
             </View>
