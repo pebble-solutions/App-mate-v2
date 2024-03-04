@@ -1,18 +1,21 @@
-import { Text, View } from "react-native";
-import { globalStyles } from "../../shared/globalStyles";
+import {StyleSheet, Text, View} from "react-native";
+import {globalStyles, variables} from "../../shared/globalStyles";
 import TextInput from "./TextInput";
 import NumberInput from "./NumberInput";
 import DateTimeInput from "./DateTimeInput";
 import BooleanInput from "./BooleanInput";
-import {InputType} from "../types/InputType";
-import {InputOptions} from "../types/InputOptions";
+import {InputType} from "./types/InputType";
+import {InputOptions} from "./types/InputOptions";
 
 type FormInputOptions = InputOptions & {
     label?: string,
-    type?: InputType
+    type?: InputType,
+    labelStyle?: object[]
 }
 
-export default function FormInput({label, type, value, placeholder, onChange}: FormInputOptions) {
+export default function FormInput({label, type, value, placeholder, onChange, labelStyle}: FormInputOptions) {
+
+    type = type || "text"
 
     let component;
 
@@ -49,10 +52,21 @@ export default function FormInput({label, type, value, placeholder, onChange}: F
     }
 
     return (
-        <View style={globalStyles.VariableCardContent}>
-            {label && <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>{label}</Text>}
+        <View style={localStyle.formGroup}>
+            {label && <Text style={[localStyle.label, labelStyle]}>{label}</Text>}
             {component}
         </View>
     )
 
 }
+
+const localStyle = StyleSheet.create({
+    label: {
+        marginBottom: variables.contentMargin[1]
+    },
+
+    formGroup: {
+        width: "100%",
+        marginVertical: variables.contentMargin[2]
+    }
+})

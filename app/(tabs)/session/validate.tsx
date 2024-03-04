@@ -1,4 +1,4 @@
-import {Alert, SafeAreaView, Text, View} from "react-native";
+import {Alert, SafeAreaView, View} from "react-native";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
@@ -9,30 +9,17 @@ import { globalStyles } from "../../../shared/globalStyles";
 import {ActivityType} from "../../../shared/types/ActivityType";
 import OnboardingController from "../../../components/Onboarding/OnboardingController";
 import FormInput from "../../../components/Form/FormInput";
+import VariablesResume from "../../../components/Session/VariablesResume";
 
 export default function ValidateScreen() {
-    
-
     const sessionContext = useSessionContext();
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
     const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
-    const [ exitStatus, setExitStatus ] = React.useState(false);
-    let [i, setI] = React.useState<number>(0);
-    const [isRaw_Variables, setIsRaw_Variables] = React.useState<boolean>(false);
-    const [raw_variables, setRaw_variables] = React.useState<RawVariableType[]>([]);
-    const [currentResponse, setCurrentResponse] = React.useState<RawVariableType>({} as RawVariableType);
-    
-    
+    const [ exitStatus, setExitStatus ] = React.useState(false)
+
     useEffect(() => {
         navigate(status || null, router)
     }, [status])
-
-    useEffect(() => {
-        if (i < rawVariables.length) {
-            setCurrentResponse(rawVariables[i]);
-        }
-    }
-    , [i]);
 
     let session, activity;
 
@@ -47,12 +34,25 @@ export default function ValidateScreen() {
         }
     }
 
-    const [ currentSession, setCurrentSession ] = useState<SessionType | null>(session || null)
-    const [ currentActivity, setCurrentActivity ] = useState<ActivityType | null>(activity || null)
+    const [ currentSession ] = useState<SessionType | null>(session || null)
+    const [ currentActivity ] = useState<ActivityType | null>(activity || null)
 
     // Exit or error status
     if (!currentActivity || !currentSession) {
         return null
+    }
+
+    const setResponse = (variableId: string, response: any) => {
+        setRawVariables((prev) => {
+            const newVars: RawVariableType[] = []
+
+            prev.forEach((variable) => {
+                if (variable._id === variableId) variable.value = response
+                newVars.push(variable)
+            })
+
+            return newVars
+        })
     }
 
     const exit = () => {
@@ -82,15 +82,31 @@ export default function ValidateScreen() {
     let items: ReactNode[] = []
 
     rawVariables.forEach((variable) => {
+
+        const value = variable.value
+        const type = variable.type
+        const label = variable.label
+
         items.push((
-            <FormInput
-                type={variable.type}
-                value={variable.value}
-                onChange={(newVal) => console.log(newVal)}
-                label={variable.label}
-            />
+            <View style={globalStyles.section}>
+                <FormInput
+                    type={type}
+                    value={value}
+                    onChange={(newVal) => setResponse(variable._id, newVal)}
+                    label={label}
+                    labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                />
+            </View>
         ))
     })
+
+    items.push((
+        <VariablesResume
+            variables={rawVariables}
+            theme={"dark"}
+            containerStyle={[globalStyles.body, globalStyles.mv3Container, globalStyles.mh3Container]}
+        />
+    ))
 
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>

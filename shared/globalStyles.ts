@@ -22,6 +22,11 @@ export const globalStyles = StyleSheet.create({
         flex: 1
     },
 
+    section: {
+        paddingHorizontal: variables.contentPadding[2],
+        width: "100%"
+    },
+
     headTitle: {
         fontFamily: 'Inter_700Bold',
         fontSize: variables.fontSize[5],
@@ -38,7 +43,6 @@ export const globalStyles = StyleSheet.create({
         marginVertical: 16
     },
 
-
     cardTitle: {
         fontFamily: 'Inter_700Bold',
     },
@@ -54,6 +58,7 @@ export const globalStyles = StyleSheet.create({
     textLight: {
         color: 'white'
     },
+
     textCenter: {
         textAlign: 'center'
     },
@@ -344,13 +349,12 @@ export const globalStyles = StyleSheet.create({
     },
 
     input: {
-        padding: variables.contentPadding[2],
-        borderRadius: variables.borderRadius[1],
+        paddingHorizontal: variables.contentPadding[2],
+        paddingVertical: variables.contentPadding[2],
+        borderRadius: variables.borderRadius[2],
         borderWidth: 1,
-        borderColor: "#cdcdcd",
-        marginVertical: variables.contentMargin[1],
-        backgroundColor: "#FFFFFF30",
-        color: "white",
+        borderColor: variables.color.lightGrey,
+        backgroundColor: variables.color.lightGrey,
         fontSize: variables.fontSize[1],
             
     },

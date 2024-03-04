@@ -48,7 +48,7 @@ export type RawVariableType = {
     ref_out?: string | null,
     list_params?: string | null,
     interval?: number | null,
-    value: string | number | boolean | Date | undefined,
+    value?: string | number | boolean | Date | null,
 }
 export type itemType = {
     _id: string,

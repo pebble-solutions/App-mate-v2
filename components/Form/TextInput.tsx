@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextInput as ReactTextInput } from 'react-native';
 import { globalStyles } from "../../shared/globalStyles";
-import {InputOptions, TextInputOptions} from "../types/InputOptions";
+import {InputOptions, TextInputOptions} from "./types/InputOptions";
 
 const TextInput = ({value, onChange, placeholder, multiline}: TextInputOptions) => {
 

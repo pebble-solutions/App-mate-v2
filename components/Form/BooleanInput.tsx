@@ -1,17 +1,22 @@
 import React, { useState, useEffect} from "react";
-import { Switch, View} from 'react-native';
+import {StyleSheet, Switch, Text, View} from 'react-native';
 import {globalStyles, variables} from "../../shared/globalStyles";
-import {InputOptions} from "../types/InputOptions";
+import {InputOptions} from "./types/InputOptions";
 
 type BooleanInputOptions = Omit<InputOptions, 'value'> & {
-    value?: boolean
+    value?: boolean,
+    trueLabel?: string,
+    falseLabel?: string
 }
 
-const BooleanInput = ({value, placeholder, onChange}: BooleanInputOptions) => {
+const BooleanInput = ({value, onChange, trueLabel, falseLabel}: BooleanInputOptions) => {
     const [currentValue, setCurrentValue] = useState(value)
+    const [label, setLabel] = useState(value ? trueLabel : falseLabel)
 
     useEffect(() => {
         if (onChange) onChange(currentValue)
+        if (currentValue && trueLabel) setLabel(trueLabel)
+        if (!currentValue && falseLabel) setLabel(falseLabel)
     }, [currentValue]);
 
     const toggle = () => {
@@ -19,17 +24,25 @@ const BooleanInput = ({value, placeholder, onChange}: BooleanInputOptions) => {
     };
 
   return (
-    <View style={globalStyles.input}>
+    <View style={[globalStyles.input, localStyle.booleanInput]}>
         <Switch
             trackColor={{ false: variables.color.grey, true: variables.color.success }}
-            thumbColor={currentValue ? variables.color.success : '#f4f3f4'}
             ios_backgroundColor={variables.color.grey}
             onValueChange={toggle}
             value={currentValue}
         />
+
+        {label && <Text>{label}</Text>}
     </View>
   );
 }
 
 export default BooleanInput;
 
+const localStyle = StyleSheet.create({
+    booleanInput: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start"
+    }
+})

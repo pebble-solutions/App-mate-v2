@@ -68,7 +68,7 @@ export default function ValidationButton({items, currentIndex, inactiveColor, ac
                 </G>
             </Svg>
             <TouchableOpacity onPress={onPress} style={[localStyle.button, {backgroundColor: actionColor}]}>
-                <Feather name="arrow-right" size={32} color="white" />
+                {isValidationTheme() ? <Feather name="check" size={32} color="white" /> : <Feather name="arrow-right" size={32} color="white" />}
             </TouchableOpacity>
         </View>
     )
