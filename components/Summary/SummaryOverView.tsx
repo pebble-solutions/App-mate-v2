@@ -1,7 +1,7 @@
 import React from "react";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {getRGBGradientColors} from "../../shared/libs/color";
-import {FlatList, StyleSheet, Text, Dimensions, TouchableOpacity, View} from "react-native";
+import {FlatList, StyleSheet, Text, Dimensions, TouchableOpacity, View, ScrollView} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import {ActivityType} from "../../shared/types/ActivityType";
 import {router} from "expo-router";
@@ -12,7 +12,7 @@ import ActivityGradient from "../Activity/ActivityGradient";
 import {SessionType} from "../../shared/types/SessionType";
 import {SessionCard} from "../Session/SessionCard";
 import { Ionicons } from '@expo/vector-icons';
-import { SummaryCard } from "./SummaryCard";
+import { SummaryCard } from"./SummaryCard";
 import Carousel from "react-native-reanimated-carousel";
 import { useState } from "react";
 import { set } from "date-fns";
@@ -24,7 +24,6 @@ type SummaryOverviewType = {
     onNewPress?: () => void,
     sessions?: SessionType[],
     onSessionPress?: (session: SessionType) => void
-    index:number
 }
 
 export default function SummaryOverview({ activity, onNewPress, onSessionPress, sessions }: SummaryOverviewType) {
@@ -105,8 +104,6 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
                                 height={height}
                                 data={sessions}
                                 renderItem={({ item}) => <SummaryCard key={item._id} session={item} onPress={() => onSessionPress?.(item)} />}
-
-                                
                                 />
                             </View>
                         )}
