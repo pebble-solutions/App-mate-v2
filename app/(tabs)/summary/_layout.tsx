@@ -9,6 +9,10 @@ export default function SummaryLayout() {
             <Stack.Screen name="day" options={{
                 headerShown: false
             }} />
+            <Stack.Screen name="period" options={{
+                headerShown: false
+            }} />
+            
         </Stack>
     )
 }

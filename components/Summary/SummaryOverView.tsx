@@ -17,6 +17,9 @@ import Carousel from "react-native-reanimated-carousel";
 import { useState } from "react";
 import { set } from "date-fns";
 import { useNavigation } from "@react-navigation/native";   
+import GetValueDate from "../GetValueDate";
+import SelectPeriod from "./selectPeriod";
+import { is } from "date-fns/locale";
 
 
 type SummaryOverviewType = {
@@ -39,8 +42,25 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
             
         })
     }
+    const goSelectPeriod =()=> {
+        setIsVisible(false);
+        router.push({
+            pathname: "/summary/period/",
+            params:activity
+            
+        })
+    }
+
+    const onChange = (start: Date, end: Date) => {
+        console.log(start, end, 'start end')
+    }
     const handleWeek =()=> {
         setIsVisible(true);
+    }
+    const handleSelect =()=> {
+        setIsVisible(true);
+        const id = activity._id;
+        console.log(id, 'id')
     }
 
     const renderItem = ({ item, index }: { item: any, index: number }) => {
@@ -50,63 +70,65 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
             </View>
         );
     };
+    const onChangeDate = (start: Date, end: Date) => {
+        console.log(start, end, 'start end')
+    }
+    
+
+
     return (
         <ActivityGradient
             activity={activity}
             style={[globalStyles.body, globalStyles.card]}>
             <View style={[globalStyles.cardContent]}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight,globalStyles.textCenter]}>{activity.label}</Text>
-                <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity._id}</Text>
+                {/* <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity._id}</Text> */}
                         <View style={[globalStyles.pContainer, {opacity: .5}]}>
                 <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity.description}</Text>
                         </View>
 
-                {sessions?.length ?  (
+                {sessions?.length ? (
                     <>
                     {/* //COMPOSANT sélection jour semaine ... */}
                     <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{sessions.length} session{sessions.length > 1 && "s"} enregistrées</Text>
-                    
+                        {!isVisible &&
+                        
                         <View style={[ styles.buttonContainerTunnel]}>
                                     <TouchableOpacity onPress={() => handleDay()}   
                                         style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
                                     >
-                                    <Text style={[globalStyles.textLight, {color: activity.color}]}>jour</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handleWeek()}
-                                        style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
-                                    >
-                                    <Text style={[globalStyles.textLight, {color: activity.color}]}>semaine</Text>
+                                        <Ionicons name="eye" size={24} color={activity.color} />
 
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => console.log("mois")}
+                                    {/* <TouchableOpacity onPress={() => handleWeek()}
                                         style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
                                     >
-                                    <Text style={[globalStyles.textLight, {color: activity.color}]}>mois</Text>
-
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => console.log("choix dans la date")}
-                                        style={[{backgroundColor: "white", paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
+                                        <Text style={[globalStyles.textLight, {color: activity.color}]}>semaine</Text>
+                                    </TouchableOpacity> */}
+                                    <TouchableOpacity onPress={() => handleSelect()}
+                                        style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
                                     >
                                         <Ionicons name="calendar" size={24} color={activity.color} />
                                     </TouchableOpacity>
+                                    
                         </View>
-                        {isVisible && (
-                            <View style={[styles.localCardContent]}>
-                                <Text style={[globalStyles.textLight, globalStyles.textCenter]}>Aucune session enregistrée</Text>
-                                <Carousel
-                                mode="parallax"
-                                modeConfig={{
-                                    parallaxScrollingScale: 0.9,
-                                    parallaxScrollingOffset: 20,
-                                }}
-                                pagingEnabled={true}
-                                width={width}
-                                height={height}
-                                data={sessions}
-                                renderItem={({ item}) => <SummaryCard key={item._id} session={item} onPress={() => onSessionPress?.(item)} />}
-                                />
-                            </View>
-                        )}
+                        }
+                        {isVisible && 
+                        <View>
+
+                            <SelectPeriod start={new Date()} end={new Date()} onChange={onChangeDate} />
+                            <TouchableOpacity 
+                                onPress={()=> goSelectPeriod()}
+                                style={[{backgroundColor: "white", paddingVertical: 5, paddingHorizontal:15, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}]}
+                            >
+                                <Ionicons name="eye" size={24} color={activity.color} />
+                            </TouchableOpacity>
+                        </View>            
+            
+
+                            }
+                                
+                                
                         
                     </>
                 )
