@@ -3,7 +3,7 @@ import Carousel from "react-native-reanimated-carousel";
 import ActivityOverview from "../../../components/Activity/ActivityOverview";
 import {navigate, newSession, openSession} from "../../../shared/libs/session";
 import {Alert, Dimensions, SafeAreaView, Text, View} from "react-native";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useActivityContext} from "../../../shared/contexts/ActivityContext";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
@@ -17,11 +17,16 @@ export default function ListScreen() {
     const { getSessionsFromActivity } = sessionContext
     const statusContext = useSessionStatusContext()
     const { status } = statusContext
+    const [activeActivities, setActiveActivities] = useState<ActivityType[]>([])
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
         navigate(status || null, router)
     }, [status])
+
+    useEffect(() => {
+        setActiveActivities(() => activities.filter(e => e.is_active))
+    }, [activities]);
 
     const width = Dimensions.get('window').width;
 
@@ -61,7 +66,7 @@ export default function ListScreen() {
                     }}
                     pagingEnabled={true}
                     width={width}
-                    data={activities}
+                    data={activeActivities}
                     renderItem={({item}) => (
                         <ActivityOverview
                             activity={item}
