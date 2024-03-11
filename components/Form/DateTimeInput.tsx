@@ -9,8 +9,8 @@ const DateTimeInput = ({value, onChange, type}: DateTimeInputOptions) => {
     type = type || 'datetime'
 
     const [currentValue, setCurrentValue] = useState<Date | null>(value || new Date())
-    const [showDatePicker, setShowDatePicker] = useState(false)
-    const [showTimePicker, setShowTimePicker] = useState(false)
+    const [showDatePicker, setShowDatePicker] = useState(true)
+    const [showTimePicker, setShowTimePicker] = useState(true)
 
     const useDate = ['date', 'datetime'].includes(type)
     const useTime = ['time', 'datetime'].includes(type)
@@ -20,19 +20,20 @@ const DateTimeInput = ({value, onChange, type}: DateTimeInputOptions) => {
     }, [currentValue]);
 
     const handleDateChange = (_: DateTimePickerEvent, newVal?: Date) => {
-        setCurrentValue(() => newVal || null);
-
+        
         if (Platform.OS === 'android') {
             setShowDatePicker(() => false);
         }
+        setCurrentValue(() => newVal || null);
+        
     }
 
     const handleTimeChange = (_: DateTimePickerEvent, newVal?: Date) => {
-        setCurrentValue(() => newVal || null);
-
+        
         if (Platform.OS === 'android') {
             setShowTimePicker(() => false);
         }
+        setCurrentValue(() => newVal || null);
     }
 
     const toggleDatePicker = () => {
@@ -48,12 +49,14 @@ const DateTimeInput = ({value, onChange, type}: DateTimeInputOptions) => {
             {useDate && (<DateTimePicker
                 value={currentValue || new Date()}
                 mode="date"
+                display="spinner"
                 onChange={handleDateChange}
             />)}
 
             {useTime && (<DateTimePicker
                 value={currentValue || new Date()}
                 mode="time"
+                display="spinner"
                 onChange={handleTimeChange}
             />)}
         </View>

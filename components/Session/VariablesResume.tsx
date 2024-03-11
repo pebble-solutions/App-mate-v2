@@ -1,5 +1,5 @@
 import {RawVariableType} from "../../shared/types/SessionType";
-import {View} from "react-native";
+import {View, Text} from "react-native";
 import VariableItem from "./VariableItem";
 import Title from "../Title";
 import {globalStyles} from "../../shared/globalStyles";
@@ -17,6 +17,7 @@ export default function VariablesResume({variables, containerStyle, theme}: Vari
 
     return (<View style={[containerStyle]}>
         <Title title={"Résumé des informations fournies"} style={[globalStyles.mb2Container, titleColor]} />
+        
         {variables.map(variable => (
             <VariableItem
                 variable={variable}

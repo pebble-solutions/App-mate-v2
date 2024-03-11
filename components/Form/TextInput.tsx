@@ -23,7 +23,7 @@ const TextInput = ({value, onChange, placeholder, multiline}: TextInputOptions) 
             onChangeText={handleChange}
             placeholderTextColor={'#ffffff80'}
             multiline={multiline}
-        />
+            />
     );
 };
 

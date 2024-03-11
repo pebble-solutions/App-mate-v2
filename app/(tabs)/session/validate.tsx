@@ -1,4 +1,4 @@
-import {Alert, SafeAreaView, View} from "react-native";
+import {Alert, SafeAreaView, View, Text} from "react-native";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
@@ -105,7 +105,9 @@ export default function ValidateScreen() {
             variables={rawVariables}
             theme={"dark"}
             containerStyle={[globalStyles.body, globalStyles.mv3Container, globalStyles.mh3Container]}
+            
         />
+        
     ))
 
     return (

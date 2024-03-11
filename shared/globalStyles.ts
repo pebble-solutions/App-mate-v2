@@ -233,6 +233,10 @@ export const globalStyles = StyleSheet.create({
     sContainer: {
         flex: 1,
     },
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
     contentContainer: {
         marginHorizontal: variables.contentMargin[2],
     },

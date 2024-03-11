@@ -5,6 +5,7 @@ import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
 import Button from "../Button";
 import {Feather} from "@expo/vector-icons";
+import VariablesResume from "../Session/VariablesResume";
 
 type OnboardingControllerOptions = {
     activeColor?: string,
@@ -28,7 +29,7 @@ export default function OnboardingController({activeColor, inactiveColor, items,
 
     const goToIndex = (index: number) => {
         if (index >= 0 && index < items.length) {
-            slidesRef.current?.scrollToIndex({index})
+            slidesRef.current?.scrollToIndex({index, animated: true})
         }
     }
 
