@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SessionContextProvider from "../shared/contexts/SessionContext";
 import {SafeAreaView} from "react-native";
 import {globalStyles} from "../shared/globalStyles";
+import RequestsContextProvider from "../shared/contexts/RequestsContext";
 
 SplashScreen.preventAutoHideAsync()
 
@@ -29,19 +30,21 @@ export default function RootLayout() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <SessionContextProvider>
-                <SessionStatusContextProvider>
-                    <VariableContextProvider>
-                        <ActivityContextProvider>
-                            <Stack>
-                                <Stack.Screen name="(tabs)" options={{
-                                    headerShown: false
-                                }} />
-                            </Stack>
-                        </ActivityContextProvider>
-                    </VariableContextProvider>
-                </SessionStatusContextProvider>
-            </SessionContextProvider>
+            <RequestsContextProvider>
+                <SessionContextProvider>
+                    <SessionStatusContextProvider>
+                        <VariableContextProvider>
+                            <ActivityContextProvider>
+                                <Stack>
+                                    <Stack.Screen name="(tabs)" options={{
+                                        headerShown: false
+                                    }} />
+                                </Stack>
+                            </ActivityContextProvider>
+                        </VariableContextProvider>
+                    </SessionStatusContextProvider>
+                </SessionContextProvider>
+            </RequestsContextProvider>
         </GestureHandlerRootView>
     )
 }

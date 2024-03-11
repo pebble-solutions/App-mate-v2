@@ -1,6 +1,4 @@
 import React, {createContext, PropsWithChildren, useContext, useState} from "react";
-import {ActivityType} from "../types/ActivityType";
-import { SessionType } from "../types/SessionType";
 import {SessionStatusType} from "../types/SessionStatusType";
 
 type StatusType = SessionStatusType
@@ -23,8 +21,6 @@ const SessionStatusContext= createContext<SessionStatusContextType | null>(null)
 const SessionStatusContextProvider = ({children}: PropsWithChildren<{}>) => {
     const [status, setStatus] = useState<StatusType>()
     const [payload, setPayload] = useState<PayloadType>()
-
-
 
     const getStatus = () => {
         return status

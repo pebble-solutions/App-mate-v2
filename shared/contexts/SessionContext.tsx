@@ -1,6 +1,9 @@
 import React, { createContext, PropsWithChildren, useContext, useState } from "react";
 import { SessionType } from "../types/SessionType";
 import { Session } from "../classes/Session";
+import {useRequestsContext} from "./RequestsContext";
+import {getRequest} from "@pebble-solutions/api-request/lib/types";
+import {ReadParamsType} from "@pebble-solutions/api-request/lib/types/types";
 
 export type SessionContextType = {
     sessions: SessionType[],
@@ -9,7 +12,7 @@ export type SessionContextType = {
     getSessionById: (id: string) => SessionType | undefined,
     updateSession: (id: string, newSession: SessionType) => void
     postSession: (id: string, session: SessionType) => Promise<void>
-    fetchSessionsFromAPI: () => void
+    fetchSessionsFromAPI: (params?: ReadParamsType) => void
     getSessionsFromActivity: (activityId: string) => SessionType[]
 }
 
@@ -17,22 +20,33 @@ const SessionContext = createContext<SessionContextType | null>(null)
 
 const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [sessions, setSessions] = useState<SessionType[]>([])
+    const {controller} = useRequestsContext()
 
     const addSession = (session: SessionType) => {
         setSessions([...sessions, session])
     }
-    const fetchSessionsFromAPI = async () => {
-        try {
-        const response = await fetch("https://api.pebble.solutions/v5/metric/", {method: "GET"});
-            const data = await response.json();
-            let sessionApiList: SessionType[] = [];
-            data.forEach((incomingSession: any) => {
-                sessionApiList.push(new Session(incomingSession));
-            });
-            setSessions(sessionApiList);
-        } catch (error) {
-            console.error("Erreur lors de la récupération des sessions depuis l'API:", error);
+
+    const updateSession = (id: string, newSession: SessionType) => {
+        let sessionsList = [...sessions]
+        let prevIndex = sessionsList.findIndex(e => e._id === id)
+        if (prevIndex !== -1) {
+            sessionsList.splice(prevIndex, 1, newSession)
+        } else {
+            sessionsList.push(newSession)
         }
+        setSessions(sessionsList)
+    }
+
+    const fetchSessionsFromAPI = async (params?: ReadParamsType) => {
+        const request = controller.addRequest(
+            getRequest("https://api.pebble.solutions/v5/metric/", params)
+        )
+        await request.send()
+        const data: SessionType[] = await request.content()
+
+        data.forEach((incomingSession) => {
+            updateSession(incomingSession._id, incomingSession)
+        });
     }
 
     const postSessionViaApi = async (session: SessionType) => {
@@ -77,19 +91,6 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             return prev.filter(e => e._id !== id)
         })
     }
-
-    const updateSession = (id: string, newSession: SessionType) => {
-        let sessionsList = [...sessions]
-        let prevIndex = sessionsList.findIndex(e => e._id === id)
-        if (prevIndex !== -1) {
-            sessionsList.splice(prevIndex, 1, newSession)
-        } else {
-            sessionsList.push(newSession)
-        }
-        setSessions(sessionsList)
-    }
-
-
 
     const getSessionById = (id: string) => {
         return sessions.find(e => e._id === id)
