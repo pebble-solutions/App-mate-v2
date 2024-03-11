@@ -17,7 +17,7 @@ export function SequenceList({sequence, style}: SequenceListOptions) {
             renderItem={({item}) => (
                 <SequenceItem item={item} />
             )}
-            style={localStyle.container}
+            style={[localStyle.container, ...style]}
         />
     )
 }
