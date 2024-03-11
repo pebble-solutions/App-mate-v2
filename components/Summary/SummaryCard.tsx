@@ -2,33 +2,51 @@ import {RawVariableType, SessionType} from "../../shared/types/SessionType";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View} from "react-native";
 import { AntDesign } from '@expo/vector-icons';
-import {format} from 'date-fns';
+import {format, set} from 'date-fns';
 import {fr} from 'date-fns/locale';
 import { Session } from "../../shared/classes/Session";
 import { VariableType } from "../../shared/types/VariableType";
-import { SequenceType } from "../../shared/types/SequenceType";
-import { useState } from "react";
+import { SequenceItemType, SequenceType } from "../../shared/types/SequenceType";
+import { useEffect, useState } from "react";
 import { SequenceList } from "../Session/SequenceList";
+import { MetricSequenceRecord } from "../../shared/classes/MetricSequenceRecord";
+import { FlatList } from "react-native-gesture-handler";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 type SummaryCardOptions = {
     onPress?: () => void,
     session: SessionType,
+    currentSession?: SessionType | null,
+    currentSequence?: SequenceType | null,
+    currentSequenceIndex?: number | null,
+    sessionIndex: number,
+    consol?: (value: any) => void,
+    
 }
 
-export function SummaryCard({session}: SummaryCardOptions) {
-    console.log(session, 'session') 
-    console.log(session.raw_datas.records, 'sessionrecords')
+export function SummaryCard({session, sessionIndex}: SummaryCardOptions) {
+    const [sequences, setSequences] = useState<[index: number, start:Date, end:Date |null]>([0, new Date(), new Date()])
+    
+    const [currentSequenceIndex, setCurrentSequenceIndex] = useState<number | null>(null)
+
+
+    
+
+
+
+
+    
+
+
     const previous = () => {
-        console.log('previous', session._id)
+        console.log('previous')
     }
     const following = () => {
-        console.log('following', session._id)
+        console.log('following')
     }
 
     const renderItemValue = (item: RawVariableType) => {
-        // console.log(item, 'itemincard')
         if (item.value instanceof Date) {
-            console.log(item.value)
             return  <View style={localStyle.cardContent}>
                         <Text style={globalStyles.textLight}>{item.label}: </Text>
                         <Text style={globalStyles.textLight}>{item.value.toLocaleString()}</Text>;
@@ -43,32 +61,23 @@ export function SummaryCard({session}: SummaryCardOptions) {
 
     return (
         <View>
+            
             <View style={[localStyle.card]}>
-                <View style={[ localStyle.container]}>
-                    <TouchableOpacity onPress={previous}>
-                        <AntDesign name="left" size={24} color={'white'} />
-                    </TouchableOpacity>
                     <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>
                         {format(session.start, ' d MMM yyy', {locale: fr})}
                     </Text>
-                    <TouchableOpacity onPress={following}>
-                        <AntDesign name="right" size={24} color={'white'} />    
-                    </TouchableOpacity>
-                </View>
-                </View>
-            <View style={[localStyle.card]}>
 
                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Séquences</Text>
                 <Text style={[globalStyles.textLight,globalStyles.textCenter]}>Nombre de séquences: {session.raw_datas.records.length}</Text>
+                <Text>{JSON.stringify(session.raw_datas.records)}</Text>
                 
-                {session.raw_datas.records.map((sequence, index) => (
-                    <View key={index} style={[localStyle.cardContent]}>
-                        {/* <SequenceList sequence={sequence}/> */}
-                        <Text style={globalStyles.textLight}>ici l'index {index}</Text>
-                        
-
-                        
-                        </View>
+                {session.raw_datas.records.map((sequence) => (
+                    <View key={sequence.index} style={[localStyle.cardContent]}>
+                        <Text style={globalStyles.textLight}>séquence  </Text>
+                        <Text style={globalStyles.textLight}>Nombre de données: {JSON.stringify(sequence)}</Text>
+                        <Text style={globalStyles.textLight}>Début: {sequence.start? format(sequence.start, ' d MMM yyy', {locale: fr}): 'en cours'}</Text> 
+                        <Text style={globalStyles.textLight}>Fin: {sequence.end ? format(sequence.end, ' d MMM yyy', {locale: fr}) : "en cours"}</Text> 
+                    </View>
                 ))}
             </View>
             <View style={[localStyle.card]}>

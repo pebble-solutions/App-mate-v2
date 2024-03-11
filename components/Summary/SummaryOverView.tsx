@@ -1,25 +1,13 @@
 import React from "react";
 import {globalStyles, variables} from "../../shared/globalStyles";
-import {getRGBGradientColors} from "../../shared/libs/color";
-import {FlatList, StyleSheet, Text, Dimensions, TouchableOpacity, View, ScrollView} from "react-native";
-import {LinearGradient} from "expo-linear-gradient";
+import {StyleSheet, Text, Dimensions, TouchableOpacity, View} from "react-native";
 import {ActivityType} from "../../shared/types/ActivityType";
 import {router} from "expo-router";
-import {Href} from "expo-router/build/link/href";
-import Button from "../Button";
-import { Activity } from "../../shared/classes/Activity";
 import ActivityGradient from "../Activity/ActivityGradient";
 import {SessionType} from "../../shared/types/SessionType";
-import {SessionCard} from "../Session/SessionCard";
 import { Ionicons } from '@expo/vector-icons';
-import { SummaryCard } from"./SummaryCard";
-import Carousel from "react-native-reanimated-carousel";
 import { useState } from "react";
-import { set } from "date-fns";
-import { useNavigation } from "@react-navigation/native";   
-import GetValueDate from "../GetValueDate";
 import SelectPeriod from "./selectPeriod";
-import { is } from "date-fns/locale";
 
 
 type SummaryOverviewType = {
@@ -31,11 +19,9 @@ type SummaryOverviewType = {
 
 export default function SummaryOverview({ activity, onNewPress, onSessionPress, sessions }: SummaryOverviewType) {
     const [isVisible, setIsVisible] = useState(false);
-    const {height, width} = Dimensions.get('window');
 
     const handleDay =()=> {
         const id = activity._id;
-        console.log(id, 'id')
         router.push({
             pathname: "/summary/day/",
             params:activity
@@ -50,31 +36,15 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
             
         })
     }
-
-    const onChange = (start: Date, end: Date) => {
-        console.log(start, end, 'start end')
-    }
-    const handleWeek =()=> {
-        setIsVisible(true);
-    }
+    
     const handleSelect =()=> {
         setIsVisible(true);
         const id = activity._id;
-        console.log(id, 'id')
-    }
-
-    const renderItem = ({ item, index }: { item: any, index: number }) => {
-        return (
-            <View key={index}>
-                console.log(activity._id, 'item')
-            </View>
-        );
-    };
-    const onChangeDate = (start: Date, end: Date) => {
-        console.log(start, end, 'start end')
     }
     
-
+    const onChangeDate = (start: Date, end: Date) => {
+    }
+    
 
     return (
         <ActivityGradient
@@ -100,11 +70,7 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
                                         <Ionicons name="eye" size={24} color={activity.color} />
 
                                     </TouchableOpacity>
-                                    {/* <TouchableOpacity onPress={() => handleWeek()}
-                                        style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
-                                    >
-                                        <Text style={[globalStyles.textLight, {color: activity.color}]}>semaine</Text>
-                                    </TouchableOpacity> */}
+                                
                                     <TouchableOpacity onPress={() => handleSelect()}
                                         style={[{backgroundColor: "white",  paddingVertical: 5, paddingHorizontal:15, borderRadius: 25}]}
                                     >
@@ -114,22 +80,16 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
                         </View>
                         }
                         {isVisible && 
-                        <View>
-
-                            <SelectPeriod start={new Date()} end={new Date()} onChange={onChangeDate} />
-                            <TouchableOpacity 
-                                onPress={()=> goSelectPeriod()}
-                                style={[{backgroundColor: "white", paddingVertical: 5, paddingHorizontal:15, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}]}
-                            >
-                                <Ionicons name="eye" size={24} color={activity.color} />
-                            </TouchableOpacity>
-                        </View>            
-            
-
-                            }
-                                
-                                
-                        
+                            <View>
+                                <SelectPeriod start={new Date()} end={new Date()} onChange={onChangeDate} />
+                                <TouchableOpacity 
+                                    onPress={()=> goSelectPeriod()}
+                                    style={[{backgroundColor: "white", paddingVertical: 5, paddingHorizontal:15, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}]}
+                                >
+                                    <Ionicons name="eye" size={24} color={activity.color} />
+                                </TouchableOpacity>
+                            </View>            
+                        }
                     </>
                 )
                 : null}

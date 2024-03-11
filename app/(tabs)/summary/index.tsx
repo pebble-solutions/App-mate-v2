@@ -48,6 +48,8 @@ export default function RecapScreen() {
             </View>
         );
     } else {
+        console.log(sessions, 'sessions par activité')
+        
         content = (
             <SafeAreaView style={globalStyles.body}>
                 <HeaderScreenTitle title="Tableau de bord" addButton={false} />

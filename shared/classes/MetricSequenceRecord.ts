@@ -2,8 +2,8 @@ import {SequenceItemType} from "../types/SequenceType";
 
 export class MetricSequenceRecord {
     index: number
-    start: Date
-    end: Date | null
+    start: Date 
+    end: Date | null 
 
     constructor(sequenceRecord: SequenceItemType, index: number) {
         this.index = index
