@@ -1,6 +1,5 @@
 import {SessionContextType, useSessionContext} from "../contexts/SessionContext";
 import {SessionStatusContextType, useSessionStatusContext} from "../contexts/SessionStatusContext";
-import { SessionType } from "../types/SessionType";
 import {SessionStatusType} from "../types/SessionStatusType";
 import {Router} from "expo-router/build/types";
 import {InvalidSessionIDError} from "./errors/InvalidSessionIDError";
@@ -77,10 +76,6 @@ export function getRouteByStatus(status?: SessionStatusType | null) {
 
 /**
  * Get the current session stored in the session status context
- *
- * @throws InvalidSessionIDError
- * @throws SessionNotFoundError
- * @throws NoSessionStatusError
  */
 export default function getCurrentSession() {
     const { getStatus, getPayload } = useSessionStatusContext()
@@ -89,19 +84,13 @@ export default function getCurrentSession() {
     if (getStatus()) {
         const payload = getPayload()
         if (!payload || typeof payload !== "string") {
-            throw new InvalidSessionIDError(payload)
+            return null
         }
 
-        const session = getSessionById(payload)
-
-        if (!session) {
-            throw new SessionNotFoundError(payload)
-        }
-
-        return session
+        return getSessionById(payload) || null
     }
 
-    throw new NoSessionStatusError()
+    return null
 }
 
 /**
@@ -114,6 +103,10 @@ export default function getCurrentSession() {
 export function getCurrentActivity() {
     const { getActivityById } = useActivityContext()
     const session = getCurrentSession()
+
+    if (!session) {
+        throw new NoSessionStatusError()
+    }
 
     if (!session.type_id) {
         throw new NoActivityIdError()
