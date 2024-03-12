@@ -41,7 +41,8 @@ export const globalStyles = StyleSheet.create({
     CategoryTitle: {
         fontFamily: 'Inter_700Bold',
         fontSize: variables.fontSize[2],
-        marginVertical: 16
+        marginBottom: 10,
+        marginTop: 20,
     },
     
     grayedOut: {
