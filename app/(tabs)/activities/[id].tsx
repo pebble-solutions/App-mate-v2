@@ -4,7 +4,6 @@ import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
 import { globalStyles } from "../../../shared/globalStyles";
-import { ActivityType } from "../../../shared/types/ActivityType";
 import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import { VariableType } from "../../../shared/types/VariableType";
 import { useVariableContext } from "../../../shared/contexts/VariableContext";
@@ -185,7 +184,7 @@ export default function ActivityScreen() {
                                     activityId={activity._id}
                                     variableId={variable._id}
                                     grayedOut={isVariableLinked}
-                                    isChecked={isVariableLinked}
+                                    isChecked
                                 />
                             </View>
                         );
