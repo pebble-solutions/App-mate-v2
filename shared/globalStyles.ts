@@ -32,6 +32,7 @@ export const globalStyles = StyleSheet.create({
         fontSize: variables.fontSize[5],
         marginVertical: 16
     },
+
     headerIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -39,8 +40,13 @@ export const globalStyles = StyleSheet.create({
 
     CategoryTitle: {
         fontFamily: 'Inter_700Bold',
-        fontSize: variables.fontSize[4],
-        marginVertical: 16
+        fontSize: variables.fontSize[2],
+        marginBottom: 10,
+        marginTop: 20,
+    },
+    
+    grayedOut: {
+        opacity: 0.5, // Vous pouvez ajuster cette valeur pour contrôler le niveau de gris
     },
 
     cardTitle: {

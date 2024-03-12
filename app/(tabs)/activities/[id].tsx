@@ -4,7 +4,6 @@ import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
 import { globalStyles } from "../../../shared/globalStyles";
-import { ActivityType } from "../../../shared/types/ActivityType";
 import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import { VariableType } from "../../../shared/types/VariableType";
 import { useVariableContext } from "../../../shared/contexts/VariableContext";
@@ -158,7 +157,7 @@ export default function ActivityScreen() {
             </View>
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
-                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
+                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight, globalStyles.textCenter]}>Variables liées à l'activité :</Text>
                     {activity.variables.map((variable: VariableType, index: number) => (
                         <VariableCard
                             key={index}
@@ -173,19 +172,27 @@ export default function ActivityScreen() {
                     ))}
                 </View>
                 <View style={globalStyles.contentContainer}>
-                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
-                    {variables.map((variable: VariableType, index: number) => (
-                        <VariableCard
-                            key={index}
-                            label={variable.label}
-                            description={variable.description}
-                            displayAddIcon={true}
-                            activityId={activity._id}
-                            variableId={variable._id}
-                        />
-                    ))}
+                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight, globalStyles.textCenter]}>Autres variables pour cette activité :</Text>
+                    {variables.map((variable: VariableType, index: number) => {
+                        const isVariableLinked = activity.variables.some((v: VariableType) => v.label === variable.label);
+                        return (
+                            <View key={index}>
+                                <VariableCard
+                                    label={variable.label}
+                                    description={variable.description}
+                                    displayAddIcon={!isVariableLinked}
+                                    activityId={activity._id}
+                                    variableId={variable._id}
+                                    grayedOut={isVariableLinked}
+                                    isChecked
+                                />
+                            </View>
+                        );
+                    })}
                 </View>
             </ScrollView>
+
+
         </LinearGradient>
     )
 }

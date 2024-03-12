@@ -15,6 +15,8 @@ type VariableCardOptions = {
     isMandatory?: boolean,
     activityId: string,
     variableId: string,
+    grayedOut?: boolean,
+    isChecked?: boolean,
 }
 
 export default function VariableCard({
@@ -26,6 +28,8 @@ export default function VariableCard({
     isMandatory,
     activityId,
     variableId,
+    grayedOut = false,
+    isChecked = false,
 }: VariableCardOptions) {
 
     const { linkVariableToActivity, removeVariableFromActivity, toggleMandatory } = useActivityContext();
@@ -43,7 +47,7 @@ export default function VariableCard({
     }
 
     return (
-        <View style={[globalStyles.VariableCardContent]}>
+        <View style={[globalStyles.VariableCardContent, grayedOut ? globalStyles.grayedOut : null]}>
             <View style={[globalStyles.VariableCardHeader]}>
                 <Text style={[globalStyles.cardTitle, globalStyles.textLight]}>{label}</Text>
                 <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{description}</Text>
@@ -60,6 +64,9 @@ export default function VariableCard({
                         </TouchableOpacity>
                     )
                 ) : null}
+                {grayedOut && isChecked && (
+                    <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
+                )}
                 {displayRemoveIcon &&
                     <TouchableOpacity onPress={() => { removeVariable(activityId, variableId) }}>
                         <Ionicons name="remove-circle-outline" size={25} color="white" />
