@@ -3,6 +3,7 @@ import {View, Text} from "react-native";
 import VariableItem from "./VariableItem";
 import Title from "../Title";
 import {globalStyles} from "../../shared/globalStyles";
+import { SequenceType } from "../../shared/types/SequenceType";
 
 type VariablesResumeOptions = {
     variables: RawVariableType[],
@@ -25,5 +26,10 @@ export default function VariablesResume({variables, containerStyle, theme}: Vari
                 key={variable._id}
             />
         ))}
+        
+            
+                
+            
+        
     </View>)
 }

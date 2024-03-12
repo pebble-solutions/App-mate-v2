@@ -14,7 +14,6 @@ const TextInput = ({value, onChange, placeholder, multiline}: TextInputOptions) 
     const handleChange = (newVal: string) => {
         setCurrentValue(() => newVal);
     };
-
     return (
         <ReactTextInput
             style={globalStyles.input}

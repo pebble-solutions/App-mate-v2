@@ -10,12 +10,14 @@ import {ActivityType} from "../../../shared/types/ActivityType";
 import OnboardingController from "../../../components/Onboarding/OnboardingController";
 import FormInput from "../../../components/Form/FormInput";
 import VariablesResume from "../../../components/Session/VariablesResume";
+import { SequenceList } from "../../../components/Session/SequenceList";
 
 export default function ValidateScreen() {
     const sessionContext = useSessionContext();
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
     const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
     const [ exitStatus, setExitStatus ] = React.useState(false)
+
 
     useEffect(() => {
         navigate(status || null, router)
@@ -62,6 +64,7 @@ export default function ValidateScreen() {
     }
 
     const variables = currentActivity.variables;
+    const sequences = currentSession.raw_datas.getSequence();
 
     if (rawVariables.length === 0) {
         const newRawVariables: RawVariableType[] = variables.map(variable => ({
@@ -86,6 +89,7 @@ export default function ValidateScreen() {
         const value = variable.value
         const type = variable.type
         const label = variable.label
+        const key = variable._id
 
         items.push((
             <View style={globalStyles.section}>
@@ -95,6 +99,7 @@ export default function ValidateScreen() {
                     onChange={(newVal) => setResponse(variable._id, newVal)}
                     label={label}
                     labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                    key={key}
                 />
             </View>
         ))
@@ -107,7 +112,25 @@ export default function ValidateScreen() {
             containerStyle={[globalStyles.body, globalStyles.mv3Container, globalStyles.mh3Container]}
             
         />
-        
+    ))
+
+    items.push((
+        <View style={globalStyles.section}>
+            <View style={globalStyles.rowContainer}>
+                <View style={globalStyles.mvContainer}>
+                    {/* <Text style={globalStyles.textLight}>{JSON.stringify(sequences)}</Text> */}
+                </View>
+                
+            </View>
+            {sequences.length > 0 && (
+                sequences.map((sequence, index) => (
+                    <View key={index} style={globalStyles.rowContainer}>
+                        {/* <SequenceList key = {index} sequence={sequence} /> */}
+                        <Text style={globalStyles.textLight} >{JSON.stringify(sequence)}</Text>
+                    </View>
+                ))      
+            )}
+        </View>
     ))
 
     return (

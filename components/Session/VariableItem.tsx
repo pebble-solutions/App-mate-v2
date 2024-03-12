@@ -12,32 +12,37 @@ type VariableItemOptions = {
     containerStyle?: object[],
     theme?: "dark" | "light",
     editable?: boolean,
-    onChange?: (newVal: string | Date | boolean | number) => void
+    onChange?: (newVal: string | Date | boolean | number | null) => void
 }
 
 export default function VariableItem({variable, theme, onChange}: VariableItemOptions) {
     const [editable, setEditable] = React.useState(false)
     
-    let value: string;
+    let initialValue: string | Date | boolean | number | null = variable.value || null;
     
     const labelStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textGrey
     const valueStyle = variable.value ? (theme === "dark" ? globalStyles.textLight : {}) : labelStyle
     
-    if (variable.value instanceof Date) {
-        if (variable.type === "date") {
-            value = variable.value.toLocaleDateString()
-        }
-        else if (variable.type === "time") {
-            value = variable.value.toLocaleTimeString()
+    const valueToString = (value?: string | Date | number | boolean | null, type?: string | null) => {
+        let str: string;
+        if (value instanceof Date) {
+            if (type === "date") {
+                str = value.toLocaleDateString()
+            }
+            else if (type === "time") {
+                str = value.toLocaleTimeString()
+            }
+            else {
+                str = value.toLocaleString()
+            }
         }
         else {
-            value = variable.value.toLocaleString()
+            str = value ? value.toString() : "Non-renseigné"
         }
+        return str
     }
-    else {
-        value = variable.value ? variable.value.toString() : "Non-renseigné"
-    }
-    const [updatedValue, setUpdatedValue] = React.useState<string | Date | boolean | number>(value);
+    const [updatedValue, setUpdatedValue] = React.useState<string | Date | boolean | number | null>(variable.value || null);
+    const [value, setValue] = React.useState(valueToString(variable.value, variable.type));
     
     const handlePressEdit = () => { 
         setEditable((prev) => !prev)
@@ -45,15 +50,11 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
     const handleChangeValue =(newVal: string | Date | boolean | number) => {
         setUpdatedValue(() => newVal)
     }
-    useEffect(() => {
-        if (onChange) onChange(updatedValue) 
-    }
-    , [updatedValue])
+    
     const validateChange = () => {
         if (onChange) onChange(updatedValue)
         console.log(updatedValue)
-        value = updatedValue.toString() 
-        console.log(value)
+        setValue(() => valueToString(updatedValue, variable.type))
         setEditable(() => false)
     }
     const cancelChange = () => {
@@ -67,17 +68,17 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                     <View style={globalStyles.mvContainer}>
                         <Text style={labelStyle}>{variable.label}</Text>
                         <Text style={valueStyle}>{value}</Text>
-                    </View>
                     <TouchableOpacity style={globalStyles.mvContainer} onPress={handlePressEdit}>
                         <AntDesign name="form" size={24} color={'white'} />
                     </TouchableOpacity>
+                    </View>
                 </View>
             ) : (
                 <View style={globalStyles.mvContainer}>
                     <FormInput
                         label={variable.label}
                         type={variable.type}
-                        value={value}
+                        value={updatedValue}
                         labelStyle={[globalStyles.textLight, globalStyles.textXl]}
                         onChange={handleChangeValue}
                         />
