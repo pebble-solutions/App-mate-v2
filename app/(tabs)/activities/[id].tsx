@@ -177,19 +177,22 @@ export default function ActivityScreen() {
                     {variables.map((variable: VariableType, index: number) => {
                         const isVariableLinked = activity.variables.some((v: VariableType) => v.label === variable.label);
                         return (
-                            <View key={index} style={isVariableLinked ? globalStyles.grayedOut : null}>
+                            <View key={index}>
                                 <VariableCard
                                     label={variable.label}
                                     description={variable.description}
                                     displayAddIcon={!isVariableLinked}
                                     activityId={activity._id}
                                     variableId={variable._id}
+                                    grayedOut={isVariableLinked}
+                                    isChecked={isVariableLinked}
                                 />
                             </View>
                         );
                     })}
                 </View>
             </ScrollView>
+
 
         </LinearGradient>
     )
