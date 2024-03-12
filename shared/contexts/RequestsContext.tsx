@@ -1,18 +1,29 @@
 import React, {createContext, PropsWithChildren, useContext, useState} from "react";
-import {RequestsController} from "@pebble-solutions/api-request";
-import {createRequestsController} from "@pebble-solutions/api-request";
+import {createRequestsBucket, createRequestsController} from "@pebble-solutions/api-request";
+import {Bucket, RequestsController} from "@pebble-solutions/api-request/lib/types/classes";
 
 type RequestsContextType = {
-    controller: RequestsController
+    requestsController: RequestsController,
+    requestsQueue: Bucket
 }
 
 const RequestsContext= createContext<RequestsContextType | null>(null)
 
 const RequestsContextProvider = ({children}: PropsWithChildren<{}>) => {
-    const [controller] = useState(createRequestsController())
+    const [requestsController] = useState(createRequestsController())
+    const [requestsQueue, setRequestsQueue] = useState(createRequestsBucket())
+
+    const sendQueue = async () => {
+        if (requestsQueue.requests.length) {
+            const bucket = requestsController.addRequest(requestsQueue)
+            setRequestsQueue(() => createRequestsBucket())
+            await bucket.send()
+            return await bucket.content()
+        }
+    }
 
     return (
-        <RequestsContext.Provider value={{controller}}>
+        <RequestsContext.Provider value={{requestsController, requestsQueue}}>
             {children}
         </RequestsContext.Provider>
     )

@@ -1,3 +1,4 @@
+import 'react-native-get-random-values'
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts, Inter_500Medium, Inter_300Light, Inter_700Bold, Inter_900Black } from '@expo-google-fonts/inter';
 import { useEffect } from "react";
