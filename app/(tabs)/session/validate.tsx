@@ -64,7 +64,7 @@ export default function ValidateScreen() {
     }
 
     const variables = currentActivity.variables;
-    const sequences = currentSession.raw_datas.getSequence();
+    const sequence = currentSession.raw_datas.getSequence();
 
     if (rawVariables.length === 0) {
         const newRawVariables: RawVariableType[] = variables.map(variable => ({
@@ -106,35 +106,26 @@ export default function ValidateScreen() {
     })
 
     items.push((
-        <VariablesResume
-            variables={rawVariables}
-            theme={"dark"}
-            containerStyle={[globalStyles.body, globalStyles.mv3Container, globalStyles.mh3Container]}
-            
-        />
-    ))
-
-    items.push((
-        <View style={globalStyles.section}>
-            <View style={globalStyles.rowContainer}>
-                <View style={globalStyles.mvContainer}>
-                    {/* <Text style={globalStyles.textLight}>{JSON.stringify(sequences)}</Text> */}
-                </View>
-                
-            </View>
-            {sequences.length > 0 && (
-                sequences.map((sequence, index) => (
-                    <View key={index} style={globalStyles.rowContainer}>
-                        {/* <SequenceList key = {index} sequence={sequence} /> */}
-                        <Text style={globalStyles.textLight} >{JSON.stringify(sequence)}</Text>
-                    </View>
-                ))      
-            )}
+        <View >
+            <VariablesResume
+                variables={rawVariables}
+                theme={"dark"}
+                containerStyle={[globalStyles.body]}
+            />
+            <SequenceList  sequence={sequence} />
         </View>
     ))
+    
+
+    
 
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
+            <View style={globalStyles.mt2Container}>
+                <Text style={globalStyles.textLight}>{currentActivity.label}</Text>
+                <Text style={globalStyles.textLight}>{currentSession.label}</Text>
+                <Text style={globalStyles.textLight}>{currentSession.start.toLocaleDateString()}</Text>
+            </View>
             <OnboardingController
                 activeColor={currentActivity.color}
                 items={items}

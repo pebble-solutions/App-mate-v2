@@ -390,7 +390,7 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: "grey",
         color: "white",
         fontSize: variables.fontSize[0],
-        width: "40%",
+        width: "50%",
         alignItems: 'center',
     },
     buttonTextTunnel: {

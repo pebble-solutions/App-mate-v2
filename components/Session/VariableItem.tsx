@@ -1,7 +1,7 @@
 import {RawVariableType} from "../../shared/types/SessionType";
 import {Text, View, TouchableOpacity, TextInput} from "react-native";
 import {globalStyles} from "../../shared/globalStyles";
-import { AntDesign } from '@expo/vector-icons';
+import { Foundation } from '@expo/vector-icons';
 import React, { useEffect } from "react";
 import FormInput from "../Form/FormInput";
 import ButtonPrevNext from "../TunnelsButton";
@@ -18,7 +18,6 @@ type VariableItemOptions = {
 export default function VariableItem({variable, theme, onChange}: VariableItemOptions) {
     const [editable, setEditable] = React.useState(false)
     
-    let initialValue: string | Date | boolean | number | null = variable.value || null;
     
     const labelStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textGrey
     const valueStyle = variable.value ? (theme === "dark" ? globalStyles.textLight : {}) : labelStyle
@@ -43,7 +42,10 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
     }
     const [updatedValue, setUpdatedValue] = React.useState<string | Date | boolean | number | null>(variable.value || null);
     const [value, setValue] = React.useState(valueToString(variable.value, variable.type));
-    
+    useEffect(() => {
+        setValue(() => valueToString(variable.value, variable.type))
+    }, [variable.value])
+    console.log(value)
     const handlePressEdit = () => { 
         setEditable((prev) => !prev)
     }
@@ -68,10 +70,10 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                     <View style={globalStyles.mvContainer}>
                         <Text style={labelStyle}>{variable.label}</Text>
                         <Text style={valueStyle}>{value}</Text>
-                    <TouchableOpacity style={globalStyles.mvContainer} onPress={handlePressEdit}>
-                        <AntDesign name="form" size={24} color={'white'} />
-                    </TouchableOpacity>
                     </View>
+                    <TouchableOpacity style={globalStyles.mvContainer} onPress={handlePressEdit}>
+                        <Foundation name="pencil" size={16} color={'white'} />
+                    </TouchableOpacity>
                 </View>
             ) : (
                 <View style={globalStyles.mvContainer}>
@@ -85,8 +87,8 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                         <ButtonPrevNext
                             onPress1={cancelChange}
                             onPress2={validateChange}
-                            buttonName1="Annuler"
-                            buttonName2="Valider"
+                            buttonName1="tuut"
+                            buttonName2="pschitt"
 
                             />
                 </View>

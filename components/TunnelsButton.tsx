@@ -1,6 +1,6 @@
 import React from "react";
-import { TouchableOpacity, Text,View } from 'react-native';
-import { globalStyles } from "../shared/globalStyles";
+import { TouchableOpacity, Text,View, StyleSheet } from 'react-native';
+import { globalStyles, variables } from "../shared/globalStyles";
 interface ButtonPrevNextProps {
     onPress1: () => void,
     onPress2: () => void,
@@ -9,12 +9,12 @@ interface ButtonPrevNextProps {
 }
 const ButtonPrevNext: React.FC<ButtonPrevNextProps> = ({ onPress1, onPress2, buttonName1, buttonName2}) => {
     return (
-        <View style={globalStyles.buttonContainerTunnel}>
-            <TouchableOpacity style={globalStyles.buttonTunnel} onPress={onPress1}>
-                <Text style={globalStyles.buttonTextTunnel}>{buttonName1}</Text>
+        <View style={localStyle.buttonContainerTunnel}>
+            <TouchableOpacity style={localStyle.button} onPress={onPress1}>
+                <Text style={localStyle.label}>{buttonName1}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={globalStyles.buttonTunnel} onPress={onPress2}>
-                <Text style={globalStyles.buttonTextTunnel}>{buttonName2}</Text>
+            <TouchableOpacity style={localStyle.button} onPress={onPress2}>
+                <Text style={localStyle.label}>{buttonName2}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -23,3 +23,26 @@ const ButtonPrevNext: React.FC<ButtonPrevNextProps> = ({ onPress1, onPress2, but
 
 
 export default ButtonPrevNext;
+export const localStyle = StyleSheet.create({
+    buttonContainerTunnel: {
+        flexDirection: 'row',
+        backgroundColor: '#00000000',
+        justifyContent: 'space-evenly',
+    },
+    button: {
+        borderRadius: variables.borderRadius[1],
+        backgroundColor: "#B2BEB5",
+        width: "50%",
+        margin: 5,
+        padding: 10,
+        alignItems: "center",
+    },
+    formGroup: {
+        marginBottom: 20
+    },
+    label: {
+        fontSize: 18,
+        marginBottom: 5,
+        color: "white",
+    }
+})

@@ -1,7 +1,8 @@
 import {SequenceItemType} from "../../shared/types/SequenceType";
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {diffDateToTime} from "../../shared/libs/date";
+import {Foundation} from "@expo/vector-icons";
 
 type SequenceItemOptions = {
     item: SequenceItemType
@@ -32,6 +33,9 @@ export function SequenceItem({item}: SequenceItemOptions) {
                     <View style={localStyle.box}></View>
                 </>
             )}
+            <TouchableOpacity style={globalStyles.mvContainer} onPress={() => console.log('tutu')}>
+                        <Foundation name="pencil" size={16} color={'white'} />
+                    </TouchableOpacity>
         </View>
     )
 }
