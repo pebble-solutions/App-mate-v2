@@ -31,10 +31,11 @@ export const localStyle = StyleSheet.create({
     },
     button: {
         borderRadius: variables.borderRadius[1],
-        backgroundColor: "#B2BEB5",
+        borderWidth: 2,
+        borderColor: variables.color.grey,
         width: "50%",
-        margin: 5,
-        padding: 10,
+        margin: 15,
+        padding: 5,
         alignItems: "center",
     },
     formGroup: {

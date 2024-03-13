@@ -1,4 +1,4 @@
-import {Alert, SafeAreaView, View, Text} from "react-native";
+import {Alert, SafeAreaView, View, Text, StyleSheet} from "react-native";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
@@ -11,6 +11,8 @@ import OnboardingController from "../../../components/Onboarding/OnboardingContr
 import FormInput from "../../../components/Form/FormInput";
 import VariablesResume from "../../../components/Session/VariablesResume";
 import { SequenceList } from "../../../components/Session/SequenceList";
+import Title from "../../../components/Title";
+import { StopWatch } from "../../../components/Session/StopWatch";
 
 export default function ValidateScreen() {
     const sessionContext = useSessionContext();
@@ -106,13 +108,20 @@ export default function ValidateScreen() {
     })
 
     items.push((
-        <View >
+        <View style={localStyle.containerLocal}>
+            <StopWatch
+            initialTime={currentSession.raw_datas.getTime()}
+            style={[globalStyles.textLight, globalStyles.textCenter]}
+
+            />
+            <Title title={"Pointages"} style={[globalStyles.mb2Container, globalStyles.textLight]} />
+            <SequenceList  sequence={sequence} />
+            <Title title={"informations fournies"} style={[globalStyles.mb2Container, globalStyles.textLight]} />
             <VariablesResume
                 variables={rawVariables}
                 theme={"dark"}
                 containerStyle={[globalStyles.body]}
             />
-            <SequenceList  sequence={sequence} />
         </View>
     ))
     
@@ -133,6 +142,11 @@ export default function ValidateScreen() {
             />
         </SafeAreaView>
     )
-
-    
 }
+const localStyle = StyleSheet.create({
+    containerLocal: {
+        width: "100%",
+        height: "100%",
+        
+    }
+})

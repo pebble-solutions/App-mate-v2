@@ -3,13 +3,47 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {diffDateToTime} from "../../shared/libs/date";
 import {Foundation} from "@expo/vector-icons";
+import React, { useEffect } from "react";
+import ButtonPrevNext from "../TunnelsButton";
+import FormInput from "../Form/FormInput";
 
 type SequenceItemOptions = {
     item: SequenceItemType
+    editable?: boolean
 }
 
 export function SequenceItem({item}: SequenceItemOptions) {
+    const [editable, setEditable] = React.useState(false);
+    const [updatedItem0, setUpdatedItem0] = React.useState<Date>(item[0]);
+    useEffect(() => {
+        handleChangeValue(updatedItem0)
+    }
+    , [updatedItem0])
+    useEffect(() => {
+        console.log(updatedItem0, 'updatedItem0')
+    },
+    [updatedItem0])
+    
+    const handlePressEdit = () => {
+        setEditable((prev) => !prev)
+    }
+    const cancelChange = () => {
+        setEditable(() => false)
+    }
+    const validateChange = () => {
+        setEditable(() => false)
+    }
+
+    const handleChangeValue = (newVal: Date) => {
+        console.log(newVal, 'insequencetitem')
+        setUpdatedItem0(newVal)
+        
+
+    }
+
     return (
+        <>
+        {!editable ? ( 
         <View style={[localStyle.container]}>
             <View style={localStyle.box}>
                 <TimeBox label={"Début"} date={item[0]} />
@@ -33,10 +67,47 @@ export function SequenceItem({item}: SequenceItemOptions) {
                     <View style={localStyle.box}></View>
                 </>
             )}
-            <TouchableOpacity style={globalStyles.mvContainer} onPress={() => console.log('tutu')}>
+            <TouchableOpacity style={globalStyles.mvContainer} onPress={handlePressEdit}>
                         <Foundation name="pencil" size={16} color={'white'} />
                     </TouchableOpacity>
         </View>
+            
+        ) : (
+            <>
+            <View style={localStyle.formGroup}>
+                <View style={localStyle.small}>
+                    <FormInput
+                        value={item[0]}
+                        placeholder={updatedItem0.toLocaleTimeString()}
+                        onChange={() => {handleChangeValue}}
+                        labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                        type="time"
+                    />
+                </View>
+                <View style={localStyle.small}>
+                    <FormInput
+                        value={item[1]}
+                        placeholder={item[0].toLocaleTimeString()}
+                        onChange={() => {console.log("change fin")}}
+                        labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                        type="time"
+                    />
+                </View>
+            </View>
+            <ButtonPrevNext
+                onPress1={cancelChange}
+                onPress2={validateChange}
+                buttonName1="Annuler"
+                buttonName2="Valider"
+
+            />
+            
+            </>
+        )}
+
+            
+        
+            </>
     )
 }
 
@@ -69,6 +140,15 @@ const localStyle = StyleSheet.create({
     },
 
     box: {
-        flex: 1
+        flex: 1,
+    },
+    formGroup: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+    },
+    small: {
+        width: "40%",
     }
+    
+    
 })

@@ -16,7 +16,7 @@ export default function VariablesResume({variables, containerStyle, theme}: Vari
     const titleColor = theme === "dark" ? globalStyles.textLight : {}
 
     return (<View style={[containerStyle]}>
-        <Title title={"Résumé des informations fournies"} style={[globalStyles.mb2Container, titleColor]} />
+        {/* <Title title={"Résumé des informations fournies et dfssdhlhqfqdh"} style={[globalStyles.mb2Container, titleColor]} /> */}
         
         {/* {variables.map(variable => (
             <VariableItem
@@ -41,6 +41,5 @@ const localStyle = StyleSheet.create({
         borderBottomColor: variables.color.grey,
         borderBottomWidth: 1,
         backgroundColor: variables.color.black,
-        flex: 1
     }
 })

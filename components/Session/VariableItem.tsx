@@ -55,7 +55,7 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
     
     const validateChange = () => {
         if (onChange) onChange(updatedValue)
-        console.log(updatedValue)
+        console.log(updatedValue, 'updatedValue')
         setValue(() => valueToString(updatedValue, variable.type))
         setEditable(() => false)
     }
@@ -77,7 +77,7 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                 </View>
             ) : (
                 <View style={globalStyles.mvContainer}>
-                    <FormInput
+                    <FormInput      
                         label={variable.label}
                         type={variable.type}
                         value={updatedValue}
@@ -87,8 +87,8 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                         <ButtonPrevNext
                             onPress1={cancelChange}
                             onPress2={validateChange}
-                            buttonName1="tuut"
-                            buttonName2="pschitt"
+                            buttonName1="Annuler"
+                            buttonName2="Valider"
 
                             />
                 </View>
