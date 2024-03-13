@@ -354,8 +354,10 @@ export const globalStyles = StyleSheet.create({
         borderRadius: variables.borderRadius[2],
         borderWidth: 1,
         borderColor: variables.color.lightGrey,
-        backgroundColor: variables.color.lightGrey,
+        backgroundColor: variables.color.dark,
+        color: variables.color.white,
         fontSize: variables.fontSize[1],
+        marginVertical: variables.contentMargin[1],
             
     },
 

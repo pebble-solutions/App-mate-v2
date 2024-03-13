@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
 import SpinnerLoader from "../../../components/SpinnerLoader";
+import Button from "../../../components/Button";
 
 export default function ActivityScreen() {
     const { getActivityById, removeActivity, editActivity } = useActivityContext();
@@ -102,10 +103,17 @@ export default function ActivityScreen() {
                     animationType="slide"
                     transparent={true}
                     visible={isSettingsVisible}
-                    onRequestClose={() => setSettingsVisible(false)}>
+                    onRequestClose={() => setSettingsVisible(false)}
+                >
                     <View style={globalStyles.modalBackground}>
                         <View style={globalStyles.modalContainer}>
-                            <View>
+                            <TouchableOpacity
+                                onPress={() => setSettingsVisible(false)}
+                                style={{ position: 'absolute', top: 10, right: 10, zIndex: 10 }}
+                            >
+                                <Ionicons name="close" size={24} color="white" />
+                            </TouchableOpacity>
+                            <View style={{ marginBottom: 20 }}>
                                 <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Réglages de l'activité :</Text>
                                 <TextInput
                                     style={globalStyles.input}
@@ -123,28 +131,26 @@ export default function ActivityScreen() {
                                 />
                             </View>
 
-                            <TouchableOpacity
+                            <View style={{ width: '100%' }}>
+                                <Button
+                                    title="Valider les changements"
+                                    onPress={() => {
+                                        setIsLoading(true);
+                                        updateActivity();
+                                        setSettingsVisible(false);
+                                    }}
+                                    style={[{ justifyContent: 'center', width: '100%' }]} // Mettez les styles dans un tableau
+                                    titleStyle={[{ textAlign: 'center' }]} // Mettez le style du titre dans un tableau
+                                />
 
-                                onPress={() => {
-                                    setIsLoading(true);
-                                    updateActivity();
-                                    setSettingsVisible(false);
-                                }}
-                            >
-                                <View style={globalStyles.buttonContainer}>
-                                    <Text style={globalStyles.buttonText}>Valider les changements </Text>
-                                    <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
-                                </View>
-                            </TouchableOpacity>
+                                <Button
+                                    title="Supprimer cette activité"
+                                    onPress={showConfirmDeleteDialog}
+                                    style={[{ justifyContent: 'center', width: '100%' }]} // Mettez les styles dans un tableau
+                                    titleStyle={[{ textAlign: 'center' }]} // Mettez le style du titre dans un tableau
+                                />
 
-                            <TouchableOpacity
-                                onPress={showConfirmDeleteDialog}
-                            >
-                                <View style={globalStyles.buttonContainer}>
-                                    <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
-                                    <Ionicons name="trash-outline" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
-                                </View>
-                            </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </Modal>
