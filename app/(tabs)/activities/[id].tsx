@@ -86,11 +86,11 @@ export default function ActivityScreen() {
             end={{ x: 1, y: 0 }}
             style={globalStyles.body}>
 
-{isLoading && (
-            <View style={globalStyles.loadingContainer}>
-                <ActivityIndicator size="large" color="#FFFFFF" />
-            </View>
-        )}
+            {isLoading && (
+                <View style={globalStyles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#FFFFFF" />
+                </View>
+            )}
             <View style={globalStyles.contentContainer}>
                 <View style={globalStyles.headerIcons}>
                     <TouchableOpacity

@@ -60,15 +60,19 @@ export default function VariableCard({
                 <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{description}</Text>
             </View>
             <View style={globalStyles.VariableCardIconsContainer}>
-                {mandatory ? (
-                    <TouchableOpacity onPress={() => toggle_Mandatory(activityId, variableId)}>
-                        <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity onPress={() => toggle_Mandatory(activityId, variableId)}>
-                        <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
-                    </TouchableOpacity>
-                )}
+                {
+                    isMandatory && (
+                        mandatory ? (
+                            <TouchableOpacity onPress={() => toggle_Mandatory(activityId, variableId)}>
+                                <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity onPress={() => toggle_Mandatory(activityId, variableId)}>
+                                <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
+                            </TouchableOpacity>
+                        )
+                    )
+                }
                 {displayRemoveIcon &&
                     <TouchableOpacity onPress={() => { removeVariable(activityId, variableId) }}>
                         <Ionicons name="remove-circle-outline" size={25} color="white" />
