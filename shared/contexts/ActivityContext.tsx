@@ -156,14 +156,21 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
 
-    const removeActivity = (id: string) => {
-        fetch(`https://api.pebble.solutions/v5/activity/${id}`, {
-            method: "DELETE",
-        }).then(() => {
-            fetchActivitiesFromAPI();
-        }).catch((error) => {
+    const removeActivity = async (id: string) => {
+        try {
+            const response = await fetch(`https://api.pebble.solutions/v5/activity/${id}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                fetchActivitiesFromAPI();
+            } else {
+                console.error("Erreur lors de la suppression de l'activité:", response.statusText);
+            }
+
+        } catch (error) {
             console.error("Erreur lors de la suppression de l'activité:", error);
-        });
+        }
     }
 
     const getActivityById = (id: string) => {
