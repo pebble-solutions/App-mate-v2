@@ -62,7 +62,7 @@ export default function ActivityScreen() {
         );
     }
 
-    const updateActivity = () => {
+    const updateActivity = async () => {
         setIsLoading(true);
         const updatedActivity = {
             _id: activity._id,
@@ -73,12 +73,17 @@ export default function ActivityScreen() {
             variables: activity.variables,
             is_active: activity.is_active,
         };
-
-        editActivity(activity._id, updatedActivity);
-        setSettingsVisible(false);
-        setIsLoading(false);
-
+    
+        try {
+            await editActivity(activity._id, updatedActivity);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour de l'activité:", error);
+        } finally {
+            setIsLoading(false);
+            setSettingsVisible(false);
+        }
     }
+    
 
     return (
         <LinearGradient
@@ -88,6 +93,7 @@ export default function ActivityScreen() {
             style={globalStyles.body}>
 
             {isLoading && <SpinnerLoader />}
+
             <View style={globalStyles.contentContainer}>
                 <View style={globalStyles.headerIcons}>
                     <TouchableOpacity
@@ -117,48 +123,47 @@ export default function ActivityScreen() {
             <View style={globalStyles.contentContainer}>
                 {isSettingsVisible && (
                     <View>
-                        <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Réglages de l'activité :</Text>
-                        <TextInput
-                            style={globalStyles.input}
-                            placeholder={`Nom de l'activité :  ${activity.label}`}
-                            placeholderTextColor="#FFFFFF"
-                            value={settingsValues.label}
-                            onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
-                        />
-                        <TextInput
-                            style={globalStyles.input}
-                            placeholder={`Description de l'activité :  ${activity.description}`}
-                            placeholderTextColor="#FFFFFF"
-                            value={settingsValues.description}
-                            onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
-                        />
+                        <View>
+                            <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Réglages de l'activité :</Text>
+                            <TextInput
+                                style={globalStyles.input}
+                                placeholder={`Nom de l'activité :  ${activity.label}`}
+                                placeholderTextColor="#FFFFFF"
+                                value={settingsValues.label}
+                                onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
+                            />
+                            <TextInput
+                                style={globalStyles.input}
+                                placeholder={`Description de l'activité :  ${activity.description}`}
+                                placeholderTextColor="#FFFFFF"
+                                value={settingsValues.description}
+                                onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
+                            />
+                        </View>
+
+                        <TouchableOpacity
+
+                            onPress={() => {
+                                setIsLoading(true);
+                                updateActivity();
+                                setSettingsVisible(false);
+                            }}
+                        >
+                            <View style={globalStyles.buttonContainer}>
+                                <Text style={globalStyles.buttonText}>Valider les changements </Text>
+                                <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={showConfirmDeleteDialog}
+                        >
+                            <View style={globalStyles.buttonContainer}>
+                                <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
+                                <Ionicons name="trash-outline" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                )}
-
-                {isSettingsVisible && (
-                    <TouchableOpacity
-
-                        onPress={() => {
-                            updateActivity();
-                            setSettingsVisible(false);
-                        }}
-                    >
-                        <View style={globalStyles.buttonContainer}>
-                            <Text style={globalStyles.buttonText}>Valider les changements </Text>
-                            <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
-                        </View>
-                    </TouchableOpacity>
-                )}
-
-                {isSettingsVisible && (
-                    <TouchableOpacity
-                        onPress={showConfirmDeleteDialog}
-                    >
-                        <View style={globalStyles.buttonContainer}>
-                            <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
-                            <Ionicons name="trash-outline" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
-                        </View>
-                    </TouchableOpacity>
                 )}
             </View>
             <ScrollView>

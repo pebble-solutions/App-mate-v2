@@ -87,11 +87,14 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
             if (response.ok) {
                 fetchActivitiesFromAPI();
+                return true; // Indique le succès de l'opération
             } else {
                 console.error("Erreur lors de la modification de l'activité:", response.statusText);
+                return false; // Indique un échec
             }
         } catch (error) {
             console.error("Erreur lors de la modification de l'activité:", error);
+            return false; // Indique un échec
         }
     }
 
@@ -188,7 +191,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             removeVariableFromActivity,
             toggleMandatory,
             loading
-            }}>
+        }}>
             {children}
         </ActivityContext.Provider>
     )
