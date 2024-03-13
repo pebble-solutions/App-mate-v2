@@ -15,6 +15,9 @@ type VariableCardOptions = {
     isMandatory?: boolean,
     activityId: string,
     variableId: string,
+    onActionStart?: () => void;
+    onActionEnd?: () => void;
+
 }
 
 export default function VariableCard({
@@ -26,20 +29,28 @@ export default function VariableCard({
     isMandatory,
     activityId,
     variableId,
-}: VariableCardOptions) {
+    onActionStart,
+    onActionEnd }: VariableCardOptions) {
 
     const { linkVariableToActivity, removeVariableFromActivity, toggleMandatory } = useActivityContext();
 
-    const addVariableToActivity = (activityId: string, variableId: string) => {
-        linkVariableToActivity(activityId, variableId);
+    const addVariableToActivity = async (activityId: string, variableId: string) => {
+        if (onActionStart) onActionStart();
+        await linkVariableToActivity(activityId, variableId);
+        if (onActionEnd) onActionEnd();
     }
 
-    const removeVariable = (activityId: string, variableId: string) => {
-        removeVariableFromActivity(activityId, variableId);
+    const removeVariable = async (activityId: string, variableId: string) => {
+        if (onActionStart) onActionStart();
+        await removeVariableFromActivity(activityId, variableId);
+        if (onActionEnd) onActionEnd();
     }
 
-    const toggle_Mandatory = (activityId: string, variableId: string, mandatory: boolean) => {
-        toggleMandatory(activityId, variableId, mandatory);
+    const toggle_Mandatory = async (activityId: string, variableId: string) => {
+        if (onActionStart) onActionStart();
+        await toggleMandatory(activityId, variableId, !mandatory);
+
+        if (onActionEnd) onActionEnd();
     }
 
     return (
@@ -49,17 +60,15 @@ export default function VariableCard({
                 <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{description}</Text>
             </View>
             <View style={globalStyles.VariableCardIconsContainer}>
-                {isMandatory !== undefined ? (
-                    mandatory ? (
-                        <TouchableOpacity onPress={() => { toggleMandatory(activityId, variableId, false) }}>
-                            <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
-                        </TouchableOpacity>
-                    ) : (
-                        <TouchableOpacity onPress={() => { toggle_Mandatory(activityId, variableId, true) }}>
-                            <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
-                        </TouchableOpacity>
-                    )
-                ) : null}
+                {mandatory ? (
+                    <TouchableOpacity onPress={() => toggle_Mandatory(activityId, variableId)}>
+                        <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity onPress={() => toggle_Mandatory(activityId, variableId)}>
+                        <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
+                    </TouchableOpacity>
+                )}
                 {displayRemoveIcon &&
                     <TouchableOpacity onPress={() => { removeVariable(activityId, variableId) }}>
                         <Ionicons name="remove-circle-outline" size={25} color="white" />

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity, Alert } from "react-native"; // Importez Alert
+import { Text, View, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from "react-native"; // Importez Alert
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
 import { globalStyles } from "../../../shared/globalStyles";
-import { ActivityType } from "../../../shared/types/ActivityType";
 import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import { VariableType } from "../../../shared/types/VariableType";
 import { useVariableContext } from "../../../shared/contexts/VariableContext";
@@ -18,6 +17,7 @@ export default function ActivityScreen() {
     const { getActivityById, removeActivity, editActivity } = useActivityContext();
     const { _id } = useLocalSearchParams<{ _id: string }>();
     const activity = _id ? getActivityById(_id) : null;
+    const [isLoading, setIsLoading] = useState(false);
 
     const { variables } = useVariableContext();
     if (!activity) {
@@ -51,6 +51,7 @@ export default function ActivityScreen() {
                 {
                     text: "Oui",
                     onPress: () => {
+                        setIsLoading(true);
                         removeActivity(activity._id);
                         router.back();
                     },
@@ -61,6 +62,7 @@ export default function ActivityScreen() {
     }
 
     const updateActivity = () => {
+        setIsLoading(true);
         const updatedActivity = {
             _id: activity._id,
             label: settingsValues.label || activity.label,
@@ -73,6 +75,7 @@ export default function ActivityScreen() {
 
         editActivity(activity._id, updatedActivity);
         setSettingsVisible(false);
+        setIsLoading(false);
 
     }
 
@@ -83,6 +86,11 @@ export default function ActivityScreen() {
             end={{ x: 1, y: 0 }}
             style={globalStyles.body}>
 
+{isLoading && (
+            <View style={globalStyles.loadingContainer}>
+                <ActivityIndicator size="large" color="#FFFFFF" />
+            </View>
+        )}
             <View style={globalStyles.contentContainer}>
                 <View style={globalStyles.headerIcons}>
                     <TouchableOpacity
@@ -169,6 +177,8 @@ export default function ActivityScreen() {
                             isMandatory={true}
                             activityId={activity._id}
                             variableId={variable._id}
+                            onActionStart={() => setIsLoading(true)}
+                            onActionEnd={() => setIsLoading(false)}
                         />
                     ))}
                 </View>
@@ -182,6 +192,8 @@ export default function ActivityScreen() {
                             displayAddIcon={true}
                             activityId={activity._id}
                             variableId={variable._id}
+                            onActionStart={() => setIsLoading(true)}
+                            onActionEnd={() => setIsLoading(false)}
                         />
                     ))}
                 </View>

@@ -486,4 +486,16 @@ export const globalStyles = StyleSheet.create({
         color: variables.color.lightGrey
     },
 
+    loadingContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent
+        zIndex: 1000, // Pour s'assurer qu'il s'affiche au-dessus des autres éléments
+    },
+
 });
