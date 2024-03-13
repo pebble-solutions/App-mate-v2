@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
+import SpinnerLoader from "../../../components/SpinnerLoader";
 
 export default function ActivityScreen() {
     const { getActivityById, removeActivity, editActivity } = useActivityContext();
@@ -86,11 +87,7 @@ export default function ActivityScreen() {
             end={{ x: 1, y: 0 }}
             style={globalStyles.body}>
 
-            {isLoading && (
-                <View style={globalStyles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#FFFFFF" />
-                </View>
-            )}
+            {isLoading && <SpinnerLoader />}
             <View style={globalStyles.contentContainer}>
                 <View style={globalStyles.headerIcons}>
                     <TouchableOpacity
