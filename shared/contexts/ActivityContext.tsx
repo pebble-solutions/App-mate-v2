@@ -141,23 +141,24 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
         }
     }
 
-    const removeVariableFromActivity = async (activityId: string, variableId: string) => {
+    const removeVariableFromActivity = async (activityId: string, variableId: string): Promise<boolean> => {
         try {
             const response = await fetch(`https://api.pebble.solutions/v5/activity/${activityId}/metric/variable/${variableId}`, {
                 method: "DELETE",
             });
-
+    
             if (response.ok) {
                 fetchActivitiesFromAPI();
+                return true; // Retourner true pour indiquer le succès
             } else {
                 console.error("Erreur lors de la suppression de la liaison de la variable à l'activité:", response.statusText);
+                return false; // Retourner false pour indiquer l'échec
             }
-
         } catch (error) {
             console.error("Erreur lors de la suppression de la liaison de la variable à l'activité:", error);
+            return false; // Retourner false pour indiquer l'échec
         }
     }
-
 
     const removeActivity = async (id: string) => {
         try {

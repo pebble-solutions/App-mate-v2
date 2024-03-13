@@ -40,6 +40,13 @@ export default function ActivityScreen() {
 
     const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#262729"];
 
+    const handleDeleteActivity = async () => {
+        setIsLoading(true); 
+        await removeActivity(activity._id);
+        router.back();
+        setIsLoading(false);
+    };
+    
     const showConfirmDeleteDialog = () => {
         Alert.alert(
             "Confirmer la suppression",
@@ -51,16 +58,12 @@ export default function ActivityScreen() {
                 },
                 {
                     text: "Oui",
-                    onPress: () => {
-                        setIsLoading(true);
-                        removeActivity(activity._id);
-                        router.back();
-                    },
+                    onPress: handleDeleteActivity,
                 },
             ],
             { cancelable: false }
         );
-    }
+    };
 
     const updateActivity = async () => {
         setIsLoading(true);
