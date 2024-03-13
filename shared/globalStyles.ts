@@ -486,4 +486,26 @@ export const globalStyles = StyleSheet.create({
         color: variables.color.lightGrey
     },
 
+    modalBackground: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Fond semi-transparent
+    },
+    modalContainer: {
+        backgroundColor: '#11212D',
+        width: '80%',
+        borderRadius: 20,
+        padding: 20,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+
 });

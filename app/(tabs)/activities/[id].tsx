@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from "react-native"; // Importez Alert
+import { Text, View, ScrollView, TouchableOpacity, Alert, Modal } from "react-native"; // Importez Alert
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
@@ -41,12 +41,12 @@ export default function ActivityScreen() {
     const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#262729"];
 
     const handleDeleteActivity = async () => {
-        setIsLoading(true); 
+        setIsLoading(true);
         await removeActivity(activity._id);
         router.back();
         setIsLoading(false);
     };
-    
+
     const showConfirmDeleteDialog = () => {
         Alert.alert(
             "Confirmer la suppression",
@@ -76,7 +76,7 @@ export default function ActivityScreen() {
             variables: activity.variables,
             is_active: activity.is_active,
         };
-    
+
         try {
             await editActivity(activity._id, updatedActivity);
         } catch (error) {
@@ -86,7 +86,7 @@ export default function ActivityScreen() {
             setSettingsVisible(false);
         }
     }
-    
+
 
     return (
         <LinearGradient
@@ -96,6 +96,60 @@ export default function ActivityScreen() {
             style={globalStyles.body}>
 
             {isLoading && <SpinnerLoader />}
+
+            {isSettingsVisible && (
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={isSettingsVisible}
+                    onRequestClose={() => setSettingsVisible(false)}>
+                    <View style={globalStyles.modalBackground}>
+                        <View style={globalStyles.modalContainer}>
+                            <View>
+                                <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Réglages de l'activité :</Text>
+                                <TextInput
+                                    style={globalStyles.input}
+                                    placeholder={`Nom de l'activité :  ${activity.label}`}
+                                    placeholderTextColor="#FFFFFF"
+                                    value={settingsValues.label}
+                                    onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
+                                />
+                                <TextInput
+                                    style={globalStyles.input}
+                                    placeholder={`Description de l'activité :  ${activity.description}`}
+                                    placeholderTextColor="#FFFFFF"
+                                    value={settingsValues.description}
+                                    onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
+                                />
+                            </View>
+
+                            <TouchableOpacity
+
+                                onPress={() => {
+                                    setIsLoading(true);
+                                    updateActivity();
+                                    setSettingsVisible(false);
+                                }}
+                            >
+                                <View style={globalStyles.buttonContainer}>
+                                    <Text style={globalStyles.buttonText}>Valider les changements </Text>
+                                    <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
+                                </View>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={showConfirmDeleteDialog}
+                            >
+                                <View style={globalStyles.buttonContainer}>
+                                    <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
+                                    <Ionicons name="trash-outline" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+            )}
+
 
             <View style={globalStyles.contentContainer}>
                 <View style={globalStyles.headerIcons}>
@@ -122,52 +176,6 @@ export default function ActivityScreen() {
                     Crée le {activity.start ? format(activity.start, 'dd.MM.yyyy') : ''}
                 </Text>
                 <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{activity.description}</Text>
-            </View>
-            <View style={globalStyles.contentContainer}>
-                {isSettingsVisible && (
-                    <View>
-                        <View>
-                            <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Réglages de l'activité :</Text>
-                            <TextInput
-                                style={globalStyles.input}
-                                placeholder={`Nom de l'activité :  ${activity.label}`}
-                                placeholderTextColor="#FFFFFF"
-                                value={settingsValues.label}
-                                onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
-                            />
-                            <TextInput
-                                style={globalStyles.input}
-                                placeholder={`Description de l'activité :  ${activity.description}`}
-                                placeholderTextColor="#FFFFFF"
-                                value={settingsValues.description}
-                                onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
-                            />
-                        </View>
-
-                        <TouchableOpacity
-
-                            onPress={() => {
-                                setIsLoading(true);
-                                updateActivity();
-                                setSettingsVisible(false);
-                            }}
-                        >
-                            <View style={globalStyles.buttonContainer}>
-                                <Text style={globalStyles.buttonText}>Valider les changements </Text>
-                                <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
-                            </View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={showConfirmDeleteDialog}
-                        >
-                            <View style={globalStyles.buttonContainer}>
-                                <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
-                                <Ionicons name="trash-outline" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                )}
             </View>
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
