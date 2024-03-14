@@ -17,7 +17,7 @@ type VariableItemOptions = {
 }
 
 export default function VariableItem({variable, theme, onChange, id}: VariableItemOptions) {
-    const [editable, setEditable] = React.useState(false)
+    const [isEditable, setIsEditable] = React.useState(false)
     
     
     const labelStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textGrey
@@ -49,7 +49,7 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
     }, [variable.value])
 
     const handlePressEdit = () => { 
-        setEditable((prev) => !prev)
+        setIsEditable((prev) => !prev)
     }
     const handleChangeValue =(newVal: string | Date | boolean | number) => {
         setUpdatedValue(() => newVal)
@@ -57,22 +57,20 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
     
     const validateChange = () => {
         if (onChange) onChange(updatedValue)
-        console.log(updatedValue, 'updatedValue')
         setValue(() => valueToString(updatedValue, variable.type))
-        setEditable(() => false)
+        setIsEditable(() => false)
     }
     const cancelChange = () => {
-        setEditable(() => false)
+        setIsEditable(() => false)
     }
 
     return (
         <>
-            {!editable ? (
+            {!isEditable ? (
                 <View style={[localStyle.rowContainer]}>
                     <View style={globalStyles.mvContainer}>
                         <Text style={labelStyle}>{variable.label}</Text>
                         <Text style={valueStyle}>{value}</Text>
-                        <Text style={valueStyle}>{variable._id}</Text>
                     </View>
                     <TouchableOpacity style={[globalStyles.mvContainer, globalStyles.mh2Container]} onPress={handlePressEdit}>
                         <Foundation name="pencil" size={16} color={'white'} />
@@ -86,7 +84,6 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
                         value={updatedValue}
                         labelStyle={[globalStyles.textLight, globalStyles.textXl]}
                         onChange={handleChangeValue}
-                        index={0}
                         />
                         <ButtonPrevNext
                             onPress1={cancelChange}

@@ -92,7 +92,6 @@ export default function ValidateScreen() {
         const type = variable.type
         const label = variable.label
         const key = variable._id
-        const index = rawVariables.indexOf(variable)
 
         items.push((
             <View style={globalStyles.section}>
@@ -103,7 +102,6 @@ export default function ValidateScreen() {
                     label={label}
                     labelStyle={[globalStyles.textLight, globalStyles.textXl]}
                     key={key}
-                    index={index}
                 />
             </View>
         ))
@@ -111,6 +109,8 @@ export default function ValidateScreen() {
 
     items.push((
         <View style={localStyle.containerLocal}>
+            <Text style={globalStyles.textLight}>{currentActivity.label}</Text>
+            <Text style={globalStyles.textLight}>{currentSession.start.toLocaleDateString()}</Text>
             <StopWatch
             initialTime={currentSession.raw_datas.getTime()}
             style={[globalStyles.textLight, globalStyles.textCenter]}
@@ -133,9 +133,6 @@ export default function ValidateScreen() {
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
             <View style={globalStyles.mt2Container}>
-                <Text style={globalStyles.textLight}>{currentActivity.label}</Text>
-                <Text style={globalStyles.textLight}>{currentSession.label}</Text>
-                <Text style={globalStyles.textLight}>{currentSession.start.toLocaleDateString()}</Text>
             </View>
             <OnboardingController
                 activeColor={currentActivity.color}

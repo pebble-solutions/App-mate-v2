@@ -13,7 +13,7 @@ type SequenceItemOptions = {
 }
 
 export function SequenceItem({item}: SequenceItemOptions) {
-    const [editable, setEditable] = React.useState(false);
+    const [isEditable, setIsEditable] = React.useState(false);
     const [updatedItem0, setUpdatedItem0] = React.useState<Date>(item[0]);
     
 
@@ -21,30 +21,25 @@ export function SequenceItem({item}: SequenceItemOptions) {
         handleChangeValue(updatedItem0)
     }
     , [updatedItem0])
-    useEffect(() => {
-        console.log(updatedItem0, 'updatedItem0')
-    },
-    [updatedItem0])
+    
     
     const handlePressEdit = () => {
-        setEditable((prev) => !prev)
+        setIsEditable((prev) => !prev)
     }
     const cancelChange = () => {
-        setEditable(() => false)
+        setIsEditable(() => false)
     }
     const validateChange = () => {
-        setEditable(() => false)
-        console.log(updatedItem0, 'updatedItem0Validate')
+        setIsEditable(() => false)
     }
 
     const handleChangeValue = (newVal: Date) => {
-        console.log(newVal, 'insequencetitem')
         setUpdatedItem0(newVal)
     }
 
     return (
         <>
-        {!editable ? ( 
+        {!isEditable ? ( 
         <View style={[localStyle.container]}>
             <View style={localStyle.box}>
                 <TimeBox label={"Début"} date={item[0]} />

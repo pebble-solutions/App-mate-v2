@@ -6,8 +6,6 @@ import { TextInput } from "react-native";
 const TextInputC = ({value, onChange, placeholder, multiline}: TextInputOptions) => {
 
     const [currentValue, setCurrentValue] = useState(value)
-    console.log(multiline, 'multiline')
-
     // useEffect(() => {
     //     if (onChange) onChange(currentValue)
     // }, [currentValue]);

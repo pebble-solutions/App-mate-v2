@@ -12,10 +12,9 @@ type FormInputOptions = InputOptions & {
     type?: InputType,
     labelStyle?: object[]
     style?: object[]
-    index: number
 }
 
-export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style, index}: FormInputOptions) {
+export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style}: FormInputOptions) {
 
     type = type || "text"
 

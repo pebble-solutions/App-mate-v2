@@ -19,7 +19,6 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
     // const [showTimePicker, setShowTimePicker] = useState(type === 'time' || type === 'datetime');
     useEffect(() => {
         if (onChange) onChange(currentValue || null)
-        console.log(currentValue, 'datetimeinput')
     }, [currentValue]);
     useEffect(() => {
         handleTimeChange
