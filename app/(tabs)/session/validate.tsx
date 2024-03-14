@@ -92,6 +92,7 @@ export default function ValidateScreen() {
         const type = variable.type
         const label = variable.label
         const key = variable._id
+        const index = rawVariables.indexOf(variable)
 
         items.push((
             <View style={globalStyles.section}>
@@ -102,6 +103,7 @@ export default function ValidateScreen() {
                     label={label}
                     labelStyle={[globalStyles.textLight, globalStyles.textXl]}
                     key={key}
+                    index={index}
                 />
             </View>
         ))
@@ -116,7 +118,7 @@ export default function ValidateScreen() {
             />
             <Title title={"Pointages"} style={[globalStyles.mb2Container, globalStyles.textLight]} />
             <SequenceList  sequence={sequence} />
-            <Title title={"informations fournies"} style={[globalStyles.mb2Container, globalStyles.textLight]} />
+            <Title title={"Informations fournies"} style={[globalStyles.mb2Container, globalStyles.textLight]} />
             <VariablesResume
                 variables={rawVariables}
                 theme={"dark"}

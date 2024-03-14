@@ -28,7 +28,7 @@ export default function VariablesResume({variables, containerStyle, theme}: Vari
         <FlatList
             data={variables}
             renderItem={({item}) => (
-                <VariableItem variable={item} theme={theme} />
+                <VariableItem id={item._id} variable={item} theme={theme} />
             )}
             style={localStyle.container}   
         />

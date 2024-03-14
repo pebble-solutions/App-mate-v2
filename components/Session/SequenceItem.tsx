@@ -15,6 +15,8 @@ type SequenceItemOptions = {
 export function SequenceItem({item}: SequenceItemOptions) {
     const [editable, setEditable] = React.useState(false);
     const [updatedItem0, setUpdatedItem0] = React.useState<Date>(item[0]);
+    
+
     useEffect(() => {
         handleChangeValue(updatedItem0)
     }
@@ -32,13 +34,12 @@ export function SequenceItem({item}: SequenceItemOptions) {
     }
     const validateChange = () => {
         setEditable(() => false)
+        console.log(updatedItem0, 'updatedItem0Validate')
     }
 
     const handleChangeValue = (newVal: Date) => {
         console.log(newVal, 'insequencetitem')
         setUpdatedItem0(newVal)
-        
-
     }
 
     return (
@@ -67,41 +68,39 @@ export function SequenceItem({item}: SequenceItemOptions) {
                     <View style={localStyle.box}></View>
                 </>
             )}
-            <TouchableOpacity style={globalStyles.mvContainer} onPress={handlePressEdit}>
-                        <Foundation name="pencil" size={16} color={'white'} />
-                    </TouchableOpacity>
+                <TouchableOpacity style={globalStyles.mvContainer} onPress={handlePressEdit}>
+                    <Foundation name="pencil" size={16} color={'white'} />
+                </TouchableOpacity>
         </View>
             
         ) : (
             <>
-            <View style={localStyle.formGroup}>
-                <View style={localStyle.small}>
-                    <FormInput
-                        value={item[0]}
-                        placeholder={updatedItem0.toLocaleTimeString()}
-                        onChange={() => {handleChangeValue}}
-                        labelStyle={[globalStyles.textLight, globalStyles.textXl]}
-                        type="time"
-                    />
+                <View style={localStyle.formGroup}>
+                    <View style={localStyle.small}>
+                        <FormInput
+                            value={item[0]}
+                            placeholder={updatedItem0.toLocaleTimeString()}
+                            onChange={() => {handleChangeValue}}
+                            labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                            type="time"
+                        />
+                    </View>
+                    <View style={localStyle.small}>
+                        <FormInput
+                            value={item[1]}
+                            placeholder={item[0].toLocaleTimeString()}
+                            onChange={() => {console.log("change fin")}}
+                            labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                            type="time"
+                        />
+                    </View>
                 </View>
-                <View style={localStyle.small}>
-                    <FormInput
-                        value={item[1]}
-                        placeholder={item[0].toLocaleTimeString()}
-                        onChange={() => {console.log("change fin")}}
-                        labelStyle={[globalStyles.textLight, globalStyles.textXl]}
-                        type="time"
-                    />
-                </View>
-            </View>
-            <ButtonPrevNext
-                onPress1={cancelChange}
-                onPress2={validateChange}
-                buttonName1="Annuler"
-                buttonName2="Valider"
-
-            />
-            
+                <ButtonPrevNext
+                    onPress1={cancelChange}
+                    onPress2={validateChange}
+                    buttonName1="Annuler"
+                    buttonName2="Valider"
+                />
             </>
         )}
 

@@ -33,8 +33,8 @@ export const localStyle = StyleSheet.create({
         borderRadius: variables.borderRadius[1],
         borderWidth: 2,
         borderColor: variables.color.grey,
-        width: "50%",
-        margin: 15,
+        width: "47%",
+        margin: 5,
         padding: 5,
         alignItems: "center",
     },
@@ -42,7 +42,7 @@ export const localStyle = StyleSheet.create({
         marginBottom: 20
     },
     label: {
-        fontSize: 18,
+        fontSize: 16,
         marginBottom: 5,
         color: "white",
     }

@@ -25,6 +25,8 @@ export default function OnboardingController({activeColor, inactiveColor, items,
 
     const viewableItemsChanged = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
         setCurrentIndex(viewableItems[0].index || 0)
+        console.log(viewableItems[0].index, 'index')
+        console.log(currentIndex, 'currentIndex', items.length, 'items length' )
     }).current;
 
     const goToIndex = (index: number) => {
@@ -112,7 +114,7 @@ const localStyle = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: variables.contentMargin[3]
+        marginTop: variables.contentMargin[3],
     },
 
     buttonContainer: {

@@ -8,7 +8,7 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
 
     type = type || 'datetime'
 
-    const [currentValue, setCurrentValue] = useState<Date | null>(value || new Date())
+    const [currentValue, setCurrentValue] = useState<Date | undefined>(value || new Date())
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [showTimePicker, setShowTimePicker] = useState(false)
     const [selectedTime, setSelectedTime] = useState<Date>(value || new Date())  
@@ -26,22 +26,24 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
     }
     , [selectedTime])
 
-    const handleDateChange = (_: DateTimePickerEvent, newVal: Date) => {
+    const handleDateChange = (_: DateTimePickerEvent, newVal: Date | undefined) => {
         
         if (Platform.OS === 'android') {
             setShowDatePicker(() => false);
         }
+        setCurrentValue(newVal);
+        setSelectedTime(newVal || new Date())
+
         
     }
     
-    const handleTimeChange = (_: DateTimePickerEvent, newVal: Date) => {
+    const handleTimeChange = (_: DateTimePickerEvent, newVal: Date | undefined) => {
         
         if (Platform.OS === 'android') {
             setShowTimePicker(() => false);
         }
-    
-        setSelectedTime(newVal);
-        setCurrentValue(selectedTime);
+        setCurrentValue(newVal);
+        setSelectedTime(newVal || new Date())
         console.log(selectedTime,  'selectedTime', currentValue, 'currentValue', newVal, 'newVal')
     }
 
@@ -49,40 +51,52 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
         setShowDatePicker((prev) => !prev)
     }
 
-    const toggleTimePicker = () => {
-        setShowTimePicker((prev) => !prev)
+    const togglePicker = () => {
+        if (useTime)  {
+            setShowTimePicker((prev) => !prev)
+        
+        }
+        else if (useDate) {
+            setShowDatePicker((prev) => !prev)
+        }
+        
     }
  
     return (
-        <View style={[globalStyles.input, localStyle.dateTimeInput]}>
-            <TouchableOpacity onPress={()=> toggleTimePicker()}>
-                <Text>{selectedTime.toLocaleTimeString()}</Text>
-            </TouchableOpacity>
-            {showDatePicker && (<DateTimePicker
-                value={selectedTime}
-                mode="date"
-                display="spinner"
-                is24h={true}
-                onChange={handleDateChange}
-                
-            />)}
-
-            {showTimePicker && (<DateTimePicker
-                value={selectedTime}
-                mode="time"
-                display="spinner"
-                onChange={handleTimeChange}
-            />)}
-        </View>
+        <>
+            {useDate && 
+                <View style={[globalStyles.input, globalStyles.mb2Container]}>
+                    <TouchableOpacity onPress={()=> toggleDatePicker()}><Text>{selectedTime.toLocaleDateString()}</Text></TouchableOpacity>
+                    {showDatePicker && useDate && (<DateTimePicker
+                        value={selectedTime}
+                        mode="date"
+                        display={Platform.OS === 'ios' ? 'default' : 'spinner'}
+                        onChange={handleDateChange}
+                        />)}
+                </View>
+            }
+            {useTime && 
+                <View style={globalStyles.input}>
+                    <TouchableOpacity onPress={()=> togglePicker()}><Text>{selectedTime.toLocaleTimeString()}</Text></TouchableOpacity>
+                    {showTimePicker && useTime && (<DateTimePicker
+                    value={selectedTime}
+                    mode="time"
+                    display={Platform.OS === 'ios' ? 'default' : 'spinner'}
+                    onChange={handleTimeChange}
+                    />)}
+                </View>
+            }
+        </>
     );
 };
 
 export default DateTimeInput;
 
 const localStyle = StyleSheet.create({
-    dateTimeInput: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-start"
-    }
+    
+        picker: {
+        flex: 1,
+        width: '100%',
+        backgroundColor: 'white'
+    }   
 })
