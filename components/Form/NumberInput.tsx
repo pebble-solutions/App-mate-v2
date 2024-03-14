@@ -18,8 +18,8 @@ const NumberInput = ({value, placeholder, onChange}: NumberInputOptions) => {
         <TextInput
             style={globalStyles.input}
             placeholder={placeholder}
+            inputMode="decimal"
             keyboardType="numeric"
-            inputMode="numeric"
             value={value?.toString()}
             onChangeText={handleChange}
             placeholderTextColor={'#ffffff80'}

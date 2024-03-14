@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Text,View, StyleSheet } from 'react-native';
-import { globalStyles, variables } from "../shared/globalStyles";
+import { variables } from "../shared/globalStyles";
 interface ButtonPrevNextProps {
     onPress1: () => void,
     onPress2: () => void,

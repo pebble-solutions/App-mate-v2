@@ -33,8 +33,6 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
         }
         setCurrentValue(newVal);
         setSelectedTime(newVal || new Date())
-
-        
     }
     
     const handleTimeChange = (_: DateTimePickerEvent, newVal: Date | undefined) => {
@@ -44,7 +42,6 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
         }
         setCurrentValue(newVal);
         setSelectedTime(newVal || new Date())
-        console.log(selectedTime,  'selectedTime', currentValue, 'currentValue', newVal, 'newVal')
     }
 
     const toggleDatePicker = () => {
@@ -92,11 +89,3 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
 
 export default DateTimeInput;
 
-const localStyle = StyleSheet.create({
-    
-        picker: {
-        flex: 1,
-        width: '100%',
-        backgroundColor: 'white'
-    }   
-})
