@@ -23,6 +23,9 @@ import { MetricSequence } from "../../../shared/classes/MetricSequence";
 type SummaryScreenType = {
     sessions: SessionType[],
     activity: ActivityType,
+    onPress: () => void,
+    previous: (index: number) => void,  
+    following: (index: number) => void,
 }
 
 
@@ -35,9 +38,12 @@ export default function SummaryScreen() {
     const {width} = Dimensions.get('window');
     const  [sessionsRender, setSessionsRender] = useState<SessionType[]>([]);
     const previous = (index :number) => {
+        console.log(index, 'index')
     }
     const following = (index :number) => {
+        console.log(index, 'index')
     }
+    
 
 
     console.log(_id, 'id')
@@ -59,7 +65,6 @@ export default function SummaryScreen() {
         for (let i = 0; i < sessions.length; i++) {
             const session = sessions[i];
             const sequences = session.raw_datas.records
-            console.log(session.raw_datas.getSequence(), 'records')
             const sequencestype = typeof sequences
             for (let i = 0; i < sequences.length; i++) {
                 const sequence = sequences[i]
@@ -68,12 +73,8 @@ export default function SummaryScreen() {
                 const end = sequence.end
                 const typestart = typeof start
                 const typeend = typeof end
-
-                console.log(sequence, start, typestart, end, typeend, sequencetype, sequencestype, sequences,'sequence, start et end')
-
             }
             const variables = session.raw_variables
-            console.log(i,sequences,variables, 'seq et varaibles par session')
         }
     }
     getSequences(sessions);
@@ -130,11 +131,11 @@ export default function SummaryScreen() {
                             renderItem={({ item , index}) => 
                                 <View>
                                     <View style={[ localStyle.container]}>
-                                        <TouchableOpacity onPress={previous(index)}>
+                                        <TouchableOpacity key={index-1} onPress={previous(index)}>
                                             <AntDesign name="left" size={24} color={'white'} />
                                         </TouchableOpacity>
                                                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>{index + 1} / {sessions.length}</Text>
-                                        <TouchableOpacity onPress={following(index)}>
+                                        <TouchableOpacity key={index+1} onPress={following(index)}>
                                             <AntDesign name="right" size={24} color={'white'} />    
                                         </TouchableOpacity>
                                     </View>

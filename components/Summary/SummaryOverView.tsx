@@ -52,7 +52,7 @@ export default function SummaryOverview({ activity, onNewPress, onSessionPress, 
             style={[globalStyles.body, globalStyles.card]}>
             <View style={[globalStyles.cardContent]}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight,globalStyles.textCenter]}>{activity.label}</Text>
-                {/* <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity._id}</Text> */}
+                <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity._id}</Text>
                         <View style={[globalStyles.pContainer, {opacity: .5}]}>
                 <Text style={[globalStyles.textLight, globalStyles.text,globalStyles.textCenter]}>{activity.description}</Text>
                         </View>

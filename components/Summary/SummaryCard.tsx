@@ -20,31 +20,15 @@ type SummaryCardOptions = {
     currentSequence?: SequenceType | null,
     currentSequenceIndex?: number | null,
     sessionIndex: number,
-    consol?: (value: any) => void,
+    sequence: SequenceType,
     
 }
 
 export function SummaryCard({session, sessionIndex}: SummaryCardOptions) {
     const [sequences, setSequences] = useState<[index: number, start:Date, end:Date |null]>([0, new Date(), new Date()])
     
-    const [currentSequenceIndex, setCurrentSequenceIndex] = useState<number | null>(null)
-
-
+    const [currentSequence, setCurrentSequence] = useState<SequenceType>(session.raw_datas.getSequence())
     
-
-
-
-
-    
-
-
-    const previous = () => {
-        console.log('previous')
-    }
-    const following = () => {
-        console.log('following')
-    }
-
     const renderItemValue = (item: RawVariableType) => {
         if (item.value instanceof Date) {
             return  <View style={localStyle.cardContent}>
@@ -59,6 +43,7 @@ export function SummaryCard({session, sessionIndex}: SummaryCardOptions) {
     }
     
 
+
     return (
         <View>
             
@@ -69,20 +54,23 @@ export function SummaryCard({session, sessionIndex}: SummaryCardOptions) {
 
                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Séquences</Text>
                 <Text style={[globalStyles.textLight,globalStyles.textCenter]}>Nombre de séquences: {session.raw_datas.records.length}</Text>
-                <Text>{JSON.stringify(session.raw_datas.records)}</Text>
+                <Text>raw_datas record{JSON.stringify(session.raw_datas.records)}</Text>
                 
-                {session.raw_datas.records.map((sequence) => (
+                {/* {session.raw_datas.records.map((sequence) => (
                     <View key={sequence.index} style={[localStyle.cardContent]}>
                         <Text style={globalStyles.textLight}>séquence  </Text>
                         <Text style={globalStyles.textLight}>Nombre de données: {JSON.stringify(sequence)}</Text>
                         <Text style={globalStyles.textLight}>Début: {sequence.start? format(sequence.start, ' d MMM yyy', {locale: fr}): 'en cours'}</Text> 
                         <Text style={globalStyles.textLight}>Fin: {sequence.end ? format(sequence.end, ' d MMM yyy', {locale: fr}) : "en cours"}</Text> 
                     </View>
-                ))}
+                ))} */}
+                
             </View>
             <View style={[localStyle.card]}>
                 <View>
-
+                    {session.raw_datas && (
+                        <SequenceList sequence={currentSequence} />
+                    )}
                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Informations et variables</Text>
                 {session.raw_variables.length > 0 && (
                     <View >
