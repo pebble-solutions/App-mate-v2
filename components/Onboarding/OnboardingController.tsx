@@ -1,5 +1,5 @@
 import Timeline from "./Timeline";
-import {Animated, FlatList, StyleSheet, useWindowDimensions, View, ViewToken} from "react-native";
+import {Animated, FlatList, StyleSheet, useWindowDimensions, View, ViewToken, Text} from "react-native";
 import ValidationButton from "./ValidationButton";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
@@ -42,7 +42,15 @@ export default function OnboardingController({activeColor, inactiveColor, items,
             
             <FlatList
                 data={items}
-                renderItem={({item}) => <View style={[localStyle.itemContainer, {width}]}>{item}</View>}
+                renderItem={({item, index: number}) =>
+                 <View key={currentIndex} style={[localStyle.itemContainer, {width}]}>
+                    <Text style={globalStyles.textLight}>
+                        {currentIndex}{"/"}{items.length}
+                    </Text>
+                    <View>
+                        {item}
+                    </View>
+                </View>}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled

@@ -49,7 +49,7 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
     }, [variable.value])
 
     const handlePressEdit = () => { 
-        setIsEditable((prev) => !prev)
+        // setIsEditable((prev) => !prev)
     }
     const handleChangeValue =(newVal: string | Date | boolean | number) => {
         setUpdatedValue(() => newVal)

@@ -95,6 +95,7 @@ export default function ValidateScreen() {
 
         items.push((
             <View style={globalStyles.section}>
+                <Text style={globalStyles.textLight}>{items.length}</Text> 
                 <FormInput
                     type={type}
                     value={value}
@@ -110,6 +111,7 @@ export default function ValidateScreen() {
     items.push((
         <View style={localStyle.containerLocal}>
             <Text style={globalStyles.textLight}>{currentActivity.label}</Text>
+            <Text style={globalStyles.textLight}>{items.length}</Text>
             <Text style={globalStyles.textLight}>{currentSession.start.toLocaleDateString()}</Text>
             <StopWatch
             initialTime={currentSession.raw_datas.getTime()}
@@ -132,12 +134,12 @@ export default function ValidateScreen() {
 
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
-            <View style={globalStyles.mt2Container}>
-            </View>
+            
             <OnboardingController
                 activeColor={currentActivity.color}
                 items={items}
                 validationIndex={items.length - 1}
+                
             />
         </SafeAreaView>
     )

@@ -12,25 +12,19 @@ type VariablesResumeOptions = {
 }
 
 export default function VariablesResume({variables, containerStyle, theme}: VariablesResumeOptions) {
+    console.log(variables, 'variables')
 
     const titleColor = theme === "dark" ? globalStyles.textLight : {}
 
     return (<View style={[containerStyle]}>
-        {/* <Title title={"Résumé des informations fournies et dfssdhlhqfqdh"} style={[globalStyles.mb2Container, titleColor]} /> */}
         
-        {/* {variables.map(variable => (
-            <VariableItem
-                variable={variable}
-                theme={theme}
-                key={variable._id}
-            />
-        ))} */}
         <FlatList
             data={variables}
             renderItem={({item}) => (
                 <VariableItem id={item._id} variable={item} theme={theme} />
             )}
-            style={localStyle.container}   
+            style={localStyle.container} 
+              
         />
     </View>)
 }
