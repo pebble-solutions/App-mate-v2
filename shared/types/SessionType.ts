@@ -1,29 +1,31 @@
 import {MetricSequence} from "../classes/MetricSequence";
 
-export type SessionType = {
+export type JsonSessionType = {
     _id: string,
     type: string,
     type_id: string,
     label: string,
     comment: string | null,
-    start: Date,
-    end?: Date | null,
-    owner: OwnerType,
-    raw_datas: MetricSequence,
+    start: string,
+    end?: string | null,
+    date_timezone: string | null,
+    owner: string | null,
+    raw_datas: RawDataType[],
     raw_variables: RawVariableType[],
     is_active: boolean
 }
-export type OwnerType = {
-    _id: string,
-    firstName: string,
-    lastName: string,
-    matricule: string,
-}
-export type RawDataType = {
-    index?: number,
+
+export type SessionType = Omit<JsonSessionType, "raw_datas" | "start" | "end"> & {
     start: Date,
     end?: Date | null,
+    raw_datas: MetricSequence,
 }
+
+export type RawDataType = {
+    start: string,
+    end?: string | null,
+}
+
 export type RawVariableType = {
     _id: string,
     label: string,

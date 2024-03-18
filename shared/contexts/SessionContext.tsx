@@ -7,10 +7,10 @@ import {ReadParamsType} from "@pebble-solutions/api-request/lib/types/types";
 
 export type SessionContextType = {
     sessions: SessionType[],
-    addSession: (session: SessionType) => void,
+    addSession: (session: Session) => void,
     removeSession: (id: string) => void,
     getSessionById: (id: string) => SessionType | undefined,
-    updateSession: (session: SessionType) => void
+    updateSession: (session: Session) => void
     fetchSessionsFromAPI: (params?: ReadParamsType) => Promise<void>
     getSessionsFromActivity: (activityId: string) => SessionType[]
 }
@@ -42,8 +42,9 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         setSessions((prev) => prev.filter(e => !sessionsId.includes(e._id)))
     }
 
-    const addSession = (session: SessionType) => {
-        requestsQueue.addRequest(postRequest("https://api.pebble.solutions/v5/metric/", session))
+    const addSession = (session: Session) => {
+        console.log("add to queue", session.json())
+        requestsQueue.addRequest(postRequest("https://api.pebble.solutions/v5/metric/", session.json()))
         updateSessionsState([session])
     }
 
@@ -52,8 +53,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         removeFromSessionsState([id])
     }
 
-    const updateSession = (session: SessionType) => {
-        requestsQueue.addRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+session._id, session))
+    const updateSession = (session: Session) => {
+        requestsQueue.addRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+session._id, session.json()))
         updateSessionsState([session])
     }
 

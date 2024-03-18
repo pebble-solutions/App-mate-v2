@@ -1,4 +1,4 @@
-import React, {createContext, PropsWithChildren, useContext, useState} from "react";
+import React, {createContext, PropsWithChildren, useContext, useEffect, useState} from "react";
 import {createRequestsBucket, createRequestsController} from "@pebble-solutions/api-request";
 import {Bucket, RequestsController} from "@pebble-solutions/api-request/lib/types/classes";
 
@@ -14,13 +14,29 @@ const RequestsContextProvider = ({children}: PropsWithChildren<{}>) => {
     const [requestsQueue, setRequestsQueue] = useState(createRequestsBucket())
 
     const sendQueue = async () => {
+        console.log("Je déclenche la queue")
         if (requestsQueue.requests.length) {
+            console.log("quelque chose se présente")
             const bucket = requestsController.addRequest(requestsQueue)
             setRequestsQueue(() => createRequestsBucket())
-            await bucket.send()
-            return await bucket.content()
+            try {
+                await bucket.send()
+                const res = await bucket.content()
+                console.log("C'est fait", res)
+                return res
+            } catch (e) {
+                console.log("Erreur", e)
+            }
+
         }
     }
+
+    useEffect(() => {
+        const timer = setInterval(sendQueue, 10000)
+        return () => {
+            clearTimeout(timer)
+        }
+    }, []);
 
     return (
         <RequestsContext.Provider value={{requestsController, requestsQueue}}>
