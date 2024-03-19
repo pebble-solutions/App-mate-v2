@@ -39,7 +39,13 @@ export class Session implements SessionType {
         this.owner = session.owner || null
         this.raw_datas = session.raw_datas instanceof MetricSequence ? session.raw_datas : new MetricSequence()
         if (typeof session.raw_datas === "object" && !(session.raw_datas instanceof MetricSequence)) {
-            this.raw_datas.addMany(session.raw_datas)
+            let sequence: SequenceItemType[] = []
+
+            session.raw_datas.forEach((e: {start: string, end?: string}) => {
+                sequence.push([new Date(e.start), e.end ? new Date(e.end) : null])
+            })
+
+            this.raw_datas.addMany(sequence)
         }
         this.raw_variables = session.raw_variables || []
         this.type = "activity"
