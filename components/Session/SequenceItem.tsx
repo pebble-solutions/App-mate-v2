@@ -44,7 +44,7 @@ export function SequenceItem({item}: SequenceItemOptions) {
     return (
         <>
         {!editMode ? ( 
-        <View style={[localStyle.container]}>
+        <View style={[globalStyles.sessionItemContainer]}>
             <View style={localStyle.box}>
                 <TimeBox label={"Début"} date={item[0]} />
             </View>
@@ -67,7 +67,7 @@ export function SequenceItem({item}: SequenceItemOptions) {
                     <View style={localStyle.box}></View>
                 </>
             )}
-                <TouchableOpacity style={globalStyles.mvContainer} onPress={handlePressEdit}>
+                <TouchableOpacity style={globalStyles.mhContainer} onPress={handlePressEdit}>
                     <Foundation name="pencil" size={16} color={'white'} />
                 </TouchableOpacity>
         </View>
@@ -128,14 +128,7 @@ function TimeBox({label, date}: TimeBoxOptions) {
 }
 
 const localStyle = StyleSheet.create({
-    container: {
-        paddingHorizontal: variables.contentPadding[4],
-        paddingVertical: variables.contentPadding[2],
-        borderBottomWidth: 1,
-        borderBottomColor: variables.color.grey,
-        flexDirection: "row",
-        alignItems: "center"
-    },
+    
 
     box: {
         flex: 1,

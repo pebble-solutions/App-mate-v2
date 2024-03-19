@@ -1,7 +1,7 @@
 import {SequenceType} from "../../shared/types/SequenceType";
 import {FlatList, StyleSheet, View} from "react-native";
 import {SequenceItem} from "./SequenceItem";
-import {variables} from "../../shared/globalStyles";
+import {globalStyles, variables} from "../../shared/globalStyles";
 
 type SequenceListOptions = {
     sequence: SequenceType,
@@ -18,18 +18,8 @@ export function SequenceList({sequence, style}: SequenceListOptions) {
                 renderItem={({item}) => (
                     <SequenceItem item={item} />
                 )}
-                style={[localStyle.container, ...style]}
+                style={[globalStyles.sessionResumeContainer, ...style]}
             />
     )
 }
 
-const localStyle = StyleSheet.create({
-    container: {
-        borderTopColor: variables.color.grey,
-        borderTopWidth: 1,
-        borderBottomColor: variables.color.grey,
-        borderBottomWidth: 1,
-        backgroundColor: variables.color.black,
-        
-    }
-})

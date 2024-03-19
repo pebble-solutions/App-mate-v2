@@ -66,14 +66,15 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
     return (
         <>
             {!editMode ? (
-                <View style={[localStyle.rowContainer]}>
-                    <View style={globalStyles.mvContainer}>
+                <View style={[globalStyles.sessionItemContainer]}>
+                    <View style={[globalStyles.mhContainer]}>
                         <Text style={labelStyle}>{variable.label}</Text>
                         <Text style={valueStyle}>{value}</Text>
                     </View>
-                    <TouchableOpacity style={[globalStyles.mvContainer, globalStyles.mh2Container]} onPress={handlePressEdit}>
+                    <TouchableOpacity style={[globalStyles.mhContainer]} onPress={handlePressEdit}>
                         <Foundation name="pencil" size={16} color={'white'} />
                     </TouchableOpacity>
+                    
                 </View>
             ) : (
                 <View style={globalStyles.mvContainer}>
@@ -95,14 +96,10 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
         </>
     )
 }
-
 const localStyle = StyleSheet.create({
-    rowContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: variables.color.grey,
+    box: {
+        flex: 1,
     },
-
+    
 })
+

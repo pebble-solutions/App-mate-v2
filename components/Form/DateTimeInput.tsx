@@ -16,8 +16,9 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
     const [showTimePicker, setShowTimePicker] = useState(false)
     const [selectedTime, setSelectedTime] = useState<Date>(value || new Date())  
 
-    const useDate = ['date', 'datetime'].includes(type)
-    const useTime = ['time', 'datetime'].includes(type)
+    const useDate = ['date'].includes(type)
+    const useTime = ['time'].includes(type)
+    // const useDateTime = ['datetime'].includes(type)
     // const [useDate, setUseDate] = useState(type === 'date' || type === 'datetime');
     // const [showTimePicker, setShowTimePicker] = useState(type === 'time' || type === 'datetime');
     useEffect(() => {
@@ -30,9 +31,9 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
 
     const handleDateChange = (_: DateTimePickerEvent, newVal: Date | undefined) => {
         
-        if (Platform.OS === 'android') {
-            setShowDatePicker(() => false);
-        }
+        // if (Platform.OS === 'android') {
+        //     setShowDatePicker(() => false);
+        // }
         setCurrentValue(newVal);
         setSelectedTime(newVal || new Date())
     }
@@ -63,25 +64,37 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
  
     return (
         <>
-            {useDate && 
+            {(useDate) && 
                 <View style={[globalStyles.input, globalStyles.mb2Container]}>
                     
-                    <TouchableOpacity onPress={()=> toggleDatePicker()}><Text> {dateToLiteral(selectedTime)}</Text></TouchableOpacity>
-                    {showDatePicker && useDate && (<DateTimePicker
+                    {Platform.OS === 'android' && <TouchableOpacity onPress={()=> toggleDatePicker()}><Text> {dateToLiteral(selectedTime)}</Text></TouchableOpacity>}
+                    {(Platform.OS === 'android') && (showDatePicker) && <DateTimePicker
                         value={selectedTime}
                         mode="date"
-                        display={Platform.OS === 'ios' ? 'default' : 'spinner'}
+                        display='spinner'
                         onChange={handleDateChange}
-                        />)}
+                        />}
+                        {Platform.OS === 'ios' && !showDatePicker && <DateTimePicker
+                        value={selectedTime}
+                        mode="date"
+                        display="default"
+                        onChange={handleDateChange}
+                        />}
                 </View>
             }
-            {useTime && 
+            {(useTime) && 
                 <View style={globalStyles.input}>
-                    <TouchableOpacity onPress={()=> togglePicker()}><Text>{timeToLiteral(selectedTime)}</Text></TouchableOpacity>
-                    {showTimePicker && useTime && (<DateTimePicker
+                    {Platform.OS ==="android" && <TouchableOpacity onPress={()=> togglePicker()}><Text>{timeToLiteral(selectedTime)}</Text></TouchableOpacity>}
+                    {Platform.OS ==="android" && showTimePicker && (<DateTimePicker
                     value={selectedTime}
                     mode="time"
-                    display={Platform.OS === 'ios' ? 'default' : 'spinner'}
+                    display='spinner'
+                    onChange={handleTimeChange}
+                    />)}
+                    {Platform.OS ==="ios" && !showTimePicker && (<DateTimePicker
+                    value={selectedTime}
+                    mode="time"
+                    display="default"
                     onChange={handleTimeChange}
                     />)}
                 </View>
