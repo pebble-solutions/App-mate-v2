@@ -19,7 +19,7 @@ const SessionContext = createContext<SessionContextType | null>(null)
 
 const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [sessions, setSessions] = useState<SessionType[]>([])
-    const {requestsController, requestsQueue} = useRequestsContext()
+    const {requestsController, pushRequest} = useRequestsContext()
 
     const updateSessionsState = (sessions: SessionType[]) => {
         setSessions((prev) => {
@@ -44,17 +44,17 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
     const addSession = (session: Session) => {
         console.log("add to queue", session.json())
-        requestsQueue.addRequest(postRequest("https://api.pebble.solutions/v5/metric/", session.json()))
+        pushRequest(postRequest("https://api.pebble.solutions/v5/metric/", session.json()))
         updateSessionsState([session])
     }
 
     const removeSession = (id: string) => {
-        requestsQueue.addRequest(deleteRequest("https://api.pebble.solutions/v5/metric/"+id))
+        pushRequest(deleteRequest("https://api.pebble.solutions/v5/metric/"+id))
         removeFromSessionsState([id])
     }
 
     const updateSession = (session: Session) => {
-        requestsQueue.addRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+session._id, session.json()))
+        pushRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+session._id, session.json()))
         updateSessionsState([session])
     }
 

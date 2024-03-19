@@ -7,7 +7,7 @@ import VariableContextProvider from "../shared/contexts/VariableContext";
 import SessionStatusContextProvider from "../shared/contexts/SessionStatusContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SessionContextProvider from "../shared/contexts/SessionContext";
-import {SafeAreaView} from "react-native";
+import {Alert, SafeAreaView} from "react-native";
 import {globalStyles} from "../shared/globalStyles";
 import RequestsContextProvider from "../shared/contexts/RequestsContext";
 
@@ -29,9 +29,13 @@ export default function RootLayout() {
         return null
     }
 
+    const handleRequestsError = (e: any) => {
+        Alert.alert("Erreur de requête API", e)
+    }
+
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <RequestsContextProvider>
+            <RequestsContextProvider onError={handleRequestsError}>
                 <SessionContextProvider>
                     <SessionStatusContextProvider>
                         <VariableContextProvider>

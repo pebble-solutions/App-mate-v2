@@ -1,45 +1,50 @@
-import React, {createContext, PropsWithChildren, useContext, useEffect, useState} from "react";
+import React, {createContext, PropsWithChildren, useContext, useEffect, useRef, useState} from "react";
 import {createRequestsBucket, createRequestsController} from "@pebble-solutions/api-request";
-import {Bucket, RequestsController} from "@pebble-solutions/api-request/lib/types/classes";
+import {Bucket, Request, RequestsController} from "@pebble-solutions/api-request/lib/types/classes";
 
 type RequestsContextType = {
     requestsController: RequestsController,
-    requestsQueue: Bucket
+    pushRequest: (request: Request | Bucket) => void
 }
 
 const RequestsContext= createContext<RequestsContextType | null>(null)
 
-const RequestsContextProvider = ({children}: PropsWithChildren<{}>) => {
+const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError?: (error: any) => void}>) => {
     const [requestsController] = useState(createRequestsController())
-    const [requestsQueue, setRequestsQueue] = useState(createRequestsBucket())
+    const requestsQueue = useRef(createRequestsBucket())
+
+    const pushRequest = (request: Request | Bucket) => {
+        requestsQueue.current.addRequest(request)
+    }
 
     const sendQueue = async () => {
-        console.log("Je déclenche la queue")
-        if (requestsQueue.requests.length) {
-            console.log("quelque chose se présente")
-            const bucket = requestsController.addRequest(requestsQueue)
-            setRequestsQueue(() => createRequestsBucket())
+        const queue = requestsQueue.current
+
+        if (queue.requests.length) {
+            const bucket = requestsController.addRequest(queue)
+            requestsQueue.current = createRequestsBucket()
             try {
                 await bucket.send()
-                const res = await bucket.content()
-                console.log("C'est fait", res)
-                return res
+                return await bucket.content()
             } catch (e) {
-                console.log("Erreur", e)
+                if (typeof onError !== "undefined") onError(e)
+                console.log("API Exchange error", e)
             }
 
         }
     }
 
     useEffect(() => {
+        // Initialize requests queue at startup
         const timer = setInterval(sendQueue, 10000)
         return () => {
+            // Each time context is destroyed, queue is cleared
             clearTimeout(timer)
         }
     }, []);
 
     return (
-        <RequestsContext.Provider value={{requestsController, requestsQueue}}>
+        <RequestsContext.Provider value={{requestsController, pushRequest}}>
             {children}
         </RequestsContext.Provider>
     )
