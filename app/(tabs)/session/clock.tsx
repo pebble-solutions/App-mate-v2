@@ -15,12 +15,16 @@ import {SequenceList} from "../../../components/Session/SequenceList";
 import {SessionType} from "../../../shared/types/SessionType";
 import {ActivityType} from "../../../shared/types/ActivityType";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
+import {Session} from "../../../shared/classes/Session";
+import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
+import {patchRequest} from "@pebble-solutions/api-request";
 
 export default function ClockScreen() {
 
     const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
-    const { removeSession } = useSessionContext()
+    const { removeSession, updateSession } = useSessionContext()
     const [ exitStatus, setExitStatus ] = useState(false)
+    const { pushRequest } = useRequestsContext()
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
@@ -41,7 +45,7 @@ export default function ClockScreen() {
         }
     }
 
-    const [ currentSession, setCurrentSession ] = useState<SessionType | null>(session || null)
+    const [ currentSession, setCurrentSession ] = useState<Session | null>(session || null)
     const [ currentActivity, setCurrentActivity ] = useState<ActivityType | null>(activity || null)
 
     const [started, setStarted] = useState(false)
@@ -81,6 +85,7 @@ export default function ClockScreen() {
         setSequence((sequenceVal) => {
             const sequenceItem: SequenceItemType = [new Date(), null]
             const index = currentSession.raw_datas.addOne(sequenceItem)
+            pushRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+currentSession._id, currentSession.json()))
             setCurrentItemIndex(index)
             sequenceVal.push(sequenceItem)
             return [...sequenceVal]
@@ -95,6 +100,7 @@ export default function ClockScreen() {
                 lastItem = [lastItem[0], new Date()]
                 if (currentItemIndex !== null) {
                     currentSession.raw_datas.updateOne(currentItemIndex, lastItem)
+                    pushRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+currentSession._id, currentSession.json()))
                     setCurrentItemIndex(null)
                 }
                 sequenceVal.push(lastItem)

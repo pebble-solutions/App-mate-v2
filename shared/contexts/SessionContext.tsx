@@ -1,5 +1,5 @@
 import React, {createContext, PropsWithChildren, useContext, useEffect, useState} from "react";
-import { SessionType } from "../types/SessionType";
+import {JsonSessionType, SessionType} from "../types/SessionType";
 import { Session } from "../classes/Session";
 import {useRequestsContext} from "./RequestsContext";
 import {deleteRequest, getRequest, patchRequest, postRequest} from "@pebble-solutions/api-request";
@@ -9,10 +9,10 @@ export type SessionContextType = {
     sessions: SessionType[],
     addSession: (session: Session) => void,
     removeSession: (id: string) => void,
-    getSessionById: (id: string) => SessionType | undefined,
+    getSessionById: (id: string) => Session | undefined,
     updateSession: (session: Session) => void
     fetchSessionsFromAPI: (params?: ReadParamsType) => Promise<void>
-    getSessionsFromActivity: (activityId: string) => SessionType[]
+    getSessionsFromActivity: (activityId: string) => Session[]
     pending: boolean
     loading: boolean
 }
@@ -20,12 +20,12 @@ export type SessionContextType = {
 const SessionContext = createContext<SessionContextType | null>(null)
 
 const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
-    const [sessions, setSessions] = useState<SessionType[]>([])
+    const [sessions, setSessions] = useState<Session[]>([])
     const {requestsController, pushRequest} = useRequestsContext()
     const [pending, setPending] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    const updateSessionsState = (sessions: SessionType[]) => {
+    const updateSessionsState = (sessions: SessionType[] | JsonSessionType[]) => {
         setSessions((prev) => {
             let sessionsList = [...prev]
 
@@ -68,7 +68,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         setPending(true)
         try {
             await request.send()
-            const data: SessionType[] = await request.content()
+            const data: JsonSessionType[] = await request.content()
             updateSessionsState(data)
         } catch (e)  {
             throw e
