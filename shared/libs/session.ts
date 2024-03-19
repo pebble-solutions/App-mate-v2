@@ -10,24 +10,18 @@ import {NoActivityIdError} from "./errors/NoActivityIdError";
 import {InvalidSessionTypeError} from "./errors/InvalidSessionTypeError";
 import {ActivityNotFoundError} from "./errors/ActivityNotFoundError";
 import {Session} from "../classes/Session";
+import { ulid } from 'ulidx'
 
 export function newSession (activityId: string, sessionContext: SessionContextType, statusContext: SessionStatusContextType){
-    let r = (Math.random() + 1).toString(36).substring(7);
-
     const newSession = new Session({
-        _id: r,
+        _id: ulid(),
         type: "activity",
         start: new Date(),
         type_id: activityId,
         label: "Nouveau Pointage de John DOE",
         comment: "",
         status: "started",
-        owner: {
-            _id: "1",
-            firstName: "John",
-            lastName: "Doe",
-            matricule: "ANDROID-1234",
-        },
+        owner: null,
         raw_datas: [],
         raw_variables: []
     })

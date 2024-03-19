@@ -73,10 +73,8 @@ export default function ValidateScreen() {
         setRawVariables(newRawVariables);
     }
 
-    const postSession =  async (raw_variables: RawVariableType[]) => {
-        sessionContext.updateSession(currentSession._id, {...currentSession, raw_variables: raw_variables});
-        await sessionContext.postSession(currentSession._id, {...currentSession});
-        exit()
+    const postSession =  (raw_variables: RawVariableType[]) => {
+        sessionContext.updateSession({...currentSession, raw_variables: raw_variables});
     }
 
     let items: ReactNode[] = []

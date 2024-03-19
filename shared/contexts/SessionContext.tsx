@@ -1,15 +1,17 @@
 import React, { createContext, PropsWithChildren, useContext, useState } from "react";
 import { SessionType } from "../types/SessionType";
 import { Session } from "../classes/Session";
+import {useRequestsContext} from "./RequestsContext";
+import {deleteRequest, getRequest, patchRequest, postRequest} from "@pebble-solutions/api-request";
+import {ReadParamsType} from "@pebble-solutions/api-request/lib/types/types";
 
 export type SessionContextType = {
     sessions: SessionType[],
-    addSession: (session: SessionType) => void,
+    addSession: (session: Session) => void,
     removeSession: (id: string) => void,
     getSessionById: (id: string) => SessionType | undefined,
-    updateSession: (id: string, newSession: SessionType) => void
-    postSession: (id: string, session: SessionType) => Promise<void>
-    fetchSessionsFromAPI: () => void
+    updateSession: (session: Session) => void
+    fetchSessionsFromAPI: (params?: ReadParamsType) => Promise<void>
     getSessionsFromActivity: (activityId: string) => SessionType[]
 }
 
@@ -17,79 +19,53 @@ const SessionContext = createContext<SessionContextType | null>(null)
 
 const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [sessions, setSessions] = useState<SessionType[]>([])
+    const {requestsController, pushRequest} = useRequestsContext()
 
-    const addSession = (session: SessionType) => {
-        setSessions([...sessions, session])
-    }
-    const fetchSessionsFromAPI = async () => {
-        try {
-        const response = await fetch("https://api.pebble.solutions/v5/metric/", {method: "GET"});
-            const data = await response.json();
-            let sessionApiList: SessionType[] = [];
-            data.forEach((incomingSession: any) => {
-                sessionApiList.push(new Session(incomingSession));
-            });
-            setSessions(sessionApiList);
-        } catch (error) {
-            console.error("Erreur lors de la récupération des sessions depuis l'API:", error);
-        }
-    }
-
-    const postSessionViaApi = async (session: SessionType) => {
-        try {
-            const response = await fetch("https://api.pebble.solutions/v5/metric/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    _id: session._id,
-                    label: session.label,
-                    type: session.type,
-                    type_id: session.type_id,
-                    start: session.start,
-                    end: session.end,
-                    owner: session.owner,
-                    raw_datas: session.raw_datas,
-                    raw_variables: session.raw_variables,
-                }),
-            });
-
-            if (response.ok) {
-                const newSession = await response.json();
-                console.log(newSession)
-                addSession(newSession)
-                console.log(sessions)
-            } else {
-                console.error("Erreur lors de la création de la session")
-            }
-        } catch (error) {
-            console.error("Erreur lors de la création de la session", error);
-        }
-    }
-    const postSession = async (id: string, session: SessionType) => {
-        console.log(session, 'session');
-        await postSessionViaApi(session)
-    }
-
-    const removeSession = (id: string) => {
+    const updateSessionsState = (sessions: SessionType[]) => {
         setSessions((prev) => {
-            return prev.filter(e => e._id !== id)
+            let sessionsList = [...prev]
+
+            sessions.forEach(session => {
+                const prevIndex = sessionsList.findIndex(e => e._id === session._id)
+                if (prevIndex !== -1) {
+                    sessionsList.splice(prevIndex, 1, new Session(session))
+                } else {
+                    sessionsList.push(new Session(session))
+                }
+            })
+
+            return sessionsList
         })
     }
 
-    const updateSession = (id: string, newSession: SessionType) => {
-        let sessionsList = [...sessions]
-        let prevIndex = sessionsList.findIndex(e => e._id === id)
-        if (prevIndex !== -1) {
-            sessionsList.splice(prevIndex, 1, newSession)
-        } else {
-            sessionsList.push(newSession)
-        }
-        setSessions(sessionsList)
+    const removeFromSessionsState = (sessionsId: string[]) => {
+        setSessions((prev) => prev.filter(e => !sessionsId.includes(e._id)))
     }
 
+    const addSession = (session: Session) => {
+        console.log("add to queue", session.json())
+        pushRequest(postRequest("https://api.pebble.solutions/v5/metric/", session.json()))
+        updateSessionsState([session])
+    }
 
+    const removeSession = (id: string) => {
+        pushRequest(deleteRequest("https://api.pebble.solutions/v5/metric/"+id))
+        removeFromSessionsState([id])
+    }
+
+    const updateSession = (session: Session) => {
+        pushRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+session._id, session.json()))
+        updateSessionsState([session])
+    }
+
+    const fetchSessionsFromAPI = async (params?: ReadParamsType) => {
+        const request = requestsController.addRequest(
+            getRequest("https://api.pebble.solutions/v5/metric/", params)
+        )
+        await request.send()
+        const data: SessionType[] = await request.content()
+        updateSessionsState(data)
+    }
 
     const getSessionById = (id: string) => {
         return sessions.find(e => e._id === id)
@@ -100,7 +76,15 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     return (
-        <SessionContext.Provider value={{ sessions, addSession, removeSession, getSessionById, updateSession, postSession, fetchSessionsFromAPI, getSessionsFromActivity }}>
+        <SessionContext.Provider value={{
+            sessions,
+            addSession,
+            removeSession,
+            getSessionById,
+            updateSession,
+            fetchSessionsFromAPI,
+            getSessionsFromActivity
+        }}>
             {children}
         </SessionContext.Provider>
     )
