@@ -1,8 +1,28 @@
 import {router, Tabs} from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
+import {useEffect} from "react";
+import {useSessionContext} from "../../shared/contexts/SessionContext";
+import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
+import {openSession} from "../../shared/libs/session";
 
 
 export default function TabsLayout() {
+
+    const sessionContext = useSessionContext()
+    const {sessions, getStartedSessions } = sessionContext
+    const statusContext = useSessionStatusContext()
+    const { status } = statusContext
+
+    useEffect(() => {
+        if (!status) {
+            const startedSessions = getStartedSessions()
+            if (startedSessions.length) {
+                console.log(startedSessions[0]._id)
+                openSession(startedSessions[0]._id, sessionContext, statusContext)
+            }
+        }
+    }, [sessions]);
+
     return (
         <Tabs screenOptions={{
             headerShown: false
