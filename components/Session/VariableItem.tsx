@@ -4,21 +4,20 @@ import {globalStyles, variables} from "../../shared/globalStyles";
 import { Foundation } from '@expo/vector-icons';
 import React, { useEffect } from "react";
 import FormInput from "../Form/FormInput";
-import ButtonPrevNext from "../TunnelsButton";
+import CancelValidateButtons from "../CancelValidateButtons";
 
 
 type VariableItemOptions = {
     variable: RawVariableType,
     containerStyle?: object[],
     theme?: "dark" | "light",
-    editable?: boolean,
+    editMode?: boolean,
     onChange?: (newVal: string | Date | boolean | number | null) => void
     id:string
 }
 
 export default function VariableItem({variable, theme, onChange, id}: VariableItemOptions) {
-    const [isEditable, setIsEditable] = React.useState(false)
-    
+    const [editMode, setEditMode] = React.useState(false)
     
     const labelStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textGrey
     const valueStyle = variable.value ? (theme === "dark" ? globalStyles.textLight : {}) : labelStyle
@@ -49,7 +48,7 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
     }, [variable.value])
 
     const handlePressEdit = () => { 
-        // setIsEditable((prev) => !prev)
+        setEditMode((prev) => !prev)
     }
     const handleChangeValue =(newVal: string | Date | boolean | number) => {
         setUpdatedValue(() => newVal)
@@ -58,15 +57,15 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
     const validateChange = () => {
         if (onChange) onChange(updatedValue)
         setValue(() => valueToString(updatedValue, variable.type))
-        setIsEditable(() => false)
+        setEditMode(() => false)
     }
     const cancelChange = () => {
-        setIsEditable(() => false)
+        setEditMode(() => false)
     }
 
     return (
         <>
-            {!isEditable ? (
+            {!editMode ? (
                 <View style={[localStyle.rowContainer]}>
                     <View style={globalStyles.mvContainer}>
                         <Text style={labelStyle}>{variable.label}</Text>
@@ -85,12 +84,12 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
                         labelStyle={[globalStyles.textLight, globalStyles.textXl]}
                         onChange={handleChangeValue}
                         />
-                        <ButtonPrevNext
-                            onPress1={cancelChange}
-                            onPress2={validateChange}
-                            buttonName1="Annuler"
-                            buttonName2="Valider"
-                        />
+                    <CancelValidateButtons
+                        onPress1={cancelChange}
+                        onPress2={validateChange}
+                        buttonName1="Annuler"
+                        buttonName2="Valider"
+                    />
                 </View>
             )}
         </>

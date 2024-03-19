@@ -4,42 +4,46 @@ import {globalStyles, variables} from "../../shared/globalStyles";
 import {diffDateToTime} from "../../shared/libs/date";
 import {Foundation} from "@expo/vector-icons";
 import React, { useEffect } from "react";
-import ButtonPrevNext from "../TunnelsButton";
+import CancelValidateButtons from "../CancelValidateButtons";
 import FormInput from "../Form/FormInput";
 
 type SequenceItemOptions = {
     item: SequenceItemType
-    editable?: boolean
+    editMode?: boolean
 }
 
 export function SequenceItem({item}: SequenceItemOptions) {
-    const [isEditable, setIsEditable] = React.useState(false);
-    const [updatedItem0, setUpdatedItem0] = React.useState<Date>(item[0]);
+    const [editMode, setEditMode] = React.useState(false);
+    const [updatedDateStart, setUpdatedDateStart] = React.useState<Date>(item[0]);
+    const [updatedDateEnd, setUpdatedDateEnd] = React.useState<Date>(item[1] || new Date());
     
-
-    useEffect(() => {
-        handleChangeValue(updatedItem0)
-    }
-    , [updatedItem0])
+    // à faire !! fonction onChange pour mettre à jour les dates dans le composant parent à la validation
+    // useEffect(() => {
+    //     handleChangeValue(updatedDateStart)
+    // }
+    // , [updatedDateStart])
     
     
     const handlePressEdit = () => {
-        setIsEditable((prev) => !prev)
+        setEditMode((prev) => !prev)
     }
     const cancelChange = () => {
-        setIsEditable(() => false)
+        setEditMode(() => false)
     }
     const validateChange = () => {
-        setIsEditable(() => false)
+        setEditMode(() => false)
     }
 
-    const handleChangeValue = (newVal: Date) => {
-        setUpdatedItem0(newVal)
+    const handleChangeValueStart = (newVal: Date) => {
+        setUpdatedDateStart(newVal)
+    }
+    const handleChangeValueEnd = (newVal: Date) => {
+        setUpdatedDateEnd(newVal)
     }
 
     return (
         <>
-        {!isEditable ? ( 
+        {!editMode ? ( 
         <View style={[localStyle.container]}>
             <View style={localStyle.box}>
                 <TimeBox label={"Début"} date={item[0]} />
@@ -71,26 +75,26 @@ export function SequenceItem({item}: SequenceItemOptions) {
         ) : (
             <>
                 <View style={localStyle.formGroup}>
-                    <View style={localStyle.small}>
+                    <View style={localStyle.inputContainer}>
                         <FormInput
                             value={item[0]}
-                            placeholder={updatedItem0.toLocaleTimeString()}
-                            onChange={() => {handleChangeValue}}
+                            placeholder={updatedDateStart.toLocaleTimeString()}
+                            onChange={() => {handleChangeValueStart}}
                             labelStyle={[globalStyles.textLight, globalStyles.textXl]}
                             type="time"
                         />
                     </View>
-                    <View style={localStyle.small}>
+                    <View style={localStyle.inputContainer}>
                         <FormInput
                             value={item[1]}
-                            placeholder={item[0].toLocaleTimeString()}
-                            onChange={() => {console.log("change fin")}}
+                            placeholder={item[1]?.toLocaleTimeString() }
+                            onChange={() => {handleChangeValueEnd}}
                             labelStyle={[globalStyles.textLight, globalStyles.textXl]}
                             type="time"
                         />
                     </View>
                 </View>
-                <ButtonPrevNext
+                <CancelValidateButtons
                     onPress1={cancelChange}
                     onPress2={validateChange}
                     buttonName1="Annuler"
@@ -140,8 +144,9 @@ const localStyle = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
     },
-    small: {
-        width: "40%",
+    inputContainer: {
+        flex: 0.5,
+        marginHorizontal: variables.contentPadding[2]
     }
     
     

@@ -3,6 +3,9 @@ import {View, Platform, StyleSheet, TouchableOpacity,Text} from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import {globalStyles} from '../../shared/globalStyles';
 import {DateTimeInputOptions} from "./types/InputOptions";
+import { dateToLiteral } from '../../shared/libs/date';
+import { timeToLiteral } from '../../shared/libs/date';
+import { datetimeToLiteral } from '../../shared/libs/date';
 
 const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOptions) => {
 
@@ -62,7 +65,8 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
         <>
             {useDate && 
                 <View style={[globalStyles.input, globalStyles.mb2Container]}>
-                    <TouchableOpacity onPress={()=> toggleDatePicker()}><Text>{selectedTime.toLocaleDateString()}</Text></TouchableOpacity>
+                    
+                    <TouchableOpacity onPress={()=> toggleDatePicker()}><Text> {dateToLiteral(selectedTime)}</Text></TouchableOpacity>
                     {showDatePicker && useDate && (<DateTimePicker
                         value={selectedTime}
                         mode="date"
@@ -73,7 +77,7 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
             }
             {useTime && 
                 <View style={globalStyles.input}>
-                    <TouchableOpacity onPress={()=> togglePicker()}><Text>{selectedTime.toLocaleTimeString()}</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=> togglePicker()}><Text>{timeToLiteral(selectedTime)}</Text></TouchableOpacity>
                     {showTimePicker && useTime && (<DateTimePicker
                     value={selectedTime}
                     mode="time"

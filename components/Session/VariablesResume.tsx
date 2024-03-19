@@ -12,7 +12,6 @@ type VariablesResumeOptions = {
 }
 
 export default function VariablesResume({variables, containerStyle, theme}: VariablesResumeOptions) {
-    console.log(variables, 'variables')
 
     const titleColor = theme === "dark" ? globalStyles.textLight : {}
 

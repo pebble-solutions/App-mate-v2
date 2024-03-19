@@ -13,6 +13,8 @@ import VariablesResume from "../../../components/Session/VariablesResume";
 import { SequenceList } from "../../../components/Session/SequenceList";
 import Title from "../../../components/Title";
 import { StopWatch } from "../../../components/Session/StopWatch";
+import { SessionHeader } from "../../../components/Session/SessionHeader";
+import { dateToLiteral } from "../../../shared/libs/date";
 
 export default function ValidateScreen() {
     const sessionContext = useSessionContext();
@@ -40,6 +42,12 @@ export default function ValidateScreen() {
 
     const [ currentSession ] = useState<SessionType | null>(session || null)
     const [ currentActivity ] = useState<ActivityType | null>(activity || null)
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
 
     // Exit or error status
     if (!currentActivity || !currentSession) {
@@ -58,6 +66,8 @@ export default function ValidateScreen() {
             return newVars
         })
     }
+
+    
 
     const exit = () => {
         setExitStatus(true)
@@ -109,18 +119,17 @@ export default function ValidateScreen() {
     })
 
     items.push((
-        <View style={localStyle.containerLocal}>
-            <Text style={globalStyles.textLight}>{currentActivity.label}</Text>
-            <Text style={globalStyles.textLight}>{items.length}</Text>
-            <Text style={globalStyles.textLight}>{currentSession.start.toLocaleDateString()}</Text>
+        <View style={globalStyles.body}>
+            <Title title={"Durée totale de la session"} style={[globalStyles.mtContainer, globalStyles.textLight, globalStyles.textCenter]} />
             <StopWatch
             initialTime={currentSession.raw_datas.getTime()}
             style={[globalStyles.textLight, globalStyles.textCenter]}
+            size='md'
 
             />
-            <Title title={"Pointages"} style={[globalStyles.mb2Container, globalStyles.textLight]} />
+            <Title title={"Séquence"} style={[globalStyles.mtContainer, globalStyles.textLight, globalStyles.textCenter]} />
             <SequenceList  sequence={sequence} />
-            <Title title={"Informations fournies"} style={[globalStyles.mb2Container, globalStyles.textLight]} />
+            <Title title={"Informations fournies"} style={[globalStyles.mtContainer, globalStyles.textLight, globalStyles.textCenter]} />
             <VariablesResume
                 variables={rawVariables}
                 theme={"dark"}
@@ -129,25 +138,17 @@ export default function ValidateScreen() {
         </View>
     ))
     
-
     
-
+    
+    
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
-            
+            <SessionHeader label={currentActivity.label} description={currentActivity.description} date={dateToLiteral(currentSession.start)} />    
             <OnboardingController
                 activeColor={currentActivity.color}
                 items={items}
                 validationIndex={items.length - 1}
-                
             />
         </SafeAreaView>
     )
 }
-const localStyle = StyleSheet.create({
-    containerLocal: {
-        width: "100%",
-        height: "100%",
-        
-    }
-})

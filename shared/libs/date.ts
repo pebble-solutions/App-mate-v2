@@ -173,11 +173,31 @@ export function dateToTime(val: string, refVal: string): string | null {
 }
 
 /**
- * Retourne la date  au format litttéral français
+ * Retourne la date et l'heure au format littéral français
  *@param {Date} date La date à transformer
  *@return {string}
  */
-export function dateToLiteral(date: Date): string {
+export function datetimeToLiteral(date: Date): string {
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
     return date.toLocaleDateString('fr-FR', options);
+}
+
+/**
+ * Retourne la date  au format littéral français
+ *@param {Date} date La date à transformer
+ *@return {string}
+ */
+ export function dateToLiteral(date: Date): string {
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    return date.toLocaleDateString('fr-FR', options);
+}
+
+/**
+ * Retourne l'heure  au format littéral français
+ *@param {Date} date La date à transformer
+ *@return {string}
+ */
+ export function timeToLiteral(date: Date): string {
+    const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric'};
+    return date.toLocaleTimeString('fr-FR', options);
 }

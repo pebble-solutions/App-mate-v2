@@ -1,13 +1,13 @@
 import React from "react";
 import { TouchableOpacity, Text,View, StyleSheet } from 'react-native';
 import { variables } from "../shared/globalStyles";
-interface ButtonPrevNextProps {
+interface CancelValidateButtonsProps {
     onPress1: () => void,
     onPress2: () => void,
     buttonName1: string,
     buttonName2: string
 }
-const ButtonPrevNext: React.FC<ButtonPrevNextProps> = ({ onPress1, onPress2, buttonName1, buttonName2}) => {
+const CancelValidateButtons: React.FC<CancelValidateButtonsProps> = ({ onPress1, onPress2, buttonName1, buttonName2}) => {
     return (
         <View style={localStyle.buttonContainerTunnel}>
             <TouchableOpacity style={localStyle.button} onPress={onPress1}>
@@ -22,11 +22,11 @@ const ButtonPrevNext: React.FC<ButtonPrevNextProps> = ({ onPress1, onPress2, but
 
 
 
-export default ButtonPrevNext;
+export default CancelValidateButtons;
 export const localStyle = StyleSheet.create({
     buttonContainerTunnel: {
         flexDirection: 'row',
-        backgroundColor: '#00000000',
+        backgroundColor: variables.color.dark,
         justifyContent: 'space-evenly',
     },
     button: {
@@ -38,12 +38,8 @@ export const localStyle = StyleSheet.create({
         padding: 5,
         alignItems: "center",
     },
-    formGroup: {
-        marginBottom: 20
-    },
     label: {
-        fontSize: 16,
-        marginBottom: 5,
+        fontSize: variables.fontSize[2],
         color: "white",
     }
 })

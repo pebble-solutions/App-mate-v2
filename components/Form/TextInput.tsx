@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { globalStyles } from "../../shared/globalStyles";
 import {InputOptions, TextInputOptions} from "./types/InputOptions";
-import { TextInput } from "react-native";
+import {TextInput as ReactNativeTextInput} from "react-native";
 
-const TextInputC = ({value, onChange, placeholder, multiline}: TextInputOptions) => {
+const TextInput = ({value, onChange, placeholder, multiline}: TextInputOptions) => {
 
     const [currentValue, setCurrentValue] = useState(value)
     // useEffect(() => {
@@ -15,7 +15,7 @@ const TextInputC = ({value, onChange, placeholder, multiline}: TextInputOptions)
         if (onChange) onChange(newVal);
     };
     return (
-        <TextInput
+        <ReactNativeTextInput
             style={globalStyles.input}
             placeholder={placeholder}
             value={value}
@@ -25,4 +25,4 @@ const TextInputC = ({value, onChange, placeholder, multiline}: TextInputOptions)
     );
 };
 
-export default TextInputC;
+export default TextInput;

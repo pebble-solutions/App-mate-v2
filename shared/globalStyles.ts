@@ -253,8 +253,6 @@ export const globalStyles = StyleSheet.create({
         borderWidth: 1,
         minHeight: "72%",
     },
-
-
     topContainer: {
         marginHorizontal: variables.contentMargin[2],
         marginTop: variables.contentMargin[5],

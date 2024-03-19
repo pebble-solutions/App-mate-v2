@@ -5,7 +5,6 @@ import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
 import Button from "../Button";
 import {Feather} from "@expo/vector-icons";
-import VariablesResume from "../Session/VariablesResume";
 
 type OnboardingControllerOptions = {
     activeColor?: string,
@@ -42,15 +41,7 @@ export default function OnboardingController({activeColor, inactiveColor, items,
             
             <FlatList
                 data={items}
-                renderItem={({item, index: number}) =>
-                 <View key={currentIndex} style={[localStyle.itemContainer, {width}]}>
-                    <Text style={globalStyles.textLight}>
-                        {currentIndex}{"/"}{items.length}
-                    </Text>
-                    <View>
-                        {item}
-                    </View>
-                </View>}
+                renderItem={({item}) => <View key={currentIndex} style={[localStyle.itemContainer, {width}]}>{item}</View>}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled

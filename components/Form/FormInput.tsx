@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from "react-native";
 import {globalStyles, variables} from "../../shared/globalStyles";
-import TextInputC from "./TextInputC";
+import TextInput from "./TextInput";
 import NumberInput from "./NumberInput";
 import DateTimeInput from "./DateTimeInput";
 import BooleanInput from "./BooleanInput";
@@ -22,10 +22,10 @@ export default function FormInput({label, type, value, placeholder, onChange, la
 
     switch (type) {
         case "text":
-            component = <TextInputC value={value} onChange={onChange} placeholder={placeholder} />
+            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} />
             break
         case "textarea":
-            component = <TextInputC value={value} onChange={onChange} placeholder={placeholder} multiline={true} />
+            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} multiline={true} />
             break
         case "number":
             component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} />
