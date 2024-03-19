@@ -1,6 +1,6 @@
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {getRGBGradientColors} from "../../shared/libs/color";
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import {ActivityType} from "../../shared/types/ActivityType";
 import {router} from "expo-router";
@@ -10,16 +10,18 @@ import { Activity } from "../../shared/classes/Activity";
 import ActivityGradient from "./ActivityGradient";
 import {SessionType} from "../../shared/types/SessionType";
 import {SessionCard} from "../Session/SessionCard";
+import TextLoader from "../TextLoader";
 
 type ActivityOverviewType = {
     activity: ActivityType,
     onNewPress?: () => void,
     buttonTitle?: string,
     sessions?: SessionType[],
-    onSessionPress?: (session: SessionType) => void
+    onSessionPress?: (session: SessionType) => void,
+    sessionsLoading?: boolean
 }
 
-export default function ActivityOverview({ activity, onNewPress, onSessionPress, buttonTitle, sessions }: ActivityOverviewType) {
+export default function ActivityOverview({ activity, onNewPress, onSessionPress, buttonTitle, sessions, sessionsLoading }: ActivityOverviewType) {
 
     buttonTitle = buttonTitle || "Consulter"
 
@@ -48,8 +50,7 @@ export default function ActivityOverview({ activity, onNewPress, onSessionPress,
                             />}
                         />
                     </>
-                )
-                : null}
+                ) : sessionsLoading ? <TextLoader label="Chargement des sessions..." /> : null}
 
                 {onNewPress ? <View style={globalStyles.mv2Container}>
                     <Button
