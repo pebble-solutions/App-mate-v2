@@ -236,6 +236,26 @@ export const globalStyles = StyleSheet.create({
         marginBottom: variables.contentMargin[4]
     },
 
+    myContainer: {
+        marginBottom: variables.contentMargin[1],
+        marginTop: variables.contentMargin[1]
+    },
+
+    my2Container: {
+        marginBottom: variables.contentMargin[2],
+        marginTop: variables.contentMargin[2]
+    },
+
+    my3Container: {
+        marginBottom: variables.contentMargin[3],
+        marginTop: variables.contentMargin[3]
+    },
+
+    my4Container: {
+        marginBottom: variables.contentMargin[4],
+        marginTop: variables.contentMargin[4]
+    },
+
     sContainer: {
         flex: 1,
     },

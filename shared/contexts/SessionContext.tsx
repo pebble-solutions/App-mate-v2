@@ -1,4 +1,4 @@
-import React, { createContext, PropsWithChildren, useContext, useState } from "react";
+import React, {createContext, PropsWithChildren, useContext, useEffect, useState} from "react";
 import { SessionType } from "../types/SessionType";
 import { Session } from "../classes/Session";
 import {useRequestsContext} from "./RequestsContext";
@@ -13,6 +13,8 @@ export type SessionContextType = {
     updateSession: (session: Session) => void
     fetchSessionsFromAPI: (params?: ReadParamsType) => Promise<void>
     getSessionsFromActivity: (activityId: string) => SessionType[]
+    pending: boolean
+    loading: boolean
 }
 
 const SessionContext = createContext<SessionContextType | null>(null)
@@ -20,6 +22,8 @@ const SessionContext = createContext<SessionContextType | null>(null)
 const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [sessions, setSessions] = useState<SessionType[]>([])
     const {requestsController, pushRequest} = useRequestsContext()
+    const [pending, setPending] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const updateSessionsState = (sessions: SessionType[]) => {
         setSessions((prev) => {
@@ -43,7 +47,6 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     const addSession = (session: Session) => {
-        console.log("add to queue", session.json())
         pushRequest(postRequest("https://api.pebble.solutions/v5/metric/", session.json()))
         updateSessionsState([session])
     }
@@ -62,9 +65,17 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         const request = requestsController.addRequest(
             getRequest("https://api.pebble.solutions/v5/metric/", params)
         )
-        await request.send()
-        const data: SessionType[] = await request.content()
-        updateSessionsState(data)
+        setPending(true)
+        try {
+            await request.send()
+            const data: SessionType[] = await request.content()
+            updateSessionsState(data)
+        } catch (e)  {
+            throw e
+        } finally {
+            setPending(false)
+        }
+
     }
 
     const getSessionById = (id: string) => {
@@ -75,6 +86,14 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         return sessions.filter(e => e.type_id === activityId && e.type === "activity")
     }
 
+    // Load active sessions for the current user
+    useEffect(() => {
+        setLoading(true)
+        fetchSessionsFromAPI({
+            is_active: true
+        }).finally(() => setLoading(false))
+    }, []);
+
     return (
         <SessionContext.Provider value={{
             sessions,
@@ -83,7 +102,9 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             getSessionById,
             updateSession,
             fetchSessionsFromAPI,
-            getSessionsFromActivity
+            getSessionsFromActivity,
+            pending,
+            loading
         }}>
             {children}
         </SessionContext.Provider>
