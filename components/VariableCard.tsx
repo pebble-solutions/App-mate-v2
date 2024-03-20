@@ -5,6 +5,8 @@ import { VariableType } from "../shared/types/VariableType";
 import { useActivityContext } from "../shared/contexts/ActivityContext";
 import { ActivityType } from "../shared/types/ActivityType";
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useState } from "react";
+
 
 type VariableCardOptions = {
     label: string,
@@ -15,8 +17,7 @@ type VariableCardOptions = {
     isMandatory?: boolean,
     activityId: string,
     variableId: string,
-    onActionStart?: () => void;
-    onActionEnd?: () => void;
+    onLoaderChange?: (newVal: boolean) => void
 
 }
 
@@ -29,29 +30,41 @@ export default function VariableCard({
     isMandatory,
     activityId,
     variableId,
-    onActionStart,
-    onActionEnd }: VariableCardOptions) {
+    onLoaderChange,
+}: VariableCardOptions) {
 
     const { linkVariableToActivity, removeVariableFromActivity, toggleMandatory } = useActivityContext();
+    const [loaderStatus, setLoaderStatus] = useState(false)
 
     const addVariableToActivity = async (activityId: string, variableId: string) => {
-        if (onActionStart) onActionStart();
+        loaderStart();
         await linkVariableToActivity(activityId, variableId);
-        if (onActionEnd) onActionEnd();
+        loaderEnd();
     }
 
     const removeVariable = async (activityId: string, variableId: string) => {
-        if (onActionStart) onActionStart();
+        loaderStart();
         await removeVariableFromActivity(activityId, variableId);
-        if (onActionEnd) onActionEnd();
+        loaderEnd();
     }
 
     const toggle_Mandatory = async (activityId: string, variableId: string) => {
-        if (onActionStart) onActionStart();
+        loaderStart();
         await toggleMandatory(activityId, variableId, !mandatory);
-
-        if (onActionEnd) onActionEnd();
+        loaderEnd();
     }
+
+    const loaderStart = () => {  
+        setLoaderStatus(true)  
+    }  
+    
+    const loaderEnd = () => {  
+        setLoaderStatus(false)  
+    }  
+
+    useEffect(() => {  
+        if (typeof onLoaderChange !== "undefined") onLoaderChange(loaderStatus)  
+    }, [loaderStatus]) 
 
     return (
         <View style={[globalStyles.VariableCardContent]}>
