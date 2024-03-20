@@ -6,21 +6,26 @@ import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/l
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
 import {router} from "expo-router";
 import Title from "../../../components/Title";
+import TitleDateSession from "../../../components/Session/Title";
 import { AntDesign } from '@expo/vector-icons';
 import GradientHeader from "../../../components/Activity/GradientHeader";
 import {SessionActionsBar} from "../../../components/Session/SessionActionsBar";
 import {StopWatch} from "../../../components/Session/StopWatch";
 import {SequenceItemType, SequenceType} from "../../../shared/types/SequenceType";
-import {SequenceList} from "../../../components/Session/SequenceList";
+import SequenceList from "../../../components/Session/SequenceList";
 import {SessionType} from "../../../shared/types/SessionType";
 import {ActivityType} from "../../../shared/types/ActivityType";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
+import {Session} from "../../../shared/classes/Session";
+
+
 
 export default function ClockScreen() {
 
     const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
-    const { removeSession } = useSessionContext()
+    const { removeSession, updateSession } = useSessionContext()
     const [ exitStatus, setExitStatus ] = useState(false)
+
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
@@ -41,7 +46,7 @@ export default function ClockScreen() {
         }
     }
 
-    const [ currentSession, setCurrentSession ] = useState<SessionType | null>(session || null)
+    const [ currentSession, setCurrentSession ] = useState<Session | null>(session || null)
     const [ currentActivity, setCurrentActivity ] = useState<ActivityType | null>(activity || null)
 
     const [started, setStarted] = useState(false)
@@ -81,6 +86,7 @@ export default function ClockScreen() {
         setSequence((sequenceVal) => {
             const sequenceItem: SequenceItemType = [new Date(), null]
             const index = currentSession.raw_datas.addOne(sequenceItem)
+
             setCurrentItemIndex(index)
             sequenceVal.push(sequenceItem)
             return [...sequenceVal]
@@ -95,6 +101,7 @@ export default function ClockScreen() {
                 lastItem = [lastItem[0], new Date()]
                 if (currentItemIndex !== null) {
                     currentSession.raw_datas.updateOne(currentItemIndex, lastItem)
+
                     setCurrentItemIndex(null)
                 }
                 sequenceVal.push(lastItem)
@@ -124,6 +131,7 @@ export default function ClockScreen() {
 
                 <View style={globalStyles.body}>
                     <View style={[globalStyles.centeredContainer, globalStyles.mv4Container]}>
+                        <TitleDateSession />
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la session</Text>
                         <StopWatch
                             style={[globalStyles.textLight, globalStyles.textCenter]}
@@ -132,7 +140,7 @@ export default function ClockScreen() {
                         />
                     </View>
 
-                    <SequenceList sequence={sequence} />
+                    <SequenceList sequence={sequence} editable={!started} setSequence={setSequence}/>
 
                 </View>
 

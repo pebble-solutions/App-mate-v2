@@ -1,20 +1,22 @@
-import {StyleSheet, Text} from "react-native";
-import {variables} from "../shared/globalStyles";
+import React from 'react';
+import { Text, StyleSheet } from 'react-native';
+import { variables } from '../shared/globalStyles';
 
 type TitleOptions = {
-    title: string,
-    size?: "sm" | "md" | "lg" | "xl",
-    style?: any[]
-}
+    title: string;
+    size?: "sm" | "md" | "lg" | "xl";
+    style?: any[];
+    color?: string;
+};
 
-export default function Title({title, size, style}: TitleOptions) {
-
-    size = size || "md"
-    style = style || []
+export default function Title({ title, size, style, color }: TitleOptions) {
+    size = size || "md";
+    style = style || [];
+    color = color || "black";
 
     return (
-        <Text style={[localStyle.title, localStyle[size], ...style]}>{title}</Text>
-    )
+        <Text style={[localStyle.title, localStyle[size], { color }, ...style]}>{title}</Text>
+    );
 }
 
 const localStyle = StyleSheet.create({
@@ -37,4 +39,4 @@ const localStyle = StyleSheet.create({
     xl: {
         fontSize: variables.fontSize[6]
     }
-})
+});

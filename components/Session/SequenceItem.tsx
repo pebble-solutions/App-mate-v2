@@ -2,12 +2,14 @@ import {SequenceItemType} from "../../shared/types/SequenceType";
 import {StyleSheet, Text, View} from "react-native";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {diffDateToTime} from "../../shared/libs/date";
+import { EvilIcons } from "@expo/vector-icons";
 
 type SequenceItemOptions = {
-    item: SequenceItemType
+    item: SequenceItemType;
+    editable?: boolean;
 }
 
-export function SequenceItem({item}: SequenceItemOptions) {
+export function SequenceItem({item, editable}: SequenceItemOptions) {
     return (
         <View style={[localStyle.container]}>
             <View style={localStyle.box}>
@@ -23,6 +25,10 @@ export function SequenceItem({item}: SequenceItemOptions) {
                     <View style={localStyle.box}>
                         <TimeBox label={"Fin"} date={item[1]} />
                     </View>
+
+                     {editable && (
+                        <EvilIcons name="pencil" size={24} color="white" />
+                    )}
                 </>
             ) : (
                 <>
