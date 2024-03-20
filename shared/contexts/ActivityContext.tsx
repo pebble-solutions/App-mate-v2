@@ -6,7 +6,7 @@ import { Activity } from "../classes/Activity";
 type ActivityContextType = {
     activities: ActivityType[]
     addActivity: (activity: ActivityType) => void
-    removeActivity: (id: string) => void
+    removeActivity: (id: string) => Promise<void>
     getActivityById: (id: string) => ActivityType | undefined
     editActivity: (id: string, updatedActivity: ActivityType) => void
     linkVariableToActivity: (activityId: string, variableId: string) => void

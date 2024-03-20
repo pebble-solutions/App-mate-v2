@@ -41,13 +41,6 @@ export default function ActivityScreen() {
     const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#262729"];
 
     const handleDeleteActivity = async () => {
-        setIsLoading(true);
-        await removeActivity(activity._id);
-        router.back();
-        setIsLoading(false);
-    };
-
-    const showConfirmDeleteDialog = () => {
         Alert.alert(
             "Confirmer la suppression",
             "Êtes-vous sûr de vouloir supprimer cette activité ?",
@@ -58,14 +51,20 @@ export default function ActivityScreen() {
                 },
                 {
                     text: "Oui",
-                    onPress: handleDeleteActivity,
+                    onPress: async () => {
+                        setIsLoading(true);
+                        await removeActivity(activity._id);
+                        router.back();
+                        setIsLoading(false);
+                    },
                 },
             ],
             { cancelable: false }
         );
     };
 
-    const updateActivity = async () => {
+
+    const handleUpdateActivity = async () => {
         setIsLoading(true);
         const updatedActivity = {
             _id: activity._id,
@@ -79,11 +78,11 @@ export default function ActivityScreen() {
 
         try {
             await editActivity(activity._id, updatedActivity);
+            setSettingsVisible(false);
         } catch (error) {
-            console.error("Erreur lors de la mise à jour de l'activité:", error);
+            Alert.alert("Erreur lors de la mise à jour de l'activité:", (error as Error).message);
         } finally {
             setIsLoading(false);
-            setSettingsVisible(false);
         }
     }
 
@@ -124,12 +123,7 @@ export default function ActivityScreen() {
                             </View>
 
                             <TouchableOpacity
-
-                                onPress={() => {
-                                    setIsLoading(true);
-                                    updateActivity();
-                                    setSettingsVisible(false);
-                                }}
+                                onPress={() => { handleUpdateActivity }}
                             >
                                 <View style={globalStyles.buttonContainer}>
                                     <Text style={globalStyles.buttonText}>Valider les changements </Text>
@@ -138,7 +132,7 @@ export default function ActivityScreen() {
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={showConfirmDeleteDialog}
+                                onPress={handleDeleteActivity}
                             >
                                 <View style={globalStyles.buttonContainer}>
                                     <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
