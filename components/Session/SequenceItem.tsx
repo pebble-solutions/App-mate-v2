@@ -10,18 +10,17 @@ import FormInput from "../Form/FormInput";
 type SequenceItemOptions = {
     item: SequenceItemType
     editMode?: boolean
+    onChange?: (newVal: Date[]) => void
 }
 
-export function SequenceItem({item}: SequenceItemOptions) {
+export function SequenceItem({item, onChange}: SequenceItemOptions) {
     const [editMode, setEditMode] = React.useState(false);
     const [updatedDateStart, setUpdatedDateStart] = React.useState<Date>(item[0]);
     const [updatedDateEnd, setUpdatedDateEnd] = React.useState<Date>(item[1] || new Date());
     
     // à faire !! fonction onChange pour mettre à jour les dates dans le composant parent à la validation
-    // useEffect(() => {
-    //     handleChangeValue(updatedDateStart)
-    // }
-    // , [updatedDateStart])
+    
+
     
     
     const handlePressEdit = () => {
@@ -33,12 +32,14 @@ export function SequenceItem({item}: SequenceItemOptions) {
     const validateChange = () => {
         setEditMode(() => false)
     }
-
+    
     const handleChangeValueStart = (newVal: Date) => {
         setUpdatedDateStart(newVal)
+
     }
     const handleChangeValueEnd = (newVal: Date) => {
         setUpdatedDateEnd(newVal)
+
     }
 
     return (

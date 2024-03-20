@@ -25,7 +25,7 @@ const localStyle = StyleSheet.create({
         borderWidth: 1,
         borderColor: variables.color.lightGrey,
         marginVertical: variables.contentMargin[3],
-        borderRadius: 10,
+        borderRadius: variables.borderRadius[1],
     }
 })
     

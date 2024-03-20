@@ -108,7 +108,6 @@ export default function ValidateScreen() {
 
         items.push((
             <View style={globalStyles.section}>
-                <Text style={globalStyles.textLight}>{items.length}</Text> 
                 <FormInput
                     type={type}
                     value={value}
@@ -148,9 +147,9 @@ export default function ValidateScreen() {
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
             {Platform.OS === 'android' && 
                     <TouchableOpacity
-                        onPress={() => {
-                            router.back();
-                        }}
+                    onPress={() => {
+                        router.back();
+                    }}
                     >
                         <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
                     </TouchableOpacity>}   
