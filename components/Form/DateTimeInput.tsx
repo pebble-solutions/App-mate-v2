@@ -5,7 +5,6 @@ import {globalStyles} from '../../shared/globalStyles';
 import {DateTimeInputOptions} from "./types/InputOptions";
 import { dateToLiteral } from '../../shared/libs/date';
 import { timeToLiteral } from '../../shared/libs/date';
-import { datetimeToLiteral } from '../../shared/libs/date';
 
 const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOptions) => {
 
@@ -23,6 +22,7 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
     useEffect(() => {
         if (onChange) onChange(currentValue || null)
     }, [currentValue]);
+
     useEffect(() => {
         handleTimeChange
     }

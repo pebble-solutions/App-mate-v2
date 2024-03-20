@@ -1,4 +1,4 @@
-import {Alert, SafeAreaView, View, Text, StyleSheet} from "react-native";
+import {Alert, SafeAreaView, View, Text, StyleSheet, Platform, TouchableOpacity} from "react-native";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
@@ -15,6 +15,9 @@ import Title from "../../../components/Title";
 import { StopWatch } from "../../../components/Session/StopWatch";
 import { SessionHeader } from "../../../components/Session/SessionHeader";
 import { dateToLiteral } from "../../../shared/libs/date";
+import { Ionicons } from '@expo/vector-icons';
+
+
 
 export default function ValidateScreen() {
     const sessionContext = useSessionContext();
@@ -143,7 +146,16 @@ export default function ValidateScreen() {
     
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
+            {Platform.OS === 'android' && 
+                    <TouchableOpacity
+                        onPress={() => {
+                            router.back();
+                        }}
+                    >
+                        <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
+                    </TouchableOpacity>}   
             <SessionHeader label={currentActivity.label} description={currentActivity.description} date={dateToLiteral(currentSession.start)} />    
+            
             <OnboardingController
                 activeColor={currentActivity.color}
                 items={items}

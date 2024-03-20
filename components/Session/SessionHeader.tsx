@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { globalStyles } from '../../shared/globalStyles';
+import { globalStyles, variables } from '../../shared/globalStyles';
 
 
 export function SessionHeader({label, description, date}: {label: string, description?: string, date: string}) {
@@ -22,6 +22,10 @@ const localStyle = StyleSheet.create({
     sessionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        borderWidth: 1,
+        borderColor: variables.color.lightGrey,
+        marginVertical: variables.contentMargin[3],
+        borderRadius: 10,
     }
 })
     

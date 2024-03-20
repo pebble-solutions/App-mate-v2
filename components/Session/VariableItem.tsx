@@ -16,11 +16,11 @@ type VariableItemOptions = {
     id:string
 }
 
-export default function VariableItem({variable, theme, onChange, id}: VariableItemOptions) {
+export default function VariableItem({variable, theme, onChange}: VariableItemOptions) {
     const [editMode, setEditMode] = React.useState(false)
     
-    const labelStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textGrey
-    const valueStyle = variable.value ? (theme === "dark" ? globalStyles.textLight : {}) : labelStyle
+    const labelStyle = theme === "dark" ? globalStyles.textLight : globalStyles.textGrey
+    const valueStyle = variable.value ? (theme === "dark" ? globalStyles.textLightGrey : {}) : globalStyles.textLight
     
     const valueToString = (value?: string | Date | number | boolean | null, type?: string | null) => {
         let str: string;
@@ -43,9 +43,9 @@ export default function VariableItem({variable, theme, onChange, id}: VariableIt
     const [updatedValue, setUpdatedValue] = React.useState<string | Date | boolean | number | null>(variable.value || null);
     const [value, setValue] = React.useState(valueToString(variable.value, variable.type));
     
-    useEffect(() => {
-        setValue(() => valueToString(variable.value, variable.type))
-    }, [variable.value])
+    // useEffect(() => {
+    //     setValue(() => valueToString(variable.value, variable.type))
+    // }, [variable.value])
 
     const handlePressEdit = () => { 
         setEditMode((prev) => !prev)
