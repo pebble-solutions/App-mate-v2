@@ -131,11 +131,11 @@ export default function SummaryScreen() {
                             renderItem={({ item , index}) => 
                                 <View>
                                     <View style={[ localStyle.container]}>
-                                        <TouchableOpacity key={index-1} onPress={previous(index)}>
+                                        <TouchableOpacity key={index-1} onPress={() => previous(index)}>
                                             <AntDesign name="left" size={24} color={'white'} />
                                         </TouchableOpacity>
                                                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>{index + 1} / {sessions.length}</Text>
-                                        <TouchableOpacity key={index+1} onPress={following(index)}>
+                                        <TouchableOpacity key={index+1} onPress={() =>following(index)}>
                                             <AntDesign name="right" size={24} color={'white'} />    
                                         </TouchableOpacity>
                                     </View>

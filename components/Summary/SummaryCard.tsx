@@ -20,20 +20,28 @@ type SummaryCardOptions = {
     currentSequence?: SequenceType | null,
     currentSequenceIndex?: number | null,
     sessionIndex: number,
-    sequence: SequenceType,
     
 }
 
 export function SummaryCard({session, sessionIndex}: SummaryCardOptions) {
-    const [sequences, setSequences] = useState<[index: number, start:Date, end:Date |null]>([0, new Date(), new Date()])
+    const [sequences, setSequences] = useState<SequenceType | null>(null)
     
-    const [currentSequence, setCurrentSequence] = useState<SequenceType>(session.raw_datas.getSequence())
-    
+    useEffect(() => {
+        if (session) {
+            let timeSession = session.raw_datas.getSequence()
+            setSequences(timeSession)
+            console.log(timeSession, 'timeSession')
+            console.log(session.raw_datas.records, 'records')
+            console.log(sequences, 'sequences')
+        }
+    }, [session]);
+
+
     const renderItemValue = (item: RawVariableType) => {
         if (item.value instanceof Date) {
             return  <View style={localStyle.cardContent}>
                         <Text style={globalStyles.textLight}>{item.label}: </Text>
-                        <Text style={globalStyles.textLight}>{item.value.toLocaleString()}</Text>;
+                        {/* <Text style={globalStyles.textLight}>{item.value.toLocaleString()}</Text>; */}
                     </View>
         }
         else return  <View style={localStyle.cardContent}>
@@ -51,34 +59,37 @@ export function SummaryCard({session, sessionIndex}: SummaryCardOptions) {
                     <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>
                         {format(session.start, ' d MMM yyy', {locale: fr})}
                     </Text>
+                    <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
+                        {session._id}
+                    </Text>
+                    <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
+                        {session.comment}
+                    </Text>
+                    <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
+                        {session.label}
+                    </Text>
+            
 
                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Séquences</Text>
                 <Text style={[globalStyles.textLight,globalStyles.textCenter]}>Nombre de séquences: {session.raw_datas.records.length}</Text>
-                <Text>raw_datas record{JSON.stringify(session.raw_datas.records)}</Text>
                 
-                {/* {session.raw_datas.records.map((sequence) => (
-                    <View key={sequence.index} style={[localStyle.cardContent]}>
-                        <Text style={globalStyles.textLight}>séquence  </Text>
-                        <Text style={globalStyles.textLight}>Nombre de données: {JSON.stringify(sequence)}</Text>
-                        <Text style={globalStyles.textLight}>Début: {sequence.start? format(sequence.start, ' d MMM yyy', {locale: fr}): 'en cours'}</Text> 
-                        <Text style={globalStyles.textLight}>Fin: {sequence.end ? format(sequence.end, ' d MMM yyy', {locale: fr}) : "en cours"}</Text> 
-                    </View>
-                ))} */}
+                    {sequences && (
+                        <View >
+                            <Text style={globalStyles.textLight}>sequence {sequences}</Text>
+                            {/* <SequenceList sequence={sequences} /> */}
+                        </View>
+                    )}
                 
             </View>
             <View style={[localStyle.card]}>
-                <View>
-                    {session.raw_datas && (
-                        <SequenceList sequence={currentSequence} />
-                    )}
                 <Text style={[globalStyles.sessionSubTitle, globalStyles.textCenter, globalStyles.textLight]}>Informations et variables</Text>
                 {session.raw_variables.length > 0 && (
                     <View >
                         <Text style={[globalStyles.textLight,globalStyles.textCenter]}>Nombre de variables: {session.raw_variables.length}</Text>
                         {session.raw_variables.map((variable, index) => (
-                            <>
-                            {renderItemValue(variable as RawVariableType)}
-                            </>
+                            <View key={index}>
+                            {renderItemValue(variable as RawVariableType, )}
+                            </View>
                         ))}
                     </View>
                 )}
@@ -87,7 +98,6 @@ export function SummaryCard({session, sessionIndex}: SummaryCardOptions) {
                         <Text style={[globalStyles.textLight]}>Pas de variable</Text>
                     </View>
                 )}
-                </View>
             </View>
         </View>
 
