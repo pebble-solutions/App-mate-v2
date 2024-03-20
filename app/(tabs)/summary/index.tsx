@@ -53,7 +53,6 @@ export default function RecapScreen() {
                 <FormInput label="date" placeholder="forminput" type='date'/>
                 <FormInput label="time" placeholder="forminput" type='time'/>
                 <FormInput label="datetime" placeholder="forminput" type='datetime'/>
-                <BooleanInput  placeholder="boolean" />
                 <FormInput label="textarea" placeholder="forminput" type="textarea" />
                 <FormInput label="number" placeholder="forminput" type="number" />
                 <FormInput label="float" placeholder="forminput" type="float" />
