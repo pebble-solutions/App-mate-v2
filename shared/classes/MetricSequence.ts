@@ -102,6 +102,35 @@ export class MetricSequence {
     }
 
     /**
+     * Update multiple records with new sequence item values (replace multiple values)
+     *
+     * @param indexes         List of indexes of records to update
+     * @param sequenceItems   List of new sequence items
+     */
+    updateMany(indexes: number[], sequenceItems: SequenceItemType[]) {
+        if (indexes.length !== sequenceItems.length) {
+            console.log("Indexes : ", indexes);
+            console.log("SequenceItems : ", sequenceItems);
+            throw new Error("Length mismatch between indexes and sequence items");
+        }
+
+        indexes.forEach((index, i) => {
+            this.updateOne(index, sequenceItems[i]);
+        });
+    }
+
+     /**
+      * Update all records with new sequence item values (replace all values)
+      *
+      * @param sequenceItems   List of new sequence items
+      */
+     updateAll(sequenceItems: SequenceItemType[]) {
+         const indexesToUpdate: number[] = this.records.map(record => record.index);
+
+         this.updateMany(indexesToUpdate, sequenceItems);
+     }
+
+    /**
      * Convert all records onto session sequence.
      */
     getSequence(): SequenceType {

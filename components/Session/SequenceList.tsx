@@ -9,7 +9,7 @@ type SequenceListProps = {
     sequence: SequenceType[];
     editable?: boolean;
     style?: object[];
-    setSequence? : (sequence: SequenceType) => void;
+    setSequence? : (sequence: SequenceType[]) => void;
 };
 
 const SequenceList: React.FC<SequenceListProps> = ({ sequence, editable, style, setSequence }) => {

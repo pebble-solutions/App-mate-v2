@@ -110,6 +110,11 @@ export default function ClockScreen() {
         })
     }
 
+   const edit = (editedItem: SequenceItemType[]) => {
+       currentSession.raw_datas.updateAll(editedItem);
+       setSequence(editedItem);
+   };
+
     return (
         <View style={globalStyles.mainContainer}>
             <GradientHeader activity={currentActivity}>
@@ -140,7 +145,7 @@ export default function ClockScreen() {
                         />
                     </View>
 
-                    <SequenceList sequence={sequence} editable={!started} setSequence={setSequence}/>
+                    <SequenceList sequence={sequence} editable={!started} setSequence={edit} />
 
                 </View>
 
