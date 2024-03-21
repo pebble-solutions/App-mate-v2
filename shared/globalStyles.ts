@@ -13,9 +13,23 @@ export const variables = {
         white: "#ffffff",
         danger: "#cb3c3c",
         success: "#5aab42",
-        active: "#0184d5"
+        active: "#0184d5",
+        alphaDarkLighter: "rgba(0, 0, 0, 0.25)",
+        alphaDark: "rgba(0, 0, 0, 0.5)",
+        alphaDarkDarker: "rgba(0, 0, 0, 0.75)",
+    },
+    shadow: {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     }
-}
+};
+
 
 export const globalStyles = StyleSheet.create({
     mainContainer: {
@@ -408,13 +422,6 @@ export const globalStyles = StyleSheet.create({
         marginTop: 20,
     },
 
-    iconContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        marginBottom: 36,
-    },
-
     colorButton: {
         width: "14%",
         aspectRatio: 1,
@@ -484,28 +491,6 @@ export const globalStyles = StyleSheet.create({
 
     textLightGrey: {
         color: variables.color.lightGrey
-    },
-
-    modalBackground: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Fond semi-transparent
-    },
-    modalContainer: {
-        backgroundColor: '#11212D',
-        width: '80%',
-        borderRadius: 20,
-        padding: 20,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
     },
 
 });

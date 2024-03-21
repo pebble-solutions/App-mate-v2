@@ -19,7 +19,7 @@ export default function CreateActivityModal() {
         color: '',
     });
     const [selectedColor, setSelectedColor] = useState("#262729");
-    const colors = getRGBGradientColors(selectedColor); // Utilisez selectedColor ici
+    const colors = getRGBGradientColors(selectedColor);
 
     const colorOptions = [
         "#262729",
@@ -57,7 +57,7 @@ export default function CreateActivityModal() {
 
     return (
         <LinearGradient
-            colors={colors} // Utilisez colors ici
+            colors={colors}
             start={{ x: 0, y: 1 }}
             end={{ x: 1, y: 0 }}
             style={globalStyles.body}
@@ -110,7 +110,7 @@ export default function CreateActivityModal() {
                             />
                         ))}
                     </View>
-                    {/* Deuxième ligne de boutons de couleur */}
+                
                     <View style={globalStyles.colorButtonsContainer}>
                         {secondRowColors.map((color, index) => (
                             <TouchableOpacity

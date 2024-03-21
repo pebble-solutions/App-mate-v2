@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity, Alert, Modal } from "react-native"; // Importez Alert
+import { Text, View, ScrollView, TouchableOpacity, Alert, Modal, StyleSheet } from "react-native"; // Importez Alert
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { getRGBGradientColors } from "../../../shared/libs/color";
-import { globalStyles } from "../../../shared/globalStyles";
-import { useActivityContext } from "../../../shared/contexts/ActivityContext";
-import { VariableType } from "../../../shared/types/VariableType";
-import { useVariableContext } from "../../../shared/contexts/VariableContext";
-import VariableCard from "../../../components/VariableCard";
+import { getRGBGradientColors } from "../../../../shared/libs/color";
+import { globalStyles, variables } from "../../../../shared/globalStyles";
+import { useActivityContext } from "../../../../shared/contexts/ActivityContext";
+import { VariableType } from "../../../../shared/types/VariableType";
+import { useVariableContext } from "../../../../shared/contexts/VariableContext";
+import VariableCard from "../../../../components/VariableCard";
 import { format } from 'date-fns';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
-import SpinnerLoader from "../../../components/SpinnerLoader";
+import SpinnerLoader from "../../../../components/ScreenCoverLoader";
 
 export default function ActivityScreen() {
     const { getActivityById, removeActivity, editActivity } = useActivityContext();
@@ -102,8 +102,8 @@ export default function ActivityScreen() {
                     transparent={true}
                     visible={isSettingsVisible}
                     onRequestClose={() => setSettingsVisible(false)}>
-                    <View style={globalStyles.modalBackground}>
-                        <View style={globalStyles.modalContainer}>
+                    <View style={styles.modalBackground}>
+                        <View style={styles.modalContainer}>
                             <View>
                                 <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Réglages de l'activité :</Text>
                                 <TextInput
@@ -149,7 +149,7 @@ export default function ActivityScreen() {
                 <View style={globalStyles.headerIcons}>
                     <TouchableOpacity
                         onPress={() => {
-                            setSettingsVisible(!isSettingsVisible);
+                            router.push("/activities/"+activity._id+"/edit")
                         }}
                     >
                         <Ionicons name="settings-outline" size={28} color="white" style={{ position: 'relative', left: 5, top: 19 }} />
@@ -184,8 +184,7 @@ export default function ActivityScreen() {
                             isMandatory={true}
                             activityId={activity._id}
                             variableId={variable._id}
-                            onActionStart={() => setIsLoading(true)}
-                            onActionEnd={() => setIsLoading(false)}
+                            onLoaderChange={(newVal) => setIsLoading(newVal)}  
                         />
                     ))}
                 </View>
@@ -199,12 +198,28 @@ export default function ActivityScreen() {
                             displayAddIcon={true}
                             activityId={activity._id}
                             variableId={variable._id}
-                            onActionStart={() => setIsLoading(true)}
-                            onActionEnd={() => setIsLoading(false)}
+                            onLoaderChange={(newVal) => setIsLoading(newVal)}  
                         />
                     ))}
                 </View>
             </ScrollView>
         </LinearGradient>
     )
+
 }
+const styles = StyleSheet.create({
+    modalBackground: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: variables.color.alphaDark,
+    },
+    modalContainer: {
+        backgroundColor: variables.color.dark,
+        width: '80%',
+        borderRadius: variables.borderRadius[2],
+        padding: variables.contentPadding[4],
+        alignItems: 'center',
+        ...variables.shadow,
+    },
+});

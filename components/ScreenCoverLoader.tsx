@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { variables } from '../shared/globalStyles';
 
 const SpinnerLoader = () => (
     <View style={styles.loadingContainer}>
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: variables.color.alphaDark,
         zIndex: 1000,
     },
 });
