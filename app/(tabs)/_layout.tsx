@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {useSessionContext} from "../../shared/contexts/SessionContext";
 import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
 import {openSession} from "../../shared/libs/session";
+import {useActivityContext} from "../../shared/contexts/ActivityContext";
 
 
 export default function TabsLayout() {
@@ -12,16 +13,16 @@ export default function TabsLayout() {
     const {sessions, getStartedSessions } = sessionContext
     const statusContext = useSessionStatusContext()
     const { status } = statusContext
+    const {loading} = useActivityContext()
 
     useEffect(() => {
-        if (!status) {
+        if (!status && !loading) {
             const startedSessions = getStartedSessions()
             if (startedSessions.length) {
-                console.log(startedSessions[0]._id)
                 openSession(startedSessions[0]._id, sessionContext, statusContext)
             }
         }
-    }, [sessions]);
+    }, [sessions, loading]);
 
     return (
         <Tabs screenOptions={{

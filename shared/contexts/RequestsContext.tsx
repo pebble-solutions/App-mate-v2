@@ -36,7 +36,7 @@ const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError
 
     useEffect(() => {
         // Initialize requests queue at startup
-        const timer = setInterval(sendQueue, 10000)
+        const timer = setInterval(sendQueue, 5000)
         return () => {
             // Each time context is destroyed, queue is cleared
             clearTimeout(timer)

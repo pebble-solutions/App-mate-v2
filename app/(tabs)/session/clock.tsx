@@ -42,7 +42,6 @@ export default function ClockScreen() {
         if (!exitStatus) {
             const message = e instanceof Error ? e.message : "Erreur inconnue dans l'affichage de la vue pointage."
             Alert.alert(message)
-            console.log(message)
         }
     }
 
