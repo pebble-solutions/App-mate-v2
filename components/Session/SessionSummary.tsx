@@ -1,4 +1,4 @@
-import {globalStyles} from "../../shared/globalStyles";
+import {globalStyles, variables} from "../../shared/globalStyles";
 import Title from "../Title";
 import {SequenceList} from "./SequenceList";
 import VariablesList from "./VariablesList";
@@ -27,16 +27,23 @@ export default function SessionSummary({session, theme, onVariableChange, onSequ
 
     return (
         <>
-            <Title title={"Durée totale de la session"} style={[globalStyles.mtContainer, globalStyles.textLight, globalStyles.textCenter]} />
+            <Text style={styles.subTitle}>Durée de la session</Text>
             <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{secondsToTimeString(time)}</Text>
-            <Title title={"Séquence"} style={[globalStyles.mtContainer, globalStyles.textLight, globalStyles.textCenter]} />
+            <Text style={styles.subTitle}>Séquence</Text>
             <SequenceList
                 sequence={session.raw_datas.getSequence()}
                 onValueChange={handleSequenceChange}
             />
-
-            <Title title={"Informations fournies"} style={[globalStyles.mtContainer, globalStyles.textLight, globalStyles.textCenter]} />
+            <Text style={styles.subTitle}>Informations fournies</Text>
             <VariablesList variables={session.raw_variables} theme={theme} onValueChange={onVariableChange} />
         </>
     )
+}
+
+const styles = {
+    subTitle: {
+        color: variables.color.lightGrey,
+        fontSize: variables.fontSize[2],
+    }
+
 }
