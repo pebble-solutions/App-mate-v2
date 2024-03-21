@@ -46,6 +46,7 @@ export const globalStyles = StyleSheet.create({
         fontSize: variables.fontSize[5],
         marginVertical: 16
     },
+
     headerIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -53,8 +54,13 @@ export const globalStyles = StyleSheet.create({
 
     CategoryTitle: {
         fontFamily: 'Inter_700Bold',
-        fontSize: variables.fontSize[4],
-        marginVertical: 16
+        fontSize: variables.fontSize[2],
+        marginBottom: 10,
+        marginTop: 20,
+    },
+    
+    grayedOut: {
+        opacity: 0.5, // Vous pouvez ajuster cette valeur pour contrôler le niveau de gris
     },
 
     cardTitle: {
@@ -242,6 +248,26 @@ export const globalStyles = StyleSheet.create({
 
     mb4Container: {
         marginBottom: variables.contentMargin[4]
+    },
+
+    myContainer: {
+        marginBottom: variables.contentMargin[1],
+        marginTop: variables.contentMargin[1]
+    },
+
+    my2Container: {
+        marginBottom: variables.contentMargin[2],
+        marginTop: variables.contentMargin[2]
+    },
+
+    my3Container: {
+        marginBottom: variables.contentMargin[3],
+        marginTop: variables.contentMargin[3]
+    },
+
+    my4Container: {
+        marginBottom: variables.contentMargin[4],
+        marginTop: variables.contentMargin[4]
     },
 
     sContainer: {

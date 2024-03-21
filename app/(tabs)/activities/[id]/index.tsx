@@ -173,7 +173,7 @@ export default function ActivityScreen() {
             </View>
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
-                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
+                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight, globalStyles.textCenter]}>Variables liées à l'activité :</Text>
                     {activity.variables.map((variable: VariableType, index: number) => (
                         <VariableCard
                             key={index}
@@ -199,10 +199,14 @@ export default function ActivityScreen() {
                             activityId={activity._id}
                             variableId={variable._id}
                             onLoaderChange={(newVal) => setIsLoading(newVal)}  
+                            grayedOut={activity.variables.some((v) => v._id === variable._id)}
+                            isChecked
                         />
                     ))}
                 </View>
             </ScrollView>
+
+
         </LinearGradient>
     )
 

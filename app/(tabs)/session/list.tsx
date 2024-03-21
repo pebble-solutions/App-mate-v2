@@ -10,11 +10,12 @@ import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusCon
 import {router} from "expo-router";
 import FullscreenLoader from "../../../components/FullscreenLoader";
 import {ActivityType} from "../../../shared/types/ActivityType";
+import {SessionType} from "../../../shared/types/SessionType";
 
 export default function ListScreen() {
     const { activities, loading } = useActivityContext()
     const sessionContext = useSessionContext()
-    const { getSessionsFromActivity } = sessionContext
+    const { sessions } = sessionContext
     const statusContext = useSessionStatusContext()
     const { status } = statusContext
     const [activeActivities, setActiveActivities] = useState<ActivityType[]>([])
@@ -30,10 +31,14 @@ export default function ListScreen() {
 
     const width = Dimensions.get('window').width;
 
+    const activeSessionsFromActivity = (sessions: SessionType[], activityId: string) => {
+        return sessions.filter(e => e.type_id === activityId && e.type.toLowerCase() === "activity")
+    }
+
     // Action on new session button is pressed. If some session already exists on provided activity, the user will
     // choose between starting a new session or recovering the last one.
     const newSessionHandler = (activity: ActivityType) => {
-        const sessions = getSessionsFromActivity(activity._id)
+        const sessions = activeSessionsFromActivity(sessionContext.sessions, activity._id)
         if (sessions.length) {
             Alert.alert("Session en cours", "Il y a déjà une session en cours sur" +
                 " cette activitée.", [
@@ -70,7 +75,7 @@ export default function ListScreen() {
                     renderItem={({item}) => (
                         <ActivityOverview
                             activity={item}
-                            sessions={getSessionsFromActivity(item._id)}
+                            sessions={activeSessionsFromActivity(sessions, item._id)}
                             onNewPress={() => newSessionHandler(item)}
                             onSessionPress={(session) => {
                                 openSession(session._id, sessionContext, statusContext)
