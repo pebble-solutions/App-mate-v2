@@ -75,6 +75,20 @@ export class Session implements SessionType {
         this.raw_datas.updateOne(index, sequenceItem)
     }
 
+    /**
+     * Return true if the session is currently started
+     *
+     * Session is started when the last item of the sequence records has a start date and null end date
+     */
+    isStarted() {
+        if (this.raw_datas.records.length) {
+            const lastRecord = this.raw_datas.records[this.raw_datas.records.length-1]
+            return !lastRecord.end
+        }
+
+        return false
+    }
+
     json(): JsonSessionType {
         let raw_datas: RawDataType[] = []
         this.raw_datas.records.forEach(record => {

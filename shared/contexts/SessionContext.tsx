@@ -15,6 +15,7 @@ export type SessionContextType = {
     getSessionsFromActivity: (activityId: string) => Session[]
     pending: boolean
     loading: boolean
+    getStartedSessions: () => Session[]
 }
 
 const SessionContext = createContext<SessionContextType | null>(null)
@@ -86,6 +87,10 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         return sessions.filter(e => e.type_id === activityId && e.type === "activity")
     }
 
+    const getStartedSessions = () => {
+        return sessions.filter(e => e.isStarted())
+    }
+
     // Load active sessions for the current user
     useEffect(() => {
         setLoading(true)
@@ -104,7 +109,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             fetchSessionsFromAPI,
             getSessionsFromActivity,
             pending,
-            loading
+            loading,
+            getStartedSessions
         }}>
             {children}
         </SessionContext.Provider>
