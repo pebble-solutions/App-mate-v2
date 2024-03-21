@@ -233,23 +233,6 @@ export const globalStyles = StyleSheet.create({
     sContainer: {
         flex: 1,
     },
-    sessionItemContainer: {
-        paddingHorizontal: variables.contentPadding[4],
-        paddingVertical: variables.contentPadding[2],
-        borderBottomWidth: 1,
-        borderBottomColor: variables.color.grey,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-start",
-    },
-    sessionResumeContainer: {
-        borderTopColor: variables.color.grey,
-        borderTopWidth: 1,
-        borderBottomColor: variables.color.grey,
-        borderBottomWidth: 1,
-        backgroundColor: variables.color.black,
-    },
-
     
     contentContainer: {
         marginHorizontal: variables.contentMargin[2],

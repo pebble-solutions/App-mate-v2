@@ -19,9 +19,9 @@ type VariableItemOptions = {
 export default function VariableItem({variable, theme, onChange}: VariableItemOptions) {
     const [editMode, setEditMode] = React.useState(false)
     
-    const labelStyle = theme === "dark" ? globalStyles.textLight : globalStyles.textGrey
-    const valueStyle = variable.value ? (theme === "dark" ? globalStyles.textLightGrey : {}) : globalStyles.textLight
-    
+    const labelStyle = theme === "dark" ? globalStyles.textGrey : globalStyles.textGrey
+    const valueStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textDark
+
     const valueToString = (value?: string | Date | number | boolean | null, type?: string | null) => {
         let str: string;
         if (value instanceof Date) {
@@ -42,7 +42,7 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
     }
     const [updatedValue, setUpdatedValue] = React.useState<string | Date | boolean | number | null>(variable.value || null);
     const [value, setValue] = React.useState(valueToString(variable.value, variable.type));
-    
+
     // useEffect(() => {
     //     setValue(() => valueToString(variable.value, variable.type))
     // }, [variable.value])
@@ -60,21 +60,21 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
         setEditMode(() => false)
     }
     const cancelChange = () => {
+        setUpdatedValue(() => variable.value || null)
         setEditMode(() => false)
     }
 
     return (
         <>
             {!editMode ? (
-                <View style={[globalStyles.sessionItemContainer]}>
-                    <View style={[globalStyles.mhContainer]}>
+                <View style={localStyle.readBox}>
+                    <View style={{flex: 1}}>
                         <Text style={labelStyle}>{variable.label}</Text>
                         <Text style={valueStyle}>{value}</Text>
                     </View>
-                    <TouchableOpacity style={[globalStyles.mhContainer]} onPress={handlePressEdit}>
+                    <TouchableOpacity onPress={handlePressEdit}>
                         <Foundation name="pencil" size={16} color={'white'} />
                     </TouchableOpacity>
-                    
                 </View>
             ) : (
                 <View style={globalStyles.mvContainer}>
@@ -97,9 +97,11 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
     )
 }
 const localStyle = StyleSheet.create({
-    box: {
-        flex: 1,
-    },
-    
+    readBox: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flex: 1
+    }
 })
 
