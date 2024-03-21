@@ -4,6 +4,6 @@
 export class ActivityNotFoundError extends Error
 {
     constructor(activityId: string) {
-        super("Session with id "+activityId+" has not been found");
+        super("Activity with id "+activityId+" has not been found");
     }
 }
