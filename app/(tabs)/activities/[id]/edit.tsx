@@ -18,21 +18,19 @@ import { useLocalSearchParams } from "expo-router";
 import { Redirect } from "expo-router";
 
 export default function EditScreen() {
-    const { getActivityById, removeActivity, editActivity } = useActivityContext();
+    const { getActivityById, removeActivity, updateActivity } = useActivityContext();
     const { id } = useLocalSearchParams<{ id: string }>(); // Assurez-vous que cette ligne est toujours appelée avant tout autre hook
 
     const activity = id ? new Activity(getActivityById(id)) : null;
 
-    if (!activity) {
-        return <Redirect href="/activities" />
-    }
+    
 
     const handleValidate = (newActivity: Activity) => {
-        editActivity(activity._id, newActivity)
+        updateActivity(newActivity)
         router.back();
     };
 
-    const handleDeleteActivity = async () => {
+    const handleDeleteActivity = () => {
         if (activity) {
             Alert.alert(
                 "Confirmer la suppression",
@@ -44,9 +42,8 @@ export default function EditScreen() {
                     },
                     {
                         text: "Oui",
-                        onPress: async () => {
-                            await removeActivity(activity._id);
-                            router.back();
+                        onPress: () => {
+                             removeActivity(activity._id);
                         },
                     },
                 ],
@@ -54,6 +51,10 @@ export default function EditScreen() {
             );
         }
     };
+
+    if (!activity) {
+        return <Redirect href="/activities" />
+    }
 
     return (
         <LinearGradient

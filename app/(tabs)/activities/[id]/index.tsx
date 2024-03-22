@@ -13,9 +13,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
 import SpinnerLoader from "../../../../components/ScreenCoverLoader";
+import { Activity } from "../../../../shared/classes/Activity";
 
 export default function ActivityScreen() {
-    const { getActivityById, removeActivity, editActivity } = useActivityContext();
+    const { getActivityById, removeActivity, updateActivity } = useActivityContext();
     const { _id } = useLocalSearchParams<{ _id: string }>();
     const activity = _id ? getActivityById(_id) : null;
     const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +65,7 @@ export default function ActivityScreen() {
     };
 
 
-    const handleUpdateActivity = async () => {
+    const handleUpdateActivity = () => {
         setIsLoading(true);
         const updatedActivity = {
             _id: activity._id,
@@ -77,7 +78,7 @@ export default function ActivityScreen() {
         };
 
         try {
-            await editActivity(activity._id, updatedActivity);
+            updateActivity(new Activity(updatedActivity));
             setSettingsVisible(false);
         } catch (error) {
             Alert.alert("Erreur lors de la mise à jour de l'activité:", (error as Error).message);
@@ -177,14 +178,10 @@ export default function ActivityScreen() {
                     {activity.variables.map((variable: VariableType, index: number) => (
                         <VariableCard
                             key={index}
-                            label={variable.label}
-                            description={variable.description}
-                            mandatory={variable.mandatory}
                             displayRemoveIcon={true}
                             isMandatory={true}
                             activityId={activity._id}
-                            variableId={variable._id}
-                            onLoaderChange={(newVal) => setIsLoading(newVal)}  
+                            variable={variable}
                         />
                     ))}
                 </View>
@@ -193,12 +190,9 @@ export default function ActivityScreen() {
                     {variables.map((variable: VariableType, index: number) => (
                         <VariableCard
                             key={index}
-                            label={variable.label}
-                            description={variable.description}
                             displayAddIcon={true}
                             activityId={activity._id}
-                            variableId={variable._id}
-                            onLoaderChange={(newVal) => setIsLoading(newVal)}  
+                            variable={variable}
                             grayedOut={activity.variables.some((v) => v._id === variable._id)}
                             isChecked
                         />
