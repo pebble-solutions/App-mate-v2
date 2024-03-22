@@ -20,6 +20,11 @@ export function SequenceItem({item, onChange}: SequenceItemOptions) {
     const [savedDateStart, setSavedDateStart] = React.useState(item[0])
     const [savedDateEnd, setSavedDateEnd] = React.useState(item[1])
 
+    useEffect(() => {
+        setSavedDateStart(() => item[0])
+        setSavedDateEnd(() => item[1])
+    }, [item]);
+
     const handlePressEdit = () => {
         setEditMode((prev) => !prev)
     }

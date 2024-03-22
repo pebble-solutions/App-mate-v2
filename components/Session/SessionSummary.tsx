@@ -21,7 +21,6 @@ export default function SessionSummary({session, theme, onVariableChange, onSequ
 
     const handleSequenceChange = (index: number, newVal: SequenceItemType) => {
         if (onSequenceChange) onSequenceChange(index, newVal)
-        console.log(session.raw_datas.getTime())
         setTime(() => session.raw_datas.getTime())
     }
 
