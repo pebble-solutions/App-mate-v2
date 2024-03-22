@@ -32,7 +32,6 @@ export function StopWatch({started, dispatchAction, style, initialTime}: StopWat
     }, [dispatchAction]);
 
     useEffect(() => {
-        console.log(initialTime)
         setTime(initialTime)
     }, [initialTime]);
 

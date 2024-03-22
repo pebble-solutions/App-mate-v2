@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { FlatList, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { SequenceItem } from './SequenceItem';
+import { SequenceItemEditable } from './SequenceItemEditable';
 import { variables } from '../../shared/globalStyles';
 import EditSequenceModal from './EditSequenceModal';
 import { SequenceType } from '../../shared/types/SequenceType';
@@ -37,7 +37,7 @@ const SequenceList: React.FC<SequenceListProps> = ({ sequence, editable, style, 
 
         return (
             <RenderComponent onPress={onPress}>
-                <SequenceItem item={item} editable={editable} />
+                <SequenceItemEditable item={item} editable={editable} />
             </RenderComponent>
         );
     };
