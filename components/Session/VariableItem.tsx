@@ -19,7 +19,7 @@ type VariableItemOptions = {
 export default function VariableItem({variable, theme, onChange}: VariableItemOptions) {
     const [editMode, setEditMode] = React.useState(false)
     
-    const labelStyle = theme === "dark" ? globalStyles.textGrey : globalStyles.textGrey
+    const labelStyle = theme === "dark" ? globalStyles.textLight : globalStyles.textGrey
     const valueStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textDark
 
     const valueToString = (value?: string | Date | number | boolean | null, type?: string | null) => {
@@ -77,12 +77,12 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                     </TouchableOpacity>
                 </View>
             ) : (
-                <View style={globalStyles.mvContainer}>
+                <View style={[globalStyles.mvContainer, {width: "100%"}]}>
                     <FormInput      
                         label={variable.label}
                         type={variable.type}
                         value={updatedValue}
-                        labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                        labelStyle={[globalStyles.textLight, globalStyles.textMd]}
                         onChange={handleChangeValue}
                         />
                     <CancelValidateButtons

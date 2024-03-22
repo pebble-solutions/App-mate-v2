@@ -79,7 +79,7 @@ export function SequenceItem({item, onChange}: SequenceItemOptions) {
                     </TouchableOpacity>
                 </>
             ) : (
-                <View style={{flexDirection: "column"}}>
+                <View style={{flexDirection: "column", width: "100%"}}>
                     <View style={localStyle.formGroup}>
                         <View style={[localStyle.inputContainer, localStyle.box]}>
                             <FormInput

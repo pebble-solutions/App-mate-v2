@@ -129,6 +129,7 @@ export default function ClockScreen() {
                             style={[globalStyles.textLight, globalStyles.textCenter]}
                             started={started}
                             initialTime={currentSession.raw_datas.getTime()}
+                            size={"xl"}
                         />
                     </View>
 

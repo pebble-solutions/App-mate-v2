@@ -112,7 +112,7 @@ export default function ValidateScreen() {
                     value={value}
                     onChange={(newVal) => setResponse(variable._id, newVal)}
                     label={label}
-                    labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                    labelStyle={[globalStyles.textLight, globalStyles.textLg]}
                     key={key}
                 />
             </View>

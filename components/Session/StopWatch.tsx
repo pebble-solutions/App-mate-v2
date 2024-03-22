@@ -61,9 +61,6 @@ export function StopWatch({started, dispatchAction, style, initialTime, size}: S
 }
 
 const styles = StyleSheet.create({
-    timeText: {
-        fontSize: 48,
-    },
     sm: {
         fontSize: variables.fontSize[3]
     },
@@ -73,11 +70,11 @@ const styles = StyleSheet.create({
     },
 
     lg: {
-        fontSize: variables.fontSize[5]
+        fontSize: variables.fontSize[5] * 1.2
     },
 
     xl: {
-        fontSize: variables.fontSize[6]
+        fontSize: variables.fontSize[6] * 1.5
     }
     
 });

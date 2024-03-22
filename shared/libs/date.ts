@@ -188,7 +188,7 @@ export function datetimeToLiteral(date: Date): string {
  *@return {string}
  */
  export function dateToLiteral(date: Date): string {
-    const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    const options: Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'};
     return date.toLocaleDateString('fr-FR', options);
 }
 

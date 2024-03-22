@@ -5,13 +5,13 @@ import { globalStyles, variables } from '../../shared/globalStyles';
 
 export function SessionHeader({label, description, date}: {label: string, description?: string, date: string}) {
     return (
-        <View style={[globalStyles.pContainer, localStyle.sessionHeader]}>
+        <View style={[globalStyles.ph2Container, localStyle.sessionHeader]}>
             <View style={globalStyles.mContainer}>
-                <Text style={globalStyles.textLightGrey}>{label}</Text>
+                <Text style={globalStyles.textLight}>{label}</Text>
                 <Text style={globalStyles.textLightGrey}>{description}</Text>
             </View>
             <View style={globalStyles.mContainer}>
-                <Text style={globalStyles.textLightGrey}>{date}</Text>
+                <Text style={globalStyles.textLight}>{date}</Text>
             </View>
         </View>
     )
@@ -22,10 +22,7 @@ const localStyle = StyleSheet.create({
     sessionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        //borderWidth: 1,
-        //borderColor: variables.color.lightGrey,
-        marginVertical: variables.contentMargin[3],
-        borderRadius: variables.borderRadius[1],
+        marginVertical: variables.contentMargin[2]
     }
 })
     

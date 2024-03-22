@@ -6,7 +6,7 @@ import React, {useState} from "react";
 import {SessionType} from "../../shared/types/SessionType";
 import {VariableValueType} from "../../shared/types/VariableType";
 import {SequenceItemType} from "../../shared/types/SequenceType";
-import {Text} from "react-native";
+import {Text, View} from "react-native";
 import {secondsToTimeString} from "../../shared/libs/date";
 
 type SessionSummaryOptions = {
@@ -27,15 +27,21 @@ export default function SessionSummary({session, theme, onVariableChange, onSequ
 
     return (
         <>
-            <Text style={styles.subTitle}>Durée de la session</Text>
-            <Text style={[globalStyles.textLight, globalStyles.textCenter]}>{secondsToTimeString(time)}</Text>
-            <Text style={styles.subTitle}>Séquence</Text>
-            <SequenceList
-                sequence={session.raw_datas.getSequence()}
-                onValueChange={handleSequenceChange}
-            />
-            <Text style={styles.subTitle}>Informations fournies</Text>
-            <VariablesList variables={session.raw_variables} theme={theme} onValueChange={onVariableChange} />
+            <View style={globalStyles.mb2Container}>
+                <Text style={styles.subTitle}>Durée de la session</Text>
+                <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>{secondsToTimeString(time, {hours: true, minutes: true, seconds: true})}</Text>
+            </View>
+            <View style={[globalStyles.mb2Container, globalStyles.body, {width: "100%"}]}>
+                <Title title={"Séquence"} style={[globalStyles.textLight, globalStyles.mbContainer, globalStyles.textCenter]} />
+                <SequenceList
+                    sequence={session.raw_datas.getSequence()}
+                    onValueChange={handleSequenceChange}
+                />
+            </View>
+            <View style={[globalStyles.mb2Container, globalStyles.body, {width: "100%"}]}>
+                <Title title={"Informations fournies"} style={[globalStyles.textLight, globalStyles.mbContainer, globalStyles.textCenter]} />
+                <VariablesList variables={session.raw_variables} theme={theme} onValueChange={onVariableChange} />
+            </View>
         </>
     )
 }

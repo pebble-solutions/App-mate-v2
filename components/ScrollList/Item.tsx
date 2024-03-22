@@ -10,7 +10,7 @@ export default function Item({children}: PropsWithChildren) {
 
 const styles = StyleSheet.create({
     itemContainer: {
-        paddingHorizontal: variables.contentPadding[4],
+        paddingHorizontal: variables.contentPadding[3],
         paddingVertical: variables.contentPadding[2],
         borderBottomWidth: 1,
         borderBottomColor: variables.color.grey,

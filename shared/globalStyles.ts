@@ -339,12 +339,17 @@ export const globalStyles = StyleSheet.create({
     buttonAlert: {
         backgroundColor: "white",
     },
+
+    textMd: {
+        fontSize: variables.fontSize[2]
+    },
+
     textLg: {
-        fontSize: variables.fontSize[1]
+        fontSize: variables.fontSize[3]
     },
 
     textXl: {
-        fontSize: variables.fontSize[2]
+        fontSize: variables.fontSize[5]
     },
 
     input: {

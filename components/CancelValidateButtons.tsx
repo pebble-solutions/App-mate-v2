@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text,View, StyleSheet } from 'react-native';
-import { variables } from "../shared/globalStyles";
+import {globalStyles, variables} from "../shared/globalStyles";
+import Button from "./Button";
 interface CancelValidateButtonsProps {
     onPress1: () => void,
     onPress2: () => void,
@@ -10,12 +11,8 @@ interface CancelValidateButtonsProps {
 const CancelValidateButtons: React.FC<CancelValidateButtonsProps> = ({ onPress1, onPress2, buttonName1, buttonName2}) => {
     return (
         <View style={localStyle.buttonContainerTunnel}>
-            <TouchableOpacity style={localStyle.button} onPress={onPress1}>
-                <Text style={localStyle.label}>{buttonName1}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={localStyle.button} onPress={onPress2}>
-                <Text style={localStyle.label}>{buttonName2}</Text>
-            </TouchableOpacity>
+            <Button title={buttonName1} onPress={onPress1} style={[localStyle.button]} />
+            <Button title={buttonName2} onPress={onPress2} style={[localStyle.button]} />
         </View>
     );
 }
@@ -26,17 +23,10 @@ export default CancelValidateButtons;
 export const localStyle = StyleSheet.create({
     buttonContainerTunnel: {
         flexDirection: 'row',
-        backgroundColor: variables.color.dark,
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
     },
     button: {
-        borderRadius: variables.borderRadius[1],
-        borderWidth: 2,
-        borderColor: variables.color.grey,
-        width: "47%",
-        margin: 5,
-        padding: 5,
-        alignItems: "center",
+        flex:1
     },
     label: {
         fontSize: variables.fontSize[2],
