@@ -1,13 +1,16 @@
 import { VariableType } from "./VariableType"
 
-export type ActivityType = {
+export type JsonActivityType = {
     _id: string,
     label: string,
     description?: string,
     color: string,
-    start: Date ,
+    start: string,
     variables: VariableType[],
-    is_active: boolean,
+    is_active: boolean
+}
 
+export type ActivityType = Omit<JsonActivityType, "start"> & {
+    start: Date,
 }
 

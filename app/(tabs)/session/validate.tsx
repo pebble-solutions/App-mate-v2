@@ -1,7 +1,6 @@
 import {Alert, SafeAreaView, View, Text, StyleSheet, Platform, TouchableOpacity} from "react-native";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
-import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {router} from "expo-router";
 import React, {ReactNode, useEffect, useState} from "react";
 import {RawVariableType, SessionType} from "../../../shared/types/SessionType";
@@ -23,9 +22,8 @@ import {SequenceItemType} from "../../../shared/types/SequenceType";
 
 
 export default function ValidateScreen() {
-    const sessionContext = useSessionContext();
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
-    const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
+    const { status, resetStatus, resetPayload } = useSessionStatusContext()
     const [ exitStatus, setExitStatus ] = React.useState(false)
 
     useEffect(() => {
@@ -88,12 +86,6 @@ export default function ValidateScreen() {
             value: undefined
         }));
         setRawVariables(newRawVariables);
-    }
-
-    const postSession =  async (raw_variables: RawVariableType[]) => {
-        sessionContext.updateSession(currentSession._id, {...currentSession, raw_variables: raw_variables});
-        await sessionContext.postSession(currentSession._id, {...currentSession});
-        exit()
     }
 
     let items: ReactNode[] = []

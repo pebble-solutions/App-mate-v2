@@ -1,5 +1,6 @@
-import { ActivityType } from "../types/ActivityType";
+import {ActivityType, JsonActivityType} from "../types/ActivityType";
 import { VariableType } from "../types/VariableType";
+import {RawDataType} from "../types/SessionType";
 
 export class Activity implements ActivityType {
 
@@ -32,5 +33,12 @@ export class Activity implements ActivityType {
 
     isValidColor(color: string): boolean {
         return !!color.match(/^#[0-9a-fA-F]{3,6}$/);
+    }
+
+    json(): JsonActivityType {
+        return {
+            ...this,
+            start: this.start.toISOString()
+        }
     }
 }
