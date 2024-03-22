@@ -1,5 +1,5 @@
 import Timeline from "./Timeline";
-import {Animated, FlatList, StyleSheet, useWindowDimensions, View, ViewToken} from "react-native";
+import {Animated, FlatList, StyleSheet, useWindowDimensions, View, ViewToken, Text} from "react-native";
 import ValidationButton from "./ValidationButton";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
@@ -28,7 +28,7 @@ export default function OnboardingController({activeColor, inactiveColor, items,
 
     const goToIndex = (index: number) => {
         if (index >= 0 && index < items.length) {
-            slidesRef.current?.scrollToIndex({index})
+            slidesRef.current?.scrollToIndex({index, animated: true})
         }
     }
 
@@ -41,7 +41,7 @@ export default function OnboardingController({activeColor, inactiveColor, items,
             
             <FlatList
                 data={items}
-                renderItem={({item}) => <View style={[localStyle.itemContainer, {width}]}>{item}</View>}
+                renderItem={({item}) => <View key={currentIndex} style={[localStyle.itemContainer, {width}]}>{item}</View>}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled
@@ -111,7 +111,7 @@ const localStyle = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: variables.contentMargin[3]
+        marginTop: variables.contentMargin[3],
     },
 
     buttonContainer: {

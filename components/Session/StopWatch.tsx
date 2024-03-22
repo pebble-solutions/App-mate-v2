@@ -1,17 +1,21 @@
 import {useEffect, useRef, useState} from "react";
 import {View, Text, TouchableOpacity, StyleSheet} from "react-native";
+import { variables } from "../../shared/globalStyles";
 
 type StopWatchOptions = {
     started?: boolean,
     dispatchAction?: ActionsType,
     style?: object[],
     initialTime?: number
+    size?: SizeType
 }
 
 type ActionsType = "start" | "pause" | "reset"
+type SizeType = "sm" | "md" | "lg" | "xl" 
 
-export function StopWatch({started, dispatchAction, style, initialTime}: StopWatchOptions) {
+export function StopWatch({started, dispatchAction, style, initialTime, size}: StopWatchOptions) {
 
+    size = size || "md"
     style = style || []
     initialTime = initialTime || 0
 
@@ -52,12 +56,25 @@ export function StopWatch({started, dispatchAction, style, initialTime}: StopWat
     };
 
     return (
-        <Text style={[styles.timeText, ...style]}>{displayableTime(time)}</Text>
+        <Text style={[styles[size], ...style]}>{displayableTime(time)}</Text>
     );
 }
 
 const styles = StyleSheet.create({
-    timeText: {
-        fontSize: 48,
+    sm: {
+        fontSize: variables.fontSize[3]
+    },
+
+    md: {
+        fontSize: variables.fontSize[4]
+    },
+
+    lg: {
+        fontSize: variables.fontSize[5] * 1.2
+    },
+
+    xl: {
+        fontSize: variables.fontSize[6] * 1.5
     }
+    
 });

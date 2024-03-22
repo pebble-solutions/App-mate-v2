@@ -1,34 +1,37 @@
-import {SequenceType} from "../../shared/types/SequenceType";
+import {SequenceItemType, SequenceType} from "../../shared/types/SequenceType";
 import {FlatList, StyleSheet, View} from "react-native";
 import {SequenceItem} from "./SequenceItem";
-import {variables} from "../../shared/globalStyles";
+import {globalStyles, variables} from "../../shared/globalStyles";
+import {ReactNode} from "react";
+import {ScrollList} from "../ScrollList/ScrollList";
 
 type SequenceListOptions = {
     sequence: SequenceType,
-    style?: object[]
+    style?: object[],
+    onValueChange?: (index: number, newVal: SequenceItemType) => void
 }
 
-export function SequenceList({sequence, style}: SequenceListOptions) {
+export function SequenceList({sequence, style, onValueChange}: SequenceListOptions) {
     style = style || []
 
+    const items: ReactNode[] = []
+
+    for (let index=0; index < sequence.length; index++) {
+        items.push(<SequenceItem
+            item={sequence[index]}
+            onChange={(newVal) => {
+                if (onValueChange) onValueChange(index, newVal)
+            }}
+        />)
+    }
+
+    sequence.forEach((item) => {
+
+    })
+
+
     return (
-        <FlatList
-            data={sequence}
-            renderItem={({item}) => (
-                <SequenceItem item={item} />
-            )}
-            style={[localStyle.container, ...style]}
-        />
+        <ScrollList items={items} style={style} />
     )
 }
 
-const localStyle = StyleSheet.create({
-    container: {
-        borderTopColor: variables.color.grey,
-        borderTopWidth: 1,
-        borderBottomColor: variables.color.grey,
-        borderBottomWidth: 1,
-        backgroundColor: variables.color.black,
-        flex: 1
-    }
-})

@@ -34,7 +34,7 @@ export default function Button({title, onPress, style, titleStyle, variant, icon
 
     else if (variant === 'xl') {
         style.push(localStyle.xl)
-        titleStyle.push(globalStyles.textXl)
+        titleStyle.push(globalStyles.textLg)
     }
 
     if (options.disabled) {

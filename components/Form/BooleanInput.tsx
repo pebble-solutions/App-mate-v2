@@ -30,6 +30,7 @@ const BooleanInput = ({value, onChange, trueLabel, falseLabel}: BooleanInputOpti
             ios_backgroundColor={variables.color.grey}
             onValueChange={toggle}
             value={currentValue}
+            
         />
 
         {label && <Text>{label}</Text>}

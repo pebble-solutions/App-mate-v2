@@ -259,6 +259,7 @@ export const globalStyles = StyleSheet.create({
     sContainer: {
         flex: 1,
     },
+    
     contentContainer: {
         marginHorizontal: variables.contentMargin[2],
     },
@@ -275,8 +276,6 @@ export const globalStyles = StyleSheet.create({
         borderWidth: 1,
         minHeight: "72%",
     },
-
-
     topContainer: {
         marginHorizontal: variables.contentMargin[2],
         marginTop: variables.contentMargin[5],
@@ -366,12 +365,17 @@ export const globalStyles = StyleSheet.create({
     buttonAlert: {
         backgroundColor: "white",
     },
+
+    textMd: {
+        fontSize: variables.fontSize[2]
+    },
+
     textLg: {
-        fontSize: variables.fontSize[1]
+        fontSize: variables.fontSize[3]
     },
 
     textXl: {
-        fontSize: variables.fontSize[2]
+        fontSize: variables.fontSize[5]
     },
 
     input: {
@@ -412,7 +416,7 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: "grey",
         color: "white",
         fontSize: variables.fontSize[0],
-        width: "40%",
+        width: "50%",
         alignItems: 'center',
     },
     buttonTextTunnel: {
