@@ -1,16 +1,19 @@
 import React, {createContext, PropsWithChildren, useContext, useEffect, useRef, useState} from "react";
 import {createRequestsBucket, createRequestsController} from "@pebble-solutions/api-request";
 import {Bucket, Request, RequestsController} from "@pebble-solutions/api-request/lib/types/classes";
+import {Auth} from "../classes/Auth";
 
 type RequestsContextType = {
     requestsController: RequestsController,
-    pushRequest: (request: Request | Bucket) => void
+    pushRequest: (request: Request | Bucket) => void,
+    auth: Auth
 }
 
 const RequestsContext= createContext<RequestsContextType | null>(null)
 
 const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError?: (error: any) => void}>) => {
-    const [requestsController] = useState(createRequestsController())
+    const [auth] = useState(new Auth())
+    const [requestsController] = useState(createRequestsController().withAuth(auth))
     const requestsQueue = useRef(createRequestsBucket())
 
     const pushRequest = (request: Request | Bucket) => {
@@ -36,7 +39,7 @@ const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError
 
     useEffect(() => {
         // Initialize requests queue at startup
-        const timer = setInterval(sendQueue, 5000)
+        const timer = setInterval(sendQueue, 1000)
         return () => {
             // Each time context is destroyed, queue is cleared
             clearTimeout(timer)
@@ -44,7 +47,7 @@ const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError
     }, []);
 
     return (
-        <RequestsContext.Provider value={{requestsController, pushRequest}}>
+        <RequestsContext.Provider value={{requestsController, pushRequest, auth}}>
             {children}
         </RequestsContext.Provider>
     )

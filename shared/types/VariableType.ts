@@ -26,3 +26,5 @@ export type VariableType = {
     isActive: boolean,
     mandatory?: boolean,
 }
+
+export type VariableValueType = Date | string | number | boolean | null

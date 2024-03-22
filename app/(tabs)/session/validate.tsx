@@ -1,4 +1,4 @@
-import {Alert, SafeAreaView, View} from "react-native";
+import {Alert, SafeAreaView, View, Text, StyleSheet, Platform, TouchableOpacity} from "react-native";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
 import {router} from "expo-router";
@@ -8,7 +8,18 @@ import { globalStyles } from "../../../shared/globalStyles";
 import {ActivityType} from "../../../shared/types/ActivityType";
 import OnboardingController from "../../../components/Onboarding/OnboardingController";
 import FormInput from "../../../components/Form/FormInput";
-import VariablesResume from "../../../components/Session/VariablesResume";
+import VariablesList from "../../../components/Session/VariablesList";
+import { SequenceList } from "../../../components/Session/SequenceList";
+import Title from "../../../components/Title";
+import { StopWatch } from "../../../components/Session/StopWatch";
+import { SessionHeader } from "../../../components/Session/SessionHeader";
+import { dateToLiteral } from "../../../shared/libs/date";
+import { Ionicons } from '@expo/vector-icons';
+import SessionSummary from "../../../components/Session/SessionSummary";
+import {VariableValueType} from "../../../shared/types/VariableType";
+import {SequenceItemType} from "../../../shared/types/SequenceType";
+
+
 
 export default function ValidateScreen() {
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
@@ -40,7 +51,7 @@ export default function ValidateScreen() {
         return null
     }
 
-    const setResponse = (variableId: string, response: any) => {
+    const setResponse = (variableId: string, response: VariableValueType) => {
         setRawVariables((prev) => {
             const newVars: RawVariableType[] = []
 
@@ -49,8 +60,14 @@ export default function ValidateScreen() {
                 newVars.push(variable)
             })
 
+            currentSession.raw_variables = newVars
+
             return newVars
         })
+    }
+
+    const handleSequenceChange = (index: number, newVal: SequenceItemType) => {
+        currentSession.raw_datas.updateOne(index, newVal)
     }
 
     const exit = () => {
@@ -78,6 +95,7 @@ export default function ValidateScreen() {
         const value = variable.value
         const type = variable.type
         const label = variable.label
+        const key = variable._id
 
         items.push((
             <View style={globalStyles.section}>
@@ -86,22 +104,33 @@ export default function ValidateScreen() {
                     value={value}
                     onChange={(newVal) => setResponse(variable._id, newVal)}
                     label={label}
-                    labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                    labelStyle={[globalStyles.textLight, globalStyles.textLg]}
+                    key={key}
                 />
             </View>
         ))
     })
 
     items.push((
-        <VariablesResume
-            variables={rawVariables}
+        <SessionSummary
+            session={currentSession}
             theme={"dark"}
-            containerStyle={[globalStyles.body, globalStyles.mv3Container, globalStyles.mh3Container]}
+            onVariableChange={setResponse}
+            onSequenceChange={handleSequenceChange}
         />
     ))
 
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
+            {Platform.OS === 'android' && 
+                <TouchableOpacity onPress={() => {
+                    router.back();
+                }}>
+                    <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
+                </TouchableOpacity>
+            }
+            <SessionHeader label={currentActivity.label} description={currentActivity.description} date={dateToLiteral(currentSession.start)} />    
+            
             <OnboardingController
                 activeColor={currentActivity.color}
                 items={items}
@@ -109,6 +138,4 @@ export default function ValidateScreen() {
             />
         </SafeAreaView>
     )
-
-    
 }

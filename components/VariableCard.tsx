@@ -9,97 +9,69 @@ import { useEffect, useState } from "react";
 
 
 type VariableCardOptions = {
-    label: string,
-    description?: string,
-    mandatory?: boolean,
+    variable: VariableType,
     displayAddIcon?: boolean,
     displayRemoveIcon?: boolean,
     isMandatory?: boolean,
     activityId: string,
-    variableId: string,
-    onLoaderChange?: (newVal: boolean) => void,
     grayedOut?: boolean,
     isChecked?: boolean,
 }
 
 export default function VariableCard({
-    label,
-    description,
-    mandatory,
+    variable,
     displayAddIcon,
     displayRemoveIcon,
     isMandatory,
     activityId,
-    variableId,
-    onLoaderChange,
-    grayedOut,
-    isChecked,
+    grayedOut = false,
+    isChecked = false,
 }: VariableCardOptions) {
 
-    const { linkVariableToActivity, removeVariableFromActivity, toggleMandatory } = useActivityContext();
-    const [loaderStatus, setLoaderStatus] = useState(false)
+    const { linkVariableToActivity, removeVariableFromActivity, setVariableMandatory } = useActivityContext();
 
-    const addVariableToActivity = async (activityId: string, variableId: string) => {
-        loaderStart();
-        await linkVariableToActivity(activityId, variableId);
-        loaderEnd();
+    const linkVariable = () => {
+        linkVariableToActivity(activityId, variable);
     }
 
-    const removeVariable = async (activityId: string, variableId: string) => {
-        loaderStart();
-        await removeVariableFromActivity(activityId, variableId);
-        loaderEnd();
+    const removeVariable = () => {
+        removeVariableFromActivity(activityId, variable._id);
     }
 
-    const toggle_Mandatory = async (activityId: string, variableId: string) => {
-        loaderStart();
-        await toggleMandatory(activityId, variableId, !mandatory);
-        loaderEnd();
+    const toggleMandatory = () => {
+        setVariableMandatory(activityId, variable._id, !isMandatory);
     }
-
-    const loaderStart = () => {  
-        setLoaderStatus(true)  
-    }  
-    
-    const loaderEnd = () => {  
-        setLoaderStatus(false)  
-    }  
-
-    useEffect(() => {  
-        if (typeof onLoaderChange !== "undefined") onLoaderChange(loaderStatus)  
-    }, [loaderStatus]) 
 
     return (
         <View style={[globalStyles.VariableCardContent, grayedOut ? globalStyles.grayedOut : null]}>
             <View style={[globalStyles.VariableCardHeader]}>
-                <Text style={[globalStyles.cardTitle, globalStyles.textLight]}>{label}</Text>
-                <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{description}</Text>
+                <Text style={[globalStyles.cardTitle, globalStyles.textLight]}>{variable.label}</Text>
+                <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{variable.description}</Text>
             </View>
             <View style={globalStyles.VariableCardIconsContainer}>
-                {
-                    isMandatory && (
-                        mandatory ? (
-                            <TouchableOpacity onPress={() => toggle_Mandatory(activityId, variableId)}>
-                                <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
-                            </TouchableOpacity>
-                        ) : (
-                            <TouchableOpacity onPress={() => toggle_Mandatory(activityId, variableId)}>
-                                <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
-                            </TouchableOpacity>
-                        )
+                {isMandatory !== undefined ? (
+                    variable.mandatory ? (
+                        <TouchableOpacity onPress={toggleMandatory}>
+                            <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity onPress={toggleMandatory}>
+                            <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
+                        </TouchableOpacity>
                     )
+                ) : null
                 }
-                
+
                 {grayedOut && isChecked && (
                     <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
                 )}
                 {displayRemoveIcon &&
-                    <TouchableOpacity onPress={() => { removeVariable(activityId, variableId) }}>
+                    <TouchableOpacity onPress={removeVariable}>
                         <Ionicons name="remove-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
                 }
                 {displayAddIcon &&
-                    <TouchableOpacity onPress={() => { addVariableToActivity(activityId, variableId) }}>
+                    <TouchableOpacity onPress={linkVariable}>
                         <Ionicons name="add-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
                 }

@@ -13,7 +13,7 @@ export function SessionCard({session, onPress}: SessionCardOptions) {
         <TouchableOpacity onPress={onPress} style={[globalStyles.card, globalStyles.whiteBg, localStyle.card, globalStyles.mvContainer]}>
             <View style={[globalStyles.cardContent, localStyle.container]}>
                 <View>
-                    <Text style={[globalStyles.textXl, globalStyles.textGrey]}>{session.label}</Text>
+                    <Text style={[globalStyles.textMd, globalStyles.textGrey]}>{session.label}</Text>
                     <Text style={[globalStyles.textLightGrey]}>Démarré le {session.start.toLocaleString()}</Text>
                 </View>
                 <View>
