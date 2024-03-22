@@ -7,7 +7,8 @@ type VariableContextType = {
     variables: VariableType[],
     addVariable: (variable: VariableType) => void,
     removeVariable: (id: string) => void,
-    getVariableById: (id: string) => VariableType | undefined
+    getVariableById: (id: string) => VariableType | undefined,
+    loading: boolean
 }
 
 const VariableContext = createContext<VariableContextType | null>(null);
@@ -15,6 +16,7 @@ const VariableContext = createContext<VariableContextType | null>(null);
 const VariableContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [variables, setVariables] = useState<VariableType[]>([]);
     const {requestsController} = useRequestsContext()
+    const [loading, setLoading] = useState(true)
 
     const fetchVariablesFromAPI = async () => {
         const request = requestsController.get("https://api.pebble.solutions/v5/metric/variable/")
@@ -24,7 +26,8 @@ const VariableContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     useEffect(() => {
-        fetchVariablesFromAPI();
+        setLoading(() => true)
+        fetchVariablesFromAPI().finally(() => setLoading(() => false));
     }, []);
 
     const addVariable = (variable: VariableType) => {
@@ -42,7 +45,7 @@ const VariableContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     return (
-        <VariableContext.Provider value={{ variables, addVariable, removeVariable, getVariableById }}>
+        <VariableContext.Provider value={{ variables, addVariable, removeVariable, getVariableById, loading }}>
             {children}
         </VariableContext.Provider>
     )

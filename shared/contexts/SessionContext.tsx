@@ -76,7 +76,6 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         } finally {
             setPending(false)
         }
-
     }
 
     const getSessionById = (id: string) => {

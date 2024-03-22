@@ -7,59 +7,53 @@ import { ActivityType } from "../shared/types/ActivityType";
 import { Ionicons } from '@expo/vector-icons';
 
 type VariableCardOptions = {
-    label: string,
-    description?: string,
-    mandatory?: boolean,
+    variable: VariableType,
     displayAddIcon?: boolean,
     displayRemoveIcon?: boolean,
     isMandatory?: boolean,
     activityId: string,
-    variableId: string,
     grayedOut?: boolean,
     isChecked?: boolean,
 }
 
 export default function VariableCard({
-    label,
-    description,
-    mandatory,
+    variable,
     displayAddIcon,
     displayRemoveIcon,
     isMandatory,
     activityId,
-    variableId,
     grayedOut = false,
     isChecked = false,
 }: VariableCardOptions) {
 
-    const { linkVariableToActivity, removeVariableFromActivity, toggleMandatory } = useActivityContext();
+    const { linkVariableToActivity, removeVariableFromActivity, setVariableMandatory } = useActivityContext();
 
-    const addVariableToActivity = (activityId: string, variableId: string) => {
-        linkVariableToActivity(activityId, variableId);
+    const linkVariable = () => {
+        linkVariableToActivity(activityId, variable);
     }
 
-    const removeVariable = (activityId: string, variableId: string) => {
-        removeVariableFromActivity(activityId, variableId);
+    const removeVariable = () => {
+        removeVariableFromActivity(activityId, variable._id);
     }
 
-    const toggle_Mandatory = (activityId: string, variableId: string, mandatory: boolean) => {
-        toggleMandatory(activityId, variableId, mandatory);
+    const toggleMandatory = () => {
+        setVariableMandatory(activityId, variable._id, !isMandatory);
     }
 
     return (
         <View style={[globalStyles.VariableCardContent, grayedOut ? globalStyles.grayedOut : null]}>
             <View style={[globalStyles.VariableCardHeader]}>
-                <Text style={[globalStyles.cardTitle, globalStyles.textLight]}>{label}</Text>
-                <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{description}</Text>
+                <Text style={[globalStyles.cardTitle, globalStyles.textLight]}>{variable.label}</Text>
+                <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{variable.description}</Text>
             </View>
             <View style={globalStyles.VariableCardIconsContainer}>
                 {isMandatory !== undefined ? (
-                    mandatory ? (
-                        <TouchableOpacity onPress={() => { toggleMandatory(activityId, variableId, false) }}>
+                    variable.mandatory ? (
+                        <TouchableOpacity onPress={toggleMandatory}>
                             <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
                         </TouchableOpacity>
                     ) : (
-                        <TouchableOpacity onPress={() => { toggle_Mandatory(activityId, variableId, true) }}>
+                        <TouchableOpacity onPress={toggleMandatory}>
                             <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
                         </TouchableOpacity>
                     )
@@ -68,12 +62,12 @@ export default function VariableCard({
                     <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
                 )}
                 {displayRemoveIcon &&
-                    <TouchableOpacity onPress={() => { removeVariable(activityId, variableId) }}>
+                    <TouchableOpacity onPress={removeVariable}>
                         <Ionicons name="remove-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
                 }
                 {displayAddIcon &&
-                    <TouchableOpacity onPress={() => { addVariableToActivity(activityId, variableId) }}>
+                    <TouchableOpacity onPress={linkVariable}>
                         <Ionicons name="add-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
                 }
