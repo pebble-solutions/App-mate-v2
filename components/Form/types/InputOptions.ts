@@ -9,7 +9,9 @@ export type InputOptions = {
 export type DateTimeInputOptions = Omit<InputOptions, 'value' | 'onChange'> & {
     value?: Date | null,
     onChange?: (newVal: Date | null) => void,
-    type?: DateTimeInputType
+    type?: DateTimeInputType,
+    min?: Date | null,
+    max?: Date | null
 }
 
 export type NumberInputOptions = Omit<InputOptions, 'value' | 'onChange'> & {

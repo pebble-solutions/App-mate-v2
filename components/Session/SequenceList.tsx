@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { FlatList, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { SequenceItemEditable } from './SequenceItemEditable';
 import { variables } from '../../shared/globalStyles';
@@ -22,14 +22,19 @@ const SequenceList: React.FC<SequenceListProps> = ({ sequence, editable, style, 
     }, []);
 
     const saveModal = useCallback((newItem: SequenceType) => {
-        setVisible(false);
         const index = sequence.findIndex(seq => seq === selectedSequence);
         if (index !== -1) {
             const updatedSequence = [...sequence];
             updatedSequence[index] = newItem;
             setSequence(updatedSequence);
         }
+        closeModal();
     }, [sequence, selectedSequence]);
+
+    const closeModal = () => {
+        setSelectedSequence(null);
+        setVisible(false);
+    }
 
     const renderItem = ({ item }: { item: SequenceType }) => {
         const RenderComponent = editable ? TouchableOpacity : View;
@@ -51,8 +56,9 @@ const SequenceList: React.FC<SequenceListProps> = ({ sequence, editable, style, 
             />
             <EditSequenceModal
                 sequence={selectedSequence}
+                sequences={sequence}
                 visible={visible}
-                closeModal={() => setVisible(false)}
+                closeModal={() => closeModal()}
                 saveModal={saveModal}
             />
         </View>

@@ -4,7 +4,7 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import {globalStyles} from '../../shared/globalStyles';
 import {DateTimeInputOptions} from "./types/InputOptions";
 
-const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOptions) => {
+const DateTimeInput = ({value, onChange, type, placeholder, min, max}: DateTimeInputOptions) => {
 
     type = type || 'datetime'
 
@@ -22,8 +22,7 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
     }, [currentValue]);
     useEffect(() => {
         handleTimeChange
-    }
-    , [selectedTime])
+    }, [selectedTime])
 
     const handleDateChange = (_: DateTimePickerEvent, newVal: Date | undefined) => {
 
@@ -68,17 +67,21 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
                         mode="date"
                         display={Platform.OS === 'ios' ? 'default' : 'spinner'}
                         onChange={handleDateChange}
-                        />)}
+                        maximumDate={max}
+                        minimumDate={min}
+                    />)}
                 </View>
             }
             {useTime &&
                 <View style={globalStyles.input}>
                     <TouchableOpacity onPress={()=> togglePicker()}><Text>{selectedTime.toLocaleTimeString()}</Text></TouchableOpacity>
                     {showTimePicker && useTime && (<DateTimePicker
-                    value={selectedTime}
-                    mode="time"
-                    display={Platform.OS === 'ios' ? 'default' : 'spinner'}
-                    onChange={handleTimeChange}
+                        value={selectedTime}
+                        mode="time"
+                        display={Platform.OS === 'ios' ? 'default' : 'spinner'}
+                        onChange={handleTimeChange}
+                        maximumDate={max}
+                        minimumDate={min}
                     />)}
                 </View>
             }
