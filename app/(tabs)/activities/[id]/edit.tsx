@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, ScrollView, TextInput, Modal, Alert } from "react-native";
-import { Redirect, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../../shared/libs/color";
 import { globalStyles } from "../../../../shared/globalStyles";
@@ -15,10 +14,12 @@ import VariableCard from "../../../../components/VariableCard";
 import { format } from 'date-fns';
 import SpinnerLoader from "../../../../components/ScreenCoverLoader";
 import ActivityForm from "../../../../components/Activity/ActivityForm";
+import { useLocalSearchParams } from "expo-router";
+import { Redirect } from "expo-router";
 
 export default function EditScreen() {
     const { getActivityById, removeActivity, editActivity } = useActivityContext();
-    const { id } = useLocalSearchParams<{ id: string }>();
+    const { id } = useLocalSearchParams<{ id: string }>(); // Assurez-vous que cette ligne est toujours appelée avant tout autre hook
 
     const activity = id ? new Activity(getActivityById(id)) : null;
 

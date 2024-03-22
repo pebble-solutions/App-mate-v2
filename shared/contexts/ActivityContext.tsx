@@ -11,6 +11,7 @@ type ActivityContextType = {
     editActivity: (id: string, updatedActivity: ActivityType) => void
     linkVariableToActivity: (activityId: string, variableId: string) => void
     removeVariableFromActivity: (activityId: string, variableId: string) => void
+    fetchActivitiesFromAPI: () => void
     toggleMandatory: (activityId: string, variableId: string, mandatory: boolean) => void
     loading: boolean
 }
@@ -23,7 +24,6 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
     const fetchActivitiesFromAPI = async () => {
         try {
-            setLoading(true)
             const response = await fetch("https://api.pebble.solutions/v5/activity/"); // Remplacez URL_DE_VOTRE_API par l'URL de votre API
             const data = await response.json();
             let activitiesList: ActivityType[] = [];
@@ -33,8 +33,6 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             setActivities(activitiesList);
         } catch (error) {
             console.error("Erreur lors de la récupération des activités depuis l'API:", error);
-        } finally {
-            setLoading(false)
         }
     }
 
@@ -188,6 +186,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             removeActivity,
             getActivityById,
             editActivity,
+            fetchActivitiesFromAPI,
             linkVariableToActivity,
             removeVariableFromActivity,
             toggleMandatory,

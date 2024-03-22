@@ -10,129 +10,47 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
 import { Activity } from "../../../shared/classes/Activity";
+import ActivityForm from "../../../components/Activity/ActivityForm";
 
 export default function CreateActivityModal() {
-    const { addActivity, removeActivity } = useActivityContext();
+    const { addActivity } = useActivityContext();
     const [settingsValues, setSettingsValues] = useState({
         label: '',
         description: '',
         color: '',
     });
-    const [selectedColor, setSelectedColor] = useState("#262729");
-    const colors = getRGBGradientColors(selectedColor);
 
-    const colorOptions = [
-        "#262729",
-        "#701323",
-        "#701348",
-        "#671370",
-        "#341370",
-        "#133070",
-        "#525252",
-        "#13706d",
-        "#0f572e",
-        "#436903",
-        "#b57c02",
-        "#b81d06",
-    ];
-
-    const createActivity = () => {
-        const newActivity = new Activity({
-            _id: '', 
-            start: new Date(),
-            variables: [], 
-            status: 'active',
-            label: settingsValues.label,
-            description: settingsValues.description,
-            color: selectedColor,
-        });
-
+    const handleValidate = (newActivity: Activity) => {
         addActivity(newActivity);
         router.back();
-        alert("Activité créée !");
-    };
+    }
 
-    const firstRowColors = colorOptions.slice(0, 6);
-    const secondRowColors = colorOptions.slice(6, 12);
 
     return (
         <LinearGradient
-            colors={colors}
+            colors={getRGBGradientColors('#262729')}
             start={{ x: 0, y: 1 }}
             end={{ x: 1, y: 0 }}
             style={globalStyles.body}
         >
 
             <View style={globalStyles.contentContainer}>
-                <View style={[globalStyles.headerCloseIcon, { justifyContent: 'flex-end', alignItems: 'flex-end' }]}>
+                <View style={[globalStyles.headerIcons, { flexDirection: 'row', alignItems: 'center' }]}>
                     <TouchableOpacity
-                        onPress={() => {
-                            router.back();
-                        }}
+                        onPress={() => router.back()}
+                        style={{ marginTop: 15 }}
                     >
-                        <Text style={globalStyles.textLight}>annuler</Text>
+                        <Ionicons name="close" size={30} color="white" />
                     </TouchableOpacity>
                 </View>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>Nouvelle activité</Text>
             </View>
+            
+            <ActivityForm 
+                activity={new Activity({})} 
+                onValidate={handleValidate} 
+                title="Nouvelle activité" 
+            />
 
-            <View style={globalStyles.contentContainer}>
-                <TextInput
-                    style={globalStyles.input}
-                    onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
-                    value={settingsValues.label}
-                    placeholder="Saisissez un nom pour cette activité"
-                    placeholderTextColor="white"
-                />
-            </View>
-            <View style={globalStyles.contentContainer}>
-                <TextInput
-                    style={globalStyles.input}
-                    onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
-                    value={settingsValues.description}
-                    placeholder="Saisissez une description"
-                    placeholderTextColor="white"
-                />
-            </View>
-            <View style={globalStyles.contentContainer}>
-
-                <View style={globalStyles.colorButtonsParentContainer}>
-                    {/* Première ligne de boutons de couleur */}
-                    <View style={globalStyles.colorButtonsContainer}>
-                        {firstRowColors.map((color, index) => (
-                            <TouchableOpacity
-                                key={index}
-                                style={[
-                                    globalStyles.colorButton,
-                                    { backgroundColor: color, borderColor: selectedColor === color ? 'white' : 'transparent' }
-                                ]}
-                                onPress={() => setSelectedColor(color)}
-                            />
-                        ))}
-                    </View>
-                
-                    <View style={globalStyles.colorButtonsContainer}>
-                        {secondRowColors.map((color, index) => (
-                            <TouchableOpacity
-                                key={index}
-                                style={[
-                                    globalStyles.colorButton,
-                                    { backgroundColor: color, borderColor: selectedColor === color ? 'white' : 'transparent' }
-                                ]}
-                                onPress={() => setSelectedColor(color)}
-                            />
-                        ))}
-                    </View>
-                </View>
-            </View>
-
-            <View style={globalStyles.iconContainer}>
-                <TouchableOpacity
-                    onPress={createActivity}
-                >
-                    <Ionicons name="add-circle" size={120} color="white" />
-                </TouchableOpacity>
-            </View>
         </LinearGradient>
     )
 }
