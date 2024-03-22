@@ -52,11 +52,13 @@ export default function ClockScreen() {
     const [started, setStarted] = useState(false)
     const [sequence, setSequence] = useState<SequenceType>([])
     const [currentItemIndex, setCurrentItemIndex] = useState<number | null>(null)
+    const [initialTime, setInitialTime] = useState<number | null>(currentSession?.raw_datas?.getTime() || null);
 
     // Initialize local sequence once current session is loaded
     useEffect(() => {
         if (currentSession) {
-            setSequence(currentSession.raw_datas.getSequence())
+            setSequence(() => currentSession.raw_datas.getSequence());
+            setInitialTime(() => currentSession.raw_datas.getTime());
         }
     }, [currentSession]);
 
@@ -111,8 +113,11 @@ export default function ClockScreen() {
     }
 
    const edit = (editedItem: SequenceItemType[]) => {
-       currentSession.raw_datas.updateAll(editedItem);
-       setSequence(editedItem);
+       if (currentSession && currentSession.raw_datas) {
+           setSequence(editedItem);
+           currentSession.raw_datas.updateAll(editedItem);
+           setInitialTime(() => currentSession.raw_datas.getTime());
+       }
    };
 
     return (
@@ -141,7 +146,7 @@ export default function ClockScreen() {
                         <StopWatch
                             style={[globalStyles.textLight, globalStyles.textCenter]}
                             started={started}
-                            initialTime={currentSession.raw_datas.getTime()}
+                            initialTime={initialTime}
                         />
                     </View>
 

@@ -5,7 +5,7 @@ type StopWatchOptions = {
     started?: boolean,
     dispatchAction?: ActionsType,
     style?: object[],
-    initialTime?: number
+    initialTime?: number,
 }
 
 type ActionsType = "start" | "pause" | "reset"
@@ -30,6 +30,11 @@ export function StopWatch({started, dispatchAction, style, initialTime}: StopWat
         else if (dispatchAction === "pause") pause()
         else if (dispatchAction === "reset") reset()
     }, [dispatchAction]);
+
+    useEffect(() => {
+        console.log(initialTime)
+        setTime(initialTime)
+    }, [initialTime]);
 
     const displayableTime = (time: number) => {
         return new Date(time * 1000).toISOString().substring(11, 19)

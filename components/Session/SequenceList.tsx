@@ -27,7 +27,6 @@ const SequenceList: React.FC<SequenceListProps> = ({ sequence, editable, style, 
         if (index !== -1) {
             const updatedSequence = [...sequence];
             updatedSequence[index] = newItem;
-            // Mettre à jour la séquence dans l'état parent
             setSequence(updatedSequence);
         }
     }, [sequence, selectedSequence]);
