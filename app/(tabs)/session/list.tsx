@@ -10,6 +10,7 @@ import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusCon
 import {router} from "expo-router";
 import FullscreenLoader from "../../../components/FullscreenLoader";
 import {ActivityType} from "../../../shared/types/ActivityType";
+import {SessionType} from "../../../shared/types/SessionType";
 
 export default function ListScreen() {
     const { activities, loading } = useActivityContext()
@@ -50,6 +51,12 @@ export default function ListScreen() {
         }
     }
 
+    const openSessionHandler = (session: SessionType) => openSession(session._id, sessionContext, statusContext)
+
+    const manualSessionHandler = () => {
+        console.log("J'ai cliqué sur manual press")
+    }
+
     return (
         <SafeAreaView style={globalStyles.body}>
             {loading ? <FullscreenLoader /> : (
@@ -67,9 +74,8 @@ export default function ListScreen() {
                             activity={item}
                             sessions={getSessionsFromActivity(item._id)}
                             onNewPress={() => newSessionHandler(item)}
-                            onSessionPress={(session) => {
-                                openSession(session._id, sessionContext, statusContext)
-                            }}
+                            onSessionPress={openSessionHandler}
+                            onManualPress={manualSessionHandler}
                             buttonTitle="Démarrer"
                         />
                     )} />

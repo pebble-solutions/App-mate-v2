@@ -52,19 +52,19 @@ export default function ActivityOverview({ activity, onNewPress, onManualPress, 
                 )
                 : null}
 
-                {onNewPress ? <View style={[globalStyles.mv2Container ,styles.buttonContainer]}>
-                    <Button 
+                {onNewPress || onManualPress ? <View style={[globalStyles.mv2Container ,styles.buttonContainer]}>
+                    {onNewPress && <Button
                         title={buttonTitle}
                         onPress={onNewPress}
                         style={[styles.buttonLight]}
                         variant="xl"
-                        titleStyle={[{color: activity.color}]} />
-                    <Button
+                        titleStyle={[{color: activity.color}]}/>}
+                    {onManualPress && <Button
                         title="Saisie Manuelle"
                         onPress={onManualPress}
-                        style={[globalStyles.ms2Container , styles.buttonOutlined]}
+                        style={[globalStyles.ms2Container, styles.buttonOutlined]}
                         variant="xl"
-                        titleStyle={[{color: "white"}]} />
+                        titleStyle={[{color: "white"}]}/>}
                 </View>: null}
             </View>
         </ActivityGradient>
