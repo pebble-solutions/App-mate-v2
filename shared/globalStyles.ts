@@ -214,6 +214,10 @@ export const globalStyles = StyleSheet.create({
         marginLeft: variables.contentMargin[1]
     },
 
+    ms2Container: {
+        marginLeft: variables.contentMargin[2]
+    },
+
     meContainer: {
         marginRight: variables.contentMargin[1]
     },

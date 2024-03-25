@@ -14,12 +14,13 @@ import {SessionCard} from "../Session/SessionCard";
 type ActivityOverviewType = {
     activity: ActivityType,
     onNewPress?: () => void,
+    onManualPress?: () => void,
     buttonTitle?: string,
     sessions?: SessionType[],
     onSessionPress?: (session: SessionType) => void
 }
 
-export default function ActivityOverview({ activity, onNewPress, onSessionPress, buttonTitle, sessions }: ActivityOverviewType) {
+export default function ActivityOverview({ activity, onNewPress, onManualPress, onSessionPress, buttonTitle, sessions }: ActivityOverviewType) {
 
     buttonTitle = buttonTitle || "Consulter"
 
@@ -51,13 +52,19 @@ export default function ActivityOverview({ activity, onNewPress, onSessionPress,
                 )
                 : null}
 
-                {onNewPress ? <View style={globalStyles.mv2Container}>
-                    <Button
+                {onNewPress ? <View style={[globalStyles.mv2Container ,styles.buttonContainer]}>
+                    <Button 
                         title={buttonTitle}
                         onPress={onNewPress}
                         style={[styles.buttonLight]}
                         variant="xl"
                         titleStyle={[{color: activity.color}]} />
+                    <Button
+                        title="Saisie Manuelle"
+                        onPress={onManualPress}
+                        style={[globalStyles.ms2Container , styles.buttonOutlined]}
+                        variant="xl"
+                        titleStyle={[{color: "white"}]} />
                 </View>: null}
             </View>
         </ActivityGradient>
@@ -71,8 +78,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         padding: variables.contentPadding[2]
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
 
     buttonLight: {
         backgroundColor: "white",
+    },
+
+    buttonOutlined:{
+        backgroundColor:"transparent",
+        borderWidth: 1,
+        borderColor: "white",
+        
     }
 })
