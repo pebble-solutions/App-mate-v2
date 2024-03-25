@@ -1,5 +1,5 @@
 import Timeline from "./Timeline";
-import {Animated, FlatList, StyleSheet, useWindowDimensions, View, ViewToken, Text} from "react-native";
+import {Animated, FlatList, StyleSheet, useWindowDimensions, View, ViewToken, Text, Alert} from "react-native";
 import ValidationButton from "./ValidationButton";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
@@ -12,9 +12,10 @@ type OnboardingControllerOptions = {
     items: ReactNode[],
     validationColor?: string,
     validationIndex?: number
+    validate: () => void
 }
 
-export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex}: OnboardingControllerOptions) {
+export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex, validate}: OnboardingControllerOptions) {
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const { width } = useWindowDimensions()
@@ -26,9 +27,29 @@ export default function OnboardingController({activeColor, inactiveColor, items,
         setCurrentIndex(viewableItems[0].index || 0)
     }).current;
 
+    const handleToValidate = () => {
+        
+        if (currentIndex === validationIndex) {
+            validate()
+        }
+    }
+
     const goToIndex = (index: number) => {
+        console.log(index, 'index')
         if (index >= 0 && index < items.length) {
             slidesRef.current?.scrollToIndex({index, animated: true})
+        }
+        else if (index === items.length) {
+            // Alert.alert('Validation', 'Voulez-vous valider cette session', [
+            //     {
+            //       text: 'Annuler',
+            //       onPress: () => console.log('Cancel Pressed'),
+            //       style: 'cancel',
+            //     },
+            //     {text: 'OK', onPress: () => {handleToValidate()}},
+            //   ]);
+            handleToValidate()
+            
         }
     }
 
