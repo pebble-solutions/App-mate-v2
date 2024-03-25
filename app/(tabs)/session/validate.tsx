@@ -1,7 +1,7 @@
 import {Alert, SafeAreaView, View, Text, StyleSheet, Platform, TouchableOpacity} from "react-native";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
-import {router} from "expo-router";
+import {Redirect, router} from "expo-router";
 import React, {ReactNode, useEffect, useState, useContext} from "react";
 import {RawVariableType, SessionType} from "../../../shared/types/SessionType";
 import { globalStyles } from "../../../shared/globalStyles";
@@ -17,6 +17,7 @@ import {SequenceItemType} from "../../../shared/types/SequenceType";
 import { Session } from "../../../shared/classes/Session";
 import {JsonSessionType} from "../../../shared/types/SessionType";
 import { useSessionContext } from "../../../shared/contexts/SessionContext";
+import { set } from "date-fns";
 
 
 
@@ -72,14 +73,15 @@ export default function ValidateScreen() {
         currentSession.raw_datas.updateOne(index, newVal)
     }
     
-    const validateSession = () => {
-        updateSession(new Session (currentSession))
-        closeSession(new Session(currentSession))
-      }
     const exit = () => {
         setExitStatus(true)
         resetPayload()
         resetStatus()
+    }
+    const validateSession = async () => {
+        updateSession(new Session (currentSession))
+        closeSession(new Session(currentSession))
+        exit()
     }
 
     const variables = currentActivity.variables;

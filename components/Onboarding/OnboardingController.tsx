@@ -41,16 +41,14 @@ export default function OnboardingController({activeColor, inactiveColor, items,
             slidesRef.current?.scrollToIndex({index, animated: true})
         }
         else if (index === items.length) {
-            // Alert.alert('Validation', 'Voulez-vous valider cette session', [
-            //     {
-            //       text: 'Annuler',
-            //       onPress: () => console.log('Cancel Pressed'),
-            //       style: 'cancel',
-            //     },
-            //     {text: 'OK', onPress: () => {handleToValidate()}},
-            //   ]);
-            handleToValidate()
-            
+            Alert.alert('Validation', 'Confirmez-vous la validation de cette session?', [
+                {
+                  text: 'Annuler',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () => {handleToValidate()}},
+              ]);
         }
     }
 
