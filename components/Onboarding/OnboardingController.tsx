@@ -24,6 +24,7 @@ export default function OnboardingController({activeColor, inactiveColor, items,
     const slidesRef = useRef<FlatList | null>(null)
 
     const viewableItemsChanged = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
+        // console.log(viewableItems, 'viewableItems')
         setCurrentIndex(viewableItems[0].index || 0)
     }).current;
 
@@ -35,8 +36,8 @@ export default function OnboardingController({activeColor, inactiveColor, items,
     }
 
     const goToIndex = (index: number) => {
-        console.log(index, 'index')
         if (index >= 0 && index < items.length) {
+            // console.log('scrolling', slidesRef, index, items.length)
             slidesRef.current?.scrollToIndex({index, animated: true})
         }
         else if (index === items.length) {

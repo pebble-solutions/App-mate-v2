@@ -15,6 +15,7 @@ import SessionSummary from "../../../components/Session/SessionSummary";
 import {VariableValueType} from "../../../shared/types/VariableType";
 import {SequenceItemType} from "../../../shared/types/SequenceType";
 import { Session } from "../../../shared/classes/Session";
+import {JsonSessionType} from "../../../shared/types/SessionType";
 import { useSessionContext } from "../../../shared/contexts/SessionContext";
 
 
@@ -24,7 +25,7 @@ export default function ValidateScreen() {
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
     const { status, resetStatus, resetPayload } = useSessionStatusContext()
     const [ exitStatus, setExitStatus ] = React.useState(false)
-    const { updateSession } = useSessionContext()   
+    const { updateSession, closeSession } = useSessionContext()   
 
     
     useEffect(() => {
@@ -72,8 +73,8 @@ export default function ValidateScreen() {
     }
     
     const validateSession = () => {
-        console.log(currentSession._id)
-        updateSession(new Session(currentSession))
+        updateSession(new Session (currentSession))
+        closeSession(new Session(currentSession))
       }
     const exit = () => {
         setExitStatus(true)
