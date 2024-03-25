@@ -48,18 +48,19 @@ export default function RecapScreen() {
         content = (
             <View style={globalStyles.body}>
                 <HeaderScreenTitle title="Tableau de bord" addButton={false} />
-                <ScrollView>
+                {/* test formInput */}
+                {/* <ScrollView>
                     <Text>RecapScreen</Text>
-                <FormInput label="date" placeholder="forminput" type='date'/>
-                <FormInput label="time" placeholder="forminput" type='time'/>
-                <FormInput label="datetime" placeholder="forminput" type='datetime'/>
-                <FormInput label="textarea" placeholder="forminput" type="textarea" />
-                <FormInput label="number" placeholder="forminput" type="number" />
-                <FormInput label="float" placeholder="forminput" type="float" />
-                <FormInput label="integer" placeholder="forminput" type="integer" />
-                <FormInput label="boolean" placeholder="forminput" type="boolean" />
+                    <FormInput label="date" placeholder="forminput" type='date'/>
+                    <FormInput label="time" placeholder="forminput" type='time'/>
+                    <FormInput label="datetime" placeholder="forminput" type='datetime'/>
+                    <FormInput label="textarea" placeholder="forminput" type="textarea" />
+                    <FormInput label="number" placeholder="forminput" type="number" />
+                    <FormInput label="float" placeholder="forminput" type="float" />
+                    <FormInput label="integer" placeholder="forminput" type="integer" />
+                    <FormInput label="boolean" placeholder="forminput" type="boolean" />
 
-                </ScrollView>
+                </ScrollView> */}
 
                 {/* <Carousel
                     mode="parallax"
