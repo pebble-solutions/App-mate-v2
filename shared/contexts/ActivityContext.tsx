@@ -6,6 +6,7 @@ import {deleteRequest, getRequest, patchRequest, postRequest} from "@pebble-solu
 import {useRequestsContext} from "./RequestsContext";
 import {ReadParamsType} from "@pebble-solutions/api-request/lib/types/types";
 import {VariableType} from "../types/VariableType";
+import { ulid } from 'ulidx'
 
 type ActivityContextType = {
     activities: ActivityType[]
@@ -15,6 +16,7 @@ type ActivityContextType = {
     updateActivity: (activity: Activity) => void
     linkVariableToActivity: (activityId: string, variable: VariableType) => void
     removeVariableFromActivity: (activityId: string, variableId: string) => void
+    fetchActivitiesFromAPI: (params?: ReadParamsType) => void
     toggleVariableMandatory: (activityId: string, variable: VariableType) => void
     setVariableMandatory: (activityId: string, variableId: string, mandatory: boolean) => void
     loading: boolean
@@ -51,6 +53,9 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     const addActivity = (activity: Activity) => {
+        if (!activity._id) {
+            activity._id = ulid()
+        }
         pushRequest(postRequest("https://api.pebble.solutions/v5/activity/", activity.json()))
         updateActivitiesState([activity])
     }
@@ -81,7 +86,6 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
         }
     }
 
-    // Load all accessible activities on start
     useEffect(() => {
         setLoading(true)
         fetchActivitiesFromAPI().finally(() => setLoading(false))
@@ -101,7 +105,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
         activity.variables[index].mandatory = mandatory
 
-        pushRequest(patchRequest(`https://api.pebble.solutions/v5/activity/${activity._id}/`, {
+        pushRequest(patchRequest(`https://api.pebble.solutions/v5/activity/${activity._id}`, {
             variables: activity.variables
         }))
         updateActivitiesState([activity])
@@ -153,7 +157,8 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             setVariableMandatory,
             updateActivity,
             loading,
-            pending
+            pending,
+            fetchActivitiesFromAPI
         }}>
             {children}
         </ActivityContext.Provider>

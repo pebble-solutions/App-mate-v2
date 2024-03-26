@@ -101,7 +101,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     useEffect(() => {
         setLoading(true)
         fetchSessionsFromAPI({
-            is_active: true
+            is_active: true,
+            type: "activity"
         }).finally(() => setLoading(false))
     }, []);
 

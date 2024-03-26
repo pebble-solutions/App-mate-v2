@@ -17,8 +17,8 @@ export default function HeaderScreenTitle({ title, addButton }: HeaderScreenTitl
                 {addButton && <TouchableOpacity
                     onPress={() => {
                         router.push({
-                            pathname: "/activities/createActivityModal",
-                        })
+                            pathname: "/activities/create",
+                        });
                     }}>
                     <AntDesign name="pluscircleo" size={26} color="black" />
                 </TouchableOpacity>}
