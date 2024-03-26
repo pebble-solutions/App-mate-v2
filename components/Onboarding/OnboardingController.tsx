@@ -5,7 +5,6 @@ import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
 import Button from "../Button";
 import {Feather} from "@expo/vector-icons";
-import { set } from "date-fns";
 
 type OnboardingControllerOptions = {
     activeColor?: string,
@@ -25,7 +24,6 @@ export default function OnboardingController({activeColor, inactiveColor, items,
     const slidesRef = useRef<FlatList | null>(null)
 
     const viewableItemsChanged = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
-        // console.log(viewableItems, 'viewableItems')
         setCurrentIndex(viewableItems[0].index || 0)
     }).current;
 

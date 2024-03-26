@@ -31,7 +31,6 @@ const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError
                 return await bucket.content()
             } catch (e) {
                 if (typeof onError !== "undefined") onError(e)
-                console.log(bucket)
                 console.log("API Exchange error", e)
             }
 
