@@ -6,13 +6,16 @@ import { router } from "expo-router";
 
 type HeaderScreenTitleType = {
     title: string,
-    addButton: boolean
+    addButton?: boolean
+    grayedOut?: boolean
 }
 
-export default function HeaderScreenTitle({ title, addButton }: HeaderScreenTitleType) {
+export default function HeaderScreenTitle({ title, addButton, grayedOut }: HeaderScreenTitleType) {
     return (
         <View style={globalStyles.topContainer}>
             <View style={globalStyles.headTitleActions}>
+                // si grayedOut est défini, on affiche le titre en gris
+                <Text style={[globalStyles.headTitle, grayedOut ? globalStyles.grayedOut : null]}>{title}</Text>
                 <Text style={globalStyles.headTitle}>{title}</Text>
                 {addButton && <TouchableOpacity
                     onPress={() => {
