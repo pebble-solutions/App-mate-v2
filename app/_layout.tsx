@@ -7,12 +7,17 @@ import VariableContextProvider from "../shared/contexts/VariableContext";
 import SessionStatusContextProvider from "../shared/contexts/SessionStatusContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SessionContextProvider from "../shared/contexts/SessionContext";
-import {Alert} from "react-native";
+import {Alert, SafeAreaView, Text, View} from "react-native";
 import RequestsContextProvider from "../shared/contexts/RequestsContext";
+import useAuth from "../shared/hooks/useAuth";
+import LoginForm from "../components/Auth/LoginForm";
+import {globalStyles} from "../shared/globalStyles";
 
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
+
+    const {user} = useAuth()
 
     const [fontsLoaded, fontError] = useFonts({
         Inter_500Medium, Inter_300Light, Inter_700Bold, Inter_900Black
@@ -30,6 +35,10 @@ export default function RootLayout() {
 
     const handleRequestsError = (e: any) => {
         Alert.alert("Erreur de requête API", e)
+    }
+
+    if (!user) {
+        return <SafeAreaView style={[globalStyles.mainContainer, globalStyles.mh3Container]}><LoginForm /></SafeAreaView>
     }
 
     return (

@@ -2,17 +2,20 @@ import React, {createContext, PropsWithChildren, useContext, useEffect, useRef, 
 import {createRequestsBucket, createRequestsController} from "@pebble-solutions/api-request";
 import {Bucket, Request, RequestsController} from "@pebble-solutions/api-request/lib/types/classes";
 import {Auth} from "../classes/Auth";
+import useAuth from "../hooks/useAuth";
+import {User} from "firebase/auth"
 
 type RequestsContextType = {
     requestsController: RequestsController,
     pushRequest: (request: Request | Bucket) => void,
-    auth: Auth
+    auth: Auth,
+    user: User | null
 }
 
 const RequestsContext= createContext<RequestsContextType | null>(null)
 
 const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError?: (error: any) => void}>) => {
-    const [auth] = useState(new Auth())
+    const {auth, user} = useAuth()
     const [requestsController] = useState(createRequestsController().withAuth(auth))
     const requestsQueue = useRef(createRequestsBucket())
 
@@ -47,7 +50,7 @@ const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError
     }, []);
 
     return (
-        <RequestsContext.Provider value={{requestsController, pushRequest, auth}}>
+        <RequestsContext.Provider value={{requestsController, pushRequest, auth, user}}>
             {children}
         </RequestsContext.Provider>
     )

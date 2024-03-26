@@ -1,27 +1,28 @@
 import {AuthorizationInterface} from "@pebble-solutions/api-request/lib/types/interfaces";
-import {User, getAuth, onAuthStateChanged} from "firebase/auth"
+import {User, getAuth, signOut} from "firebase/auth"
 import {app} from "../../config/firebase"
 
 export class Auth implements AuthorizationInterface {
 
-    readonly auth
+    readonly firebaseAuth
 
     private user: User | null
 
     constructor() {
-        this.auth = getAuth(app)
+        this.firebaseAuth = getAuth(app)
         this.user = null
-        onAuthStateChanged(this.auth, user => {
-            this.user = user
-        })
+    }
+
+    setUser(user: User | null) {
+        this.user = user
     }
 
     login() {
 
     }
 
-    logout() {
-
+    async logout() {
+        await signOut(this.firebaseAuth)
     }
 
     get isAuthenticated() {
