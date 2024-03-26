@@ -24,10 +24,8 @@ import { set } from "date-fns";
 
 export default function ValidateScreen() {
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
-    const { status, resetStatus, resetPayload } = useSessionStatusContext()
-    const [ exitStatus, setExitStatus ] = React.useState(false)
-    const { updateSession, closeSession } = useSessionContext()   
-
+    const { status, resetStatus, resetPayload, exitStatus, setExitStatus } = useSessionStatusContext()
+    const { updateSession, closeSession } = useSessionContext()
     
     useEffect(() => {
         navigate(status || null, router)
@@ -74,7 +72,7 @@ export default function ValidateScreen() {
     }
     
     const exit = () => {
-        setExitStatus(true)
+        setExitStatus(() => true)
         resetPayload()
         resetStatus()
     }

@@ -21,9 +21,8 @@ import {patchRequest} from "@pebble-solutions/api-request";
 
 export default function ClockScreen() {
 
-    const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
-    const { removeSession, updateSession } = useSessionContext()
-    const [ exitStatus, setExitStatus ] = useState(false)
+    const { status, resetStatus, resetPayload, setStatus, exitStatus, setExitStatus } = useSessionStatusContext()
+    const { removeSession } = useSessionContext()
     const { pushRequest } = useRequestsContext()
 
     // If session status change, we run the navigate function from session library
@@ -65,7 +64,7 @@ export default function ClockScreen() {
     }
 
     const exit = () => {
-        setExitStatus(true)
+        setExitStatus(() => true)
         resetPayload()
         resetStatus()
     }

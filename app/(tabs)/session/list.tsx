@@ -32,7 +32,7 @@ export default function ListScreen() {
     const width = Dimensions.get('window').width;
 
     const activeSessionsFromActivity = (sessions: SessionType[], activityId: string) => {
-        return sessions.filter(e => e.type_id === activityId && e.type.toLowerCase() === "activity")
+        return sessions.filter(e => e.type_id === activityId && e.type.toLowerCase() === "activity" && e.is_active)
     }
 
     // Action on new session button is pressed. If some session already exists on provided activity, the user will
