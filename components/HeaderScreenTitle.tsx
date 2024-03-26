@@ -14,9 +14,7 @@ export default function HeaderScreenTitle({ title, addButton, grayedOut }: Heade
     return (
         <View style={globalStyles.topContainer}>
             <View style={globalStyles.headTitleActions}>
-                // si grayedOut est défini, on affiche le titre en gris
                 <Text style={[globalStyles.headTitle, grayedOut ? globalStyles.grayedOut : null]}>{title}</Text>
-                <Text style={globalStyles.headTitle}>{title}</Text>
                 {addButton && <TouchableOpacity
                     onPress={() => {
                         router.push({

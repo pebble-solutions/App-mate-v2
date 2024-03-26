@@ -22,8 +22,8 @@ export default function ActivitiesScreen() {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
                     <View>
-                        {index === 0 && <HeaderScreenTitle title="Activités utilisées" addButton />}
-                        {index === activeActivities.length && <HeaderScreenTitle title="Activités terminées"/>}
+                        {index === 0 && <HeaderScreenTitle title="Activités" addButton />}
+                        {index === activeActivities.length && <HeaderScreenTitle title="Activités terminées" grayedOut/>}
                         <View style={[globalStyles.mContainer, index >= activeActivities.length ? globalStyles.grayedOut : null]}>
                             <TouchableOpacity
                                 onPress={() => {
