@@ -6,11 +6,7 @@ export default function ActivitiesLayout() {
             <Stack.Screen name="index" options={{
                 headerShown: false
             }} />
-            <Stack.Screen name="[id]" options={{
-                presentation: "modal",
-                headerShown: false
-            }} />
-            <Stack.Screen name="create" options={{
+            <Stack.Screen name="edit" options={{
                 presentation: "modal",
                 headerShown: false
             }} />

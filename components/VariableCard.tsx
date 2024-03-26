@@ -5,6 +5,8 @@ import { VariableType } from "../shared/types/VariableType";
 import { useActivityContext } from "../shared/contexts/ActivityContext";
 import { ActivityType } from "../shared/types/ActivityType";
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useState } from "react";
+
 
 type VariableCardOptions = {
     variable: VariableType,
@@ -57,7 +59,9 @@ export default function VariableCard({
                             <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
                         </TouchableOpacity>
                     )
-                ) : null}
+                ) : null
+                }
+
                 {grayedOut && isChecked && (
                     <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
                 )}

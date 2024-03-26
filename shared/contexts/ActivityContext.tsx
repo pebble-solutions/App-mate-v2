@@ -15,6 +15,7 @@ type ActivityContextType = {
     updateActivity: (activity: Activity) => void
     linkVariableToActivity: (activityId: string, variable: VariableType) => void
     removeVariableFromActivity: (activityId: string, variableId: string) => void
+    fetchActivitiesFromAPI: (params?: ReadParamsType) => void
     toggleVariableMandatory: (activityId: string, variable: VariableType) => void
     setVariableMandatory: (activityId: string, variableId: string, mandatory: boolean) => void
     loading: boolean
@@ -153,7 +154,8 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             setVariableMandatory,
             updateActivity,
             loading,
-            pending
+            pending,
+            fetchActivitiesFromAPI
         }}>
             {children}
         </ActivityContext.Provider>

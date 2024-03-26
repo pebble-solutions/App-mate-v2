@@ -13,9 +13,23 @@ export const variables = {
         white: "#ffffff",
         danger: "#cb3c3c",
         success: "#5aab42",
-        active: "#0184d5"
+        active: "#0184d5",
+        alphaDarkLighter: "rgba(0, 0, 0, 0.25)",
+        alphaDark: "rgba(0, 0, 0, 0.5)",
+        alphaDarkDarker: "rgba(0, 0, 0, 0.75)",
+    },
+    shadow: {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     }
-}
+};
+
 
 export const globalStyles = StyleSheet.create({
     mainContainer: {
@@ -436,13 +450,6 @@ export const globalStyles = StyleSheet.create({
         justifyContent: 'flex-end',
         marginEnd: 10,
         marginTop: 20,
-    },
-
-    iconContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        marginBottom: 36,
     },
 
     colorButton: {
