@@ -4,16 +4,16 @@ import {app} from "../../config/firebase"
 
 export class Auth implements AuthorizationInterface {
 
-    /*readonly auth
+    readonly auth
 
-    private user: User | null*/
+    private user: User | null
 
     constructor() {
-        /*this.auth = getAuth(app)
+        this.auth = getAuth(app)
         this.user = null
         onAuthStateChanged(this.auth, user => {
             this.user = user
-        })*/
+        })
     }
 
     login() {
