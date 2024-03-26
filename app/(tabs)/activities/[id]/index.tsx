@@ -22,6 +22,13 @@ export default function ActivityScreen() {
     const [isLoading, setIsLoading] = useState(false);
 
     const { variables } = useVariableContext();
+
+    const [settingsValues, setSettingsValues] = useState({
+        label: '',
+        description: '',
+        color: '',
+    });
+
     if (!activity) {
         return (
             <View style={globalStyles.body}>
@@ -31,13 +38,6 @@ export default function ActivityScreen() {
             </View>
         );
     }
-
-    const [isSettingsVisible, setSettingsVisible] = useState(false);
-    const [settingsValues, setSettingsValues] = useState({
-        label: '',
-        description: '',
-        color: '',
-    });
 
     const colors = activity?.color ? getRGBGradientColors(activity.color) : ["#262729"];
 
@@ -54,7 +54,7 @@ export default function ActivityScreen() {
                     text: "Oui",
                     onPress: async () => {
                         setIsLoading(true);
-                        await removeActivity(activity._id);
+                        removeActivity(activity._id);
                         router.back();
                         setIsLoading(false);
                     },
@@ -79,7 +79,6 @@ export default function ActivityScreen() {
 
         try {
             updateActivity(new Activity(updatedActivity));
-            setSettingsVisible(false);
         } catch (error) {
             Alert.alert("Erreur lors de la mise à jour de l'activité:", (error as Error).message);
         } finally {
@@ -96,55 +95,6 @@ export default function ActivityScreen() {
             style={globalStyles.body}>
 
             {isLoading && <SpinnerLoader />}
-
-            {isSettingsVisible && (
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={isSettingsVisible}
-                    onRequestClose={() => setSettingsVisible(false)}>
-                    <View style={styles.modalBackground}>
-                        <View style={styles.modalContainer}>
-                            <View>
-                                <Text style={[globalStyles.CategoryTitle, globalStyles.textCenter, globalStyles.textLight]}>Réglages de l'activité :</Text>
-                                <TextInput
-                                    style={globalStyles.input}
-                                    placeholder={`Nom de l'activité :  ${activity.label}`}
-                                    placeholderTextColor="#FFFFFF"
-                                    value={settingsValues.label}
-                                    onChangeText={(text) => setSettingsValues({ ...settingsValues, label: text })}
-                                />
-                                <TextInput
-                                    style={globalStyles.input}
-                                    placeholder={`Description de l'activité :  ${activity.description}`}
-                                    placeholderTextColor="#FFFFFF"
-                                    value={settingsValues.description}
-                                    onChangeText={(text) => setSettingsValues({ ...settingsValues, description: text })}
-                                />
-                            </View>
-
-                            <TouchableOpacity
-                                onPress={() => { handleUpdateActivity }}
-                            >
-                                <View style={globalStyles.buttonContainer}>
-                                    <Text style={globalStyles.buttonText}>Valider les changements </Text>
-                                    <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
-                                </View>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                onPress={handleDeleteActivity}
-                            >
-                                <View style={globalStyles.buttonContainer}>
-                                    <Text style={globalStyles.buttonText}>Supprimer cette activité </Text>
-                                    <Ionicons name="trash-outline" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
-            )}
-
 
             <View style={globalStyles.contentContainer}>
                 <View style={globalStyles.headerIcons}>
@@ -179,7 +129,6 @@ export default function ActivityScreen() {
                         <VariableCard
                             key={index}
                             displayRemoveIcon={true}
-                            isMandatory={true}
                             activityId={activity._id}
                             variable={variable}
                         />

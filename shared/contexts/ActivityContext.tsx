@@ -6,6 +6,7 @@ import {deleteRequest, getRequest, patchRequest, postRequest} from "@pebble-solu
 import {useRequestsContext} from "./RequestsContext";
 import {ReadParamsType} from "@pebble-solutions/api-request/lib/types/types";
 import {VariableType} from "../types/VariableType";
+import { ulid } from 'ulidx'
 
 type ActivityContextType = {
     activities: ActivityType[]
@@ -52,6 +53,9 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     const addActivity = (activity: Activity) => {
+        if (!activity._id) {
+            activity._id = ulid()
+        }
         pushRequest(postRequest("https://api.pebble.solutions/v5/activity/", activity.json()))
         updateActivitiesState([activity])
     }

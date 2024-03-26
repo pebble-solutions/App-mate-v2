@@ -8,22 +8,16 @@ import { useActivityContext } from "../../../../shared/contexts/ActivityContext"
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { Activity } from "../../../../shared/classes/Activity";
-import { VariableType } from "../../../../shared/types/VariableType";
-import { useVariableContext } from "../../../../shared/contexts/VariableContext";
-import VariableCard from "../../../../components/VariableCard";
-import { format } from 'date-fns';
-import SpinnerLoader from "../../../../components/ScreenCoverLoader";
 import ActivityForm from "../../../../components/Activity/ActivityForm";
 import { useLocalSearchParams } from "expo-router";
 import { Redirect } from "expo-router";
 
 export default function EditScreen() {
     const { getActivityById, removeActivity, updateActivity } = useActivityContext();
-    const { id } = useLocalSearchParams<{ id: string }>(); // Assurez-vous que cette ligne est toujours appelée avant tout autre hook
+    const { id } = useLocalSearchParams<{ id: string }>();
 
-    const activity = id ? new Activity(getActivityById(id)) : null;
-
-    
+    const activityData = id ? getActivityById(id) : undefined
+    const activity = activityData ? new Activity(activityData) : null;
 
     const handleValidate = (newActivity: Activity) => {
         updateActivity(newActivity)

@@ -14,17 +14,11 @@ import ActivityForm from "../../../components/Activity/ActivityForm";
 
 export default function CreateActivityModal() {
     const { addActivity } = useActivityContext();
-    const [settingsValues, setSettingsValues] = useState({
-        label: '',
-        description: '',
-        color: '',
-    });
 
     const handleValidate = (newActivity: Activity) => {
         addActivity(newActivity);
         router.back();
     }
-
 
     return (
         <LinearGradient
@@ -46,7 +40,7 @@ export default function CreateActivityModal() {
             </View>
             
             <ActivityForm 
-                activity={new Activity({})} 
+                activity={new Activity({is_active: true})}
                 onValidate={handleValidate} 
                 title="Nouvelle activité" 
             />
