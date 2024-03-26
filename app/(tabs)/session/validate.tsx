@@ -51,21 +51,25 @@ export default function ValidateScreen() {
     if (!currentActivity || !currentSession) {
         return null
     }
-    
+    console.log(rawVariables, 'rawVariablesavant setresponse')
     const setResponse = (variableId: string, response: VariableValueType) => {
-        setRawVariables((prev) => {
-            const newVars: RawVariableType[] = []
-            
-            prev.forEach((variable) => {
-                if (variable._id === variableId) variable.value = response
-                newVars.push(variable)
+        
+            setRawVariables((prev) => {
+                const newVars: RawVariableType[] = []
+                
+                prev.forEach((variable) => {
+                    if (variable._id && variable._id === variableId) variable.value = response
+                    newVars.push(variable)
+                })
+                
+                currentSession.raw_variables = newVars
+                
+                return newVars
             })
-            
-            currentSession.raw_variables = newVars
-            
-            return newVars
-        })
+        
+        
     }
+    console.log(rawVariables, 'rawVariablesa apres setresponse')
     
     const handleSequenceChange = (index: number, newVal: SequenceItemType) => {
         currentSession.raw_datas.updateOne(index, newVal)
@@ -83,6 +87,7 @@ export default function ValidateScreen() {
     }
 
     const variables = currentActivity.variables;
+    console.log(rawVariables, 'rawVariables avant mappaga')
 
     if (rawVariables.length === 0) {
         const newRawVariables: RawVariableType[] = variables.map(variable => ({
@@ -93,18 +98,19 @@ export default function ValidateScreen() {
         }));
         setRawVariables(newRawVariables);
     }
+    console.log(rawVariables, 'rawVariables after mappage')
 
     let items: ReactNode[] = []
-
     rawVariables.forEach((variable) => {
+        if (variable._id !== null && variable._id !== undefined) {
+            const key = variable._id
+            const value = variable.value
+            const type = variable.type
+            const label = variable.label
 
-        const value = variable.value
-        const type = variable.type
-        const label = variable.label
-        const key = variable._id
-
-        items.push((
-            <View style={globalStyles.section}>
+            
+            items.push((
+                <View style={globalStyles.section}>
                 <FormInput
                     type={type}
                     value={value}
@@ -112,9 +118,10 @@ export default function ValidateScreen() {
                     label={label}
                     labelStyle={[globalStyles.textLight, globalStyles.textLg]}
                     key={key}
-                />
+                    />
             </View>
         ))
+        }
     })
 
     items.push((
