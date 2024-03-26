@@ -51,25 +51,22 @@ export default function ValidateScreen() {
     if (!currentActivity || !currentSession) {
         return null
     }
-    console.log(rawVariables, 'rawVariablesavant setresponse')
     const setResponse = (variableId: string, response: VariableValueType) => {
-        
-            setRawVariables((prev) => {
-                const newVars: RawVariableType[] = []
-                
-                prev.forEach((variable) => {
-                    if (variable._id && variable._id === variableId) variable.value = response
-                    newVars.push(variable)
-                })
-                
-                currentSession.raw_variables = newVars
-                
-                return newVars
+        setRawVariables((prev) => {
+            const newVars: RawVariableType[] = []
+            
+            prev.forEach((variable) => {
+                if (variable._id && variable._id === variableId) {
+                    variable.value = response
+                newVars.push(variable)
+                }
             })
-        
-        
+            
+            currentSession.raw_variables = newVars
+            
+            return newVars
+        })
     }
-    console.log(rawVariables, 'rawVariablesa apres setresponse')
     
     const handleSequenceChange = (index: number, newVal: SequenceItemType) => {
         currentSession.raw_datas.updateOne(index, newVal)
@@ -87,7 +84,6 @@ export default function ValidateScreen() {
     }
 
     const variables = currentActivity.variables;
-    console.log(rawVariables, 'rawVariables avant mappaga')
 
     if (rawVariables.length === 0) {
         const newRawVariables: RawVariableType[] = variables.map(variable => ({
@@ -98,7 +94,6 @@ export default function ValidateScreen() {
         }));
         setRawVariables(newRawVariables);
     }
-    console.log(rawVariables, 'rawVariables after mappage')
 
     let items: ReactNode[] = []
     rawVariables.forEach((variable) => {
@@ -142,7 +137,7 @@ export default function ValidateScreen() {
                     <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
                 </TouchableOpacity>
             }
-            <SessionHeader label={currentActivity.label} description={currentActivity.description} date={dateToLiteral(currentSession.start)} />    
+            <SessionHeader label={currentActivity.label} description={currentActivity.description} date={dateToLiteral(currentSession.start)} id={currentSession._id} />    
             
             <OnboardingController
                 activeColor={currentActivity.color}
