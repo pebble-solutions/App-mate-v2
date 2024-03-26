@@ -65,7 +65,8 @@ export default function VariableCard({
                         <Ionicons name="remove-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
                 }
-                {displayAddIcon &&
+                {!grayedOut &&
+                    displayAddIcon &&
                     <TouchableOpacity onPress={linkVariable}>
                         <Ionicons name="add-circle-outline" size={25} color="white" />
                     </TouchableOpacity>
