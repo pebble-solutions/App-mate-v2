@@ -11,6 +11,7 @@ export type SessionContextType = {
     removeSession: (id: string) => void,
     getSessionById: (id: string) => Session | undefined,
     updateSession: (session: Session) => void
+    closeSession: (session: Session) => void
     fetchSessionsFromAPI: (params?: ReadParamsType) => Promise<void>
     getSessionsFromActivity: (activityId: string) => Session[]
     pending: boolean
@@ -61,6 +62,12 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         pushRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+session._id, session.json()))
         updateSessionsState([session])
     }
+    const closeSession = (session: Session) => {
+        session.end = new Date()
+        session.is_active = false
+        pushRequest(postRequest("https://api.pebble.solutions/v5/metric/"+session._id+"/close/"))
+        updateSessionsState([session])
+    }
 
     const fetchSessionsFromAPI = async (params?: ReadParamsType) => {
         const request = requestsController.addRequest(
@@ -105,6 +112,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             removeSession,
             getSessionById,
             updateSession,
+            closeSession,
             fetchSessionsFromAPI,
             getSessionsFromActivity,
             pending,
