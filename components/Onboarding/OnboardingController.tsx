@@ -5,6 +5,7 @@ import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
 import Button from "../Button";
 import {Feather} from "@expo/vector-icons";
+import { set } from "date-fns";
 
 type OnboardingControllerOptions = {
     activeColor?: string,
@@ -29,7 +30,6 @@ export default function OnboardingController({activeColor, inactiveColor, items,
     }).current;
 
     const handleToValidate = () => {
-        
         if (currentIndex === validationIndex) {
             validate()
         }
@@ -37,14 +37,14 @@ export default function OnboardingController({activeColor, inactiveColor, items,
 
     const goToIndex = (index: number) => {
         if (index >= 0 && index < items.length) {
-            // console.log('scrolling', slidesRef, index, items.length)
             slidesRef.current?.scrollToIndex({index, animated: true})
+            setCurrentIndex(index);
         }
         else if (index === items.length) {
             Alert.alert('Validation', 'Confirmez-vous la validation de cette session?', [
                 {
                   text: 'Annuler',
-                  onPress: () => console.log('Cancel Pressed'),
+                  onPress: () => {goToIndex(currentIndex)},
                   style: 'cancel',
                 },
                 {text: 'OK', onPress: () => {handleToValidate()}},
