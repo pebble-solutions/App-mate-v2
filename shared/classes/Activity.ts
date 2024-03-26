@@ -19,9 +19,9 @@ export class Activity implements ActivityType {
         this.label = activity.label;
         this.description = activity.description;
         this.color = !activity.color || !this.isValidColor(activity.color) ? Activity.DEFAULT_COLOR : activity.color;
-        this.start = new Date(activity.start);
-        this.variables = activity.variables;
-        this.is_active = activity.is_active;
+        this.start = activity.start ? new Date(activity.start) : new Date();
+        this.variables = activity.variables || [];
+        this.is_active = activity.is_active || false;
     }
 
     setColor(color: string) {
