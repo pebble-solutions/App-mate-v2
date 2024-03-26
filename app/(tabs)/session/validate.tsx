@@ -15,9 +15,7 @@ import SessionSummary from "../../../components/Session/SessionSummary";
 import {VariableValueType} from "../../../shared/types/VariableType";
 import {SequenceItemType} from "../../../shared/types/SequenceType";
 import { Session } from "../../../shared/classes/Session";
-import {JsonSessionType} from "../../../shared/types/SessionType";
 import { useSessionContext } from "../../../shared/contexts/SessionContext";
-import { set } from "date-fns";
 
 
 
