@@ -20,7 +20,7 @@ export default function VariablesList({variables, style, theme, onValueChange}: 
     }
 
     variables.forEach((variable) => {
-        if (variable._id !== null && variable._id !== undefined){
+        if (variable._id){
             items.push(<VariableItem
                 id={variable._id}
                 variable={variable}

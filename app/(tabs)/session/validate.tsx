@@ -96,26 +96,26 @@ export default function ValidateScreen() {
     }
 
     let items: ReactNode[] = []
+
     rawVariables.forEach((variable) => {
-        if (variable._id !== null && variable._id !== undefined) {
+        if (variable._id) {
             const key = variable._id
             const value = variable.value
             const type = variable.type
             const label = variable.label
-
             
             items.push((
                 <View style={globalStyles.section}>
-                <FormInput
-                    type={type}
-                    value={value}
-                    onChange={(newVal) => setResponse(variable._id, newVal)}
-                    label={label}
-                    labelStyle={[globalStyles.textLight, globalStyles.textLg]}
-                    key={key}
-                    />
-            </View>
-        ))
+                    <FormInput
+                        type={type}
+                        value={value}
+                        onChange={(newVal) => setResponse(variable._id, newVal)}
+                        label={label}
+                        labelStyle={[globalStyles.textLight, globalStyles.textLg]}
+                        key={key}
+                        />
+                </View>
+            ))
         }
     })
 
@@ -137,7 +137,7 @@ export default function ValidateScreen() {
                     <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
                 </TouchableOpacity>
             }
-            <SessionHeader label={currentActivity.label} description={currentActivity.description} date={dateToLiteral(currentSession.start)} id={currentSession._id} />    
+            <SessionHeader label={currentActivity.label} description={currentActivity.description} date={dateToLiteral(currentSession.start)} />    
             
             <OnboardingController
                 activeColor={currentActivity.color}
