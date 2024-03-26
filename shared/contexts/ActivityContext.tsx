@@ -86,7 +86,6 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
         }
     }
 
-    // Load all accessible activities on start
     useEffect(() => {
         setLoading(true)
         fetchActivitiesFromAPI().finally(() => setLoading(false))
@@ -106,7 +105,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
         activity.variables[index].mandatory = mandatory
 
-        pushRequest(patchRequest(`https://api.pebble.solutions/v5/activity/${activity._id}/`, {
+        pushRequest(patchRequest(`https://api.pebble.solutions/v5/activity/${activity._id}`, {
             variables: activity.variables
         }))
         updateActivitiesState([activity])
