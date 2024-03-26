@@ -10,7 +10,7 @@ type CreationFormOptions = {
 }
 
 export default function CreationForm({ activity, onDateChange }: CreationFormOptions) {
-    const [selectedDate, setSelectedDate] = useState<Date | null>(activity._id ? new Date(activity._id) : null);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(activity.start ? activity.start : new Date());
 
     const handleDateChange = (newDate: Date | null) => {
         setSelectedDate(newDate);

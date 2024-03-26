@@ -32,6 +32,7 @@ export const globalStyles = StyleSheet.create({
         fontSize: variables.fontSize[5],
         marginVertical: 16
     },
+
     headerIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -39,8 +40,13 @@ export const globalStyles = StyleSheet.create({
 
     CategoryTitle: {
         fontFamily: 'Inter_700Bold',
-        fontSize: variables.fontSize[4],
-        marginVertical: 16
+        fontSize: variables.fontSize[2],
+        marginBottom: 10,
+        marginTop: 20,
+    },
+    
+    grayedOut: {
+        opacity: 0.5, // Vous pouvez ajuster cette valeur pour contrôler le niveau de gris
     },
 
     cardTitle: {
@@ -234,9 +240,30 @@ export const globalStyles = StyleSheet.create({
         marginBottom: variables.contentMargin[4]
     },
 
+    myContainer: {
+        marginBottom: variables.contentMargin[1],
+        marginTop: variables.contentMargin[1]
+    },
+
+    my2Container: {
+        marginBottom: variables.contentMargin[2],
+        marginTop: variables.contentMargin[2]
+    },
+
+    my3Container: {
+        marginBottom: variables.contentMargin[3],
+        marginTop: variables.contentMargin[3]
+    },
+
+    my4Container: {
+        marginBottom: variables.contentMargin[4],
+        marginTop: variables.contentMargin[4]
+    },
+
     sContainer: {
         flex: 1,
     },
+    
     contentContainer: {
         marginHorizontal: variables.contentMargin[2],
     },
@@ -253,8 +280,6 @@ export const globalStyles = StyleSheet.create({
         borderWidth: 1,
         minHeight: "72%",
     },
-
-
     topContainer: {
         marginHorizontal: variables.contentMargin[2],
         marginTop: variables.contentMargin[5],
@@ -344,12 +369,17 @@ export const globalStyles = StyleSheet.create({
     buttonAlert: {
         backgroundColor: "white",
     },
+
+    textMd: {
+        fontSize: variables.fontSize[2]
+    },
+
     textLg: {
-        fontSize: variables.fontSize[1]
+        fontSize: variables.fontSize[3]
     },
 
     textXl: {
-        fontSize: variables.fontSize[2]
+        fontSize: variables.fontSize[5]
     },
 
     input: {
@@ -390,7 +420,7 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: "grey",
         color: "white",
         fontSize: variables.fontSize[0],
-        width: "40%",
+        width: "50%",
         alignItems: 'center',
     },
     buttonTextTunnel: {

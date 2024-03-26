@@ -1,28 +1,38 @@
-import {Alert, SafeAreaView, View} from "react-native";
+import {Alert, SafeAreaView, View, Text, StyleSheet, Platform, TouchableOpacity} from "react-native";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
-import {useSessionContext} from "../../../shared/contexts/SessionContext";
-import {router} from "expo-router";
-import React, {ReactNode, useEffect, useState} from "react";
+import {Redirect, router} from "expo-router";
+import React, {ReactNode, useEffect, useState, useContext} from "react";
 import {RawVariableType, SessionType} from "../../../shared/types/SessionType";
 import { globalStyles } from "../../../shared/globalStyles";
 import {ActivityType} from "../../../shared/types/ActivityType";
 import OnboardingController from "../../../components/Onboarding/OnboardingController";
 import FormInput from "../../../components/Form/FormInput";
-import VariablesResume from "../../../components/Session/VariablesResume";
+import { SessionHeader } from "../../../components/Session/SessionHeader";
+import { dateToLiteral } from "../../../shared/libs/date";
+import { Ionicons } from '@expo/vector-icons';
+import SessionSummary from "../../../components/Session/SessionSummary";
+import {VariableValueType} from "../../../shared/types/VariableType";
+import {SequenceItemType} from "../../../shared/types/SequenceType";
+import { Session } from "../../../shared/classes/Session";
+import {JsonSessionType} from "../../../shared/types/SessionType";
+import { useSessionContext } from "../../../shared/contexts/SessionContext";
+import { set } from "date-fns";
+
+
+
 
 export default function ValidateScreen() {
-    const sessionContext = useSessionContext();
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
-    const { status, resetStatus, resetPayload, setStatus } = useSessionStatusContext()
-    const [ exitStatus, setExitStatus ] = React.useState(false)
-
+    const { status, resetStatus, resetPayload, exitStatus, setExitStatus } = useSessionStatusContext()
+    const { updateSession, closeSession } = useSessionContext()
+    
     useEffect(() => {
         navigate(status || null, router)
     }, [status])
-
+    
     let session, activity;
-
+    
     try {
         session = getCurrentSession()
         activity = getCurrentActivity()
@@ -33,32 +43,43 @@ export default function ValidateScreen() {
             Alert.alert(message)
         }
     }
-
+    
     const [ currentSession ] = useState<SessionType | null>(session || null)
     const [ currentActivity ] = useState<ActivityType | null>(activity || null)
-
+    
     // Exit or error status
     if (!currentActivity || !currentSession) {
         return null
     }
-
-    const setResponse = (variableId: string, response: any) => {
+    
+    const setResponse = (variableId: string, response: VariableValueType) => {
         setRawVariables((prev) => {
             const newVars: RawVariableType[] = []
-
+            
             prev.forEach((variable) => {
                 if (variable._id === variableId) variable.value = response
                 newVars.push(variable)
             })
-
+            
+            currentSession.raw_variables = newVars
+            
             return newVars
         })
     }
-
+    
+    const handleSequenceChange = (index: number, newVal: SequenceItemType) => {
+        currentSession.raw_datas.updateOne(index, newVal)
+    }
+    
     const exit = () => {
-        setExitStatus(true)
+        setExitStatus(() => true)
         resetPayload()
         resetStatus()
+    }
+    const validateSession = async () => {
+        updateSession(new Session (currentSession))
+        closeSession(new Session(currentSession))
+        exit()
     }
 
     const variables = currentActivity.variables;
@@ -73,12 +94,6 @@ export default function ValidateScreen() {
         setRawVariables(newRawVariables);
     }
 
-    const postSession =  async (raw_variables: RawVariableType[]) => {
-        sessionContext.updateSession(currentSession._id, {...currentSession, raw_variables: raw_variables});
-        await sessionContext.postSession(currentSession._id, {...currentSession});
-        exit()
-    }
-
     let items: ReactNode[] = []
 
     rawVariables.forEach((variable) => {
@@ -86,6 +101,7 @@ export default function ValidateScreen() {
         const value = variable.value
         const type = variable.type
         const label = variable.label
+        const key = variable._id
 
         items.push((
             <View style={globalStyles.section}>
@@ -94,29 +110,39 @@ export default function ValidateScreen() {
                     value={value}
                     onChange={(newVal) => setResponse(variable._id, newVal)}
                     label={label}
-                    labelStyle={[globalStyles.textLight, globalStyles.textXl]}
+                    labelStyle={[globalStyles.textLight, globalStyles.textLg]}
+                    key={key}
                 />
             </View>
         ))
     })
 
     items.push((
-        <VariablesResume
-            variables={rawVariables}
+        <SessionSummary
+            session={currentSession}
             theme={"dark"}
-            containerStyle={[globalStyles.body, globalStyles.mv3Container, globalStyles.mh3Container]}
+            onVariableChange={setResponse}
+            onSequenceChange={handleSequenceChange}
         />
     ))
 
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
+            {Platform.OS === 'android' && 
+                <TouchableOpacity onPress={() => {
+                    router.back();
+                }}>
+                    <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
+                </TouchableOpacity>
+            }
+            <SessionHeader label={currentActivity.label} description={currentActivity.description} date={dateToLiteral(currentSession.start)} />    
+            
             <OnboardingController
                 activeColor={currentActivity.color}
                 items={items}
                 validationIndex={items.length - 1}
+                validate={validateSession}
             />
         </SafeAreaView>
     )
-
-    
 }

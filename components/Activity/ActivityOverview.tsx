@@ -1,6 +1,6 @@
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {getRGBGradientColors} from "../../shared/libs/color";
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import {ActivityType} from "../../shared/types/ActivityType";
 import {router} from "expo-router";
@@ -12,6 +12,7 @@ import {SessionType} from "../../shared/types/SessionType";
 import {SessionCard} from "../Session/SessionCard";
 import { useState } from "react";
 import CreationForm from "../Session/CreationForm";
+import TextLoader from "../TextLoader";
 
 type ActivityOverviewType = {
     activity: ActivityType,
@@ -19,10 +20,11 @@ type ActivityOverviewType = {
     onManualPress?: () => void,
     buttonTitle?: string,
     sessions?: SessionType[],
-    onSessionPress?: (session: SessionType) => void
+    onSessionPress?: (session: SessionType) => void,
+    sessionsLoading?: boolean
 }
 
-export default function ActivityOverview({ activity, onNewPress, onManualPress, onSessionPress, buttonTitle, sessions }: ActivityOverviewType) {
+export default function ActivityOverview({ activity, onNewPress, onManualPress, onSessionPress, buttonTitle, sessions, sessionsLoading }: ActivityOverviewType) {
 
     const [manualMode,setManualMode] = useState(false)
 
@@ -44,13 +46,13 @@ export default function ActivityOverview({ activity, onNewPress, onManualPress, 
                     manualMode ? <CreationForm activity={activity} /> : <>
                         {sessions?.length ? (
                             <>
-                                <View style={[globalStyles.mt3Container, { opacity: .5 }]}>
+                                <View style={[globalStyles.mt3Container, {opacity: .5}]}>
                                     <Text style={globalStyles.textLight}>{sessions.length} session{sessions.length > 1 && "s"} en cours</Text>
                                 </View>
                                 <FlatList
-                                    style={[globalStyles.mv2Container, globalStyles.body, { width: "100%" }]}
+                                    style={[globalStyles.mv2Container, globalStyles.body, {width: "100%"}]}
                                     data={sessions}
-                                    renderItem={({ item }) => <SessionCard
+                                    renderItem={({item}) => <SessionCard
                                         session={item}
                                         key={item._id}
                                         onPress={() => {
@@ -59,8 +61,7 @@ export default function ActivityOverview({ activity, onNewPress, onManualPress, 
                                     />}
                                 />
                             </>
-                        )
-                            : null}
+                        ) : sessionsLoading ? <TextLoader label="Chargement des sessions..." /> : null}
 
                         {onNewPress || onManualPress ? <View style={[globalStyles.mv2Container, styles.buttonContainer]}>
                             {onNewPress && <Button

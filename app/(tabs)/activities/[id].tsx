@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity, Alert } from "react-native"; // Importez Alert
+import { Text, View, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../shared/libs/color";
 import { globalStyles } from "../../../shared/globalStyles";
-import { ActivityType } from "../../../shared/types/ActivityType";
 import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import { VariableType } from "../../../shared/types/VariableType";
 import { useVariableContext } from "../../../shared/contexts/VariableContext";
@@ -13,9 +12,10 @@ import { format } from 'date-fns';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
+import {Activity} from "../../../shared/classes/Activity";
 
 export default function ActivityScreen() {
-    const { getActivityById, removeActivity, editActivity } = useActivityContext();
+    const { getActivityById, removeActivity, updateActivity } = useActivityContext();
     const { _id } = useLocalSearchParams<{ _id: string }>();
     const activity = _id ? getActivityById(_id) : null;
 
@@ -60,7 +60,7 @@ export default function ActivityScreen() {
         );
     }
 
-    const updateActivity = () => {
+    const editActivity = () => {
         const updatedActivity = {
             _id: activity._id,
             label: settingsValues.label || activity.label,
@@ -71,9 +71,8 @@ export default function ActivityScreen() {
             is_active: activity.is_active,
         };
 
-        editActivity(activity._id, updatedActivity);
+        updateActivity(new Activity(updatedActivity));
         setSettingsVisible(false);
-
     }
 
     return (
@@ -134,7 +133,7 @@ export default function ActivityScreen() {
                     <TouchableOpacity
 
                         onPress={() => {
-                            updateActivity();
+                            editActivity();
                             setSettingsVisible(false);
                         }}
                     >
@@ -158,34 +157,37 @@ export default function ActivityScreen() {
             </View>
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
-                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Mes jolies variables :</Text>
+                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight, globalStyles.textCenter]}>Variables liées à l'activité :</Text>
                     {activity.variables.map((variable: VariableType, index: number) => (
                         <VariableCard
                             key={index}
-                            label={variable.label}
-                            description={variable.description}
-                            mandatory={variable.mandatory}
                             displayRemoveIcon={true}
                             isMandatory={true}
                             activityId={activity._id}
-                            variableId={variable._id}
+                            variable={variable}
                         />
                     ))}
                 </View>
                 <View style={globalStyles.contentContainer}>
-                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
-                    {variables.map((variable: VariableType, index: number) => (
-                        <VariableCard
-                            key={index}
-                            label={variable.label}
-                            description={variable.description}
-                            displayAddIcon={true}
-                            activityId={activity._id}
-                            variableId={variable._id}
-                        />
-                    ))}
+                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight, globalStyles.textCenter]}>Autres variables pour cette activité :</Text>
+                    {variables.map((variable: VariableType, index: number) => {
+                        const isVariableLinked = activity.variables.some((v: VariableType) => v.label === variable.label);
+                        return (
+                            <View key={index}>
+                                <VariableCard
+                                    variable={variable}
+                                    displayAddIcon={!isVariableLinked}
+                                    activityId={activity._id}
+                                    grayedOut={isVariableLinked}
+                                    isChecked
+                                />
+                            </View>
+                        );
+                    })}
                 </View>
             </ScrollView>
+
+
         </LinearGradient>
     )
 }

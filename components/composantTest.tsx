@@ -12,7 +12,6 @@ type VariableTestType = {
 };
 
 const VariableTest = ({variable} : VariableTestType, {session} : VariableTestType) => {
-    console.log(variable, 'variable')
     if (variable) {
         return  <View>
                     <Text style={globalStyles.textLight}>{variable.label}</Text>

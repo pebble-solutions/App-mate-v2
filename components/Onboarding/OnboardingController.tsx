@@ -1,5 +1,5 @@
 import Timeline from "./Timeline";
-import {Animated, FlatList, StyleSheet, useWindowDimensions, View, ViewToken} from "react-native";
+import {Animated, FlatList, StyleSheet, useWindowDimensions, View, ViewToken, Text, Alert} from "react-native";
 import ValidationButton from "./ValidationButton";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
@@ -12,9 +12,10 @@ type OnboardingControllerOptions = {
     items: ReactNode[],
     validationColor?: string,
     validationIndex?: number
+    validate: () => void
 }
 
-export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex}: OnboardingControllerOptions) {
+export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex, validate}: OnboardingControllerOptions) {
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const { width } = useWindowDimensions()
@@ -23,12 +24,31 @@ export default function OnboardingController({activeColor, inactiveColor, items,
     const slidesRef = useRef<FlatList | null>(null)
 
     const viewableItemsChanged = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
+        // console.log(viewableItems, 'viewableItems')
         setCurrentIndex(viewableItems[0].index || 0)
     }).current;
 
+    const handleToValidate = () => {
+        
+        if (currentIndex === validationIndex) {
+            validate()
+        }
+    }
+
     const goToIndex = (index: number) => {
         if (index >= 0 && index < items.length) {
-            slidesRef.current?.scrollToIndex({index})
+            // console.log('scrolling', slidesRef, index, items.length)
+            slidesRef.current?.scrollToIndex({index, animated: true})
+        }
+        else if (index === items.length) {
+            Alert.alert('Validation', 'Confirmez-vous la validation de cette session?', [
+                {
+                  text: 'Annuler',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () => {handleToValidate()}},
+              ]);
         }
     }
 
@@ -41,7 +61,7 @@ export default function OnboardingController({activeColor, inactiveColor, items,
             
             <FlatList
                 data={items}
-                renderItem={({item}) => <View style={[localStyle.itemContainer, {width}]}>{item}</View>}
+                renderItem={({item}) => <View key={currentIndex} style={[localStyle.itemContainer, {width}]}>{item}</View>}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled
@@ -111,7 +131,7 @@ const localStyle = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: variables.contentMargin[3]
+        marginTop: variables.contentMargin[3],
     },
 
     buttonContainer: {

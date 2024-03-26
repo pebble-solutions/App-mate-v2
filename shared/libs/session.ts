@@ -1,6 +1,5 @@
 import {SessionContextType, useSessionContext} from "../contexts/SessionContext";
 import {SessionStatusContextType, useSessionStatusContext} from "../contexts/SessionStatusContext";
-import { SessionType } from "../types/SessionType";
 import {SessionStatusType} from "../types/SessionStatusType";
 import {Router} from "expo-router/build/types";
 import {InvalidSessionIDError} from "./errors/InvalidSessionIDError";
@@ -11,24 +10,18 @@ import {NoActivityIdError} from "./errors/NoActivityIdError";
 import {InvalidSessionTypeError} from "./errors/InvalidSessionTypeError";
 import {ActivityNotFoundError} from "./errors/ActivityNotFoundError";
 import {Session} from "../classes/Session";
+import { ulid } from 'ulidx'
 
 export function newSession (activityId: string, sessionContext: SessionContextType, statusContext: SessionStatusContextType){
-    let r = (Math.random() + 1).toString(36).substring(7);
-
     const newSession = new Session({
-        _id: r,
+        _id: ulid(),
         type: "activity",
         start: new Date(),
         type_id: activityId,
         label: "Nouveau Pointage de John DOE",
         comment: "",
         status: "started",
-        owner: {
-            _id: "1",
-            firstName: "John",
-            lastName: "Doe",
-            matricule: "ANDROID-1234",
-        },
+        owner: null,
         raw_datas: [],
         raw_variables: []
     })
@@ -77,10 +70,6 @@ export function getRouteByStatus(status?: SessionStatusType | null) {
 
 /**
  * Get the current session stored in the session status context
- *
- * @throws InvalidSessionIDError
- * @throws SessionNotFoundError
- * @throws NoSessionStatusError
  */
 export default function getCurrentSession() {
     const { getStatus, getPayload } = useSessionStatusContext()
@@ -89,19 +78,13 @@ export default function getCurrentSession() {
     if (getStatus()) {
         const payload = getPayload()
         if (!payload || typeof payload !== "string") {
-            throw new InvalidSessionIDError(payload)
+            return null
         }
 
-        const session = getSessionById(payload)
-
-        if (!session) {
-            throw new SessionNotFoundError(payload)
-        }
-
-        return session
+        return getSessionById(payload) || null
     }
 
-    throw new NoSessionStatusError()
+    return null
 }
 
 /**
@@ -114,6 +97,10 @@ export default function getCurrentSession() {
 export function getCurrentActivity() {
     const { getActivityById } = useActivityContext()
     const session = getCurrentSession()
+
+    if (!session) {
+        throw new NoSessionStatusError()
+    }
 
     if (!session.type_id) {
         throw new NoActivityIdError()

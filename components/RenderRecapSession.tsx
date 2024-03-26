@@ -7,10 +7,8 @@ type renderRecapSessionType = {
     raw_variables: RawVariableType[];
 }
 const RenderRecapSession: React.FC<renderRecapSessionType> = ({ raw_variables}) => {
-    console.log(raw_variables, 'raw_variables') 
     const renderItemValue = (item: RawVariableType) => {
         if (item.value instanceof Date) {
-            console.log(item.value)
             return <Text style={globalStyles.textLight}>{item.value.toLocaleString()}</Text>;
         }
         return <Text  style={globalStyles.textLight}>?{typeof item.value}</Text>

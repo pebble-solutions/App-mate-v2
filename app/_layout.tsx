@@ -1,3 +1,4 @@
+import 'react-native-get-random-values'
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts, Inter_500Medium, Inter_300Light, Inter_700Bold, Inter_900Black } from '@expo-google-fonts/inter';
 import { useEffect } from "react";
@@ -6,8 +7,8 @@ import VariableContextProvider from "../shared/contexts/VariableContext";
 import SessionStatusContextProvider from "../shared/contexts/SessionStatusContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SessionContextProvider from "../shared/contexts/SessionContext";
-import {SafeAreaView} from "react-native";
-import {globalStyles} from "../shared/globalStyles";
+import {Alert} from "react-native";
+import RequestsContextProvider from "../shared/contexts/RequestsContext";
 
 SplashScreen.preventAutoHideAsync()
 
@@ -27,21 +28,27 @@ export default function RootLayout() {
         return null
     }
 
+    const handleRequestsError = (e: any) => {
+        Alert.alert("Erreur de requête API", e)
+    }
+
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <SessionContextProvider>
-                <SessionStatusContextProvider>
-                    <VariableContextProvider>
-                        <ActivityContextProvider>
-                            <Stack>
-                                <Stack.Screen name="(tabs)" options={{
-                                    headerShown: false
-                                }} />
-                            </Stack>
-                        </ActivityContextProvider>
-                    </VariableContextProvider>
-                </SessionStatusContextProvider>
-            </SessionContextProvider>
+            <RequestsContextProvider onError={handleRequestsError}>
+                <SessionContextProvider>
+                    <SessionStatusContextProvider>
+                        <VariableContextProvider>
+                            <ActivityContextProvider>
+                                <Stack>
+                                    <Stack.Screen name="(tabs)" options={{
+                                        headerShown: false
+                                    }} />
+                                </Stack>
+                            </ActivityContextProvider>
+                        </VariableContextProvider>
+                    </SessionStatusContextProvider>
+                </SessionContextProvider>
+            </RequestsContextProvider>
         </GestureHandlerRootView>
     )
 }
