@@ -21,7 +21,6 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
     
     const labelStyle = theme === "dark" ? globalStyles.textLight : globalStyles.textGrey
     const valueStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textDark
-
     const valueToString = (value?: string | Date | number | boolean | null, type?: string | null) => {
         let str: string;
         if (value instanceof Date) {
@@ -63,7 +62,7 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
         setUpdatedValue(() => variable.value || null)
         setEditMode(() => false)
     }
-
+    
     return (
         <>
             {!editMode ? (
@@ -91,6 +90,7 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                         buttonName1="Annuler"
                         buttonName2="Valider"
                     />
+                    
                 </View>
             )}
         </>
