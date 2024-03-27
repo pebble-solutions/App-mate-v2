@@ -28,7 +28,7 @@ export default function ValidateScreen() {
     useEffect(() => {
         navigate(status || null, router)
     }, [status])
-    
+    console.log('validate screen')
     let session, activity;
     
     try {
@@ -49,14 +49,15 @@ export default function ValidateScreen() {
     if (!currentActivity || !currentSession) {
         return null
     }
+    console.log(currentSession, 'currentSession')
     const setResponse = (variableId: string, response: VariableValueType) => {
         setRawVariables((prev) => {
             const newVars: RawVariableType[] = []
             
             prev.forEach((variable) => {
-                if (variable._id && variable._id === variableId) {
+                if (variable._id) {
                     variable.value = response
-                newVars.push(variable)
+                    newVars.push(variable)
                 }
             })
             
@@ -82,21 +83,22 @@ export default function ValidateScreen() {
     }
 
     const variables = currentActivity.variables;
+    
 
     if (rawVariables.length === 0) {
         const newRawVariables: RawVariableType[] = variables.map(variable => ({
             _id: variable._id,
             label: variable.question,
             type: variable.type,
-            value: undefined
+            value: undefined,
         }));
+        console.log(newRawVariables, 'newRawVariables')
         setRawVariables(newRawVariables);
     }
 
     let items: ReactNode[] = []
-
+    console.log(rawVariables, 'rawVariables')
     rawVariables.forEach((variable) => {
-        if (variable._id) {
             const key = variable._id
             const value = variable.value
             const type = variable.type
@@ -114,7 +116,6 @@ export default function ValidateScreen() {
                         />
                 </View>
             ))
-        }
     })
 
     items.push((

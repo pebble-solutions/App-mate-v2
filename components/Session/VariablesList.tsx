@@ -13,6 +13,7 @@ type VariablesResumeOptions = {
 }
 
 export default function VariablesList({variables, style, theme, onValueChange}: VariablesResumeOptions) {
+    console.log(variables, 'variables in list')
     const items: ReactNode[] = []
 
     const handleChangeValue = (variableId: string, newVal: VariableValueType) => {
@@ -20,14 +21,14 @@ export default function VariablesList({variables, style, theme, onValueChange}: 
     }
 
     variables.forEach((variable) => {
-        if (variable._id){
+        
             items.push(<VariableItem
                 id={variable._id}
                 variable={variable}
                 theme={theme}
                 onChange={(newVal) => handleChangeValue(variable._id, newVal)}
             />)
-        }
+        
 
     })
 
