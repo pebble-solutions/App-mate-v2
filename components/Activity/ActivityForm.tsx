@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import TextInput from '../Form/TextInput'
 import { Activity } from "../../shared/classes/Activity"
 import { globalStyles } from '../../shared/globalStyles'
