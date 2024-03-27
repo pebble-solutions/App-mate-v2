@@ -1,9 +1,11 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
 import TextInput from '../Form/TextInput'
 import { Activity } from "../../shared/classes/Activity"
 import { globalStyles } from '../../shared/globalStyles'
 import { ReactNode, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
+
+const screenHeight = Dimensions.get('window').height;
 
 type ActivityFormOptions = {
     activity: Activity,
@@ -75,67 +77,83 @@ export default function ActivityForm({
         }
     }
 
-    return (<View>
-        { title && <View>
-            <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>
-                {title}
-            </Text>
-        </View> }
+    return (
+        <View style={styles.container}>
+            { title && <View>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>
+                    {title}
+                </Text>
+            </View> }
 
-        <View style={globalStyles.contentContainer}>
-            <TextInput
-                onChange={handleLabelChange}
-                value={label}
-                placeholder={activity.label || "Nom pour cette activité"}
-            />
-        </View>
-        <View style={globalStyles.contentContainer}>
-            <TextInput
-                onChange={handleDescriptionChange}
-                value={description}
-                placeholder={activity.description || "Description pour cette activité"}
-            />
-        </View>
-
-        <View style={globalStyles.contentContainer}>
-
-            <View style={styles.colorList}>
-                {colorSet.map((col, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={[
-                            styles.colorButton,
-                            { backgroundColor: col, borderColor: col === color ? 'white' : 'transparent' }
-                        ]}
-                        onPress={() => handleColorChange(col)}
-                    />
-                ))}
+            <View style={globalStyles.contentContainer}>
+                <TextInput
+                    onChange={handleLabelChange}
+                    value={label}
+                    placeholder={activity.label || "Nom pour cette activité"}
+                />
+            </View>
+            <View style={globalStyles.contentContainer}>
+                <TextInput
+                    onChange={handleDescriptionChange}
+                    value={description}
+                    placeholder={activity.description || "Description pour cette activité"}
+                />
             </View>
 
-        </View>
+            <View style={globalStyles.contentContainer}>
 
-        <View>
-            <TouchableOpacity
-                onPress={handleValidate}
-            >
-                {icon || <Ionicons name="checkmark-circle" size={120} color="white" />}
-            </TouchableOpacity>
+                <View style={styles.colorList}>
+                    {colorSet.map((col, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={[
+                                styles.colorButton,
+                                { backgroundColor: col, borderColor: col === color ? 'white' : 'transparent' }
+                            ]}
+                            onPress={() => handleColorChange(col)}
+                        />
+                    ))}
+                </View>
+
+            </View>
+
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                    onPress={handleValidate}
+                    style={styles.button}
+                >
+                    {icon || <Ionicons name="checkmark-circle" size={120} color="white" />}
+                </TouchableOpacity>
+            </View>
         </View>
-    </View>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     colorList: {
         flexDirection: 'row',
         alignItems: 'center',
         flexWrap: 'wrap',
+        marginVertical: 15,
     },
     colorButton: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-        margin: 5,
-        borderWidth: 2,
-    }
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        margin: 10,
+        borderWidth: 3,
+    },
+    buttonContainer: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        alignItems: 'center',
+        marginBottom: 30,
+    },
+    button: {
+        alignItems: 'center',
+    },
 })
