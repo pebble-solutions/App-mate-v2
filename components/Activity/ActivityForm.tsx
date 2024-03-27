@@ -5,8 +5,6 @@ import { globalStyles } from '../../shared/globalStyles'
 import { ReactNode, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 
-const screenHeight = Dimensions.get('window').height;
-
 type ActivityFormOptions = {
     activity: Activity,
     title?: string,
