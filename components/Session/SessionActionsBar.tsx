@@ -14,7 +14,7 @@ type ActionsBarOptions = {
     onExit?: () => void,
     started?: boolean,
     style?: object[],
-    sequence: SequenceType
+    sequence: SequenceType,
 }
 
 export function SessionActionsBar({onStart, onEnd, onCancel, onValidate, onExit, started, style, sequence}: ActionsBarOptions) {

@@ -21,9 +21,11 @@ import {patchRequest} from "@pebble-solutions/api-request";
 
 export default function ClockScreen() {
 
-    const { status, resetStatus, resetPayload, setStatus, exitStatus, setExitStatus } = useSessionStatusContext()
+    const { status, resetStatus, resetPayload, setStatus, exitStatus, setExitStatus, sessionMode, setSessionMode } = useSessionStatusContext()
     const { removeSession } = useSessionContext()
     const { pushRequest } = useRequestsContext()
+
+
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
@@ -124,6 +126,7 @@ export default function ClockScreen() {
                 />
                 <Title title={currentActivity.label} style={[globalStyles.textLight, globalStyles.textCenter]} size="lg" />
             </GradientHeader>
+            {sessionMode && <View><Text>je suis en mode manuel</Text></View>}
 
             <View style={[globalStyles.body, globalStyles.darkBg]}>
 
@@ -141,7 +144,7 @@ export default function ClockScreen() {
                     <SequenceList sequence={sequence} />
 
                 </View>
-
+                {!sessionMode &&
                 <SessionActionsBar
                     onCancel={cancel}
                     onExit={exit}
@@ -151,6 +154,9 @@ export default function ClockScreen() {
                     style={[globalStyles.mb3Container]}
                     sequence={sequence}
                 />
+                
+                }
+
             </View>
         </View>
     )

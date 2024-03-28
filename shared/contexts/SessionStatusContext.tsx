@@ -16,6 +16,10 @@ export type SessionStatusContextType = {
     resetPayload: () => void,
     exitStatus: boolean,
     setExitStatus: Dispatch<SetStateAction<boolean>>
+    sessionMode: boolean,
+    setSessionMode: Dispatch<SetStateAction<boolean>>
+
+
 }
 
 const SessionStatusContext= createContext<SessionStatusContextType | null>(null)
@@ -24,6 +28,7 @@ const SessionStatusContextProvider = ({children}: PropsWithChildren<{}>) => {
     const [status, setStatus] = useState<StatusType>()
     const [payload, setPayload] = useState<PayloadType>()
     const [exitStatus, setExitStatus] = useState(false)
+    const [sessionMode, setSessionMode] = useState(false)
 
     const getStatus = () => {
         return status
@@ -52,7 +57,9 @@ const SessionStatusContextProvider = ({children}: PropsWithChildren<{}>) => {
             setPayload,
             resetPayload,
             exitStatus,
-            setExitStatus
+            setExitStatus,
+            sessionMode,
+            setSessionMode
         }}>
             {children}
         </SessionStatusContext.Provider>

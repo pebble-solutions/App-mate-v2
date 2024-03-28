@@ -6,7 +6,7 @@ import DateTimeInput from "../Form/DateTimeInput";
 
 type CreationFormOptions = {
     activity: ActivityType
-    onDateChange?: (newDate: Date | null) => void
+    onDateChange: () => void
 }
 
 export default function CreationForm({ activity, onDateChange }: CreationFormOptions) {
@@ -14,19 +14,19 @@ export default function CreationForm({ activity, onDateChange }: CreationFormOpt
 
     const handleDateChange = (newDate: Date | null) => {
         setSelectedDate(newDate);
-        // onDateChange(newDate)
+         onDateChange()
     };
 
     return (
-        <View>
-            {/* <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text> */}
-            <Text style={[globalStyles.textLight, globalStyles.mContainer]}> Choisissez une date de début </Text>
+        <View style = {localStyle.flex}>
+            <Text style={[globalStyles.textLight, globalStyles.mContainer]}> Choisissez une date de début  
+            </Text> 
             <View style={globalStyles.card}>
                 <DateTimeInput 
                     value={selectedDate}
                     type="date"
                     onChange={handleDateChange}
-                    />
+                />
             </View>
         </View>
     );
@@ -34,10 +34,8 @@ export default function CreationForm({ activity, onDateChange }: CreationFormOpt
 
  
 const localStyle = StyleSheet.create({
-    picker: {
-        borderRadius: 100,
-        color: "white"
-        // width: "90%"
+    flex:{
+        flex : 0.4
     }
 })
 

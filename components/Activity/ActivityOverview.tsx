@@ -21,17 +21,17 @@ type ActivityOverviewType = {
     buttonTitle?: string,
     sessions?: SessionType[],
     onSessionPress?: (session: SessionType) => void,
-    sessionsLoading?: boolean
+    sessionsLoading?: boolean,
+
 }
 
-export default function ActivityOverview({ activity, onNewPress, onManualPress, onSessionPress, buttonTitle, sessions, sessionsLoading }: ActivityOverviewType) {
+export default function ActivityOverview({ activity, onNewPress,onManualPress, onSessionPress,  buttonTitle, sessions, sessionsLoading }: ActivityOverviewType) {
 
-    const [manualMode,setManualMode] = useState(false)
 
     buttonTitle = buttonTitle || "Consulter"
 
-    const handleManualMode = () => {
-        setManualMode(() => true )
+    const openSession = () => {
+        console.log('open')
     }
 
     return (
@@ -42,8 +42,7 @@ export default function ActivityOverview({ activity, onNewPress, onManualPress, 
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
                 <Text style={globalStyles.textLight}>{activity.description}</Text>
 
-                {
-                    manualMode ? <CreationForm activity={activity} /> : <>
+               <>
                         {sessions?.length ? (
                             <>
                                 <View style={[globalStyles.mt3Container, {opacity: .5}]}>
@@ -61,7 +60,8 @@ export default function ActivityOverview({ activity, onNewPress, onManualPress, 
                                     />}
                                 />
                             </>
-                        ) : sessionsLoading ? <TextLoader label="Chargement des sessions..." /> : null}
+                        ) : 
+                        sessionsLoading ? <TextLoader label="Chargement des sessions..." /> : null}
 
                         {onNewPress || onManualPress ? <View style={[globalStyles.mv2Container, styles.buttonContainer]}>
                             {onNewPress && <Button
@@ -72,13 +72,13 @@ export default function ActivityOverview({ activity, onNewPress, onManualPress, 
                                 titleStyle={[{ color: activity.color }]} />}
                             {onManualPress && <Button
                                 title="Saisie Manuelle"
-                                onPress={handleManualMode}
+                                onPress={onManualPress}
                                 style={[globalStyles.ms2Container, styles.buttonOutlined]}
                                 variant="xl"
                                 titleStyle={[{ color: "white" }]} />}
                         </View> : null}
-                    </>
-                }
+                     </>
+                
 
                
             </View>

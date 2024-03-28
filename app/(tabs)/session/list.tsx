@@ -17,8 +17,9 @@ export default function ListScreen() {
     const sessionContext = useSessionContext()
     const { sessions } = sessionContext
     const statusContext = useSessionStatusContext()
-    const { status } = statusContext
+    const { status, sessionMode, setSessionMode } = statusContext
     const [activeActivities, setActiveActivities] = useState<ActivityType[]>([])
+
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
@@ -62,7 +63,10 @@ export default function ListScreen() {
 
     const openSessionHandler = (session: SessionType) => openSession(session._id, sessionContext, statusContext)
 
-    const manualSessionHandler = () => {
+
+    const manualSessionHandler = (activity: ActivityType) => {
+        setSessionMode(true)
+        newSession(activity._id, sessionContext, statusContext)
         console.log("J'ai cliqué sur manual press")
     }
 
@@ -84,7 +88,7 @@ export default function ListScreen() {
                             sessions={activeSessionsFromActivity(sessions, item._id)}
                             onNewPress={() => newSessionHandler(item)}
                             onSessionPress={openSessionHandler}
-                            onManualPress={manualSessionHandler}
+                            onManualPress={ ()=> manualSessionHandler(item)}
                             buttonTitle="Démarrer"
                         />
                     )} />
