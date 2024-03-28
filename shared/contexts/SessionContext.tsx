@@ -59,7 +59,6 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     }
 
     const updateSession = (session: Session) => {
-        console.log(session, 'sessionavant post')
         pushRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+session._id, session.json()))
         updateSessionsState([session])
     }

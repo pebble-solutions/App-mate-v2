@@ -24,7 +24,6 @@ export default function ValidateScreen() {
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
     const { status, resetStatus, resetPayload, exitStatus, setExitStatus } = useSessionStatusContext()
     const { updateSession, closeSession } = useSessionContext()
-    console.log('validate screen')
     
     useEffect(() => {
         navigate(status || null, router)
@@ -49,24 +48,18 @@ export default function ValidateScreen() {
     if (!currentActivity || !currentSession) {
         return null
     }
-    console.log(currentSession, 'currentSession')
     const setResponse = (Id: string, response: VariableValueType) => {
-        console.log('setResponse', Id, response)
         setRawVariables((prev) => {
             const newVars: RawVariableType[] = []
             
             prev.forEach((variable) => {
                 if(variable._id) {
                     if (variable._id === Id) {
-                        console.log('variable prise en compte','._id:', variable._id, 'id:', Id, variable.label)
                         variable.value = response
                         newVars.push(variable)
                     }
                     else {
-                        console.log('variable pas prise en compte','._id:',  variable._id, 'id:', Id, variable.label)
                         newVars.push(variable)
-
-    
                     }
                 }
             })
@@ -93,30 +86,18 @@ export default function ValidateScreen() {
     let items: ReactNode[] = []
 
     const variables = currentActivity.variables;
-    console.log(variables, 'variables avant le if')
-        if (variables.length === 0) {
-            items.push((
-                <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>
-                    Aucune variable à renseigner pour cette activité.
-                </Text>
-            ))
-        }
-        else {
+        if (variables.length !== 0) {
+    
             if (rawVariables.length === 0) {
-                console.log(variables, 'variables')
                 const newRawVariables: RawVariableType[] = variables.map(variable => ({
-                    
                     _id: variable._id,
                     label: variable.question,
                     type: variable.type,
                     value: undefined,
                 }));
-                console.log(newRawVariables, 'newRawVariables remplissage')
                 setRawVariables(newRawVariables);
-                console.log(rawVariables, 'rawVariables résultat')
             }
             
-            console.log(rawVariables, 'rawVariables avant item')
             rawVariables.forEach((variable) => {
                 if (variable._id) {
                     const id = variable._id
@@ -130,7 +111,6 @@ export default function ValidateScreen() {
                                 type={type}
                                 value={value}
                                 onChange={(newVal) => setResponse(id, newVal)}
-                                // onChange={()=> {console.log('change')}}
                                 label={label}
                                 labelStyle={[globalStyles.textLight, globalStyles.textLg]}
                                 key={id}
@@ -146,11 +126,8 @@ export default function ValidateScreen() {
                         </Text>
                     ))  
                 }
-                
             })
-
         }
-    
         items.push((
             <SessionSummary
                 session={currentSession}

@@ -50,7 +50,7 @@ export default function FormInput({label, type, value, placeholder, onChange, la
             component = <DateTimeInput value={value} onChange={onChange} placeholder={placeholder} type={"datetime"} id={id}/>
             break
         default:
-            component = <Text style={globalStyles.textLight}>Ce type de variable n'est pas traité dans cette application: {type} {id}</Text>
+            component = <Text style={globalStyles.textLight}>Ce type de variable n'est pas traité dans cette application: {type}</Text>
     }
 
     return (

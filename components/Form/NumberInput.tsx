@@ -16,7 +16,6 @@ const NumberInput = ({value, placeholder, onChange, type, id}: NumberInputOption
 
     return (
         <View>
-            <Text style={globalStyles.textLight}>{id}</Text>
             <TextInput
                 style={globalStyles.input}
                 placeholder={placeholder}

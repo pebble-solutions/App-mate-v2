@@ -16,8 +16,6 @@ const TextInput = ({value, onChange, placeholder, multiline, id }: TextInputOpti
     };
     return (
         <View>
-        
-            <Text style={globalStyles.textLight}>{id}</Text>
             <ReactNativeTextInput
                 style={globalStyles.input}
                 placeholder={placeholder}

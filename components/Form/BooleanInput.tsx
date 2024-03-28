@@ -26,7 +26,6 @@ const BooleanInput = ({value, onChange, trueLabel, falseLabel, id}: BooleanInput
 
   return (
     <View>
-        <Text style={globalStyles.textLight}>{id}</Text>
         <View style={[globalStyles.input, localStyle.booleanInput]}>
             <Switch
                 trackColor={{ false: variables.color.grey, true: variables.color.success }}
