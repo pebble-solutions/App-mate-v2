@@ -70,9 +70,7 @@ export default function ValidateScreen() {
                     }
                 }
             })
-            
             currentSession.raw_variables = newVars
-            
             return newVars
         })
     }
@@ -92,53 +90,75 @@ export default function ValidateScreen() {
         exit()
     }
 
-    const variables = currentActivity.variables;
-    
-
-    if (rawVariables.length === 0) {
-        const newRawVariables: RawVariableType[] = variables.map(variable => ({
-            _id: variable._id,
-            label: variable.question,
-            type: variable.type,
-            value: undefined,
-        }));
-        console.log(newRawVariables, 'newRawVariables remplissage')
-        setRawVariables(newRawVariables);
-        console.log(rawVariables, 'rawVariables résultat')
-    }
-
     let items: ReactNode[] = []
-    console.log(rawVariables, 'rawVariables avant item')
-    rawVariables.forEach((variable) => {
-            const id = variable._id
-            const value = variable.value
-            const type = variable.type
-            const label = variable.label
-            
-            items.push((
-                <View style={globalStyles.section}>
-                    <FormInput
-                        type={type}
-                        value={value}
-                        onChange={(newVal) => setResponse(id, newVal)}
-                        // onChange={()=> {console.log('change')}}
-                        label={label}
-                        labelStyle={[globalStyles.textLight, globalStyles.textLg]}
-                        key={id}
-                        id={id}
-                        />
-                </View>
-            ))
-    })
 
-    items.push((
-        <SessionSummary
-            session={currentSession}
-            theme={"dark"}
-            onVariableChange={setResponse}
-            onSequenceChange={handleSequenceChange}
-        />
-    ))
+    const variables = currentActivity.variables;
+    console.log(variables, 'variables avant le if')
+        if (variables.length === 0) {
+            items.push((
+                <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>
+                    Aucune variable à renseigner pour cette activité.
+                </Text>
+            ))
+        }
+        else {
+            if (rawVariables.length === 0) {
+                console.log(variables, 'variables')
+                const newRawVariables: RawVariableType[] = variables.map(variable => ({
+                    
+                    _id: variable._id,
+                    label: variable.question,
+                    type: variable.type,
+                    value: undefined,
+                }));
+                console.log(newRawVariables, 'newRawVariables remplissage')
+                setRawVariables(newRawVariables);
+                console.log(rawVariables, 'rawVariables résultat')
+            }
+            
+            console.log(rawVariables, 'rawVariables avant item')
+            rawVariables.forEach((variable) => {
+                if (variable._id) {
+                    const id = variable._id
+                    const value = variable.value
+                    const type = variable.type
+                    const label = variable.label
+                    
+                    items.push((
+                        <View style={globalStyles.section}>
+                            <FormInput
+                                type={type}
+                                value={value}
+                                onChange={(newVal) => setResponse(id, newVal)}
+                                // onChange={()=> {console.log('change')}}
+                                label={label}
+                                labelStyle={[globalStyles.textLight, globalStyles.textLg]}
+                                key={id}
+                                id={id}
+                                />
+                        </View>
+                    ))
+                }
+                else {
+                    items.push((
+                        <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>
+                            Cette variable n'est pas gérée par l'application
+                        </Text>
+                    ))  
+                }
+                
+            })
+
+        }
+    
+        items.push((
+            <SessionSummary
+                session={currentSession}
+                theme={"dark"}
+                onVariableChange={setResponse}
+                onSequenceChange={handleSequenceChange}
+            />
+        ))
 
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
