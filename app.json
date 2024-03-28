@@ -7,11 +7,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/MateAppLogos/rsz_1matelogowhite.png",
-      "resizeMode": "center",
-      "backgroundColor": "#23025c"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
