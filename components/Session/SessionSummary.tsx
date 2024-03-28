@@ -18,6 +18,7 @@ type SessionSummaryOptions = {
 
 export default function SessionSummary({session, theme, onVariableChange, onSequenceChange}: SessionSummaryOptions) {
     const [time, setTime] = useState(session.raw_datas.getTime())
+    console.log(session.raw_variables, 'variables in summary')
 
     const handleSequenceChange = (index: number, newVal: SequenceItemType) => {
         if (onSequenceChange) onSequenceChange(index, newVal)

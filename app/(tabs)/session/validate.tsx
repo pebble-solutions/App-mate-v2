@@ -24,11 +24,11 @@ export default function ValidateScreen() {
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
     const { status, resetStatus, resetPayload, exitStatus, setExitStatus } = useSessionStatusContext()
     const { updateSession, closeSession } = useSessionContext()
+    console.log('validate screen')
     
     useEffect(() => {
         navigate(status || null, router)
     }, [status])
-    console.log('validate screen')
     let session, activity;
     
     try {
@@ -50,14 +50,24 @@ export default function ValidateScreen() {
         return null
     }
     console.log(currentSession, 'currentSession')
-    const setResponse = (variableId: string, response: VariableValueType) => {
+    const setResponse = (Id: string, response: VariableValueType) => {
+        console.log('setResponse', Id, response)
         setRawVariables((prev) => {
             const newVars: RawVariableType[] = []
             
             prev.forEach((variable) => {
-                if (variable._id) {
-                    variable.value = response
-                    newVars.push(variable)
+                if(variable._id) {
+                    if (variable._id === Id) {
+                        console.log('variable prise en compte','._id:', variable._id, 'id:', Id, variable.label)
+                        variable.value = response
+                        newVars.push(variable)
+                    }
+                    else {
+                        console.log('variable pas prise en compte','._id:',  variable._id, 'id:', Id, variable.label)
+                        newVars.push(variable)
+
+    
+                    }
                 }
             })
             
@@ -92,14 +102,15 @@ export default function ValidateScreen() {
             type: variable.type,
             value: undefined,
         }));
-        console.log(newRawVariables, 'newRawVariables')
+        console.log(newRawVariables, 'newRawVariables remplissage')
         setRawVariables(newRawVariables);
+        console.log(rawVariables, 'rawVariables résultat')
     }
 
     let items: ReactNode[] = []
-    console.log(rawVariables, 'rawVariables')
+    console.log(rawVariables, 'rawVariables avant item')
     rawVariables.forEach((variable) => {
-            const key = variable._id
+            const id = variable._id
             const value = variable.value
             const type = variable.type
             const label = variable.label
@@ -109,10 +120,12 @@ export default function ValidateScreen() {
                     <FormInput
                         type={type}
                         value={value}
-                        onChange={(newVal) => setResponse(variable._id, newVal)}
+                        onChange={(newVal) => setResponse(id, newVal)}
+                        // onChange={()=> {console.log('change')}}
                         label={label}
                         labelStyle={[globalStyles.textLight, globalStyles.textLg]}
-                        key={key}
+                        key={id}
+                        id={id}
                         />
                 </View>
             ))

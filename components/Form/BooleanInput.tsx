@@ -6,10 +6,11 @@ import {InputOptions} from "./types/InputOptions";
 type BooleanInputOptions = Omit<InputOptions, 'value'> & {
     value?: boolean,
     trueLabel?: string,
-    falseLabel?: string
+    falseLabel?: string,
+    id: string
 }
 
-const BooleanInput = ({value, onChange, trueLabel, falseLabel}: BooleanInputOptions) => {
+const BooleanInput = ({value, onChange, trueLabel, falseLabel, id}: BooleanInputOptions) => {
     const [currentValue, setCurrentValue] = useState(value)
     const [label, setLabel] = useState(value ? trueLabel : falseLabel)
 
@@ -24,16 +25,19 @@ const BooleanInput = ({value, onChange, trueLabel, falseLabel}: BooleanInputOpti
     };
 
   return (
-    <View style={[globalStyles.input, localStyle.booleanInput]}>
-        <Switch
-            trackColor={{ false: variables.color.grey, true: variables.color.success }}
-            ios_backgroundColor={variables.color.grey}
-            onValueChange={toggle}
-            value={currentValue}
-            
-        />
+    <View>
+        <Text style={globalStyles.textLight}>{id}</Text>
+        <View style={[globalStyles.input, localStyle.booleanInput]}>
+            <Switch
+                trackColor={{ false: variables.color.grey, true: variables.color.success }}
+                ios_backgroundColor={variables.color.grey}
+                onValueChange={toggle}
+                value={currentValue}
+                
+                />
 
-        {label && <Text>{label}</Text>}
+            {label && <Text>{label}</Text>}
+        </View>
     </View>
   );
 }

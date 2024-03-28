@@ -6,7 +6,7 @@ import {DateTimeInputOptions} from "./types/InputOptions";
 import { dateToLiteral } from '../../shared/libs/date';
 import { timeToLiteral } from '../../shared/libs/date';
 
-const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOptions) => {
+const DateTimeInput = ({value, onChange, type, placeholder, id}: DateTimeInputOptions) => {
 
     type = type || 'datetime'
 
@@ -59,6 +59,8 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
         <>
             {(useDate || useDateTime ) && 
                 <View style={[globalStyles.input, globalStyles.mb2Container]}>
+        <Text>{id}</Text>
+
                     
                     {Platform.OS === 'android' && <TouchableOpacity onPress={()=> toggleDatePicker()}><Text> {dateToLiteral(selectedTime)}</Text></TouchableOpacity>}
                     {(Platform.OS === 'android') && (showDatePicker) && <DateTimePicker
@@ -77,6 +79,8 @@ const DateTimeInput = ({value, onChange, type, placeholder}: DateTimeInputOption
             }
             {(useTime || useDateTime) && 
                 <View style={globalStyles.input}>
+        <Text>{id}</Text>
+
                     {Platform.OS ==="android" && <TouchableOpacity onPress={()=> toggleTimePicker()}><Text>{timeToLiteral(selectedTime)}</Text></TouchableOpacity>}
                     {Platform.OS ==="android" && showTimePicker && (<DateTimePicker
                     value={selectedTime}
