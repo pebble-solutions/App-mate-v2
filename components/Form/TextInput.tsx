@@ -20,7 +20,7 @@ const TextInput = ({value, onChange, placeholder, multiline, options}: TextInput
             placeholder={placeholder}
             value={value}
             onChangeText={handleChange}
-            placeholderTextColor={'#ffffff80'}
+            placeholderTextColor={'#ffffff90'}
             multiline={multiline}
             secureTextEntry={options?.secureTextEntry}
         />
