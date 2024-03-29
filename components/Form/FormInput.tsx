@@ -14,7 +14,7 @@ type FormInputOptions = InputOptions & {
     style?: object[]
 }
 
-export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style}: FormInputOptions) {
+export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style, options}: FormInputOptions) {
 
     type = type || "text"
 
@@ -22,10 +22,10 @@ export default function FormInput({label, type, value, placeholder, onChange, la
 
     switch (type) {
         case "text":
-            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} />
+            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} options={options} />
             break
         case "textarea":
-            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} multiline={true} />
+            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} multiline={true} options={options} />
             break
         case "number":
             component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} />

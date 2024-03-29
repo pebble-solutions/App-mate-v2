@@ -1,36 +1,121 @@
 import {AuthorizationInterface} from "@pebble-solutions/api-request/lib/types/interfaces";
-import {User, getAuth, signOut} from "firebase/auth"
+import {getAuth, signInWithEmailAndPassword, signOut, User} from "firebase/auth"
 import {app} from "../../config/firebase"
+import {postRequest} from "@pebble-solutions/api-request";
+import {NotAuthenticatedError} from "./errors/NotAuthenticatedError";
+import {NotAuthorizedError} from "./errors/NotAuthorizedError";
+import {AuthorizationContentError} from "./errors/AuthorizationContentError";
+import {PebbleToken} from "../types/PebbleToken";
+
+type AuthorizationEvent = {
+    name: string,
+    callback: (event?: any) => void
+}
 
 export class Auth implements AuthorizationInterface {
 
     readonly firebaseAuth
 
-    private user: User | null
+    private _user: User | null
+
+    private _tokenData: PebbleToken | null
+
+    private events: AuthorizationEvent[]
 
     constructor() {
         this.firebaseAuth = getAuth(app)
-        this.user = null
+        this._user = null
+        this._tokenData = null
+        this.events = []
     }
 
     setUser(user: User | null) {
-        this.user = user
+        this._user = user
+        this.dispatchEvent("userChange", user)
     }
 
-    login() {
+    setTokenData(tokenData: PebbleToken | null) {
+        this._tokenData = tokenData
+        this.dispatchEvent("authorizationChange", tokenData)
+    }
 
+    get user() {
+        return this._user
+    }
+
+    get tokenData() {
+        return this._tokenData
+    }
+
+    async loginWithPassword(username: string, password: string) {
+        const userCred = await signInWithEmailAndPassword(this.firebaseAuth, username, password)
+        this.setUser(userCred.user)
     }
 
     async logout() {
         await signOut(this.firebaseAuth)
+        this.setUser(null)
     }
 
     get isAuthenticated() {
-        return false
+        return !!this.user
     }
 
-    getToken() {
-        return Promise.resolve("eyJhbGciOiJSUzI1NiIsInR5cCI6ImF0K2p3dCIsImtpZCI6Im45aTVQcjIzR3ljZWhsWFFPYVl5Zng4ZEtmMk9YRlBtLUNFMC01eHZWQkEifQ.eyJhdWQiOlsiYXBpLnBlYmJsZS5zb2x1dGlvbnMvdjUvbWV0cmljIiwiYXBpLnBlYmJsZS5zb2x1dGlvbnMvdjUvYWN0aXZpdHkiXSwiZXhwIjoxNzQyNjMzMDE0LCJpYXQiOjE3MTExMDQ1OTcsImlzcyI6ImFwaS5wZWJibGUuc29sdXRpb25zL3Y1L2F1dGhvcml6ZSIsImx2Ijo1LCJyb2xlcyI6WyJtYW5hZ2VyIl0sInNjb3BlIjoiYWN0aXZpdHk6cmVhZCBhY3Rpdml0eTp3cml0ZSBhY3Rpdml0eTpjcmVhdGUgYWN0aXZpdHk6ZGVsZXRlIG1ldHJpYzpsaXN0Lm93biBtZXRyaWM6Y3JlYXRlIG1ldHJpYzpyZWFkLm93biBtZXRyaWM6d3JpdGUub3duIG1ldHJpYzpkZWxldGUub3duIiwic3ViIjoidGVzdEBwZWJibGUuYnpoIiwidGlkIjoiMWplMzRrLWVkNDVkc3NxLWVrIiwiY2xpZW50X2lkIjoiMDFIS1dEQlRaWFhHVzRHVzFHSEVQRzhYRlAiLCJqdGkiOiI2YjgzYzZkYy1lOWRjLTQyMTItODlkNC1mMjRjNzIwOGZkOWYifQ.dtjxo8d0WdocHw65WQ28EhFvi40pJ2tajgeGkgn_Pm92dsmwgxeU1jC22jJnIIiu6wEPhpVJO6qjNz7_7cqMaCB-aCxC6O0x63Di2LDEbFSADv6cW4xzNV5_qDGN_BPAG4fHNm_Sv-6srJYVVKxSCBpjGsdN0iwpHIlIUmpS3buMiRhjAtqZhBb-_QEa-UGJeJg7X1FC2Ntz1rpTEQAFUiltyVgQoAGhYg5AhYd7S-kK_ZWRpAsHXx3k6TLJgCadSFeLq3b_ivcxBw7LIw4sZ6mOqvArraVBv8cQ5iMHa8yCMxKzXWxBSUbVqWoYEGsSJGFF-hOcv7hILDg8tkKEAQ")
+    async getAuthorization() {
+        const request = postRequest("https://api.pebble.solutions/v5/authorize/auth", {
+            "app": "mate"
+        }).withAuth({
+            getToken: async () => {
+                if (!this.user) {
+                    throw new NotAuthenticatedError()
+                }
+                return await this.user.getIdToken()
+            }
+        })
+
+        try {
+            await request.send()
+        }
+        catch (e: any) {
+            await this.logout()
+            throw new NotAuthorizedError(e)
+        }
+
+        try {
+            const tokenData = await request.content()
+            this.setTokenData(tokenData)
+        }
+        catch (e) {
+            this.setTokenData(null)
+            throw new AuthorizationContentError(e)
+        }
+    }
+
+    isExpiredAuthorization() {
+        if (!this.tokenData) return true
+        const exp = new Date(this.tokenData.exp * 1000);
+        return exp.getTime() < (new Date()).getTime();
+    }
+
+    addEvent(name: string, callback: (event?: any) => void) {
+        this.events.push({name, callback})
+    }
+
+    dispatchEvent(name: string, event?: any) {
+        const events = this.events.filter(e => e.name === name)
+        events.forEach(e => e.callback(event))
+    }
+
+    async getToken() {
+        if (this.isExpiredAuthorization()) {
+            await this.getAuthorization()
+        }
+
+        if (!this.tokenData) {
+            throw new NotAuthorizedError("Récupération du token impossible!")
+        }
+
+        return this.tokenData.token
     }
 
 }
