@@ -11,7 +11,6 @@ import ActivityGradient from "./ActivityGradient";
 import {SessionType} from "../../shared/types/SessionType";
 import {SessionCard} from "../Session/SessionCard";
 import { useState } from "react";
-import CreationForm from "../Session/CreationForm";
 import TextLoader from "../TextLoader";
 
 type ActivityOverviewType = {

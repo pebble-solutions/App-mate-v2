@@ -18,6 +18,7 @@ import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {Session} from "../../../shared/classes/Session";
 import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 import {patchRequest} from "@pebble-solutions/api-request";
+import CreationForm from "../../../components/Session/CreationForm";
 
 export default function ClockScreen() {
 
@@ -126,7 +127,12 @@ export default function ClockScreen() {
                 />
                 <Title title={currentActivity.label} style={[globalStyles.textLight, globalStyles.textCenter]} size="lg" />
             </GradientHeader>
-            {sessionMode && <View><Text></Text></View>}
+            {sessionMode && 
+                <View>
+                    {/* <CreationForm activity={activity.start} onDateChange={function (): void {
+                        throw new Error("Function not implemented.");
+                    } } /> */}
+                </View>}
 
             <View style={[globalStyles.body, globalStyles.darkBg]}>
 
@@ -144,7 +150,7 @@ export default function ClockScreen() {
                     <SequenceList sequence={sequence} />
 
                 </View>
-                {!sessionMode &&
+                
                 <SessionActionsBar
                     onCancel={cancel}
                     onExit={exit}
@@ -154,8 +160,6 @@ export default function ClockScreen() {
                     style={[globalStyles.mb3Container]}
                     sequence={sequence}
                 />
-                
-                }
 
             </View>
         </View>
