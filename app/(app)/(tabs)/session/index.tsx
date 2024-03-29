@@ -1,11 +1,11 @@
-import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
+import {useSessionStatusContext} from "../../../../shared/contexts/SessionStatusContext";
 import {Redirect, router} from "expo-router";
 
 export default function SessionScreen() {
 
-    const { getStatus } = useSessionStatusContext()
+    const { status } = useSessionStatusContext()
 
-    if (getStatus()) {
+    if (status) {
         return <Redirect href="/session/clock" />
     }
     else {

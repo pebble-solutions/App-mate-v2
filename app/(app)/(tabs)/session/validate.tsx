@@ -1,21 +1,21 @@
 import {Alert, SafeAreaView, View, Text, StyleSheet, Platform, TouchableOpacity} from "react-native";
-import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
-import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
+import getCurrentSession, {getCurrentActivity, navigate} from "../../../../shared/libs/session";
+import {useSessionStatusContext} from "../../../../shared/contexts/SessionStatusContext";
 import {Redirect, router} from "expo-router";
 import React, {ReactNode, useEffect, useState, useContext} from "react";
-import {RawVariableType, SessionType} from "../../../shared/types/SessionType";
-import { globalStyles } from "../../../shared/globalStyles";
-import {ActivityType} from "../../../shared/types/ActivityType";
-import OnboardingController from "../../../components/Onboarding/OnboardingController";
-import FormInput from "../../../components/Form/FormInput";
-import { SessionHeader } from "../../../components/Session/SessionHeader";
-import { dateToLiteral } from "../../../shared/libs/date";
+import {RawVariableType, SessionType} from "../../../../shared/types/SessionType";
+import { globalStyles } from "../../../../shared/globalStyles";
+import {ActivityType} from "../../../../shared/types/ActivityType";
+import OnboardingController from "../../../../components/Onboarding/OnboardingController";
+import FormInput from "../../../../components/Form/FormInput";
+import { SessionHeader } from "../../../../components/Session/SessionHeader";
+import { dateToLiteral } from "../../../../shared/libs/date";
 import { Ionicons } from '@expo/vector-icons';
-import SessionSummary from "../../../components/Session/SessionSummary";
-import {VariableValueType} from "../../../shared/types/VariableType";
-import {SequenceItemType} from "../../../shared/types/SequenceType";
-import { Session } from "../../../shared/classes/Session";
-import { useSessionContext } from "../../../shared/contexts/SessionContext";
+import SessionSummary from "../../../../components/Session/SessionSummary";
+import {VariableValueType} from "../../../../shared/types/VariableType";
+import {SequenceItemType} from "../../../../shared/types/SequenceType";
+import { Session } from "../../../../shared/classes/Session";
+import { useSessionContext } from "../../../../shared/contexts/SessionContext";
 
 
 

@@ -1,9 +1,9 @@
 import {SafeAreaView, Text, View} from "react-native";
-import {globalStyles} from "../../shared/globalStyles";
-import LoginForm from "../../components/Auth/LoginForm";
-import AccountOverview from "../../components/Auth/AccountOverview";
-import LogoutButton from "../../components/Auth/LogoutButton";
-import {useRequestsContext} from "../../shared/contexts/RequestsContext";
+import {globalStyles} from "../../../shared/globalStyles";
+import LoginForm from "../../../components/Auth/LoginForm";
+import AccountOverview from "../../../components/Auth/AccountOverview";
+import LogoutButton from "../../../components/Auth/LogoutButton";
+import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 
 export default function AccountScreen() {
 

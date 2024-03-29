@@ -1,10 +1,10 @@
 import {router, Tabs} from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
 import {useEffect} from "react";
-import {useSessionContext} from "../../shared/contexts/SessionContext";
-import {useSessionStatusContext} from "../../shared/contexts/SessionStatusContext";
-import {openSession} from "../../shared/libs/session";
-import {useActivityContext} from "../../shared/contexts/ActivityContext";
+import {useSessionContext} from "../../../shared/contexts/SessionContext";
+import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
+import {openSession} from "../../../shared/libs/session";
+import {useActivityContext} from "../../../shared/contexts/ActivityContext";
 
 
 export default function TabsLayout() {
@@ -25,9 +25,12 @@ export default function TabsLayout() {
     }, [sessions, loading]);
 
     return (
-        <Tabs screenOptions={{
+        <Tabs initialRouteName={"session"} screenOptions={{
             headerShown: false
         }}>
+            <Tabs.Screen name="index" options={{
+                href: null
+            }} />
             <Tabs.Screen name="variables/index" options={{
                 href: null
             }} />
@@ -51,9 +54,6 @@ export default function TabsLayout() {
                 href: null
             }} />
             <Tabs.Screen name="settings/index" options={{
-                href: null
-            }} />
-            <Tabs.Screen name="index" options={{
                 href: null
             }} />
         </Tabs>

@@ -1,5 +1,5 @@
 import 'react-native-get-random-values'
-import { SplashScreen, Stack } from "expo-router";
+import {Slot, SplashScreen, Stack} from "expo-router";
 import { useFonts, Inter_500Medium, Inter_300Light, Inter_700Bold, Inter_900Black } from '@expo-google-fonts/inter';
 import {useEffect, useState} from "react";
 import ActivityContextProvider from "../shared/contexts/ActivityContext";
@@ -41,11 +41,7 @@ export default function RootLayout() {
                         <SessionStatusContextProvider>
                             <VariableContextProvider>
                                 <ActivityContextProvider>
-                                    <Stack>
-                                        <Stack.Screen name="(tabs)" options={{
-                                            headerShown: false
-                                        }} />
-                                    </Stack>
+                                    <Slot />
                                 </ActivityContextProvider>
                             </VariableContextProvider>
                         </SessionStatusContextProvider>

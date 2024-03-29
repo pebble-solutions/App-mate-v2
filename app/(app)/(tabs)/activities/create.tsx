@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { getRGBGradientColors } from "../../../shared/libs/color";
-import { globalStyles } from "../../../shared/globalStyles";
-import { ActivityType } from "../../../shared/types/ActivityType";
-import { useActivityContext } from "../../../shared/contexts/ActivityContext";
+import { getRGBGradientColors } from "../../../../shared/libs/color";
+import { globalStyles } from "../../../../shared/globalStyles";
+import { ActivityType } from "../../../../shared/types/ActivityType";
+import { useActivityContext } from "../../../../shared/contexts/ActivityContext";
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
-import { Activity } from "../../../shared/classes/Activity";
-import ActivityForm from "../../../components/Activity/ActivityForm";
+import { Activity } from "../../../../shared/classes/Activity";
+import ActivityForm from "../../../../components/Activity/ActivityForm";
 
 export default function CreateActivityModal() {
     const { addActivity } = useActivityContext();

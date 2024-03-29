@@ -1,11 +1,11 @@
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import React, { useContext, useState } from "react";
-import { globalStyles } from "../../../shared/globalStyles";
-import ActivityCard from "../../../components/Activity/ActivityCard";
+import { globalStyles } from "../../../../shared/globalStyles";
+import ActivityCard from "../../../../components/Activity/ActivityCard";
 import { AntDesign } from '@expo/vector-icons';
 import { router } from "expo-router";
-import { useActivityContext } from "../../../shared/contexts/ActivityContext";
-import HeaderScreenTitle from "../../../components/HeaderScreenTitle";
+import { useActivityContext } from "../../../../shared/contexts/ActivityContext";
+import HeaderScreenTitle from "../../../../components/HeaderScreenTitle";
 
 export default function ActivitiesScreen() {
     const { activities } = useActivityContext();

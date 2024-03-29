@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Dimensions, StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
 
-import { useSessionContext } from "../../../shared/contexts/SessionContext";
-import { globalStyles } from "../../../shared/globalStyles";
+import { useSessionContext } from "../../../../shared/contexts/SessionContext";
+import { globalStyles } from "../../../../shared/globalStyles";
 import moment from 'moment';
 import 'moment/locale/fr';
-import { useActivityContext } from "../../../shared/contexts/ActivityContext";
-import HeaderScreenTitle from "../../../components/HeaderScreenTitle";
+import { useActivityContext } from "../../../../shared/contexts/ActivityContext";
+import HeaderScreenTitle from "../../../../components/HeaderScreenTitle";
 import Carousel from "react-native-reanimated-carousel";
-import ActivityLabel from "../../../components/Activity/ActivityLabel";
+import ActivityLabel from "../../../../components/Activity/ActivityLabel";
 import { LinearGradient } from "expo-linear-gradient";
-import { getRGBGradientColors } from "../../../shared/libs/color";
-import TextInput from "../../../components/Form/TextInput";
-import NumberInput from "../../../components/Form/NumberInput";
-import DateTimeInput from "../../../components/Form/DateTimeInput";
-import BooleanInput from "../../../components/Form/BooleanInput";
-import FormInput from "../../../components/Form/FormInput";
+import { getRGBGradientColors } from "../../../../shared/libs/color";
+import TextInput from "../../../../components/Form/TextInput";
+import NumberInput from "../../../../components/Form/NumberInput";
+import DateTimeInput from "../../../../components/Form/DateTimeInput";
+import BooleanInput from "../../../../components/Form/BooleanInput";
+import FormInput from "../../../../components/Form/FormInput";
 moment.locale('fr');
 
 export default function RecapScreen() {

@@ -1,16 +1,18 @@
-import {globalStyles} from "../../../shared/globalStyles";
+import {globalStyles} from "../../../../shared/globalStyles";
 import Carousel from "react-native-reanimated-carousel";
-import ActivityOverview from "../../../components/Activity/ActivityOverview";
-import {navigate, newSession, openSession} from "../../../shared/libs/session";
+import ActivityOverview from "../../../../components/Activity/ActivityOverview";
+import {getRouteByStatus, navigate, newSession, openSession} from "../../../../shared/libs/session";
 import {Alert, Dimensions, SafeAreaView, Text, View} from "react-native";
 import React, {useEffect, useState} from "react";
-import {useActivityContext} from "../../../shared/contexts/ActivityContext";
-import {useSessionContext} from "../../../shared/contexts/SessionContext";
-import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
+import {useActivityContext} from "../../../../shared/contexts/ActivityContext";
+import {useSessionContext} from "../../../../shared/contexts/SessionContext";
+import {useSessionStatusContext} from "../../../../shared/contexts/SessionStatusContext";
 import {router} from "expo-router";
-import FullscreenLoader from "../../../components/FullscreenLoader";
-import {ActivityType} from "../../../shared/types/ActivityType";
-import {SessionType} from "../../../shared/types/SessionType";
+import FullscreenLoader from "../../../../components/FullscreenLoader";
+import {ActivityType} from "../../../../shared/types/ActivityType";
+import {SessionType} from "../../../../shared/types/SessionType";
+import {useRouteInfo} from "expo-router/build/hooks";
+import {useRouteNode} from "expo-router/build/Route";
 
 export default function ListScreen() {
     const { activities, loading } = useActivityContext()
@@ -19,6 +21,8 @@ export default function ListScreen() {
     const statusContext = useSessionStatusContext()
     const { status } = statusContext
     const [activeActivities, setActiveActivities] = useState<ActivityType[]>([])
+
+    const route = useRouteInfo()
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {

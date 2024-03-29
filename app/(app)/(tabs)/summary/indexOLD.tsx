@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
-import { useActivityContext } from "../../../shared/contexts/ActivityContext";
+import { useActivityContext } from "../../../../shared/contexts/ActivityContext";
 import Carousel from 'react-native-reanimated-carousel';
-import ActivityLabel from "../../../components/Activity/ActivityLabel";
-import { useSessionContext } from "../../../shared/contexts/SessionContext";
-import { globalStyles } from "../../../shared/globalStyles";
-import HeaderScreenTitle from "../../../components/HeaderScreenTitle";
+import ActivityLabel from "../../../../components/Activity/ActivityLabel";
+import { useSessionContext } from "../../../../shared/contexts/SessionContext";
+import { globalStyles } from "../../../../shared/globalStyles";
+import HeaderScreenTitle from "../../../../components/HeaderScreenTitle";
 import moment from 'moment';
 import 'moment/locale/fr';
 import { LinearGradient } from "expo-linear-gradient";
-import {getRGBGradientColors} from "../../../shared/libs/color";
+import {getRGBGradientColors} from "../../../../shared/libs/color";
 moment.locale('fr');
 
 export default function RecapScreen() {

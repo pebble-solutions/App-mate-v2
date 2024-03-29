@@ -1,22 +1,22 @@
 import {View, Text, Alert} from "react-native";
-import {globalStyles} from "../../../shared/globalStyles";
-import Button from "../../../components/Button";
+import {globalStyles} from "../../../../shared/globalStyles";
+import Button from "../../../../components/Button";
 import React, {useEffect, useState} from "react";
-import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
-import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
+import getCurrentSession, {getCurrentActivity, navigate} from "../../../../shared/libs/session";
+import {useSessionStatusContext} from "../../../../shared/contexts/SessionStatusContext";
 import {router} from "expo-router";
-import Title from "../../../components/Title";
+import Title from "../../../../components/Title";
 import { AntDesign } from '@expo/vector-icons';
-import GradientHeader from "../../../components/Activity/GradientHeader";
-import {SessionActionsBar} from "../../../components/Session/SessionActionsBar";
-import {StopWatch} from "../../../components/Session/StopWatch";
-import {SequenceItemType, SequenceType} from "../../../shared/types/SequenceType";
-import {SequenceList} from "../../../components/Session/SequenceList";
-import {SessionType} from "../../../shared/types/SessionType";
-import {ActivityType} from "../../../shared/types/ActivityType";
-import {useSessionContext} from "../../../shared/contexts/SessionContext";
-import {Session} from "../../../shared/classes/Session";
-import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
+import GradientHeader from "../../../../components/Activity/GradientHeader";
+import {SessionActionsBar} from "../../../../components/Session/SessionActionsBar";
+import {StopWatch} from "../../../../components/Session/StopWatch";
+import {SequenceItemType, SequenceType} from "../../../../shared/types/SequenceType";
+import {SequenceList} from "../../../../components/Session/SequenceList";
+import {SessionType} from "../../../../shared/types/SessionType";
+import {ActivityType} from "../../../../shared/types/ActivityType";
+import {useSessionContext} from "../../../../shared/contexts/SessionContext";
+import {Session} from "../../../../shared/classes/Session";
+import {useRequestsContext} from "../../../../shared/contexts/RequestsContext";
 import {patchRequest} from "@pebble-solutions/api-request";
 
 export default function ClockScreen() {

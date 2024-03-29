@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { Text, View, ScrollView, TouchableOpacity, Alert, Modal, StyleSheet } from "react-native"; // Importez Alert
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { getRGBGradientColors } from "../../../../shared/libs/color";
-import { globalStyles, variables } from "../../../../shared/globalStyles";
-import { useActivityContext } from "../../../../shared/contexts/ActivityContext";
-import { VariableType } from "../../../../shared/types/VariableType";
-import { useVariableContext } from "../../../../shared/contexts/VariableContext";
-import VariableCard from "../../../../components/VariableCard";
+import { getRGBGradientColors } from "../../../../../shared/libs/color";
+import { globalStyles, variables } from "../../../../../shared/globalStyles";
+import { useActivityContext } from "../../../../../shared/contexts/ActivityContext";
+import { VariableType } from "../../../../../shared/types/VariableType";
+import { useVariableContext } from "../../../../../shared/contexts/VariableContext";
+import VariableCard from "../../../../../components/VariableCard";
 import { format } from 'date-fns';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
-import SpinnerLoader from "../../../../components/ScreenCoverLoader";
-import { Activity } from "../../../../shared/classes/Activity";
+import SpinnerLoader from "../../../../../components/ScreenCoverLoader";
+import { Activity } from "../../../../../shared/classes/Activity";
 
 export default function ActivityScreen() {
     const { getActivityById, removeActivity, updateActivity } = useActivityContext();

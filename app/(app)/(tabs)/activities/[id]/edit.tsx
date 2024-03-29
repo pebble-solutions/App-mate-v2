@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, ScrollView, TextInput, Modal, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { getRGBGradientColors } from "../../../../shared/libs/color";
-import { globalStyles } from "../../../../shared/globalStyles";
-import { ActivityType } from "../../../../shared/types/ActivityType";
-import { useActivityContext } from "../../../../shared/contexts/ActivityContext";
+import { getRGBGradientColors } from "../../../../../shared/libs/color";
+import { globalStyles } from "../../../../../shared/globalStyles";
+import { ActivityType } from "../../../../../shared/types/ActivityType";
+import { useActivityContext } from "../../../../../shared/contexts/ActivityContext";
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
-import { Activity } from "../../../../shared/classes/Activity";
-import ActivityForm from "../../../../components/Activity/ActivityForm";
+import { Activity } from "../../../../../shared/classes/Activity";
+import ActivityForm from "../../../../../components/Activity/ActivityForm";
 import { useLocalSearchParams } from "expo-router";
 import { Redirect } from "expo-router";
 
