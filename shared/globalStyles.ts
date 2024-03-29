@@ -505,6 +505,10 @@ export const globalStyles = StyleSheet.create({
         alignItems: "center"
     },
 
+    contentCenter: {
+        justifyContent: "center"
+    },
+
     textDanger: {
         color: variables.color.danger
     },

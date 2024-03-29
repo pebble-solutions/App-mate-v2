@@ -67,12 +67,13 @@ const localStyle = StyleSheet.create({
         width: "100%",
         display: "flex",
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
+        justifyContent: "center"
     },
 
     lg: {
-        paddingVertical: variables.contentPadding[1],
-        paddingHorizontal: variables.contentPadding[1]
+        paddingVertical: variables.contentPadding[2],
+        paddingHorizontal: variables.contentPadding[3]
     },
 
     xl: {
