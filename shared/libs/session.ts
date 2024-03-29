@@ -18,7 +18,7 @@ export function newSession (activityId: string, sessionContext: SessionContextTy
         type: "activity",
         start: new Date(),
         type_id: activityId,
-        label: "Nouveau Pointage de John DOE",
+        label: `Session de + {user.name}`,
         comment: "",
         status: "started",
         owner: null,
