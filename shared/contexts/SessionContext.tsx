@@ -65,7 +65,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const closeSession = (session: Session) => {
         session.end = new Date()
         session.is_active = false
-        pushRequest(postRequest("https://api.pebble.solutions/v5/metric/"+session._id+"/close/"))
+        pushRequest(postRequest("https://api.pebble.solutions/v5/metric/"+session._id+"/close"))
         updateSessionsState([session])
     }
 
