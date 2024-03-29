@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../../shared/libs/color";
 import { globalStyles, variables } from "../../../../shared/globalStyles";
 import { useActivityContext } from "../../../../shared/contexts/ActivityContext";
-import { VariableType } from "../../../../shared/types/VariableType";
+import {ActivityVariableType, VariableType} from "../../../../shared/types/VariableType";
 import { useVariableContext } from "../../../../shared/contexts/VariableContext";
 import VariableCard from "../../../../components/VariableCard";
 import { format } from 'date-fns';
@@ -125,7 +125,7 @@ export default function ActivityScreen() {
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
                     <Text style={[globalStyles.CategoryTitle, globalStyles.textLight, globalStyles.textCenter]}>Variables liées à l'activité :</Text>
-                    {activity.variables.map((variable: VariableType, index: number) => (
+                    {activity.variables.map((variable: ActivityVariableType, index: number) => (
                         <VariableCard
                             key={index}
                             displayRemoveIcon={true}
@@ -142,7 +142,7 @@ export default function ActivityScreen() {
                             displayAddIcon={true}
                             activityId={activity._id}
                             variable={variable}
-                            grayedOut={activity.variables.some((v) => v._id === variable._id)}
+                            grayedOut={activity.variables.some((v) => v.variable_id === variable._id)}
                             isChecked
                         />
                     ))}

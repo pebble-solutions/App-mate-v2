@@ -83,7 +83,8 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                         value={updatedValue}
                         labelStyle={[globalStyles.textLight, globalStyles.textMd]}
                         onChange={handleChangeValue}
-                        />
+                        id={variable.variable_id}
+                    />
                     <CancelValidateButtons
                         onPress1={cancelChange}
                         onPress2={validateChange}

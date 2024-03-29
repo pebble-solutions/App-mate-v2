@@ -1,7 +1,7 @@
 import { Text, View, TouchableOpacity } from "react-native";
 import { globalStyles } from "../shared/globalStyles";
 import { useVariableContext } from "../shared/contexts/VariableContext";
-import { VariableType } from "../shared/types/VariableType";
+import {ActivityVariableType, VariableType} from "../shared/types/VariableType";
 import { useActivityContext } from "../shared/contexts/ActivityContext";
 import { ActivityType } from "../shared/types/ActivityType";
 import { Ionicons } from '@expo/vector-icons';
@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 
 type VariableCardOptions = {
-    variable: VariableType,
+    variable: VariableType | ActivityVariableType,
     displayAddIcon?: boolean,
     displayRemoveIcon?: boolean,
     activityId: string,
@@ -28,16 +28,18 @@ export default function VariableCard({
 
     const { linkVariableToActivity, removeVariableFromActivity, setVariableMandatory } = useActivityContext();
 
+    const variableId = "_id" in variable ? variable._id : variable.variable_id
+
     const linkVariable = () => {
-        linkVariableToActivity(activityId, variable);
+        linkVariableToActivity(activityId, {...variable, _id: variableId});
     }
 
     const removeVariable = () => {
-        removeVariableFromActivity(activityId, variable._id);
+        removeVariableFromActivity(activityId, variableId);
     }
 
     const toggleMandatory = () => {
-        setVariableMandatory(activityId, variable._id, !variable.mandatory);
+        setVariableMandatory(activityId, variableId, !variable.mandatory);
     }
 
     return (

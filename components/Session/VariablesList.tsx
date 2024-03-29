@@ -21,10 +21,10 @@ export default function VariablesList({variables, style, theme, onValueChange}: 
 
     variables.forEach((variable) => {
             items.push(<VariableItem
-                id={variable._id}
+                id={variable.variable_id}
                 variable={variable}
                 theme={theme}
-                onChange={(newVal) => handleChangeValue(variable._id, newVal)}
+                onChange={(newVal) => handleChangeValue(variable.variable_id, newVal)}
             />)
         
 

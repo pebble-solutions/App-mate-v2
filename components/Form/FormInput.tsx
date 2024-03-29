@@ -12,7 +12,7 @@ type FormInputOptions = InputOptions & {
     type?: InputType,
     labelStyle?: object[]
     style?: object[],
-    id: string
+    id?: string
 }
 
 export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style, options, id}: FormInputOptions) {

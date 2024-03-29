@@ -2,8 +2,6 @@ import {SessionContextType, useSessionContext} from "../contexts/SessionContext"
 import {SessionStatusContextType, useSessionStatusContext} from "../contexts/SessionStatusContext";
 import {SessionStatusType} from "../types/SessionStatusType";
 import {Router} from "expo-router/build/types";
-import {InvalidSessionIDError} from "./errors/InvalidSessionIDError";
-import {SessionNotFoundError} from "./errors/SessionNotFoundError";
 import {NoSessionStatusError} from "./errors/NoSessionStatusError";
 import {useActivityContext} from "../contexts/ActivityContext";
 import {NoActivityIdError} from "./errors/NoActivityIdError";

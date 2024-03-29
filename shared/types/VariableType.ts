@@ -27,4 +27,8 @@ export type VariableType = {
     mandatory?: boolean,
 }
 
+export type ActivityVariableType = Omit<VariableType, "_id"> & {
+    variable_id: string
+}
+
 export type VariableValueType = Date | string | number | boolean | null

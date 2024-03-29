@@ -5,7 +5,7 @@ import { Activity } from "../classes/Activity";
 import {deleteRequest, getRequest, patchRequest, postRequest} from "@pebble-solutions/api-request";
 import {useRequestsContext} from "./RequestsContext";
 import {ReadParamsType} from "@pebble-solutions/api-request/lib/types/types";
-import {VariableType} from "../types/VariableType";
+import {ActivityVariableType, VariableType} from "../types/VariableType";
 import { ulid } from 'ulidx'
 
 type ActivityContextType = {
@@ -17,7 +17,7 @@ type ActivityContextType = {
     linkVariableToActivity: (activityId: string, variable: VariableType) => void
     removeVariableFromActivity: (activityId: string, variableId: string) => void
     fetchActivitiesFromAPI: (params?: ReadParamsType) => void
-    toggleVariableMandatory: (activityId: string, variable: VariableType) => void
+    toggleVariableMandatory: (activityId: string, variable: ActivityVariableType) => void
     setVariableMandatory: (activityId: string, variableId: string, mandatory: boolean) => void
     loading: boolean
     pending: boolean
@@ -94,13 +94,13 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const getVariableFromActivity = (activityId: string, variableId: string) => {
         const activity = getActivityById(activityId)
         if (!activity) return
-        return activity.variables.find(e => e._id === variableId)
+        return activity.variables.find(e => e.variable_id === variableId)
     }
 
     const setVariableMandatory = (activityId: string, variableId: string, mandatory: boolean) => {
         const activity = getActivityById(activityId)
         if (!activity) return
-        const index = activity.variables.findIndex(e => e._id === variableId)
+        const index = activity.variables.findIndex(e => e.variable_id === variableId)
         if (index === -1) return
 
         activity.variables[index].mandatory = mandatory
@@ -111,28 +111,28 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
         updateActivitiesState([activity])
     }
 
-    const toggleVariableMandatory = (activityId: string, variable: VariableType) => {
-        setVariableMandatory(activityId, variable._id, !variable.mandatory)
+    const toggleVariableMandatory = (activityId: string, variable: ActivityVariableType) => {
+        setVariableMandatory(activityId, variable.variable_id, !variable.mandatory)
     }
 
     const linkVariableToActivity = (activityId: string, variable: VariableType) => {
         const activity = getActivityById(activityId)
 
         if (!activity) return
-        if (activity.variables.find(e => e._id === variable._id)) return
+        if (activity.variables.find(e => e.variable_id === variable._id)) return
 
         pushRequest(postRequest(`https://api.pebble.solutions/v5/activity/${activity._id}/metric/variable`, {
             "variable_id": variable._id,
             "mandatory": true
         }))
-        activity.variables.push({...variable, mandatory: true})
+        activity.variables.push({...variable, mandatory: true, variable_id: variable._id})
         updateActivitiesState([activity])
     }
 
     const removeVariableFromActivity = (activityId: string, variableId: string) => {
         const activity = getActivityById(activityId)
         if (!activity) return
-        const index = activity.variables.findIndex(e => e._id === variableId)
+        const index = activity.variables.findIndex(e => e.variable_id === variableId)
 
         if (index !== -1) {
             pushRequest(deleteRequest(`https://api.pebble.solutions/v5/activity/${activityId}/metric/variable/${variableId}`))

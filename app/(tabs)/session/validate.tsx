@@ -48,13 +48,13 @@ export default function ValidateScreen() {
     if (!currentActivity || !currentSession) {
         return null
     }
-    const setResponse = (Id: string, response: VariableValueType) => {
+    const setResponse = (variableId: string, response: VariableValueType) => {
         setRawVariables((prev) => {
             const newVars: RawVariableType[] = []
             
             prev.forEach((variable) => {
-                if(variable._id) {
-                    if (variable._id === Id) {
+                if(variable.variable_id) {
+                    if (variable.variable_id === variableId) {
                         variable.value = response
                         newVars.push(variable)
                     }
@@ -90,7 +90,7 @@ export default function ValidateScreen() {
     
             if (rawVariables.length === 0) {
                 const newRawVariables: RawVariableType[] = variables.map(variable => ({
-                    _id: variable._id,
+                    variable_id: variable.variable_id,
                     label: variable.question,
                     type: variable.type,
                     value: undefined,
@@ -99,8 +99,8 @@ export default function ValidateScreen() {
             }
             
             rawVariables.forEach((variable) => {
-                if (variable._id) {
-                    const id = variable._id
+                if (variable.variable_id) {
+                    const id = variable.variable_id
                     const value = variable.value
                     const type = variable.type
                     const label = variable.label

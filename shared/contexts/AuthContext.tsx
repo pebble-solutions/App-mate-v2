@@ -1,10 +1,8 @@
 import React, {createContext, PropsWithChildren, useContext, useEffect, useRef, useState} from "react";
-import {createRequestsBucket, createRequestsController} from "@pebble-solutions/api-request";
-import {Bucket, Request, RequestsController} from "@pebble-solutions/api-request/lib/types/classes";
 import {Auth} from "../classes/Auth";
 import {User} from "firebase/auth"
 import {onUserChange} from "../libs/auth";
-import {SafeAreaView, Text} from "react-native";
+import {SafeAreaView} from "react-native";
 import LoginForm from "../../components/Auth/LoginForm";
 import {globalStyles} from "../globalStyles";
 

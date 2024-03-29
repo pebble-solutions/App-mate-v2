@@ -5,7 +5,7 @@ export type InputOptions = {
     value?: any,
     placeholder?: string,
     options?: InputCustomOptions,
-    id: string
+    id?: string
 }
 
 type InputCustomOptions = {

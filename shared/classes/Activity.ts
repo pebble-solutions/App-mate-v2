@@ -1,5 +1,5 @@
 import {ActivityType, JsonActivityType} from "../types/ActivityType";
-import { VariableType } from "../types/VariableType";
+import {ActivityVariableType, VariableType} from "../types/VariableType";
 import {RawDataType} from "../types/SessionType";
 
 export class Activity implements ActivityType {
@@ -11,7 +11,7 @@ export class Activity implements ActivityType {
     description?: string;
     color: string;
     start: Date;
-    variables: VariableType[];
+    variables: ActivityVariableType[];
     is_active: boolean;
 
     constructor(activity: any) {

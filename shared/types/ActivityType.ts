@@ -1,4 +1,4 @@
-import { VariableType } from "./VariableType"
+import {ActivityVariableType} from "./VariableType"
 
 export type JsonActivityType = {
     _id: string,
@@ -6,7 +6,7 @@ export type JsonActivityType = {
     description?: string,
     color: string,
     start: string,
-    variables: VariableType[],
+    variables: ActivityVariableType[],
     is_active: boolean
 }
 
