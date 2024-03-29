@@ -37,10 +37,11 @@ export default function SessionSummary({session, theme, onVariableChange, onSequ
                     onValueChange={handleSequenceChange}
                 />
             </View>
+            {session.raw_variables.length > 0 && 
             <View style={[globalStyles.mb2Container, globalStyles.body, {width: "100%"}]}>
                 <Title title={"Informations fournies"} style={[globalStyles.textLight, globalStyles.mbContainer, globalStyles.textCenter]} />
                 <VariablesList variables={session.raw_variables} theme={theme} onValueChange={onVariableChange} />
-            </View>
+            </View>}
         </>
     )
 }

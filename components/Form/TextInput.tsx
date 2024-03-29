@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { globalStyles } from "../../shared/globalStyles";
 import {InputOptions, TextInputOptions} from "./types/InputOptions";
-import {TextInput as ReactNativeTextInput} from "react-native";
+import {TextInput as ReactNativeTextInput, Text, View} from "react-native";
 
-const TextInput = ({value, onChange, placeholder, multiline, options}: TextInputOptions) => {
+const TextInput = ({value, onChange, placeholder, multiline, options, id}: TextInputOptions) => {
 
     const [currentValue, setCurrentValue] = useState(value)
     // useEffect(() => {

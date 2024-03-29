@@ -17,6 +17,7 @@ type OnboardingControllerOptions = {
 
 export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex, validate}: OnboardingControllerOptions) {
 
+
     const [currentIndex, setCurrentIndex] = useState(0)
     const { width } = useWindowDimensions()
 
