@@ -12,7 +12,7 @@ type FormInputOptions = InputOptions & {
     type?: InputType,
     labelStyle?: object[]
     style?: object[],
-    id: string
+    id?: string | undefined
 }
 
 export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style, options, id}: FormInputOptions) {
@@ -38,8 +38,8 @@ export default function FormInput({label, type, value, placeholder, onChange, la
             component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} id={id}/>
             break
         case "boolean":
-            component = <BooleanInput value={value} onChange={onChange} placeholder={placeholder} trueLabel={'OUI'} falseLabel="NON"id={id} />
-            break
+            component = <BooleanInput value={value} onChange={onChange} placeholder={placeholder} trueLabel={'OUI'} falseLabel="NON" id={id} />
+            break 
         case "date":
             component = <DateTimeInput value={value} onChange={onChange} placeholder={placeholder} type={"date"} id={id}/>
             break

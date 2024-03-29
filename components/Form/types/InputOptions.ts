@@ -5,7 +5,7 @@ export type InputOptions = {
     value?: any,
     placeholder?: string,
     options?: InputCustomOptions,
-    id: string
+    id?: string
 }
 
 type InputCustomOptions = {
@@ -16,18 +16,18 @@ export type DateTimeInputOptions = Omit<InputOptions, 'value' | 'onChange'> & {
     value?: Date | null,
     onChange?: (newVal: Date | null) => void,
     type?: DateTimeInputType
-    id: string
+    id?: string
 }
 
 export type NumberInputOptions = Omit<InputOptions, 'value' | 'onChange'> & {
     value?: number | null,
     onChange?: (newVal: number | null) => void,
     type?: NumberInputType
-    id: string
+    id?: string
 }
 
 export type TextInputOptions = Omit<InputOptions, 'value'> & {
     value?: string,
     multiline?: boolean
-    id: string
+    id?: string
 }

@@ -30,8 +30,9 @@ export default function ActivityOverview({ activity, onNewPress, onSessionPress,
             activity={activity}
             style={[globalStyles.body, globalStyles.card]}>
             <View style={[globalStyles.cardContent, styles.localCardContent]}>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
-                <Text style={globalStyles.textLight}>{activity.description}</Text>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
+                { activity.description && <Text style={globalStyles.textLight}>{activity.description}</Text>
+                }
 
                 {sessions?.length ? (
                     <>

@@ -7,7 +7,7 @@ type BooleanInputOptions = Omit<InputOptions, 'value'> & {
     value?: boolean,
     trueLabel?: string,
     falseLabel?: string,
-    id: string
+    id?: string
 }
 
 const BooleanInput = ({value, onChange, trueLabel, falseLabel, id}: BooleanInputOptions) => {
