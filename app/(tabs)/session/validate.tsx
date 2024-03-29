@@ -16,6 +16,8 @@ import {VariableValueType} from "../../../shared/types/VariableType";
 import {SequenceItemType} from "../../../shared/types/SequenceType";
 import { Session } from "../../../shared/classes/Session";
 import { useSessionContext } from "../../../shared/contexts/SessionContext";
+import {patchRequest, postRequest} from "@pebble-solutions/api-request";
+import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 
 
 
@@ -23,7 +25,8 @@ import { useSessionContext } from "../../../shared/contexts/SessionContext";
 export default function ValidateScreen() {
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
     const { status, resetStatus, resetPayload, exitStatus, setExitStatus } = useSessionStatusContext()
-    const { updateSession, closeSession } = useSessionContext()
+    const { updateSession, closeSession, updateSessionsState } = useSessionContext()
+    const { requestsController} = useRequestsContext()
     
     useEffect(() => {
         navigate(status || null, router)
@@ -78,9 +81,22 @@ export default function ValidateScreen() {
         resetStatus()
     }
     const validateSession = async () => {
-        updateSession(new Session (currentSession))
-        closeSession(new Session(currentSession))
-        exit()
+        const sess = new Session(currentSession)
+
+        try {
+            await requestsController.addRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+sess._id, sess.json())).send()
+            await requestsController.addRequest(postRequest("https://api.pebble.solutions/v5/metric/"+sess._id+"/close")).send()
+
+            sess.is_active = false
+            sess.end = new Date()
+            updateSessionsState([sess])
+
+            exit()
+        }
+        catch (e) {
+            Alert.alert("Erreur", "Erreur dans l'envoie de la requête de cloture")
+            console.error(e)
+        }
     }
 
     let items: ReactNode[] = []

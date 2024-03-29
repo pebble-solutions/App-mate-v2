@@ -30,7 +30,8 @@ export default function RootLayout() {
     }
 
     const handleRequestsError = (e: any) => {
-        Alert.alert("Erreur de requête API", e)
+        Alert.alert("Erreur de requête API")
+        console.log(e)
     }
 
     return (
