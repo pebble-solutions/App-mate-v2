@@ -126,7 +126,7 @@ export default function ClockScreen() {
                 />
                 <Title title={currentActivity.label} style={[globalStyles.textLight, globalStyles.textCenter]} size="lg" />
             </GradientHeader>
-            {sessionMode && <View><Text>je suis en mode manuel</Text></View>}
+            {sessionMode && <View><Text></Text></View>}
 
             <View style={[globalStyles.body, globalStyles.darkBg]}>
 
