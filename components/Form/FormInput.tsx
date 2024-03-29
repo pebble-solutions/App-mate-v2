@@ -15,7 +15,7 @@ type FormInputOptions = InputOptions & {
     id: string
 }
 
-export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style, id}: FormInputOptions) {
+export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style, options, id}: FormInputOptions) {
 
     type = type || "text"
 
@@ -23,16 +23,16 @@ export default function FormInput({label, type, value, placeholder, onChange, la
 
     switch (type) {
         case "text":
-            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} id={id} />
+            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} options={options} id={id} />
             break
         case "textarea":
-            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} multiline={true} id={id} />
+            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} multiline={true} options={options} id={id} />
             break
         case "number":
             component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} id={id}/>
             break
         case "float":
-            component = <NumberInput value={value} onChange={onChange} placeholder={placeholder}id={id}/>
+            component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} id={id}/>
             break
         case "integer":
             component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} id={id}/>

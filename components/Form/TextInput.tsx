@@ -3,7 +3,7 @@ import { globalStyles } from "../../shared/globalStyles";
 import {InputOptions, TextInputOptions} from "./types/InputOptions";
 import {TextInput as ReactNativeTextInput, Text, View} from "react-native";
 
-const TextInput = ({value, onChange, placeholder, multiline, id }: TextInputOptions) => {
+const TextInput = ({value, onChange, placeholder, multiline, options, id}: TextInputOptions) => {
 
     const [currentValue, setCurrentValue] = useState(value)
     // useEffect(() => {
@@ -15,15 +15,15 @@ const TextInput = ({value, onChange, placeholder, multiline, id }: TextInputOpti
         if (onChange) onChange(newVal);
     };
     return (
-        <View>
-            <ReactNativeTextInput
-                style={globalStyles.input}
-                placeholder={placeholder}
-                value={value}
-                onChangeText={handleChange}
-                placeholderTextColor={'#ffffff80'}
-                multiline={multiline}/>
-        </View>
+        <ReactNativeTextInput
+            style={globalStyles.input}
+            placeholder={placeholder}
+            value={value}
+            onChangeText={handleChange}
+            placeholderTextColor={'#ffffff90'}
+            multiline={multiline}
+            secureTextEntry={options?.secureTextEntry}
+        />
     );
 };
 

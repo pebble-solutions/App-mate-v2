@@ -3,8 +3,13 @@ import {DateTimeInputType, NumberInputType} from "./InputType";
 export type InputOptions = {
     onChange?: (newVal: any) => void,
     value?: any,
-    placeholder?: string
+    placeholder?: string,
+    options?: InputCustomOptions,
     id: string
+}
+
+type InputCustomOptions = {
+    secureTextEntry?: boolean
 }
 
 export type DateTimeInputOptions = Omit<InputOptions, 'value' | 'onChange'> & {
