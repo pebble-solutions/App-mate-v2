@@ -109,7 +109,7 @@ export class Auth implements AuthorizationInterface {
     }
 
     async getToken() {
-        if (this.isExpiredAuthorization()) {
+        /*if (this.isExpiredAuthorization()) {
             await this.getAuthorization()
         }
 
@@ -117,7 +117,8 @@ export class Auth implements AuthorizationInterface {
             throw new NotAuthorizedError("Récupération du token impossible!")
         }
 
-        return this.tokenData.token
+        return this.tokenData.token*/
+        return Promise.resolve("eyJhbGciOiJSUzI1NiIsImtpZCI6Im45aTVQcjIzR3ljZWhsWFFPYVl5Zng4ZEtmMk9YRlBtLUNFMC01eHZWQkEiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiJ0ZXN0QHBlYmJsZS5iemgiLCJpc3MiOiJsb2NhbGhvc3QiLCJhdWQiOlsiYWN0aXZpdHkvdjUiLCJtZXRyaWMvdjUiXSwidGlkIjoiMWplMzRrLWVkNDVkc3NxLWVrIiwicm9sZXMiOltdLCJsdiI6MSwiY2xpZW50X2lkIjoiMDFIVDJTSzhOSjBOOTFHU1Q2SzFTMUJSMUIiLCJzY29wZSI6Im1ldHJpYzpjcmVhdGUgbWV0cmljOnJlYWQub3duIG1ldHJpYzp3cml0ZS5vd24gbWV0cmljOmRlbGV0ZS5vd24gYWN0aXZpdHk6cmVhZCBtZXRyaWM6bGlzdC5vd24gdmFyaWFibGU6bGlzdCIsImlhdCI6MTcxMTcyMTQ5NiwiZXhwIjoxODIyODM1MDk2LCJqdGkiOiIxMzViODY5NS0wOGEyLTQxMTYtOTI3Zi1jODk5ODAwOWI1N2IifQ.gap2QZZAbPior8nrjRmjXB_dzinMqRuujEN-2tT-hK1OoO5YUo-GVepZ9ZoLVFdVN1bA2mAqOpR5giKbHerLmqXMQV_QGpDzeZQzN-XTCKT_v7O14T7zc7abiYDPb_8j2ysIwovsS7vmo3nAQxQBRVlUyeioDLoIjEgkhm_2VHCWseai9eyTR_QvjYPUitW_oxBwiCUGF00dfTj2qeCYRLuTpRtzBlSGKZ2E6nL30e7LsCDllhA16RVcbn9SnWBI5LPB7LlQEWDw92HwRo1yaV2bZcMTm1yB2iiKUzSQKpcm2DSw_DdP4xnun1oO3XNIV_DJmpfKW1niDQOO1Zd1MA")
     }
 
 }
