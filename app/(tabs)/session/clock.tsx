@@ -46,11 +46,11 @@ export default function ClockScreen() {
 
     const [ currentSession, setCurrentSession ] = useState<Session | null>(session || null)
     const [ currentActivity, setCurrentActivity ] = useState<ActivityType | null>(activity || null)
-
+    
     const [started, setStarted] = useState(false)
     const [sequence, setSequence] = useState<SequenceType>([])
     const [currentItemIndex, setCurrentItemIndex] = useState<number | null>(null)
-
+    
     // Initialize local sequence once current session is loaded
     useEffect(() => {
         if (currentSession) {
@@ -129,6 +129,7 @@ export default function ClockScreen() {
 
                 <View style={globalStyles.body}>
                     <View style={[globalStyles.centeredContainer, globalStyles.mv4Container]}>
+                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{currentSession.start.toLocaleDateString()}</Text>
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la session</Text>
                         <StopWatch
                             style={[globalStyles.textLight, globalStyles.textCenter]}

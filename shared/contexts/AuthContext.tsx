@@ -16,14 +16,14 @@ const AuthContext= createContext<AuthContextType | null>(null)
 const AuthContextProvider = ({children}: PropsWithChildren) => {
     const [auth, setAuth] = useState(new Auth())
     const [user, setUser] = useState<User | null>(null)
-    const [isAuthorized, setIsAuthorized] = useState(true)
+    const [isAuthorized, setIsAuthorized] = useState(false)
 
     useEffect(() => {
-        /*onAuthorizationChange(auth, (newTokenData) => {
+        onAuthorizationChange(auth, (newTokenData) => {
             setIsAuthorized(!!newTokenData)
-        })*/
+        })
 
-        return onUserChange(auth, (newUser) => {
+        onUserChange(auth, (newUser) => {
             setUser(newUser)
         })
     }, []);

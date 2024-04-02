@@ -15,13 +15,16 @@ export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
 
     const [username, setUsername] = useState(initialUsername || "")
     const [password, setPassword] = useState("")
+    const [isPending, setIsPending] = useState(false)
 
     const handleLogin = async () => {
+        setIsPending(() => true)
         try {
             await auth.loginWithPassword(username, password)
-        }
-        catch (e: any) {
+        } catch (e: any) {
             Alert.alert("Erreur d'autentification", e?.message || "Erreur inconnue")
+        } finally {
+            setIsPending(false)
         }
     }
 
@@ -44,7 +47,10 @@ export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
                     value={username}
                     onChange={handleUsernameChange}
                     options={{
-                        autoCapitalize: "none"
+                        autoCapitalize: "none",
+                        autoComplete: "email",
+                        autoFocus: true,
+                        inputMode: "email"
                     }}
                 />
 
@@ -63,6 +69,10 @@ export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
                     title={"Connexion"}
                     onPress={handleLogin}
                     variant={"lg"}
+                    options={{
+                        isPending,
+                        disabled: isPending
+                    }}
                 />
             </View>
         </View>
