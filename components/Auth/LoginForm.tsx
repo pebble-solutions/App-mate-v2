@@ -47,6 +47,7 @@ export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
                     value={username}
                     onChange={handleUsernameChange}
                     options={{
+                        autoCapitalize: "none",
                         autoComplete: "email",
                         autoFocus: true,
                         inputMode: "email"
@@ -59,7 +60,8 @@ export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
                     value={password}
                     onChange={handlePasswordChange}
                     options={{
-                        secureTextEntry: true
+                        secureTextEntry: true,
+                        autoCapitalize: "none"
                     }}
                 />
 
