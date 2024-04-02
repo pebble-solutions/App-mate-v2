@@ -24,16 +24,18 @@ const BooleanInput = ({value, onChange, trueLabel, falseLabel}: BooleanInputOpti
     };
 
   return (
-    <View style={[globalStyles.input, localStyle.booleanInput]}>
-        <Switch
-            trackColor={{ false: variables.color.grey, true: variables.color.success }}
-            ios_backgroundColor={variables.color.grey}
-            onValueChange={toggle}
-            value={currentValue}
-            
-        />
+    <View>
+        <View style={[globalStyles.input, localStyle.booleanInput]}>
+            <Switch
+                trackColor={{ false: variables.color.grey, true: variables.color.success }}
+                ios_backgroundColor={variables.color.grey}
+                onValueChange={toggle}
+                value={currentValue}
+                
+                />
 
-        {label && <Text>{label}</Text>}
+            {label && <Text>{label}</Text>}
+        </View>
     </View>
   );
 }

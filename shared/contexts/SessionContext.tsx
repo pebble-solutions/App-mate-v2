@@ -17,6 +17,7 @@ export type SessionContextType = {
     pending: boolean
     loading: boolean
     getStartedSessions: () => Session[]
+    updateSessionsState: (sessions: SessionType[] | JsonSessionType[]) => void
 }
 
 const SessionContext = createContext<SessionContextType | null>(null)
@@ -65,7 +66,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const closeSession = (session: Session) => {
         session.end = new Date()
         session.is_active = false
-        pushRequest(postRequest("https://api.pebble.solutions/v5/metric/"+session._id+"/close/"))
+        pushRequest(postRequest("https://api.pebble.solutions/v5/metric/"+session._id+"/close"))
         updateSessionsState([session])
     }
 
@@ -118,7 +119,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             getSessionsFromActivity,
             pending,
             loading,
-            getStartedSessions
+            getStartedSessions,
+            updateSessionsState
         }}>
             {children}
         </SessionContext.Provider>

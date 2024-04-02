@@ -1,35 +1,124 @@
 import {AuthorizationInterface} from "@pebble-solutions/api-request/lib/types/interfaces";
-import {User, getAuth, onAuthStateChanged} from "firebase/auth"
+import {getAuth, signInWithEmailAndPassword, signOut, User} from "firebase/auth"
 import {app} from "../../config/firebase"
+import {postRequest} from "@pebble-solutions/api-request";
+import {NotAuthenticatedError} from "./errors/NotAuthenticatedError";
+import {NotAuthorizedError} from "./errors/NotAuthorizedError";
+import {AuthorizationContentError} from "./errors/AuthorizationContentError";
+import {PebbleToken} from "../types/PebbleToken";
+
+type AuthorizationEvent = {
+    name: string,
+    callback: (event?: any) => void
+}
 
 export class Auth implements AuthorizationInterface {
 
-    /*readonly auth
+    readonly firebaseAuth
 
-    private user: User | null*/
+    private _user: User | null
+
+    private _tokenData: PebbleToken | null
+
+    private events: AuthorizationEvent[]
 
     constructor() {
-        /*this.auth = getAuth(app)
-        this.user = null
-        onAuthStateChanged(this.auth, user => {
-            this.user = user
-        })*/
+        this.firebaseAuth = getAuth(app)
+        this._user = this.firebaseAuth.currentUser
+        this._tokenData = null
+        this.events = []
     }
 
-    login() {
-
+    setUser(user: User | null) {
+        this._user = user
+        this.dispatchEvent("userChange", user)
     }
 
-    logout() {
+    setTokenData(tokenData: PebbleToken | null) {
+        this._tokenData = tokenData
+        this.dispatchEvent("authorizationChange", tokenData)
+    }
 
+    get user() {
+        return this._user
+    }
+
+    get tokenData() {
+        return this._tokenData
+    }
+
+    async loginWithPassword(username: string, password: string) {
+        const userCred = await signInWithEmailAndPassword(this.firebaseAuth, username, password)
+        this.setUser(userCred.user)
+        //await this.getAuthorization()
+    }
+
+    async logout() {
+        await signOut(this.firebaseAuth)
+        this.setUser(null)
     }
 
     get isAuthenticated() {
-        return false
+        return !!this.user
     }
 
-    getToken() {
-        return Promise.resolve("eyJhbGciOiJSUzI1NiIsInR5cCI6ImF0K2p3dCIsImtpZCI6Im45aTVQcjIzR3ljZWhsWFFPYVl5Zng4ZEtmMk9YRlBtLUNFMC01eHZWQkEifQ.eyJhdWQiOlsiYXBpLnBlYmJsZS5zb2x1dGlvbnMvdjUvbWV0cmljIiwiYXBpLnBlYmJsZS5zb2x1dGlvbnMvdjUvYWN0aXZpdHkiXSwiZXhwIjoxNzQyNjMzMDE0LCJpYXQiOjE3MTExMDQ1OTcsImlzcyI6ImFwaS5wZWJibGUuc29sdXRpb25zL3Y1L2F1dGhvcml6ZSIsImx2Ijo1LCJyb2xlcyI6WyJtYW5hZ2VyIl0sInNjb3BlIjoiYWN0aXZpdHk6cmVhZCBhY3Rpdml0eTp3cml0ZSBhY3Rpdml0eTpjcmVhdGUgYWN0aXZpdHk6ZGVsZXRlIG1ldHJpYzpsaXN0Lm93biBtZXRyaWM6Y3JlYXRlIG1ldHJpYzpyZWFkLm93biBtZXRyaWM6d3JpdGUub3duIG1ldHJpYzpkZWxldGUub3duIiwic3ViIjoidGVzdEBwZWJibGUuYnpoIiwidGlkIjoiMWplMzRrLWVkNDVkc3NxLWVrIiwiY2xpZW50X2lkIjoiMDFIS1dEQlRaWFhHVzRHVzFHSEVQRzhYRlAiLCJqdGkiOiI2YjgzYzZkYy1lOWRjLTQyMTItODlkNC1mMjRjNzIwOGZkOWYifQ.dtjxo8d0WdocHw65WQ28EhFvi40pJ2tajgeGkgn_Pm92dsmwgxeU1jC22jJnIIiu6wEPhpVJO6qjNz7_7cqMaCB-aCxC6O0x63Di2LDEbFSADv6cW4xzNV5_qDGN_BPAG4fHNm_Sv-6srJYVVKxSCBpjGsdN0iwpHIlIUmpS3buMiRhjAtqZhBb-_QEa-UGJeJg7X1FC2Ntz1rpTEQAFUiltyVgQoAGhYg5AhYd7S-kK_ZWRpAsHXx3k6TLJgCadSFeLq3b_ivcxBw7LIw4sZ6mOqvArraVBv8cQ5iMHa8yCMxKzXWxBSUbVqWoYEGsSJGFF-hOcv7hILDg8tkKEAQ")
+    async getAuthorization() {
+        const request = postRequest("https://api.pebble.solutions/v5/authorize/auth", {
+            "app": "mate"
+        }).withAuth({
+            getToken: async () => {
+                if (!this.user) {
+                    throw new NotAuthenticatedError()
+                }
+                return await this.user.getIdToken()
+            }
+        })
+
+        try {
+            await request.send()
+        }
+        catch (e: any) {
+            await this.logout()
+            throw new NotAuthorizedError(e)
+        }
+
+        try {
+            const tokenData = await request.content()
+            this.setTokenData(tokenData)
+        }
+        catch (e) {
+            this.setTokenData(null)
+            throw new AuthorizationContentError(e)
+        }
+    }
+
+    isExpiredAuthorization() {
+        if (!this.tokenData) return true
+        const exp = new Date(this.tokenData.exp * 1000);
+        const now = new Date()
+        return exp.getTime() < now.getTime();
+    }
+
+    addEvent(name: string, callback: (event?: any) => void) {
+        this.events.push({name, callback})
+    }
+
+    dispatchEvent(name: string, event?: any) {
+        const events = this.events.filter(e => e.name === name)
+        events.forEach(e => e.callback(event))
+    }
+
+    async getToken() {
+        /*if (this.isExpiredAuthorization()) {
+            await this.getAuthorization()
+        }
+
+        if (!this.tokenData) {
+            throw new NotAuthorizedError("Récupération du token impossible!")
+        }
+
+        return this.tokenData.token*/
+        return Promise.resolve("eyJhbGciOiJSUzI1NiIsImtpZCI6Im45aTVQcjIzR3ljZWhsWFFPYVl5Zng4ZEtmMk9YRlBtLUNFMC01eHZWQkEiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiJ0ZXN0QHBlYmJsZS5iemgiLCJpc3MiOiJsb2NhbGhvc3QiLCJhdWQiOlsiYWN0aXZpdHkvdjUiLCJtZXRyaWMvdjUiXSwidGlkIjoiMWplMzRrLWVkNDVkc3NxLWVrIiwicm9sZXMiOltdLCJsdiI6MSwiY2xpZW50X2lkIjoiMDFIVDJTSzhOSjBOOTFHU1Q2SzFTMUJSMUIiLCJzY29wZSI6Im1ldHJpYzpjcmVhdGUgbWV0cmljOnJlYWQub3duIG1ldHJpYzp3cml0ZS5vd24gbWV0cmljOmRlbGV0ZS5vd24gYWN0aXZpdHk6cmVhZCBtZXRyaWM6bGlzdC5vd24gdmFyaWFibGU6bGlzdCBhY3Rpdml0eTp3cml0ZSBhY3Rpdml0eTpkZWxldGUgYWN0aXZpdHk6Y3JlYXRlIiwiaWF0IjoxNzExNzIxNDk2LCJleHAiOjE4MjI4MzUwOTYsImp0aSI6IjEzNWI4Njk1LTA4YTItNDExNi05MjdmLWM4OTk4MDA5YjU3YiJ9.XFwAUuyZIZfktAAO8rNXpxswNCZ29_z7-2I7gb3wDaT7ZFsNjqNjoS9FxBNQlALZPGccQSvIXGmTd_jY0oyth11b6XkNs930Mj6YA3fAX6lc1aZEpCjKTJhj0zPGN2zUe6eq0_Quo_5i8-JRMqaJj65MD9pr-fmPWrzhCgjgNdhGUrMjNl8fnalY09OGqM_C9ugRr4rDkz3yjWeYgvOeHKenJNuOP79xppiN4aq3_dNdhCRBDZcQHCfxF4PzZlhzcgGmgYiXSm_8FxaG6tJlx3ciBHHQMMy-RER4HUDI5i2OLsPM1oIxr1KdCDo46qBn_HntJXIjIo4Lbta2Egm9FA")
     }
 
 }

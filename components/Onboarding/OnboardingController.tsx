@@ -17,6 +17,7 @@ type OnboardingControllerOptions = {
 
 export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex, validate}: OnboardingControllerOptions) {
 
+
     const [currentIndex, setCurrentIndex] = useState(0)
     const { width } = useWindowDimensions()
 
@@ -24,12 +25,10 @@ export default function OnboardingController({activeColor, inactiveColor, items,
     const slidesRef = useRef<FlatList | null>(null)
 
     const viewableItemsChanged = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
-        // console.log(viewableItems, 'viewableItems')
         setCurrentIndex(viewableItems[0].index || 0)
     }).current;
 
     const handleToValidate = () => {
-        
         if (currentIndex === validationIndex) {
             validate()
         }
@@ -37,14 +36,14 @@ export default function OnboardingController({activeColor, inactiveColor, items,
 
     const goToIndex = (index: number) => {
         if (index >= 0 && index < items.length) {
-            // console.log('scrolling', slidesRef, index, items.length)
             slidesRef.current?.scrollToIndex({index, animated: true})
+            setCurrentIndex(index);
         }
         else if (index === items.length) {
             Alert.alert('Validation', 'Confirmez-vous la validation de cette session?', [
                 {
                   text: 'Annuler',
-                  onPress: () => console.log('Cancel Pressed'),
+                  onPress: () => {goToIndex(currentIndex)},
                   style: 'cancel',
                 },
                 {text: 'OK', onPress: () => {handleToValidate()}},
