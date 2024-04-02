@@ -11,11 +11,10 @@ type FormInputOptions = InputOptions & {
     label?: string,
     type?: InputType,
     labelStyle?: object[]
-    style?: object[],
-    id: string
+    style?: object[]
 }
 
-export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style, options, id}: FormInputOptions) {
+export default function FormInput({label, type, value, placeholder, onChange, labelStyle, style, options}: FormInputOptions) {
 
     type = type || "text"
 
@@ -23,31 +22,31 @@ export default function FormInput({label, type, value, placeholder, onChange, la
 
     switch (type) {
         case "text":
-            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} options={options} id={id} />
+            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} options={options} />
             break
         case "textarea":
-            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} multiline={true} options={options} id={id} />
+            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} multiline={true} options={options}  />
             break
         case "number":
-            component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} id={id}/>
+            component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} />
             break
         case "float":
-            component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} id={id}/>
+            component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} />
             break
         case "integer":
-            component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} id={id}/>
+            component = <NumberInput value={value} onChange={onChange} placeholder={placeholder} />
             break
         case "boolean":
-            component = <BooleanInput value={value} onChange={onChange} placeholder={placeholder} trueLabel={'OUI'} falseLabel="NON"id={id} />
+            component = <BooleanInput value={value} onChange={onChange} placeholder={placeholder} trueLabel={'OUI'} falseLabel="NON" />
             break
         case "date":
-            component = <DateTimeInput value={value} onChange={onChange} placeholder={placeholder} type={"date"} id={id}/>
+            component = <DateTimeInput value={value} onChange={onChange} placeholder={placeholder} type={"date"} />
             break
         case "time":
-            component = <DateTimeInput value={value} onChange={onChange} placeholder={placeholder} type={"time"} id={id}/>
+            component = <DateTimeInput value={value} onChange={onChange} placeholder={placeholder} type={"time"} />
             break
         case "datetime":
-            component = <DateTimeInput value={value} onChange={onChange} placeholder={placeholder} type={"datetime"} id={id}/>
+            component = <DateTimeInput value={value} onChange={onChange} placeholder={placeholder} type={"datetime"} />
             break
         default:
             component = <Text style={globalStyles.textLight}>Ce type de variable n'est pas traité dans cette application: {type}</Text>

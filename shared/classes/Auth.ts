@@ -24,7 +24,7 @@ export class Auth implements AuthorizationInterface {
 
     constructor() {
         this.firebaseAuth = getAuth(app)
-        this._user = null
+        this._user = this.firebaseAuth.currentUser
         this._tokenData = null
         this.events = []
     }
@@ -50,6 +50,7 @@ export class Auth implements AuthorizationInterface {
     async loginWithPassword(username: string, password: string) {
         const userCred = await signInWithEmailAndPassword(this.firebaseAuth, username, password)
         this.setUser(userCred.user)
+        await this.getAuthorization()
     }
 
     async logout() {
@@ -94,7 +95,8 @@ export class Auth implements AuthorizationInterface {
     isExpiredAuthorization() {
         if (!this.tokenData) return true
         const exp = new Date(this.tokenData.exp * 1000);
-        return exp.getTime() < (new Date()).getTime();
+        const now = new Date()
+        return exp.getTime() < now.getTime();
     }
 
     addEvent(name: string, callback: (event?: any) => void) {
