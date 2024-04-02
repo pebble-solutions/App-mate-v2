@@ -22,7 +22,7 @@ export default function FormInput({label, type, value, placeholder, onChange, la
 
     switch (type) {
         case "text":
-            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} options={options} />
+            component = <TextInput value={value} onChange={onChange} placeholder={placeholder} options={options} multiline={false} />;
             break
         case "textarea":
             component = <TextInput value={value} onChange={onChange} placeholder={placeholder} multiline={true} options={options}  />

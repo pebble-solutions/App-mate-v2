@@ -43,6 +43,9 @@ export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
                     type={"text"}
                     value={username}
                     onChange={handleUsernameChange}
+                    options={{
+                        autoCapitalize: "none"
+                    }}
                 />
 
                 <FormInput
@@ -51,7 +54,8 @@ export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
                     value={password}
                     onChange={handlePasswordChange}
                     options={{
-                        secureTextEntry: true
+                        secureTextEntry: true,
+                        autoCapitalize: "none"
                     }}
                 />
 

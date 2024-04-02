@@ -9,6 +9,7 @@ export type InputOptions = {
 
 type InputCustomOptions = {
     secureTextEntry?: boolean
+    autoCapitalize?: "none" | "sentences" | "words" | "characters"
 }
 
 export type DateTimeInputOptions = Omit<InputOptions, 'value' | 'onChange'> & {
@@ -26,4 +27,5 @@ export type NumberInputOptions = Omit<InputOptions, 'value' | 'onChange'> & {
 export type TextInputOptions = Omit<InputOptions, 'value'> & {
     value?: string,
     multiline?: boolean
+    autoCapitalize?: "none" | "sentences" | "words" | "characters"
 }
