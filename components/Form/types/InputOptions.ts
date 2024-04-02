@@ -25,5 +25,4 @@ export type NumberInputOptions = Omit<InputOptions, 'value' | 'onChange'> & {
 export type TextInputOptions = Omit<InputOptions, 'value'> & {
     value?: string,
     multiline?: boolean
-    autoCapitalize?: "none" | "sentences" | "words" | "characters"
 }
