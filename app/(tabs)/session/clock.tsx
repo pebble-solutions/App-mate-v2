@@ -111,17 +111,6 @@ export default function ClockScreen() {
     return (
         <View style={globalStyles.mainContainer}>
             <GradientHeader activity={currentActivity}>
-                <Button
-                    title="Quitter"
-                    style={[globalStyles.transparentBg]}
-                    onPress={exit}
-                    titleStyle={[globalStyles.textLight]}
-                    icon={<AntDesign name="back" size={24} color="white" />}
-                    options={{
-                        displayTitle: false,
-                        disabled: started
-                    }}
-                />
                 <Title title={currentActivity.label} style={[globalStyles.textLight, globalStyles.textCenter]} size="lg" />
             </GradientHeader>
 

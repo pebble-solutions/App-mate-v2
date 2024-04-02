@@ -15,7 +15,7 @@ export default function ActivityLabel({ activity }: ActivityOverviewType) {
             color={activity.color}
             style={[globalStyles.body, globalStyles.recapCarrouselCard, globalStyles.sContainer]}>
             <View style={[globalStyles.cardContent, styles.localCardContent]}>
-                <Text style={[globalStyles.recapHeadTitle, globalStyles.textLight]}>{activity.label}</Text>
+                <Text style={[globalStyles.recapHeadTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
             </View>
         </ActivityGradient>
     )

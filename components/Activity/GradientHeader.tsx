@@ -43,6 +43,7 @@ const localStyle = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "center",
         paddingBottom: variables.contentPadding[3]
     }
 })
