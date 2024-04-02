@@ -9,7 +9,8 @@ type RequestsContextType = {
     requestsController: RequestsController,
     pushRequest: (request: Request | Bucket) => void,
     auth: Auth,
-    user: User | null
+    user: User | null,
+    pushError: (e: any) => void
 }
 
 const RequestsContext= createContext<RequestsContextType | null>(null)
@@ -35,7 +36,7 @@ const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError
                 return await bucket.content()
             } catch (e) {
                 if (typeof onError !== "undefined") onError(e)
-                console.log("API Exchange error", e)
+                console.error("API Exchange error", e)
             }
 
         }
@@ -50,8 +51,13 @@ const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError
         }
     }, []);
 
+    const pushError = (e: any) => {
+        if (onError) onError(e)
+        console.error("API Exchange error", e)
+    }
+
     return (
-        <RequestsContext.Provider value={{requestsController, pushRequest, auth, user}}>
+        <RequestsContext.Provider value={{requestsController, pushRequest, auth, user, pushError}}>
             {children}
         </RequestsContext.Provider>
     )
