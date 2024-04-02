@@ -11,14 +11,16 @@ import {InvalidSessionTypeError} from "./errors/InvalidSessionTypeError";
 import {ActivityNotFoundError} from "./errors/ActivityNotFoundError";
 import {Session} from "../classes/Session";
 import { ulid } from 'ulidx'
+import { User } from "firebase/auth";
 
-export function newSession (activityId: string, sessionContext: SessionContextType, statusContext: SessionStatusContextType){
+export function newSession (activityId: string, sessionContext: SessionContextType, statusContext: SessionStatusContextType, user?:User | null ){
+    
     const newSession = new Session({
         _id: ulid(),
         type: "activity",
         start: new Date(),
         type_id: activityId,
-        label: `Session de + {user.name}`,
+        label: user ? "Session de "+ user.email : "Session anonyme",
         comment: "",
         status: "started",
         owner: null,

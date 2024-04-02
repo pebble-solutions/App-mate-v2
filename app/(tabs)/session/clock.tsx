@@ -55,7 +55,6 @@ export default function ClockScreen() {
     useEffect(() => {
         if (currentSession) {
             setSequence(currentSession.raw_datas.getSequence())
-            console.log(currentSession.start)
         }
     }, [currentSession]);
 
@@ -130,8 +129,8 @@ export default function ClockScreen() {
 
                 <View style={globalStyles.body}>
                     <View style={[globalStyles.centeredContainer, globalStyles.mv4Container]}>
-                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{currentSession.start.toDateString()}XXXXX</Text>
-                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la sessionXXX</Text>
+                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{currentSession.start.toLocaleDateString()}</Text>
+                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la session</Text>
                         <StopWatch
                             style={[globalStyles.textLight, globalStyles.textCenter]}
                             started={started}
