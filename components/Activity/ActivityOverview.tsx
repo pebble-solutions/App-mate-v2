@@ -36,9 +36,6 @@ export default function ActivityOverview({ activity, onNewPress, onSessionPress,
             <View style={[globalStyles.cardContent, styles.localCardContent]}>
                 <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
                 <Text style={globalStyles.textLight}>{activity.description}</Text>
-                <Text style={globalStyles.textLight}>{user?.email}</Text>
-
-
 
                 {sessions?.length ? (
                     <>
