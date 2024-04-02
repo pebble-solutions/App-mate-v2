@@ -133,7 +133,8 @@ export default function ClockScreen() {
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{currentSession.start.toDateString()}XXXXX</Text>
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la sessionXXX</Text>
                         <StopWatch
-                            style={[globalStyles.textLight, gloa
+                            style={[globalStyles.textLight, globalStyles.textCenter]}
+                            started={started}
                             initialTime={currentSession.raw_datas.getTime()}
                             size={"xl"}
                         />
