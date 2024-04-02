@@ -10,6 +10,7 @@ import SessionContextProvider from "../shared/contexts/SessionContext";
 import {Alert} from "react-native";
 import RequestsContextProvider from "../shared/contexts/RequestsContext";
 import AuthContextProvider from "../shared/contexts/AuthContext";
+import {getMessage} from "../shared/libs/error";
 
 SplashScreen.preventAutoHideAsync()
 
@@ -30,7 +31,8 @@ export default function RootLayout() {
     }
 
     const handleRequestsError = (e: any) => {
-        Alert.alert("Erreur de requête API", e)
+        const message = getMessage(e)
+        Alert.alert("Erreur de requête API", message || "Erreur inconnue")
     }
 
     return (

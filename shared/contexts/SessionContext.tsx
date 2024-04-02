@@ -17,13 +17,14 @@ export type SessionContextType = {
     pending: boolean
     loading: boolean
     getStartedSessions: () => Session[]
+    updateSessionsState: (sessions: SessionType[] | JsonSessionType[]) => void
 }
 
 const SessionContext = createContext<SessionContextType | null>(null)
 
 const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [sessions, setSessions] = useState<Session[]>([])
-    const {requestsController, pushRequest} = useRequestsContext()
+    const {requestsController, pushRequest, pushError} = useRequestsContext()
     const [pending, setPending] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -78,8 +79,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             await request.send()
             const data: JsonSessionType[] = await request.content()
             updateSessionsState(data)
-        } catch (e)  {
-            throw e
+        } catch (e) {
+            pushError(e)
         } finally {
             setPending(false)
         }
@@ -118,7 +119,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             getSessionsFromActivity,
             pending,
             loading,
-            getStartedSessions
+            getStartedSessions,
+            updateSessionsState
         }}>
             {children}
         </SessionContext.Provider>

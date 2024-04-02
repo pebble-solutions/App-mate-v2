@@ -6,7 +6,7 @@ import {DateTimeInputOptions} from "./types/InputOptions";
 import { dateToLiteral } from '../../shared/libs/date';
 import { timeToLiteral } from '../../shared/libs/date';
 
-const DateTimeInput = ({value, onChange, type, placeholder, id}: DateTimeInputOptions) => {
+const DateTimeInput = ({value, onChange, type}: DateTimeInputOptions) => {
 
     type = type || 'datetime'
 

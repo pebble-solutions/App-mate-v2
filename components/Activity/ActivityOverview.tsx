@@ -11,6 +11,8 @@ import ActivityGradient from "./ActivityGradient";
 import {SessionType} from "../../shared/types/SessionType";
 import {SessionCard} from "../Session/SessionCard";
 import TextLoader from "../TextLoader";
+import { User } from "firebase/auth";
+
 
 type ActivityOverviewType = {
     activity: ActivityType,
@@ -18,10 +20,12 @@ type ActivityOverviewType = {
     buttonTitle?: string,
     sessions?: SessionType[],
     onSessionPress?: (session: SessionType) => void,
-    sessionsLoading?: boolean
+    sessionsLoading?: boolean,
+    user?: User | null
 }
 
-export default function ActivityOverview({ activity, onNewPress, onSessionPress, buttonTitle, sessions, sessionsLoading }: ActivityOverviewType) {
+export default function ActivityOverview({ activity, onNewPress, onSessionPress, buttonTitle, sessions, sessionsLoading, user}: ActivityOverviewType) {
+
 
     buttonTitle = buttonTitle || "Consulter"
 

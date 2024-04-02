@@ -3,7 +3,7 @@ import { TextInput , Text, View} from 'react-native';
 import { globalStyles } from "../../shared/globalStyles";
 import {NumberInputOptions} from "./types/InputOptions";
 
-const NumberInput = ({value, placeholder, onChange, type, id}: NumberInputOptions) => {
+const NumberInput = ({value, placeholder, onChange}: NumberInputOptions) => {
     const [currentValue, setCurrentValue] = useState(value)
 
     useEffect(() => {

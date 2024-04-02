@@ -27,6 +27,11 @@ export class Auth implements AuthorizationInterface {
         this._user = null
         this._tokenData = null
         this.events = []
+
+        const currentUser = this.firebaseAuth.currentUser
+        if (currentUser) {
+            this.setUser(currentUser)
+        }
     }
 
     setUser(user: User | null) {
@@ -50,6 +55,7 @@ export class Auth implements AuthorizationInterface {
     async loginWithPassword(username: string, password: string) {
         const userCred = await signInWithEmailAndPassword(this.firebaseAuth, username, password)
         this.setUser(userCred.user)
+        await this.getAuthorization()
     }
 
     async logout() {
@@ -82,8 +88,9 @@ export class Auth implements AuthorizationInterface {
         }
 
         try {
-            const tokenData = await request.content()
+            const tokenData: PebbleToken = await request.content()
             this.setTokenData(tokenData)
+            return tokenData
         }
         catch (e) {
             this.setTokenData(null)
@@ -94,7 +101,8 @@ export class Auth implements AuthorizationInterface {
     isExpiredAuthorization() {
         if (!this.tokenData) return true
         const exp = new Date(this.tokenData.exp * 1000);
-        return exp.getTime() < (new Date()).getTime();
+        const now = new Date()
+        return exp.getTime() < now.getTime();
     }
 
     addEvent(name: string, callback: (event?: any) => void) {
@@ -107,15 +115,32 @@ export class Auth implements AuthorizationInterface {
     }
 
     async getToken() {
+
+        let authToken: PebbleToken | null = this.tokenData
+
         if (this.isExpiredAuthorization()) {
-            await this.getAuthorization()
+            /* In order to avoid parallel requests that could require new authorization at the same time, the current
+             * authorization response is returned without any cache.
+             *
+             * Parallel requests could generate iat error if the response delay for the authorization change the order
+             * of initial requests.
+             *
+             * Example :
+             * - Request 1 need new authorization
+             * - Request 2 need new authorization at the same time
+             * - Authorization for request 2 is returned first
+             * - Authorization for request 1 is returned secondly
+             *
+             * In this example, the order of authorization response diverge from the order of the initial requests.
+             */
+            authToken = await this.getAuthorization()
         }
 
-        if (!this.tokenData) {
+        if (!authToken) {
             throw new NotAuthorizedError("Récupération du token impossible!")
         }
 
-        return this.tokenData.token
+        return authToken.token
     }
 
 }
