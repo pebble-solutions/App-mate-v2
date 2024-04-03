@@ -144,7 +144,7 @@ const localStyle = StyleSheet.create({
         justifyContent: "space-around",
     },
     inputContainer: {
-        marginHorizontal: variables.contentPadding[2]
+        marginHorizontal: variables.contentPadding[1]
     }
     
     
