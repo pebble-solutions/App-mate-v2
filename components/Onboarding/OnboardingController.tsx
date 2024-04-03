@@ -5,6 +5,7 @@ import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
 import Button from "../Button";
 import {Feather} from "@expo/vector-icons";
+import FullscreenLoader from "../FullscreenLoader";
 
 type OnboardingControllerOptions = {
     activeColor?: string,
@@ -12,10 +13,11 @@ type OnboardingControllerOptions = {
     items: ReactNode[],
     validationColor?: string,
     validationIndex?: number
-    validate: () => void
+    validate: () => void,
+    pending: boolean
 }
 
-export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex, validate}: OnboardingControllerOptions) {
+export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex, validate, pending}: OnboardingControllerOptions) {
 
 
     const [currentIndex, setCurrentIndex] = useState(0)
@@ -56,8 +58,12 @@ export default function OnboardingController({activeColor, inactiveColor, items,
     const prevStep = () => goToIndex(currentIndex - 1)
 
     return (
+        
+
         <View style={localStyle.container}>
-            
+            {pending ? <FullscreenLoader
+            message='Validation en cours'
+            color = 'white' /> : <View>
             <FlatList
                 data={items}
                 renderItem={({item}) => <View key={currentIndex} style={[localStyle.itemContainer, {width}]}>{item}</View>}
@@ -77,7 +83,6 @@ export default function OnboardingController({activeColor, inactiveColor, items,
                 scrollEventThrottle={32}
                 ref={slidesRef}
             />
-            
             <Timeline
                 items={items.length}
                 currentIndex={currentIndex}
@@ -86,7 +91,6 @@ export default function OnboardingController({activeColor, inactiveColor, items,
                 validationColor={validationColor}
                 validationIndex={validationIndex}
             />
-
             <View style={localStyle.actionsContainer}>
                 <View style={localStyle.buttonContainer}>
                     {currentIndex > 0 && <Button
@@ -99,7 +103,7 @@ export default function OnboardingController({activeColor, inactiveColor, items,
                         icon={<Feather name="arrow-left" size={24} color="white" />}
                     />}
                 </View>
-
+                
                 <View style={localStyle.buttonContainer}>
                     <ValidationButton
                         items={items.length}
@@ -114,7 +118,18 @@ export default function OnboardingController({activeColor, inactiveColor, items,
 
                 <View style={localStyle.buttonContainer}></View>
             </View>
+            </View> }
+            
+
+            
+            
+            
+            
+            
+            
+            
         </View>
+        
 
     )
 }

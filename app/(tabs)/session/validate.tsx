@@ -28,6 +28,7 @@ export default function ValidateScreen() {
     const { updateSession, closeSession, updateSessionsState } = useSessionContext()
     const { requestsController} = useRequestsContext()
     
+    
     useEffect(() => {
         navigate(status || null, router)
     }, [status])
@@ -46,6 +47,7 @@ export default function ValidateScreen() {
     
     const [ currentSession ] = useState<SessionType | null>(session || null)
     const [ currentActivity ] = useState<ActivityType | null>(activity || null)
+    const [isPending, setIsPending] = useState(false)
     
     // Exit or error status
     if (!currentActivity || !currentSession) {
@@ -81,6 +83,7 @@ export default function ValidateScreen() {
         resetStatus()
     }
     const validateSession = async () => {
+        setIsPending(true)
         const sess = new Session(currentSession)
 
         try {
@@ -96,6 +99,9 @@ export default function ValidateScreen() {
         catch (e) {
             Alert.alert("Erreur", "Erreur dans l'envoie de la requête de cloture")
             console.error(e)
+        }
+        finally {
+            setIsPending(() => false)
         }
     }
 
@@ -130,7 +136,6 @@ export default function ValidateScreen() {
                                 label={label}
                                 labelStyle={[globalStyles.textLight, globalStyles.textLg]}
                                 key={id}
-                                id={id}
                                 />
                         </View>
                     ))
@@ -169,6 +174,7 @@ export default function ValidateScreen() {
                 items={items}
                 validationIndex={items.length - 1}
                 validate={validateSession}
+                pending={isPending}
             />
         </SafeAreaView>
     )
