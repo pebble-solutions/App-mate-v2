@@ -12,7 +12,7 @@ const CancelValidateButtons: React.FC<CancelValidateButtonsProps> = ({ onPress1,
     return (
         <View style={localStyle.buttonContainerTunnel}>
             <Button title={buttonName1} onPress={onPress1} style={[localStyle.button]} />
-            <Button title={buttonName2} onPress={onPress2} style={[localStyle.button]} />
+            <Button title={buttonName2} onPress={onPress2} style={[localStyle.button] } />
         </View>
     );
 }
@@ -23,10 +23,11 @@ export default CancelValidateButtons;
 export const localStyle = StyleSheet.create({
     buttonContainerTunnel: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
     },
     button: {
-        flex:1
+        flex:1,
+        padding: 15,
     },
     label: {
         fontSize: variables.fontSize[2],

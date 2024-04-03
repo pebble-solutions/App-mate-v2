@@ -130,7 +130,6 @@ export default function ValidateScreen() {
                                 label={label}
                                 labelStyle={[globalStyles.textLight, globalStyles.textLg]}
                                 key={id}
-                                id={id}
                                 />
                         </View>
                     ))

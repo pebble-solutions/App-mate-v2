@@ -10,10 +10,11 @@ import FormInput from "../Form/FormInput";
 type SequenceItemOptions = {
     item: SequenceItemType
     editMode?: boolean
-    onChange?: (newVal: SequenceItemType) => void
+    onChange?: (newVal: SequenceItemType) => void,
+    editable?: boolean
 }
 
-export function SequenceItem({item, onChange}: SequenceItemOptions) {
+export function SequenceItem({item, onChange, editable}: SequenceItemOptions) {
     const [editMode, setEditMode] = React.useState(false);
     const [updatedDateStart, setUpdatedDateStart] = React.useState<Date>(item[0]);
     const [updatedDateEnd, setUpdatedDateEnd] = React.useState<Date>(item[1] || item[0]);
@@ -79,9 +80,14 @@ export function SequenceItem({item, onChange}: SequenceItemOptions) {
                             <View style={localStyle.box}></View>
                         </>
                     )}
-                    <TouchableOpacity style={globalStyles.mhContainer} onPress={handlePressEdit}>
-                        <Foundation name="pencil" size={16} color={'white'} />
-                    </TouchableOpacity>
+                    {editable &&
+                    <>
+                        <TouchableOpacity style={globalStyles.mhContainer} onPress={handlePressEdit}>
+                            <Foundation name="pencil" size={16} color={'white'} />
+                        </TouchableOpacity>
+                    </>
+                    }
+                    
                 </>
             ) : (
                 <View style={{flexDirection: "column", width: "100%"}}>
@@ -111,7 +117,7 @@ export function SequenceItem({item, onChange}: SequenceItemOptions) {
                         buttonName1="Annuler"
                         buttonName2="Valider"
                     />
-                </View>
+                </View>  
             )}
         </>
     )

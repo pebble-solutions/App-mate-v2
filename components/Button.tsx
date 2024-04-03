@@ -63,7 +63,6 @@ const localStyle = StyleSheet.create({
     button: {
         paddingVertical: variables.contentPadding[2],
         paddingHorizontal: variables.contentPadding[3],
-        marginVertical: variables.contentMargin[1],
         borderRadius: variables.borderRadius[3],
         backgroundColor: "#cdcdcd",
         width: "100%",
