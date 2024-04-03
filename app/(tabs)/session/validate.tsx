@@ -97,7 +97,7 @@ export default function ValidateScreen() {
             exit()
         }
         catch (e) {
-            Alert.alert("Erreur", "Erreur dans l'envoie de la requête de cloture")
+            Alert.alert("Erreur", "Erreur dans l'envoi de la requête de clôture")
             console.error(e)
         }
         finally {
