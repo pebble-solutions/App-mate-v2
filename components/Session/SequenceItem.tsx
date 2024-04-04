@@ -80,14 +80,10 @@ export function SequenceItem({item, onChange, editable}: SequenceItemOptions) {
                             <View style={localStyle.box}></View>
                         </>
                     )}
-                    {editable ? (
-                        <TouchableOpacity style={globalStyles.mhContainer} onPress={handlePressEdit}>
+                    { editable && <TouchableOpacity style={globalStyles.mhContainer} onPress={handlePressEdit}>
                             <Foundation name="pencil" size={16} color={'white'} />
-                        </TouchableOpacity>
-                    ) : (
-                        null
-                    )
-                    }
+                    </TouchableOpacity>}
+                    
                     
                 </>
             ) : (

@@ -107,14 +107,7 @@ export default function ClockScreen() {
             return [...sequenceVal]
         })
     }
-    const onClockValueChange = (index: number, newVal: SequenceItemType) => {
-        setSequence((sequenceVal) => {
-            sequenceVal[index] = newVal
-            currentSession.raw_datas.updateOne(index, newVal)
-            pushRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+currentSession._id, currentSession.json()))
-            return [...sequenceVal]
-        })
-    }
+    
 
     return (
         <View style={globalStyles.mainContainer}>
