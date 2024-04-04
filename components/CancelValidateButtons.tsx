@@ -23,11 +23,10 @@ export default CancelValidateButtons;
 export const localStyle = StyleSheet.create({
     buttonContainerTunnel: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
     },
     button: {
         flex:1,
-        padding: 15,
     },
     label: {
         fontSize: variables.fontSize[2],
