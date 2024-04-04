@@ -83,7 +83,7 @@ export default function ValidateScreen() {
         resetStatus()
     }
     const validateSession = async () => {
-        setIsPending(true)
+        setIsPending(() => true)
         const sess = new Session(currentSession)
 
         try {
