@@ -27,7 +27,7 @@ const ActivityContext = createContext<ActivityContextType | null>(null)
 
 const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [activities, setActivities] = useState<ActivityType[]>([])
-    const {requestsController, pushRequest} = useRequestsContext()
+    const {requestsController, pushRequest, pushError} = useRequestsContext()
     const [loading, setLoading] = useState(true)
     const [pending, setPending] = useState(false)
 
@@ -80,7 +80,7 @@ const ActivityContextProvider = ({ children }: PropsWithChildren<{}>) => {
             const data: JsonActivityType[] = await request.content()
             updateActivitiesState(data)
         } catch (e)  {
-            throw e
+            pushError(e)
         } finally {
             setPending(false)
         }

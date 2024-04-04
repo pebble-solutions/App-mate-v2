@@ -16,6 +16,8 @@ import {VariableValueType} from "../../../shared/types/VariableType";
 import {SequenceItemType} from "../../../shared/types/SequenceType";
 import { Session } from "../../../shared/classes/Session";
 import { useSessionContext } from "../../../shared/contexts/SessionContext";
+import {patchRequest, postRequest} from "@pebble-solutions/api-request";
+import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 
 
 
@@ -23,7 +25,9 @@ import { useSessionContext } from "../../../shared/contexts/SessionContext";
 export default function ValidateScreen() {
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
     const { status, resetStatus, resetPayload, exitStatus, setExitStatus } = useSessionStatusContext()
-    const { updateSession, closeSession } = useSessionContext()
+    const { updateSession, closeSession, updateSessionsState } = useSessionContext()
+    const { requestsController} = useRequestsContext()
+    
     
     useEffect(() => {
         navigate(status || null, router)
@@ -43,6 +47,7 @@ export default function ValidateScreen() {
     
     const [ currentSession ] = useState<SessionType | null>(session || null)
     const [ currentActivity ] = useState<ActivityType | null>(activity || null)
+    const [isPending, setIsPending] = useState(false)
     
     // Exit or error status
     if (!currentActivity || !currentSession) {
@@ -78,9 +83,26 @@ export default function ValidateScreen() {
         resetStatus()
     }
     const validateSession = async () => {
-        updateSession(new Session (currentSession))
-        closeSession(new Session(currentSession))
-        exit()
+        setIsPending(() => true)
+        const sess = new Session(currentSession)
+
+        try {
+            await requestsController.addRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+sess._id, sess.json())).send()
+            await requestsController.addRequest(postRequest("https://api.pebble.solutions/v5/metric/"+sess._id+"/close")).send()
+
+            sess.is_active = false
+            sess.end = new Date()
+            updateSessionsState([sess])
+
+            exit()
+        }
+        catch (e) {
+            Alert.alert("Erreur", "Erreur dans l'envoi de la requête de clôture")
+            console.error(e)
+        }
+        finally {
+            setIsPending(() => false)
+        }
     }
 
     let items: ReactNode[] = []
@@ -114,7 +136,6 @@ export default function ValidateScreen() {
                                 label={label}
                                 labelStyle={[globalStyles.textLight, globalStyles.textLg]}
                                 key={id}
-                                id={id}
                                 />
                         </View>
                     ))
@@ -134,6 +155,7 @@ export default function ValidateScreen() {
                 theme={"dark"}
                 onVariableChange={setResponse}
                 onSequenceChange={handleSequenceChange}
+                editable={true}
             />
         ))
 
@@ -153,6 +175,7 @@ export default function ValidateScreen() {
                 items={items}
                 validationIndex={items.length - 1}
                 validate={validateSession}
+                pending={isPending}
             />
         </SafeAreaView>
     )

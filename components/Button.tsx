@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {globalStyles, variables} from "../shared/globalStyles";
 import {ReactNode} from "react";
 
@@ -15,6 +15,7 @@ type ButtonType = {
 type ButtonOptions = {
     displayTitle?: boolean
     disabled?: boolean
+    isPending?: boolean
 }
 
 export default function Button({title, onPress, style, titleStyle, variant, icon, options}: ButtonType) {
@@ -50,6 +51,7 @@ export default function Button({title, onPress, style, titleStyle, variant, icon
         >
             <View
                 style={[localStyle.button, ...style]}>
+                {options.isPending && <ActivityIndicator style={globalStyles.meContainer} />}
                 {icon && icon}
                 {options.displayTitle && <Text style={titleStyle}>{title}</Text>}
             </View>
@@ -60,7 +62,7 @@ export default function Button({title, onPress, style, titleStyle, variant, icon
 const localStyle = StyleSheet.create({
     button: {
         paddingVertical: variables.contentPadding[2],
-        paddingHorizontal: variables.contentPadding[3],
+        paddingHorizontal: variables.contentPadding[2],
         marginVertical: variables.contentMargin[1],
         borderRadius: variables.borderRadius[3],
         backgroundColor: "#cdcdcd",

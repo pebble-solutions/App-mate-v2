@@ -22,6 +22,7 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
     const labelStyle = theme === "dark" ? globalStyles.textLight : globalStyles.textGrey
     const valueStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textDark
     const valueToString = (value?: string | Date | number | boolean | null, type?: string | null) => {
+        
         let str: string;
         if (value instanceof Date) {
             if (type === "date") {
@@ -33,6 +34,9 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
             else {
                 str = value.toLocaleString()
             }
+        }
+        else if (type === "boolean") {
+            str = value ? "OUI" : "NON"
         }
         else {
             str = value ? value.toString() : "Non-renseigné"

@@ -1,8 +1,8 @@
 import React, {createContext, PropsWithChildren, useContext, useEffect, useRef, useState} from "react";
 import {Auth} from "../classes/Auth";
 import {User} from "firebase/auth"
-import {onUserChange} from "../libs/auth";
-import {SafeAreaView} from "react-native";
+import {onAuthorizationChange, onUserChange} from "../libs/auth";
+import {SafeAreaView, Text} from "react-native";
 import LoginForm from "../../components/Auth/LoginForm";
 import {globalStyles} from "../globalStyles";
 
@@ -16,19 +16,21 @@ const AuthContext= createContext<AuthContextType | null>(null)
 const AuthContextProvider = ({children}: PropsWithChildren) => {
     const [auth, setAuth] = useState(new Auth())
     const [user, setUser] = useState<User | null>(null)
+    const [isAuthorized, setIsAuthorized] = useState(false)
 
     useEffect(() => {
-        // Initialize requests queue at startup
-        const rootAuth = auth
-        return onUserChange(auth, (newUser) => {
+        onAuthorizationChange(auth, (newTokenData) => {
+            setIsAuthorized(!!newTokenData)
+        })
+
+        onUserChange(auth, (newUser) => {
             setUser(newUser)
-            setAuth(rootAuth)
         })
     }, []);
 
     return (
         <AuthContext.Provider value={{auth, user}}>
-            {user ? children : <SafeAreaView style={[globalStyles.mainContainer, globalStyles.contentCenter, globalStyles.mh3Container]}>
+            {user && isAuthorized ? children : <SafeAreaView style={[globalStyles.mainContainer, globalStyles.contentCenter, globalStyles.mh3Container]}>
                 <LoginForm auth={auth} />
             </SafeAreaView>}
         </AuthContext.Provider>

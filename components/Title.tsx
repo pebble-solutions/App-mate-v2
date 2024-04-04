@@ -19,7 +19,8 @@ export default function Title({title, size, style}: TitleOptions) {
 
 const localStyle = StyleSheet.create({
     title: {
-        fontWeight: "bold"
+        fontWeight: "bold",
+        marginVertical: variables.contentMargin[2]
     },
 
     sm: {

@@ -1,4 +1,4 @@
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import React, { useContext, useState } from "react";
 import { globalStyles } from "../../../shared/globalStyles";
 import ActivityCard from "../../../components/Activity/ActivityCard";
@@ -15,7 +15,7 @@ export default function ActivitiesScreen() {
     const allActivities = activeActivities.concat(inactiveActivities);
 
     return (
-        <View style={globalStyles.body}>
+        <SafeAreaView style={globalStyles.body}>
             <FlatList
                 style={globalStyles.body}
                 data={allActivities}
@@ -38,6 +38,6 @@ export default function ActivitiesScreen() {
                     </View>
                 )}
             />
-        </View>
+        </SafeAreaView>
     )
 }

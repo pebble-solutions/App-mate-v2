@@ -6,12 +6,11 @@ import {InputOptions} from "./types/InputOptions";
 type BooleanInputOptions = Omit<InputOptions, 'value'> & {
     value?: boolean,
     trueLabel?: string,
-    falseLabel?: string,
-    id: string
+    falseLabel?: string
 }
 
-const BooleanInput = ({value, onChange, trueLabel, falseLabel, id}: BooleanInputOptions) => {
-    const [currentValue, setCurrentValue] = useState(value)
+const BooleanInput = ({value, onChange, trueLabel, falseLabel}: BooleanInputOptions) => {
+    const [currentValue, setCurrentValue] = useState(value || false)
     const [label, setLabel] = useState(value ? trueLabel : falseLabel)
 
     useEffect(() => {

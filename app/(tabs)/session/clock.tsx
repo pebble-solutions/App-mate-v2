@@ -18,6 +18,7 @@ import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {Session} from "../../../shared/classes/Session";
 import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 import {patchRequest} from "@pebble-solutions/api-request";
+import { dateToLiteral } from "../../../shared/libs/date";
 
 export default function ClockScreen() {
 
@@ -46,11 +47,11 @@ export default function ClockScreen() {
 
     const [ currentSession, setCurrentSession ] = useState<Session | null>(session || null)
     const [ currentActivity, setCurrentActivity ] = useState<ActivityType | null>(activity || null)
-
+    
     const [started, setStarted] = useState(false)
     const [sequence, setSequence] = useState<SequenceType>([])
     const [currentItemIndex, setCurrentItemIndex] = useState<number | null>(null)
-
+    
     // Initialize local sequence once current session is loaded
     useEffect(() => {
         if (currentSession) {
@@ -107,6 +108,7 @@ export default function ClockScreen() {
             return [...sequenceVal]
         })
     }
+    
 
     return (
         <View style={globalStyles.mainContainer}>
@@ -129,6 +131,7 @@ export default function ClockScreen() {
 
                 <View style={globalStyles.body}>
                     <View style={[globalStyles.centeredContainer, globalStyles.mv4Container]}>
+                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{dateToLiteral(currentSession.start)}</Text>
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la session</Text>
                         <StopWatch
                             style={[globalStyles.textLight, globalStyles.textCenter]}
@@ -138,7 +141,7 @@ export default function ClockScreen() {
                         />
                     </View>
 
-                    <SequenceList sequence={sequence} />
+                    <SequenceList sequence={sequence} editable={false}/>
 
                 </View>
 
