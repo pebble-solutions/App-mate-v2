@@ -2,6 +2,7 @@ import {SessionType} from "../../shared/types/SessionType";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import { datetimeToLiteral } from "../../shared/libs/date";
 
 type SessionCardOptions = {
     onPress?: () => void,
@@ -14,7 +15,8 @@ export function SessionCard({session, onPress}: SessionCardOptions) {
             <View style={[globalStyles.cardContent, localStyle.container]}>
                 <View>
                     <Text style={[globalStyles.textMd, globalStyles.textGrey]}>{session.label}</Text>
-                    <Text style={[globalStyles.textLightGrey]}>Démarré le {session.start.toLocaleString()}</Text>
+                    <Text style={[globalStyles.textLightGrey]}>Démarré le {datetimeToLiteral(session.start)}</Text>
+
                 </View>
                 <View>
                     <Ionicons name="play" size={24} color={variables.color.success} />

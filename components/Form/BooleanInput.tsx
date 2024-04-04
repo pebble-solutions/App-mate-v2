@@ -10,7 +10,7 @@ type BooleanInputOptions = Omit<InputOptions, 'value'> & {
 }
 
 const BooleanInput = ({value, onChange, trueLabel, falseLabel}: BooleanInputOptions) => {
-    const [currentValue, setCurrentValue] = useState(value)
+    const [currentValue, setCurrentValue] = useState(value || false)
     const [label, setLabel] = useState(value ? trueLabel : falseLabel)
 
     useEffect(() => {

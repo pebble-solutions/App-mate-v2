@@ -18,6 +18,7 @@ import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {Session} from "../../../shared/classes/Session";
 import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 import {patchRequest} from "@pebble-solutions/api-request";
+import { dateToLiteral } from "../../../shared/libs/date";
 
 export default function ClockScreen() {
 
@@ -130,7 +131,7 @@ export default function ClockScreen() {
 
                 <View style={globalStyles.body}>
                     <View style={[globalStyles.centeredContainer, globalStyles.mv4Container]}>
-                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{currentSession.start.toLocaleDateString()}</Text>
+                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{dateToLiteral(currentSession.start)}</Text>
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la session</Text>
                         <StopWatch
                             style={[globalStyles.textLight, globalStyles.textCenter]}
