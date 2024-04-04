@@ -1,6 +1,8 @@
 import {SequenceItemType} from "../types/SequenceType";
 
-export class MetricSequenceRecord {
+export class 
+
+MetricSequenceRecord {
     index: number
     start: Date
     end: Date | null

@@ -26,7 +26,14 @@ type ActivityOverviewType = {
     user?: User | null
 }
 
-export default function ActivityOverview({ activity, onNewPress, onManualPress, onSessionPress,  buttonTitle, sessions, sessionsLoading }: ActivityOverviewType) {
+export default function ActivityOverview({ activity, 
+    onNewPress, 
+    onManualPress, 
+    onSessionPress,  
+    buttonTitle, 
+    sessions, 
+    sessionsLoading 
+}: ActivityOverviewType) {
 
     buttonTitle = buttonTitle || "Consulter"
 
@@ -74,7 +81,7 @@ export default function ActivityOverview({ activity, onNewPress, onManualPress, 
                             {onManualPress && <Button
                                 title="Saisie Manuelle"
                                 onPress={onManualPress}
-                                style={[globalStyles.ms2Container, styles.buttonOutlined]}
+                                style={[globalStyles.msContainer, styles.buttonOutlined]}
                                 variant="xl"
                                 titleStyle={[{ color: "white" }]} />}
                         </View> : null}
