@@ -1,4 +1,4 @@
-import {Alert, View} from "react-native";
+import {Alert, View, Image, StyleSheet} from "react-native";
 import Title from "../Title";
 import FormInput from "../Form/FormInput";
 import Button from "../Button";
@@ -12,40 +12,41 @@ type LoginFormOptions = {
 }
 
 export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
-
-    const [username, setUsername] = useState(initialUsername || "")
-    const [password, setPassword] = useState("")
-    const [isPending, setIsPending] = useState(false)
+    const [username, setUsername] = useState(initialUsername || "");
+    const [password, setPassword] = useState("");
+    const [isPending, setIsPending] = useState(false);
 
     const handleLogin = async () => {
-        setIsPending(() => true)
+        setIsPending(() => true);
         try {
-            await auth.loginWithPassword(username, password)
+            await auth.loginWithPassword(username, password);
         } catch (e: any) {
-            Alert.alert("Erreur d'autentification", e?.message || "Erreur inconnue")
+            Alert.alert("Erreur d'autentification", e?.message || "Erreur inconnue");
         } finally {
-            setIsPending(false)
+            setIsPending(false);
         }
     }
 
     const handlePasswordChange = (newValue: string) => {
-        setPassword(() => newValue)
+        setPassword(() => newValue);
     }
 
     const handleUsernameChange = (newValue: string) => {
-        setUsername(() => newValue)
+        setUsername(() => newValue);
     }
 
     return (
         <View style={[globalStyles.body, globalStyles.contentCenter]}>
-            <Title title={"Connexion"} style={[globalStyles.textCenter]} size={"xl"} />
+            <Image source={require('../../assets/MateAppLogos/rsz_matelogoblack.png')} style={styles.logo} resizeMode="contain" />
+
+            <Title title={"Saisissez vos identifiants de connexion"} style={[globalStyles.textCenter]} size={"sm"} />
 
             <View style={globalStyles.my2Container}>
                 <FormInput
-                    label={"Adresse mail"}
                     type={"text"}
                     value={username}
                     onChange={handleUsernameChange}
+                    placeholder="Adresse mail"
                     options={{
                         autoCapitalize: "none",
                         autoComplete: "email",
@@ -55,10 +56,10 @@ export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
                 />
 
                 <FormInput
-                    label={"Mot de passe"}
                     type={"text"}
                     value={password}
                     onChange={handlePasswordChange}
+                    placeholder="Mot de passe"
                     options={{
                         secureTextEntry: true,
                         autoCapitalize: "none"
@@ -76,6 +77,13 @@ export default function LoginForm({initialUsername, auth}: LoginFormOptions) {
                 />
             </View>
         </View>
-    )
-
+    );
 }
+
+const styles = StyleSheet.create({
+    logo: {
+        width: '50%', // Définit la largeur du logo à 50%
+        alignSelf: 'center', // Centre le logo horizontalement
+        marginBottom: 20, // Ajoute un espace en bas du logo pour le séparer des autres éléments
+    },
+});
