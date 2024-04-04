@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity, Alert, Modal, StyleSheet } from "react-native"; // Importez Alert
+import { Text, View, ScrollView, TouchableOpacity, Alert, Modal, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../../shared/libs/color";
@@ -126,14 +126,20 @@ export default function ActivityScreen() {
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
                     <Title title="Variables liées à l'activité :" size="md" style={[globalStyles.textLight]} />
-                    {activity.variables.map((variable: VariableType, index: number) => (
-                        <VariableCard
-                            key={index}
-                            displayRemoveIcon={true}
-                            activityId={activity._id}
-                            variable={variable}
-                        />
-                    ))}
+                    {activity.variables.length === 0 ? (
+                        <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
+                           Vous n'avez pas encore lié de variables à cette activité. Pour en ajouter une, sélectionnez-la dans la liste de vos variables disponibles ci-dessous !
+                        </Text>
+                    ) : (
+                        activity.variables.map((variable: VariableType, index: number) => (
+                            <VariableCard
+                                key={index}
+                                displayRemoveIcon={true}
+                                activityId={activity._id}
+                                variable={variable}
+                            />
+                        ))
+                    )}
                 </View>
                 <View style={globalStyles.contentContainer}>
                     <Title title="Autres variables disponibles :" size="md" style={[globalStyles.textLight]} />
