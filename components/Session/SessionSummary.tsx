@@ -13,10 +13,11 @@ type SessionSummaryOptions = {
     session: SessionType,
     theme: "dark" | "light",
     onVariableChange?: (variableId: string, value: VariableValueType) => void,
-    onSequenceChange?: (index: number, newVal: SequenceItemType) => void
+    onSequenceChange?: (index: number, newVal: SequenceItemType) => void,
+    editable?: boolean
 }
 
-export default function SessionSummary({session, theme, onVariableChange, onSequenceChange}: SessionSummaryOptions) {
+export default function SessionSummary({session, theme, onVariableChange, onSequenceChange, editable}: SessionSummaryOptions) {
     const [time, setTime] = useState(session.raw_datas.getTime())
 
     const handleSequenceChange = (index: number, newVal: SequenceItemType) => {
@@ -35,12 +36,14 @@ export default function SessionSummary({session, theme, onVariableChange, onSequ
                 <SequenceList
                     sequence={session.raw_datas.getSequence()}
                     onValueChange={handleSequenceChange}
+                    editable={editable}
                 />
             </View>
+            {session.raw_variables.length > 0 && 
             <View style={[globalStyles.mb2Container, globalStyles.body, {width: "100%"}]}>
                 <Title title={"Informations fournies"} style={[globalStyles.textLight, globalStyles.mbContainer, globalStyles.textCenter]} />
                 <VariablesList variables={session.raw_variables} theme={theme} onValueChange={onVariableChange} />
-            </View>
+            </View>}
         </>
     )
 }

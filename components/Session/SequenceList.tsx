@@ -8,10 +8,11 @@ import {ScrollList} from "../ScrollList/ScrollList";
 type SequenceListOptions = {
     sequence: SequenceType,
     style?: object[],
-    onValueChange?: (index: number, newVal: SequenceItemType) => void
+    onValueChange?: (index: number, newVal: SequenceItemType) => void,
+    editable?: boolean
 }
 
-export function SequenceList({sequence, style, onValueChange}: SequenceListOptions) {
+export function SequenceList({sequence, style, onValueChange, editable}: SequenceListOptions) {
     style = style || []
 
     const items: ReactNode[] = []
@@ -22,6 +23,7 @@ export function SequenceList({sequence, style, onValueChange}: SequenceListOptio
             onChange={(newVal) => {
                 if (onValueChange) onValueChange(index, newVal)
             }}
+            editable={editable}
         />)
     }
 
@@ -31,6 +33,7 @@ export function SequenceList({sequence, style, onValueChange}: SequenceListOptio
 
 
     return (
+        
         <ScrollList items={items} style={style} />
     )
 }

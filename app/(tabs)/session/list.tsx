@@ -7,6 +7,7 @@ import React, {useEffect, useState} from "react";
 import {useActivityContext} from "../../../shared/contexts/ActivityContext";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
+import {useAuthContext} from "../../../shared/contexts/AuthContext"
 import {router} from "expo-router";
 import FullscreenLoader from "../../../components/FullscreenLoader";
 import {ActivityType} from "../../../shared/types/ActivityType";
@@ -19,6 +20,7 @@ export default function ListScreen() {
     const statusContext = useSessionStatusContext()
     const { status } = statusContext
     const [activeActivities, setActiveActivities] = useState<ActivityType[]>([])
+    const {user} = useAuthContext()
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
@@ -48,7 +50,7 @@ export default function ListScreen() {
                 },
                 {
                     text: "Démarrer une nouvelle session",
-                    onPress: () => newSession(activity._id, sessionContext, statusContext)
+                    onPress: () => newSession(activity._id, sessionContext, statusContext, user)
                 },
                 {
                     text: "Annuler"
@@ -56,7 +58,7 @@ export default function ListScreen() {
             ])
         }
         else {
-            newSession(activity._id, sessionContext, statusContext)
+            newSession(activity._id, sessionContext, statusContext, user)
         }
     }
 
@@ -80,6 +82,7 @@ export default function ListScreen() {
                     data={activeActivities}
                     renderItem={({item}) => (
                         <ActivityOverview
+                            user={user}
                             activity={item}
                             sessions={activeSessionsFromActivity(sessions, item._id)}
                             onNewPress={() => newSessionHandler(item)}

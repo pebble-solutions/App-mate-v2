@@ -13,9 +13,23 @@ export const variables = {
         white: "#ffffff",
         danger: "#cb3c3c",
         success: "#5aab42",
-        active: "#0184d5"
+        active: "#0184d5",
+        alphaDarkLighter: "rgba(0, 0, 0, 0.25)",
+        alphaDark: "rgba(0, 0, 0, 0.5)",
+        alphaDarkDarker: "rgba(0, 0, 0, 0.75)",
+    },
+    shadow: {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     }
-}
+};
+
 
 export const globalStyles = StyleSheet.create({
     mainContainer: {
@@ -281,8 +295,8 @@ export const globalStyles = StyleSheet.create({
         minHeight: "72%",
     },
     topContainer: {
-        marginHorizontal: variables.contentMargin[2],
-        marginTop: variables.contentMargin[5],
+        marginHorizontal: variables.contentMargin[1],
+        marginTop: variables.contentMargin[2],
         paddingHorizontal: variables.contentMargin[1],
 
     },
@@ -388,8 +402,10 @@ export const globalStyles = StyleSheet.create({
         borderRadius: variables.borderRadius[2],
         borderWidth: 1,
         borderColor: variables.color.lightGrey,
-        backgroundColor: variables.color.lightGrey,
+        backgroundColor: variables.color.dark,
         fontSize: variables.fontSize[1],
+        color: variables.color.white,
+        marginVertical: variables.contentMargin[1],
             
     },
 
@@ -442,13 +458,6 @@ export const globalStyles = StyleSheet.create({
         marginTop: 20,
     },
 
-    iconContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        marginBottom: 36,
-    },
-
     colorButton: {
         width: "14%",
         aspectRatio: 1,
@@ -498,6 +507,10 @@ export const globalStyles = StyleSheet.create({
 
     centeredContainer: {
         alignItems: "center"
+    },
+
+    contentCenter: {
+        justifyContent: "center"
     },
 
     textDanger: {

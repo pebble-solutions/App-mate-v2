@@ -2,17 +2,22 @@ import React, {createContext, PropsWithChildren, useContext, useEffect, useRef, 
 import {createRequestsBucket, createRequestsController} from "@pebble-solutions/api-request";
 import {Bucket, Request, RequestsController} from "@pebble-solutions/api-request/lib/types/classes";
 import {Auth} from "../classes/Auth";
+import {User} from "firebase/auth"
+import {useAuthContext} from "./AuthContext";
 
 type RequestsContextType = {
     requestsController: RequestsController,
     pushRequest: (request: Request | Bucket) => void,
-    auth: Auth
+    auth: Auth,
+    user: User | null,
+    pushError: (e: any) => void
 }
 
 const RequestsContext= createContext<RequestsContextType | null>(null)
 
 const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError?: (error: any) => void}>) => {
-    const [auth] = useState(new Auth())
+    //const {auth, user} = useAuth()
+    const {auth, user} = useAuthContext()
     const [requestsController] = useState(createRequestsController().withAuth(auth))
     const requestsQueue = useRef(createRequestsBucket())
 
@@ -31,7 +36,7 @@ const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError
                 return await bucket.content()
             } catch (e) {
                 if (typeof onError !== "undefined") onError(e)
-                console.log("API Exchange error", e)
+                console.error("API Exchange error", e)
             }
 
         }
@@ -46,8 +51,13 @@ const RequestsContextProvider = ({onError, children}: PropsWithChildren<{onError
         }
     }, []);
 
+    const pushError = (e: any) => {
+        if (onError) onError(e)
+        console.error("API Exchange error", e)
+    }
+
     return (
-        <RequestsContext.Provider value={{requestsController, pushRequest, auth}}>
+        <RequestsContext.Provider value={{requestsController, pushRequest, auth, user, pushError}}>
             {children}
         </RequestsContext.Provider>
     )

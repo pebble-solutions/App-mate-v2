@@ -27,7 +27,7 @@ export type RawDataType = {
 }
 
 export type RawVariableType = {
-    _id: string,
+    variable_id: string,
     label: string,
     start?: string | null,
     end?: string | null,
@@ -52,12 +52,3 @@ export type RawVariableType = {
     interval?: number | null,
     value?: string | number | boolean | Date | null,
 }
-export type itemType = {
-    _id: string,
-    label: string,
-    type: string,
-    value: string,
-}
-
-
-    

@@ -1,5 +1,5 @@
 import {ActivityType, JsonActivityType} from "../types/ActivityType";
-import { VariableType } from "../types/VariableType";
+import {ActivityVariableType, VariableType} from "../types/VariableType";
 import {RawDataType} from "../types/SessionType";
 
 export class Activity implements ActivityType {
@@ -11,7 +11,7 @@ export class Activity implements ActivityType {
     description?: string;
     color: string;
     start: Date;
-    variables: VariableType[];
+    variables: ActivityVariableType[];
     is_active: boolean;
 
     constructor(activity: any) {
@@ -19,9 +19,9 @@ export class Activity implements ActivityType {
         this.label = activity.label;
         this.description = activity.description;
         this.color = !activity.color || !this.isValidColor(activity.color) ? Activity.DEFAULT_COLOR : activity.color;
-        this.start = new Date(activity.start);
-        this.variables = activity.variables;
-        this.is_active = activity.is_active;
+        this.start = activity.start ? new Date(activity.start) : new Date();
+        this.variables = activity.variables || [];
+        this.is_active = activity.is_active || false;
     }
 
     setColor(color: string) {

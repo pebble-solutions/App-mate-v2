@@ -15,9 +15,9 @@ import SessionSummary from "../../../components/Session/SessionSummary";
 import {VariableValueType} from "../../../shared/types/VariableType";
 import {SequenceItemType} from "../../../shared/types/SequenceType";
 import { Session } from "../../../shared/classes/Session";
-import {JsonSessionType} from "../../../shared/types/SessionType";
 import { useSessionContext } from "../../../shared/contexts/SessionContext";
-import { set } from "date-fns";
+import {patchRequest, postRequest} from "@pebble-solutions/api-request";
+import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 
 
 
@@ -25,12 +25,13 @@ import { set } from "date-fns";
 export default function ValidateScreen() {
     const [rawVariables, setRawVariables] = React.useState<RawVariableType[]>([]);
     const { status, resetStatus, resetPayload, exitStatus, setExitStatus } = useSessionStatusContext()
-    const { updateSession, closeSession } = useSessionContext()
+    const { updateSession, closeSession, updateSessionsState } = useSessionContext()
+    const { requestsController} = useRequestsContext()
+    
     
     useEffect(() => {
         navigate(status || null, router)
     }, [status])
-    
     let session, activity;
     
     try {
@@ -46,23 +47,28 @@ export default function ValidateScreen() {
     
     const [ currentSession ] = useState<SessionType | null>(session || null)
     const [ currentActivity ] = useState<ActivityType | null>(activity || null)
+    const [isPending, setIsPending] = useState(false)
     
     // Exit or error status
     if (!currentActivity || !currentSession) {
         return null
     }
-    
     const setResponse = (variableId: string, response: VariableValueType) => {
         setRawVariables((prev) => {
             const newVars: RawVariableType[] = []
             
             prev.forEach((variable) => {
-                if (variable._id === variableId) variable.value = response
-                newVars.push(variable)
+                if(variable.variable_id) {
+                    if (variable.variable_id === variableId) {
+                        variable.value = response
+                        newVars.push(variable)
+                    }
+                    else {
+                        newVars.push(variable)
+                    }
+                }
             })
-            
             currentSession.raw_variables = newVars
-            
             return newVars
         })
     }
@@ -77,54 +83,81 @@ export default function ValidateScreen() {
         resetStatus()
     }
     const validateSession = async () => {
-        updateSession(new Session (currentSession))
-        closeSession(new Session(currentSession))
-        exit()
-    }
+        setIsPending(() => true)
+        const sess = new Session(currentSession)
 
-    const variables = currentActivity.variables;
+        try {
+            await requestsController.addRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+sess._id, sess.json())).send()
+            await requestsController.addRequest(postRequest("https://api.pebble.solutions/v5/metric/"+sess._id+"/close")).send()
 
-    if (rawVariables.length === 0) {
-        const newRawVariables: RawVariableType[] = variables.map(variable => ({
-            _id: variable._id,
-            label: variable.question,
-            type: variable.type,
-            value: undefined
-        }));
-        setRawVariables(newRawVariables);
+            sess.is_active = false
+            sess.end = new Date()
+            updateSessionsState([sess])
+
+            exit()
+        }
+        catch (e) {
+            Alert.alert("Erreur", "Erreur dans l'envoi de la requête de clôture")
+            console.error(e)
+        }
+        finally {
+            setIsPending(() => false)
+        }
     }
 
     let items: ReactNode[] = []
 
-    rawVariables.forEach((variable) => {
-
-        const value = variable.value
-        const type = variable.type
-        const label = variable.label
-        const key = variable._id
-
+    const variables = currentActivity.variables;
+        if (variables.length !== 0) {
+    
+            if (rawVariables.length === 0) {
+                const newRawVariables: RawVariableType[] = variables.map(variable => ({
+                    variable_id: variable.variable_id,
+                    label: variable.question,
+                    type: variable.type,
+                    value: undefined,
+                }));
+                setRawVariables(newRawVariables);
+            }
+            
+            rawVariables.forEach((variable) => {
+                if (variable.variable_id) {
+                    const id = variable.variable_id
+                    const value = variable.value
+                    const type = variable.type
+                    const label = variable.label
+                    
+                    items.push((
+                        <View style={globalStyles.section}>
+                            <FormInput
+                                type={type}
+                                value={value}
+                                onChange={(newVal) => setResponse(id, newVal)}
+                                label={label}
+                                labelStyle={[globalStyles.textLight, globalStyles.textLg]}
+                                key={id}
+                                />
+                        </View>
+                    ))
+                }
+                else {
+                    items.push((
+                        <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>
+                            Cette variable n'est pas gérée par l'application
+                        </Text>
+                    ))  
+                }
+            })
+        }
         items.push((
-            <View style={globalStyles.section}>
-                <FormInput
-                    type={type}
-                    value={value}
-                    onChange={(newVal) => setResponse(variable._id, newVal)}
-                    label={label}
-                    labelStyle={[globalStyles.textLight, globalStyles.textLg]}
-                    key={key}
-                />
-            </View>
+            <SessionSummary
+                session={currentSession}
+                theme={"dark"}
+                onVariableChange={setResponse}
+                onSequenceChange={handleSequenceChange}
+                editable={true}
+            />
         ))
-    })
-
-    items.push((
-        <SessionSummary
-            session={currentSession}
-            theme={"dark"}
-            onVariableChange={setResponse}
-            onSequenceChange={handleSequenceChange}
-        />
-    ))
 
     return (
         <SafeAreaView style={[globalStyles.mainContainer, globalStyles.darkBg]}>
@@ -142,6 +175,7 @@ export default function ValidateScreen() {
                 items={items}
                 validationIndex={items.length - 1}
                 validate={validateSession}
+                pending={isPending}
             />
         </SafeAreaView>
     )

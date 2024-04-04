@@ -1,10 +1,14 @@
 import {DateTimeInputType, NumberInputType} from "./InputType";
+import {TextInputProps} from "react-native";
 
 export type InputOptions = {
     onChange?: (newVal: any) => void,
     value?: any,
-    placeholder?: string
+    placeholder?: string,
+    options?: InputCustomOptions
 }
+
+type InputCustomOptions = TextInputProps
 
 export type DateTimeInputOptions = Omit<InputOptions, 'value' | 'onChange'> & {
     value?: Date | null,

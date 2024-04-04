@@ -21,8 +21,8 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
     
     const labelStyle = theme === "dark" ? globalStyles.textLight : globalStyles.textGrey
     const valueStyle = theme === "dark" ? globalStyles.textLightGrey : globalStyles.textDark
-
     const valueToString = (value?: string | Date | number | boolean | null, type?: string | null) => {
+        
         let str: string;
         if (value instanceof Date) {
             if (type === "date") {
@@ -34,6 +34,9 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
             else {
                 str = value.toLocaleString()
             }
+        }
+        else if (type === "boolean") {
+            str = value ? "OUI" : "NON"
         }
         else {
             str = value ? value.toString() : "Non-renseigné"
@@ -63,7 +66,7 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
         setUpdatedValue(() => variable.value || null)
         setEditMode(() => false)
     }
-
+    
     return (
         <>
             {!editMode ? (
@@ -84,13 +87,15 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                         value={updatedValue}
                         labelStyle={[globalStyles.textLight, globalStyles.textMd]}
                         onChange={handleChangeValue}
-                        />
+                        id={variable.variable_id}
+                    />
                     <CancelValidateButtons
                         onPress1={cancelChange}
                         onPress2={validateChange}
                         buttonName1="Annuler"
                         buttonName2="Valider"
                     />
+                    
                 </View>
             )}
         </>

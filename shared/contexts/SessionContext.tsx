@@ -17,13 +17,14 @@ export type SessionContextType = {
     pending: boolean
     loading: boolean
     getStartedSessions: () => Session[]
+    updateSessionsState: (sessions: SessionType[] | JsonSessionType[]) => void
 }
 
 const SessionContext = createContext<SessionContextType | null>(null)
 
 const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const [sessions, setSessions] = useState<Session[]>([])
-    const {requestsController, pushRequest} = useRequestsContext()
+    const {requestsController, pushRequest, pushError} = useRequestsContext()
     const [pending, setPending] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -65,7 +66,7 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     const closeSession = (session: Session) => {
         session.end = new Date()
         session.is_active = false
-        pushRequest(postRequest("https://api.pebble.solutions/v5/metric/"+session._id+"/close/"))
+        pushRequest(postRequest("https://api.pebble.solutions/v5/metric/"+session._id+"/close"))
         updateSessionsState([session])
     }
 
@@ -78,8 +79,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             await request.send()
             const data: JsonSessionType[] = await request.content()
             updateSessionsState(data)
-        } catch (e)  {
-            throw e
+        } catch (e) {
+            pushError(e)
         } finally {
             setPending(false)
         }
@@ -101,7 +102,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     useEffect(() => {
         setLoading(true)
         fetchSessionsFromAPI({
-            is_active: true
+            is_active: true,
+            type: "activity"
         }).finally(() => setLoading(false))
     }, []);
 
@@ -117,7 +119,8 @@ const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
             getSessionsFromActivity,
             pending,
             loading,
-            getStartedSessions
+            getStartedSessions,
+            updateSessionsState
         }}>
             {children}
         </SessionContext.Provider>

@@ -13,6 +13,8 @@ import {SessionCard} from "../Session/SessionCard";
 import { useState } from "react";
 import CreationForm from "../Session/CreationForm";
 import TextLoader from "../TextLoader";
+import { User } from "firebase/auth";
+
 
 type ActivityOverviewType = {
     activity: ActivityType,
@@ -21,10 +23,11 @@ type ActivityOverviewType = {
     buttonTitle?: string,
     sessions?: SessionType[],
     onSessionPress?: (session: SessionType) => void,
-    sessionsLoading?: boolean
+    sessionsLoading?: boolean,
+    user?: User | null
 }
 
-export default function ActivityOverview({ activity, onNewPress, onManualPress, onSessionPress, buttonTitle, sessions, sessionsLoading }: ActivityOverviewType) {
+export default function ActivityOverview({ activity, onNewPress, onManualPress, onSessionPress, buttonTitle, sessions, sessionsLoading, user}: ActivityOverviewType) {
 
     const [manualMode,setManualMode] = useState(false)
 
@@ -39,8 +42,9 @@ export default function ActivityOverview({ activity, onNewPress, onManualPress, 
             activity={activity}
             style={[globalStyles.body, globalStyles.card]}>
             <View style={[globalStyles.cardContent, styles.localCardContent]}>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight]}>{activity.label}</Text>
-                <Text style={globalStyles.textLight}>{activity.description}</Text>
+                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
+                { activity.description && <Text style={globalStyles.textLight}>{activity.description}</Text>
+                }
 
                 {
                     manualMode ? <CreationForm activity={activity} /> : <>

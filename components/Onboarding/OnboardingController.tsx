@@ -5,6 +5,7 @@ import {globalStyles, variables} from "../../shared/globalStyles";
 import {ReactNode, useRef, useState} from "react";
 import Button from "../Button";
 import {Feather} from "@expo/vector-icons";
+import FullscreenLoader from "../FullscreenLoader";
 
 type OnboardingControllerOptions = {
     activeColor?: string,
@@ -12,10 +13,12 @@ type OnboardingControllerOptions = {
     items: ReactNode[],
     validationColor?: string,
     validationIndex?: number
-    validate: () => void
+    validate: () => void,
+    pending: boolean
 }
 
-export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex, validate}: OnboardingControllerOptions) {
+export default function OnboardingController({activeColor, inactiveColor, items, validationColor, validationIndex, validate, pending}: OnboardingControllerOptions) {
+
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const { width } = useWindowDimensions()
@@ -24,12 +27,10 @@ export default function OnboardingController({activeColor, inactiveColor, items,
     const slidesRef = useRef<FlatList | null>(null)
 
     const viewableItemsChanged = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
-        // console.log(viewableItems, 'viewableItems')
         setCurrentIndex(viewableItems[0].index || 0)
     }).current;
 
     const handleToValidate = () => {
-        
         if (currentIndex === validationIndex) {
             validate()
         }
@@ -37,14 +38,14 @@ export default function OnboardingController({activeColor, inactiveColor, items,
 
     const goToIndex = (index: number) => {
         if (index >= 0 && index < items.length) {
-            // console.log('scrolling', slidesRef, index, items.length)
             slidesRef.current?.scrollToIndex({index, animated: true})
+            setCurrentIndex(index);
         }
         else if (index === items.length) {
             Alert.alert('Validation', 'Confirmez-vous la validation de cette session?', [
                 {
                   text: 'Annuler',
-                  onPress: () => console.log('Cancel Pressed'),
+                  onPress: () => {goToIndex(currentIndex)},
                   style: 'cancel',
                 },
                 {text: 'OK', onPress: () => {handleToValidate()}},
@@ -57,66 +58,70 @@ export default function OnboardingController({activeColor, inactiveColor, items,
     const prevStep = () => goToIndex(currentIndex - 1)
 
     return (
+
         <View style={localStyle.container}>
-            
-            <FlatList
-                data={items}
-                renderItem={({item}) => <View key={currentIndex} style={[localStyle.itemContainer, {width}]}>{item}</View>}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                pagingEnabled
-                scrollEnabled={false}
-                bounces={false}
-                onScroll={Animated.event([{
-                    nativeEvent: {
-                        contentOffset: {
-                            x: scrollX
-                        }
-                    }
-                }], { useNativeDriver: false })}
-                onViewableItemsChanged={viewableItemsChanged}
-                scrollEventThrottle={32}
-                ref={slidesRef}
-            />
-            
-            <Timeline
-                items={items.length}
-                currentIndex={currentIndex}
-                activeColor={activeColor}
-                inactiveColor={inactiveColor}
-                validationColor={validationColor}
-                validationIndex={validationIndex}
-            />
-
-            <View style={localStyle.actionsContainer}>
-                <View style={localStyle.buttonContainer}>
-                    {currentIndex > 0 && <Button
-                        title="Précédent"
-                        onPress={prevStep}
-                        options={{
-                            displayTitle: false
-                        }}
-                        style={[globalStyles.transparentBg]}
-                        icon={<Feather name="arrow-left" size={24} color="white" />}
-                    />}
-                </View>
-
-                <View style={localStyle.buttonContainer}>
-                    <ValidationButton
+            {pending ? 
+                <FullscreenLoader
+                    message='Validation en cours'
+                    color = 'white' />
+                : <View>
+                    <FlatList
+                        data={items}
+                        renderItem={({item}) => <View key={currentIndex} style={[localStyle.itemContainer, {width}]}>{item}</View>}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        pagingEnabled
+                        scrollEnabled={false}
+                        bounces={false}
+                        onScroll={Animated.event([{
+                            nativeEvent: {
+                                contentOffset: {
+                                    x: scrollX
+                                }
+                            }
+                        }], { useNativeDriver: false })}
+                        onViewableItemsChanged={viewableItemsChanged}
+                        scrollEventThrottle={32}
+                        ref={slidesRef}
+                    />
+                    <Timeline
                         items={items.length}
                         currentIndex={currentIndex}
                         activeColor={activeColor}
                         inactiveColor={inactiveColor}
-                        onPress={nextStep}
-                        validationIndex={validationIndex}
                         validationColor={validationColor}
+                        validationIndex={validationIndex}
                     />
+                    <View style={localStyle.actionsContainer}>
+                        <View style={localStyle.buttonContainer}>
+                            {currentIndex > 0 && <Button
+                                title="Précédent"
+                                onPress={prevStep}
+                                options={{
+                                    displayTitle: false
+                                }}
+                                style={[globalStyles.transparentBg]}
+                                icon={<Feather name="arrow-left" size={24} color="white" />}
+                            />}
+                        </View>
+                        
+                        <View style={localStyle.buttonContainer}>
+                            <ValidationButton
+                                items={items.length}
+                                currentIndex={currentIndex}
+                                activeColor={activeColor}
+                                inactiveColor={inactiveColor}
+                                onPress={nextStep}
+                                validationIndex={validationIndex}
+                                validationColor={validationColor}
+                            />
+                        </View>
+
+                        <View style={localStyle.buttonContainer}></View>
+                    </View>
                 </View>
-
-                <View style={localStyle.buttonContainer}></View>
-            </View>
+            }
         </View>
-
     )
 }
 
