@@ -1,12 +1,12 @@
 import {useState} from "react";
-import { View } from "react-native";
+import { View , Text, StyleSheet } from "react-native";
 import { ActivityType } from "../../shared/types/ActivityType";
 import {globalStyles} from '../../shared/globalStyles';
 import DateTimeInput from "../Form/DateTimeInput";
 
 type CreationFormOptions = {
     activity: ActivityType
-    onDateChange?: (newDate: Date | null) => void
+    onDateChange: () => void
 }
 
 export default function CreationForm({ activity, onDateChange }: CreationFormOptions) {
@@ -14,18 +14,28 @@ export default function CreationForm({ activity, onDateChange }: CreationFormOpt
 
     const handleDateChange = (newDate: Date | null) => {
         setSelectedDate(newDate);
-        // onDateChange(newDate)
+         onDateChange()
     };
 
     return (
-        <View style={[globalStyles.input]}>
-            <DateTimeInput 
-                value={selectedDate}
-                type="date"
-                onChange={handleDateChange}
-            />
+        <View style = {localStyle.flex}>
+            <Text style={[globalStyles.textLight, globalStyles.mContainer]}> Choisissez une date de début  
+            </Text> 
+            <View style={globalStyles.card}>
+                <DateTimeInput 
+                    value={selectedDate}
+                    type="date"
+                    onChange={handleDateChange}
+                />
+            </View>
         </View>
     );
 }
 
+ 
+const localStyle = StyleSheet.create({
+    flex:{
+        flex : 0.4
+    }
+})
 

@@ -12,7 +12,6 @@ import {SessionActionsBar} from "../../../components/Session/SessionActionsBar";
 import {StopWatch} from "../../../components/Session/StopWatch";
 import {SequenceItemType, SequenceType} from "../../../shared/types/SequenceType";
 import {SequenceList} from "../../../components/Session/SequenceList";
-import {SessionType} from "../../../shared/types/SessionType";
 import {ActivityType} from "../../../shared/types/ActivityType";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {Session} from "../../../shared/classes/Session";
@@ -22,7 +21,7 @@ import { dateToLiteral } from "../../../shared/libs/date";
 
 export default function ClockScreen() {
 
-    const { status, resetStatus, resetPayload, setStatus, exitStatus, setExitStatus } = useSessionStatusContext()
+    const { status, resetStatus, resetPayload, setStatus, exitStatus, setExitStatus, sessionMode, setSessionMode } = useSessionStatusContext()
     const { removeSession } = useSessionContext()
     const { pushRequest } = useRequestsContext()
 
@@ -126,6 +125,12 @@ export default function ClockScreen() {
                 />
                 <Title title={currentActivity.label} style={[globalStyles.textLight, globalStyles.textCenter]} size="lg" />
             </GradientHeader>
+            {sessionMode && 
+                <View>
+                    {/* <CreationForm activity={activity.start} onDateChange={function (): void {
+                        throw new Error("Function not implemented.");
+                    } } /> */}
+                </View>}
 
             <View style={[globalStyles.body, globalStyles.darkBg]}>
 
@@ -144,7 +149,7 @@ export default function ClockScreen() {
                     <SequenceList sequence={sequence} editable={false}/>
 
                 </View>
-
+                
                 <SessionActionsBar
                     onCancel={cancel}
                     onExit={exit}
@@ -154,6 +159,7 @@ export default function ClockScreen() {
                     style={[globalStyles.mb3Container]}
                     sequence={sequence}
                 />
+
             </View>
         </View>
     )
