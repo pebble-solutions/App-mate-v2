@@ -25,6 +25,7 @@ export function SessionActionsBar({displayMode, onCreate, onStart, onEnd, onCanc
     style = style || []
     const [isStarted, setStarted] = useState(typeof started !== "undefined" ? started : false)
     const hasCloseButton = useRef(!!(onExit || onCancel))
+
     const toggleStatus = (newVal: boolean) => {
         setStarted(newVal)
         if (newVal && onStart) onStart()
@@ -80,10 +81,10 @@ export function SessionActionsBar({displayMode, onCreate, onStart, onEnd, onCanc
             </View>
             {displayMode === "manual" && 
                 <View>
-                    <TouchableOpacity style={[localStyle.plusButton]}
+                    <TouchableOpacity style={[localStyle.button, {backgroundColor: variables.color.lightGrey}]}
                         onPress={() => onCreate()}
                     >
-                        <Ionicons name="add" size={40}  />
+                        <Ionicons name="add" size={40} color={variables.color.white} />
                         {/* <Text style={[globalStyles.textLight]}>Créer une session</Text> */}
                     </TouchableOpacity>
                 </View> 
@@ -141,9 +142,8 @@ const localStyle = StyleSheet.create({
     endContainer: {
         justifyContent: "flex-end"
     },
-
-    plusButton:{
-        backgroundColor: "white",
-
-    }
+        
+    button: {
+        borderRadius: 100,
+    },
 })
