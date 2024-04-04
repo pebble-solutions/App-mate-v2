@@ -32,7 +32,7 @@ export default function SessionSummary({session, theme, onVariableChange, onSequ
                 <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>{secondsToTimeString(time, {hours: true, minutes: true, seconds: true})}</Text>
             </View>
             <View style={[globalStyles.mb2Container, globalStyles.body, {width: "100%"}]}>
-                <Title title={"Séquence"} style={[globalStyles.textLight, globalStyles.mbContainer, globalStyles.textCenter]} />
+                <Title title={"Périodes d'activité"} style={[globalStyles.textLight, globalStyles.mbContainer, globalStyles.textCenter]} />
                 <SequenceList
                     sequence={session.raw_datas.getSequence()}
                     onValueChange={handleSequenceChange}
