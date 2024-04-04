@@ -51,7 +51,7 @@ export default function ListScreen() {
                 },
                 {
                     text: "Démarrer une nouvelle session",
-                    onPress: () => newSession(activity._id, sessionContext, statusContext, user)
+                    onPress: () => newSession(activity._id, sessionContext, statusContext, user, 'cron')
                 },
                 {
                     text: "Annuler"
@@ -68,7 +68,6 @@ export default function ListScreen() {
 
     const manualSessionHandler = (activity: ActivityType) => {
         newSession(activity._id, sessionContext, statusContext, user, "manual")
-        console.log("J'ai cliqué sur manual press")
     }
 
     return (

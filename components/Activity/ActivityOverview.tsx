@@ -51,44 +51,41 @@ export default function ActivityOverview({ activity,
                 }
 
                <>
-                        {sessions?.length ? (
-                            <>
-                                <View style={[globalStyles.mt3Container, {opacity: .5}]}>
-                                    <Text style={globalStyles.textLight}>{sessions.length} session{sessions.length > 1 && "s"} en cours</Text>
-                                </View>
-                                <FlatList
-                                    style={[globalStyles.mv2Container, globalStyles.body, {width: "100%"}]}
-                                    data={sessions}
-                                    renderItem={({item}) => <SessionCard
-                                        session={item}
-                                        key={item._id}
-                                        onPress={() => {
-                                            if (onSessionPress) onSessionPress(item)
-                                        }}
-                                    />}
-                                />
-                            </>
-                        ) : 
-                        sessionsLoading ? <TextLoader label="Chargement des sessions..." /> : null}
+                    {sessions?.length ? (
+                        <>
+                            <View style={[globalStyles.mt3Container, {opacity: .5}]}>
+                                <Text style={globalStyles.textLight}>{sessions.length} session{sessions.length > 1 && "s"} en cours</Text>
+                            </View>
+                            <FlatList
+                                style={[globalStyles.mv2Container, globalStyles.body, {width: "100%"}]}
+                                data={sessions}
+                                renderItem={({item}) => <SessionCard
+                                    session={item}
+                                    key={item._id}
+                                    onPress={() => {
+                                        if (onSessionPress) onSessionPress(item)
+                                    }}
+                                />}
+                            />
+                        </>
+                    ) : 
+                    sessionsLoading ? <TextLoader label="Chargement des sessions..." /> : null}
 
-                        {onNewPress || onManualPress ? <View style={[globalStyles.mv2Container, styles.buttonContainer]}>
-                            {onNewPress && <Button
-                                title={buttonTitle}
-                                onPress={onNewPress}
-                                style={[styles.buttonLight]}
-                                variant="xl"
-                                titleStyle={[{ color: activity.color }]} />}
-                            {onManualPress && <Button
-                                title="Saisie Manuelle"
-                                onPress={onManualPress}
-                                style={[globalStyles.msContainer, styles.buttonOutlined]}
-                                variant="xl"
-                                titleStyle={[{ color: "white" }]} />}
-                        </View> : null}
-                     </>
-                
-
-               
+                    {onNewPress || onManualPress ? <View style={[globalStyles.mv2Container, styles.buttonContainer]}>
+                        {onNewPress && <Button
+                            title={buttonTitle}
+                            onPress={onNewPress}
+                            style={[styles.buttonLight]}
+                            variant="xl"
+                            titleStyle={[{ color: activity.color }]} />}
+                        {onManualPress && <Button
+                            title="Saisie Manuelle"
+                            onPress={onManualPress}
+                            style={[globalStyles.msContainer, styles.buttonOutlined]}
+                            variant="xl"
+                            titleStyle={[{ color: "white" }]} />}
+                    </View> : null}
+                </>
             </View>
         </ActivityGradient>
     )

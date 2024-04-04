@@ -64,11 +64,12 @@ export default function ClockScreen() {
             setSequence(currentSession.raw_datas.getSequence())
         }
     }, [currentSession]);
-
+    
     // Exit or error status
     if (!currentActivity || !currentSession) {
         return null
     }
+
 
     const exit = () => {
         setExitStatus(() => true)
@@ -114,6 +115,16 @@ export default function ClockScreen() {
             return [...sequenceVal]
         })
     }
+    const createSequence = () => {
+        setSequence((sequenceVal) => {
+            const sequenceItem: SequenceItemType = [new Date(), new Date()]
+            const index = currentSession.raw_datas.addOne(sequenceItem)
+            pushRequest(patchRequest("https://api.pebble.solutions/v5/metric/"+currentSession._id, currentSession.json()))
+            setCurrentItemIndex(index)
+            sequenceVal.push(sequenceItem)
+            return [...sequenceVal]
+        })
+    }
     
 
     return (
@@ -132,10 +143,7 @@ export default function ClockScreen() {
                 />
                 <Title title={currentActivity.label} style={[globalStyles.textLight, globalStyles.textCenter]} size="lg" />
             </GradientHeader>
-            {currentSession.provided_by === "manual" && <View>
-                    <Text>Mode manuel</Text>
-                </View>}
-
+            
             <View style={[globalStyles.body, globalStyles.darkBg]}>
 
                 <View style={globalStyles.body}>
@@ -148,18 +156,19 @@ export default function ClockScreen() {
                             initialTime={currentSession.raw_datas.getTime()}
                             size={"xl"}
                         />
-                    </View>
-
-                    <SequenceList sequence={sequence} editable={false}/>
-
+                    </View> 
+                    {currentSession.provided_by === "manual" &&  <SequenceList sequence={sequence} editable={true}/>}
+                    {currentSession.provided_by === "cron" && <SequenceList sequence={sequence} editable={false}/>}
                 </View>
                 
-                <SessionActionsBar
+                <SessionActionsBar 
+                    displayMode={currentSession.provided_by}
                     onCancel={cancel}
                     onExit={exit}
                     onValidate={validate}
                     onEnd={stop}
                     onStart={start}
+                    onCreate={createSequence}
                     style={[globalStyles.mb3Container]}
                     sequence={sequence}
                 />
