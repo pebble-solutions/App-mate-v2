@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity, Alert, Modal, StyleSheet } from "react-native"; // Importez Alert
+import { Text, View, ScrollView, TouchableOpacity, Alert, Modal, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRGBGradientColors } from "../../../../shared/libs/color";
@@ -14,6 +14,7 @@ import { router } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
 import SpinnerLoader from "../../../../components/ScreenCoverLoader";
 import { Activity } from "../../../../shared/classes/Activity";
+import Title from "../../../../components/Title";
 
 export default function ActivityScreen() {
     const { getActivityById, removeActivity, updateActivity } = useActivityContext();
@@ -113,7 +114,7 @@ export default function ActivityScreen() {
                         <Ionicons name="close-outline" size={32} color="white" style={{ position: 'relative', right: 0, top: 18 }} />
                     </TouchableOpacity>
                 </View>
-                <Text style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]}>{activity.label}</Text>
+                <Title title={activity.label} size="md" style={[globalStyles.headTitle, globalStyles.textLight, globalStyles.textCenter]} />
             </View>
 
             <View style={[globalStyles.contentContainer]}>
@@ -124,18 +125,24 @@ export default function ActivityScreen() {
             </View>
             <ScrollView>
                 <View style={globalStyles.contentContainer}>
-                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight, globalStyles.textCenter]}>Variables liées à l'activité :</Text>
-                    {activity.variables.map((variable: VariableType, index: number) => (
-                        <VariableCard
-                            key={index}
-                            displayRemoveIcon={true}
-                            activityId={activity._id}
-                            variable={variable}
-                        />
-                    ))}
+                    <Title title="Variables liées à l'activité :" size="md" style={[globalStyles.textLight]} />
+                    {activity.variables.length === 0 ? (
+                        <Text style={[globalStyles.textLight, globalStyles.textCenter]}>
+                           Vous n'avez pas encore lié de variables à cette activité. Pour en ajouter une, sélectionnez-la dans la liste de vos variables disponibles ci-dessous !
+                        </Text>
+                    ) : (
+                        activity.variables.map((variable: VariableType, index: number) => (
+                            <VariableCard
+                                key={index}
+                                displayRemoveIcon={true}
+                                activityId={activity._id}
+                                variable={variable}
+                            />
+                        ))
+                    )}
                 </View>
                 <View style={globalStyles.contentContainer}>
-                    <Text style={[globalStyles.CategoryTitle, globalStyles.textLight]}>Autres variables disponibles :</Text>
+                    <Title title="Autres variables disponibles :" size="md" style={[globalStyles.textLight]} />
                     {variables.map((variable: VariableType, index: number) => (
                         <VariableCard
                             key={index}
