@@ -155,6 +155,7 @@ export default function ValidateScreen() {
                 theme={"dark"}
                 onVariableChange={setResponse}
                 onSequenceChange={handleSequenceChange}
+                editable={true}
             />
         ))
 

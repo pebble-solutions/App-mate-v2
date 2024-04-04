@@ -108,6 +108,7 @@ export default function ClockScreen() {
             return [...sequenceVal]
         })
     }
+    
 
     return (
         <View style={globalStyles.mainContainer}>
@@ -140,7 +141,7 @@ export default function ClockScreen() {
                         />
                     </View>
 
-                    <SequenceList sequence={sequence} />
+                    <SequenceList sequence={sequence} editable={false}/>
 
                 </View>
 
