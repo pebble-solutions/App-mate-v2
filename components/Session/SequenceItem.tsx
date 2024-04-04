@@ -9,13 +9,13 @@ import FormInput from "../Form/FormInput";
 
 type SequenceItemOptions = {
     item: SequenceItemType
-    editMode?: boolean
+    editableMode?: boolean
     onChange?: (newVal: SequenceItemType) => void,
     editable?: boolean
 }
 
-export function SequenceItem({item, onChange, editable}: SequenceItemOptions) {
-    const [editMode, setEditMode] = React.useState(false);
+export function SequenceItem({item, onChange, editable, editableMode}: SequenceItemOptions) {
+    const [editMode, setEditMode] = React.useState(editableMode);
     const [updatedDateStart, setUpdatedDateStart] = React.useState<Date>(item[0]);
     const [updatedDateEnd, setUpdatedDateEnd] = React.useState<Date>(item[1] || item[0]);
     const [savedDateStart, setSavedDateStart] = React.useState(item[0])

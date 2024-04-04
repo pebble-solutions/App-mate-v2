@@ -37,10 +37,6 @@ export default function ActivityOverview({ activity,
 
     buttonTitle = buttonTitle || "Consulter"
 
-    const openSession = () => {
-        console.log('open')
-    }
-
     return (
         <ActivityGradient
             activity={activity}

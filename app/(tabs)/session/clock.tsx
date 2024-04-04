@@ -17,7 +17,7 @@ import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {Session} from "../../../shared/classes/Session";
 import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 import {patchRequest} from "@pebble-solutions/api-request";
-import { dateToLiteral } from "../../../shared/libs/date";
+import { dateToLiteral, secondsToTimeString } from "../../../shared/libs/date";
 
 export default function ClockScreen() {
 
@@ -58,6 +58,7 @@ export default function ClockScreen() {
     const [sequence, setSequence] = useState<SequenceType>([])
     const [currentItemIndex, setCurrentItemIndex] = useState<number | null>(null)
     
+    
     // Initialize local sequence once current session is loaded
     useEffect(() => {
         if (currentSession) {
@@ -69,7 +70,8 @@ export default function ClockScreen() {
     if (!currentActivity || !currentSession) {
         return null
     }
-
+    
+    const [time, setTime] = useState(currentSession.raw_datas.getTime())
 
     const exit = () => {
         setExitStatus(() => true)
@@ -125,6 +127,11 @@ export default function ClockScreen() {
             return [...sequenceVal]
         })
     }
+    const handleSequenceChange = (index: number, newVal: SequenceItemType) => {
+        currentSession.raw_datas.updateOne(index, newVal)
+
+        setTime(() => currentSession.raw_datas.getTime())
+    }
     
 
     return (
@@ -150,14 +157,24 @@ export default function ClockScreen() {
                     <View style={[globalStyles.centeredContainer, globalStyles.mv4Container]}>
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{dateToLiteral(currentSession.start)}</Text>
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la session</Text>
-                        <StopWatch
+                        {currentSession.provided_by === "manual" && <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>{secondsToTimeString(time, {hours: true, minutes: true, seconds: true})}</Text>
+                        }
+
+                        {currentSession.provided_by === "cron" && <StopWatch
                             style={[globalStyles.textLight, globalStyles.textCenter]}
                             started={started}
                             initialTime={currentSession.raw_datas.getTime()}
                             size={"xl"}
-                        />
+                        />}
                     </View> 
-                    {currentSession.provided_by === "manual" &&  <SequenceList sequence={sequence} editable={true}/>}
+                    {currentSession.provided_by === "manual" &&  
+                    <SequenceList 
+                        sequence={sequence}
+                        editable={true}
+                        onValueChange={handleSequenceChange}
+                        editableMode={true}
+                        
+                        />}
                     {currentSession.provided_by === "cron" && <SequenceList sequence={sequence} editable={false}/>}
                 </View>
                 

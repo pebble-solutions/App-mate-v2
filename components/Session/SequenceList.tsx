@@ -10,9 +10,10 @@ type SequenceListOptions = {
     style?: object[],
     onValueChange?: (index: number, newVal: SequenceItemType) => void,
     editable?: boolean
+    editableMode? : boolean
 }
 
-export function SequenceList({sequence, style, onValueChange, editable}: SequenceListOptions) {
+export function SequenceList({sequence, style, onValueChange, editable, editableMode}: SequenceListOptions) {
     style = style || []
 
     const items: ReactNode[] = []
@@ -24,6 +25,7 @@ export function SequenceList({sequence, style, onValueChange, editable}: Sequenc
                 if (onValueChange) onValueChange(index, newVal)
             }}
             editable={editable}
+            editableMode={editableMode}
         />)
     }
 
