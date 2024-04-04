@@ -21,7 +21,14 @@ import { dateToLiteral } from "../../../shared/libs/date";
 
 export default function ClockScreen() {
 
-    const { status, resetStatus, resetPayload, setStatus, exitStatus, setExitStatus, sessionMode, setSessionMode } = useSessionStatusContext()
+    const {
+        status,
+        resetStatus,
+        resetPayload,
+        setStatus,
+        exitStatus,
+        setExitStatus
+    } = useSessionStatusContext()
     const { removeSession } = useSessionContext()
     const { pushRequest } = useRequestsContext()
 
@@ -125,11 +132,8 @@ export default function ClockScreen() {
                 />
                 <Title title={currentActivity.label} style={[globalStyles.textLight, globalStyles.textCenter]} size="lg" />
             </GradientHeader>
-            {sessionMode && 
-                <View>
-                    {/* <CreationForm activity={activity.start} onDateChange={function (): void {
-                        throw new Error("Function not implemented.");
-                    } } /> */}
+            {currentSession.provided_by === "manual" && <View>
+                    <Text>Mode manuel</Text>
                 </View>}
 
             <View style={[globalStyles.body, globalStyles.darkBg]}>

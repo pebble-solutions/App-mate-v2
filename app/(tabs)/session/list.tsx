@@ -18,7 +18,7 @@ export default function ListScreen() {
     const sessionContext = useSessionContext()
     const { sessions } = sessionContext
     const statusContext = useSessionStatusContext()
-    const { status, sessionMode, setSessionMode } = statusContext
+    const { status } = statusContext
     const [activeActivities, setActiveActivities] = useState<ActivityType[]>([])
     const {user} = useAuthContext()
 
@@ -59,7 +59,7 @@ export default function ListScreen() {
             ])
         }
         else {
-            newSession(activity._id, sessionContext, statusContext, user)
+            newSession(activity._id, sessionContext, statusContext, user, "cron")
         }
     }
 
@@ -67,8 +67,7 @@ export default function ListScreen() {
 
 
     const manualSessionHandler = (activity: ActivityType) => {
-        setSessionMode(true)
-        newSession(activity._id, sessionContext, statusContext)
+        newSession(activity._id, sessionContext, statusContext, user, "manual")
         console.log("J'ai cliqué sur manual press")
     }
 
