@@ -1,10 +1,11 @@
-import {Alert, AlertButton, StyleSheet, View} from "react-native";
+import {Alert, AlertButton, StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import Button from "../Button";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {Ionicons} from "@expo/vector-icons";
 import SwiperToggle from "../SwiperToggle";
 import {useRef, useState} from "react";
 import {SequenceType} from "../../shared/types/SequenceType";
+import { SessionProvidedBy } from "../../shared/types/SessionType";
 
 type ActionsBarOptions = {
     onStart?: () => void,
@@ -12,12 +13,25 @@ type ActionsBarOptions = {
     onCancel?: () => void,
     onValidate?: () => void,
     onExit?: () => void,
+    onCreate: () => void,
     started?: boolean,
     style?: object[],
-    sequence: SequenceType
+    sequence: SequenceType,
+    displayMode?: SessionProvidedBy
 }
 
-export function SessionActionsBar({onStart, onEnd, onCancel, onValidate, onExit, started, style, sequence}: ActionsBarOptions) {
+export function SessionActionsBar({
+      displayMode,
+      onCreate,
+      onStart,
+      onEnd,
+      onCancel,
+      onValidate,
+      onExit,
+      started,
+      style,
+      sequence
+}: ActionsBarOptions) {
 
     style = style || []
     const [isStarted, setStarted] = useState(typeof started !== "undefined" ? started : false)
@@ -65,6 +79,8 @@ export function SessionActionsBar({onStart, onEnd, onCancel, onValidate, onExit,
             buttons)
     }
 
+    if (displayMode === "manual") style.push(localStyle.alignItemsCenter)
+
     return (
         <View style={[localStyle.actionsContainer, ...style]}>
             <View style={[localStyle.buttonContainer, localStyle.startContainer]}>
@@ -76,16 +92,19 @@ export function SessionActionsBar({onStart, onEnd, onCancel, onValidate, onExit,
                     icon={<View style={globalStyles.meContainer}><Ionicons name="close-outline" size={24} color={variables.color.danger} /></View>}
                 /> : null}
             </View>
-
-            <View style={[localStyle.swiperContainer]}>
-                <SwiperToggle
+            <View style={[localStyle.mainActionContainer]}>
+                {displayMode === "manual" ? <TouchableOpacity style={[localStyle.button, {backgroundColor: variables.color.lightGrey}]}
+                    onPress={() => onCreate()}
+                >
+                    <Ionicons name="add" size={40} color={variables.color.white} />
+                </TouchableOpacity> : <SwiperToggle
                     height={180}
                     sizeInterpolation={1.8}
                     initialValue={isStarted}
                     onToggle={toggleStatus}
                     onLabel="Démarré"
                     offLabel="Pause"
-                />
+                />}
             </View>
 
             <View style={[localStyle.buttonContainer, localStyle.endContainer]}>
@@ -109,7 +128,11 @@ const localStyle = StyleSheet.create({
         alignItems: "flex-end"
     },
 
-    swiperContainer: {
+    alignItemsCenter: {
+        alignItems: "center"
+    },
+
+    mainActionContainer: {
         flex:1,
         alignItems: "center"
     },
@@ -126,5 +149,9 @@ const localStyle = StyleSheet.create({
 
     endContainer: {
         justifyContent: "flex-end"
+    },
+        
+    button: {
+        borderRadius: 100,
     },
 })

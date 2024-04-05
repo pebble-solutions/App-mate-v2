@@ -1,4 +1,4 @@
-import {JsonSessionType, RawDataType, RawVariableType, SessionType} from "../types/SessionType";
+import {JsonSessionType, RawDataType, RawVariableType, SessionProvidedBy, SessionType} from "../types/SessionType";
 import {SequenceItemType, SequenceType} from "../types/SequenceType";
 import {MetricSequence} from "./MetricSequence";
 
@@ -16,6 +16,7 @@ export class Session implements SessionType {
     readonly type: string;
     type_id: string;
     is_active: boolean
+    provided_by: SessionProvidedBy
 
     constructor(session?: any) {
 
@@ -51,6 +52,7 @@ export class Session implements SessionType {
         this.type = "activity"
         this.type_id = session.type_id
         this.is_active = typeof session.is_active === "undefined" ? true : session.is_active
+        this.provided_by = session.provided_by || null
     }
 
     /**

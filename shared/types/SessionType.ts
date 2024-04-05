@@ -1,5 +1,7 @@
 import {MetricSequence} from "../classes/MetricSequence";
 
+export type SessionProvidedBy = "manual" | "cron" | null
+
 export type JsonSessionType = {
     _id: string,
     type: string,
@@ -13,6 +15,7 @@ export type JsonSessionType = {
     raw_datas: RawDataType[],
     raw_variables: RawVariableType[],
     is_active: boolean
+    provided_by: SessionProvidedBy
 }
 
 export type SessionType = Omit<JsonSessionType, "raw_datas" | "start" | "end"> & {

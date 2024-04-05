@@ -11,7 +11,7 @@ import {useAuthContext} from "../../../shared/contexts/AuthContext"
 import {router} from "expo-router";
 import FullscreenLoader from "../../../components/FullscreenLoader";
 import {ActivityType} from "../../../shared/types/ActivityType";
-import {SessionType} from "../../../shared/types/SessionType";
+import {SessionProvidedBy, SessionType} from "../../../shared/types/SessionType";
 
 export default function ListScreen() {
     const { activities, loading } = useActivityContext()
@@ -21,6 +21,7 @@ export default function ListScreen() {
     const { status } = statusContext
     const [activeActivities, setActiveActivities] = useState<ActivityType[]>([])
     const {user} = useAuthContext()
+
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
@@ -34,14 +35,14 @@ export default function ListScreen() {
     const width = Dimensions.get('window').width;
 
     const activeSessionsFromActivity = (sessions: SessionType[], activityId: string) => {
-        return sessions.filter(e => e.type_id === activityId && e.type.toLowerCase() === "activity" && e.is_active)
+        return sessions.filter(e => e.type_id === activityId && e.type.toLowerCase() === 'activity' && e.is_active)
     }
 
     // Action on new session button is pressed. If some session already exists on provided activity, the user will
     // choose between starting a new session or recovering the last one.
-    const newSessionHandler = (activity: ActivityType) => {
+    const newSessionHandler = (activity: ActivityType, provider?: SessionProvidedBy) => {
         const sessions = activeSessionsFromActivity(sessionContext.sessions, activity._id)
-        if (sessions.length) {
+        if (sessions.length && provider !== "manual") {
             Alert.alert("Session en cours", "Il y a déjà une session en cours sur" +
                 " cette activitée.", [
                 {
@@ -50,7 +51,7 @@ export default function ListScreen() {
                 },
                 {
                     text: "Démarrer une nouvelle session",
-                    onPress: () => newSession(activity._id, sessionContext, statusContext, user)
+                    onPress: () => newSession(activity._id, sessionContext, statusContext, user, 'cron')
                 },
                 {
                     text: "Annuler"
@@ -58,9 +59,11 @@ export default function ListScreen() {
             ])
         }
         else {
-            newSession(activity._id, sessionContext, statusContext, user)
+            newSession(activity._id, sessionContext, statusContext, user, provider || 'cron')
         }
     }
+
+    const openSessionHandler = (session: SessionType) => openSession(session._id, sessionContext, statusContext)
 
     return (
         <SafeAreaView style={globalStyles.body}>
@@ -79,10 +82,9 @@ export default function ListScreen() {
                             user={user}
                             activity={item}
                             sessions={activeSessionsFromActivity(sessions, item._id)}
-                            onNewPress={() => newSessionHandler(item)}
-                            onSessionPress={(session) => {
-                                openSession(session._id, sessionContext, statusContext)
-                            }}
+                            onNewPress={() => newSessionHandler(item, 'cron')}
+                            onSessionPress={openSessionHandler}
+                            onManualPress={ ()=> newSessionHandler(item, 'manual')}
                             buttonTitle="Démarrer"
                         />
                     )} />

@@ -9,7 +9,8 @@ type ButtonType = {
     titleStyle?: any[],
     variant?: 'xl' | 'lg' | 'sm',
     icon?: ReactNode,
-    options?: ButtonOptions
+    options?: ButtonOptions,
+    appearance?: "light" | "lightOutlined"
 }
 
 type ButtonOptions = {
@@ -18,7 +19,15 @@ type ButtonOptions = {
     isPending?: boolean
 }
 
-export default function Button({title, onPress, style, titleStyle, variant, icon, options}: ButtonType) {
+export default function Button({title,
+    onPress,
+    style,
+    titleStyle,
+    variant,
+    icon,
+    appearance,
+    options
+}: ButtonType) {
 
     style = style || []
     titleStyle = titleStyle || []
@@ -40,6 +49,10 @@ export default function Button({title, onPress, style, titleStyle, variant, icon
 
     if (options.disabled) {
         style.push(localStyle.disabled)
+    }
+
+    if (appearance) {
+        style.push(localStyle[appearance])
     }
 
     return (
@@ -71,6 +84,16 @@ const localStyle = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center"
+    },
+
+    light: {
+        backgroundColor: "white",
+    },
+
+    lightOutlined:{
+        backgroundColor:"transparent",
+        borderWidth: 1,
+        borderColor: "white",
     },
 
     lg: {
