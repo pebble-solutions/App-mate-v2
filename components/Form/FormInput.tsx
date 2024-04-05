@@ -73,6 +73,5 @@ const localStyle = StyleSheet.create({
 
     formGroup: {
         width: "100%",
-        marginVertical: variables.contentMargin[2]
     }
 })
