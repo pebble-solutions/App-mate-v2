@@ -10,7 +10,7 @@ export default function ActivitiesLayout() {
                 presentation: "modal",
                 headerShown: false
             }} />
-            <Stack.Screen name="createActivityModal" options={{
+            <Stack.Screen name="create" options={{
                 presentation: "modal",
                 headerShown: false
             }} />
