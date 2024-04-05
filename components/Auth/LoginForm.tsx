@@ -84,6 +84,5 @@ const styles = StyleSheet.create({
     logo: {
         width: '50%',
         alignSelf: 'center',
-        marginBottom: 20,
     },
 });
