@@ -533,4 +533,8 @@ export const globalStyles = StyleSheet.create({
         color: variables.color.lightGrey
     },
 
+    w100: {
+        width: "100%"
+    },
+
 });

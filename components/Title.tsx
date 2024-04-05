@@ -1,10 +1,10 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, TextStyle } from "react-native";
 import { variables } from "../shared/globalStyles";
 
 type TitleOptions = {
     title: string,
     size?: "sm" | "md" | "lg" | "xl",
-    style?: any[],
+    style?: TextStyle[],
     center?: boolean,
 }
 
