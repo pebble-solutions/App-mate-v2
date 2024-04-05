@@ -1,7 +1,7 @@
-import {View, Text, Alert} from "react-native";
+import {View, Text, Alert, ViewStyle} from "react-native";
 import {globalStyles} from "../../../shared/globalStyles";
 import Button from "../../../components/Button";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import getCurrentSession, {getCurrentActivity, navigate} from "../../../shared/libs/session";
 import {useSessionStatusContext} from "../../../shared/contexts/SessionStatusContext";
 import {router} from "expo-router";
@@ -11,7 +11,7 @@ import GradientHeader from "../../../components/Activity/GradientHeader";
 import {SessionActionsBar} from "../../../components/Session/SessionActionsBar";
 import {StopWatch} from "../../../components/Session/StopWatch";
 import {SequenceItemType, SequenceType} from "../../../shared/types/SequenceType";
-import {SequenceList} from "../../../components/Session/SequenceList";
+import {SequenceList, SequenceListActions} from "../../../components/Session/SequenceList";
 import {ActivityType} from "../../../shared/types/ActivityType";
 import {useSessionContext} from "../../../shared/contexts/SessionContext";
 import {Session} from "../../../shared/classes/Session";
@@ -31,6 +31,8 @@ export default function ClockScreen() {
     } = useSessionStatusContext()
     const { removeSession } = useSessionContext()
     const { pushRequest } = useRequestsContext()
+
+    const sequenceListRef = useRef<SequenceListActions>(null)
 
     // If session status change, we run the navigate function from session library
     useEffect(() => {
@@ -70,6 +72,12 @@ export default function ClockScreen() {
     if (!currentActivity || !currentSession) {
         return null
     }
+
+    useEffect(() => {
+        if (currentSession.provided_by === "manual") {
+            sequenceListRef.current?.switchEditMode(sequence.length-1, true)
+        }
+    }, [sequence]);
     
     const [time, setTime] = useState(currentSession.raw_datas.getTime())
 
@@ -132,6 +140,10 @@ export default function ClockScreen() {
 
         setTime(() => currentSession.raw_datas.getTime())
     }
+
+    const actionsBarStyles: ViewStyle[] = [globalStyles.mb3Container]
+
+    if (currentSession.provided_by === "manual") actionsBarStyles.push(globalStyles.mt3Container)
     
 
     return (
@@ -157,25 +169,22 @@ export default function ClockScreen() {
                     <View style={[globalStyles.centeredContainer, globalStyles.mv4Container]}>
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{dateToLiteral(currentSession.start)}</Text>
                         <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la session</Text>
-                        {currentSession.provided_by === "manual" && <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>{secondsToTimeString(time, {hours: true, minutes: true, seconds: true})}</Text>
-                        }
-
-                        {currentSession.provided_by === "cron" && <StopWatch
+                        {currentSession.provided_by === "manual" ? <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>
+                            {secondsToTimeString(time, {hours: true, minutes: true, seconds: true})}
+                        </Text> : <StopWatch
                             style={[globalStyles.textLight, globalStyles.textCenter]}
                             started={started}
                             initialTime={currentSession.raw_datas.getTime()}
                             size={"xl"}
                         />}
-                    </View> 
-                    {currentSession.provided_by === "manual" &&  
-                    <SequenceList 
+                    </View>
+
+                    <SequenceList
                         sequence={sequence}
-                        editable={true}
+                        editable={currentSession.provided_by === "manual"}
                         onValueChange={handleSequenceChange}
-                        editableMode={true}
-                        
-                        />}
-                    {currentSession.provided_by === "cron" && <SequenceList sequence={sequence} editable={false}/>}
+                        ref={sequenceListRef}
+                    />
                 </View>
                 
                 <SessionActionsBar 
@@ -186,7 +195,7 @@ export default function ClockScreen() {
                     onEnd={stop}
                     onStart={start}
                     onCreate={createSequence}
-                    style={[globalStyles.mb3Container]}
+                    style={actionsBarStyles}
                     sequence={sequence}
                 />
 

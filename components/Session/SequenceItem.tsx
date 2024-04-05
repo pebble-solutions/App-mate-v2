@@ -3,7 +3,7 @@ import {Alert, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {diffDate, diffDateToTime} from "../../shared/libs/date";
 import {Foundation} from "@expo/vector-icons";
-import React, { useEffect } from "react";
+import React, {forwardRef, useEffect, useImperativeHandle} from "react";
 import CancelValidateButtons from "../CancelValidateButtons";
 import FormInput from "../Form/FormInput";
 
@@ -14,7 +14,11 @@ type SequenceItemOptions = {
     editable?: boolean
 }
 
-export function SequenceItem({item, onChange, editable, editableMode}: SequenceItemOptions) {
+export type SequenceItemActions = {
+    switchEditMode: (value: boolean) => void
+}
+
+export const SequenceItem = forwardRef<SequenceItemActions, SequenceItemOptions>(({item, onChange, editable, editableMode}, ref) => {
     const [editMode, setEditMode] = React.useState(editableMode);
     const [updatedDateStart, setUpdatedDateStart] = React.useState<Date>(item[0]);
     const [updatedDateEnd, setUpdatedDateEnd] = React.useState<Date>(item[1] || item[0]);
@@ -53,6 +57,14 @@ export function SequenceItem({item, onChange, editable, editableMode}: SequenceI
     const handleChangeValueEnd = (newVal: Date) => {
         setUpdatedDateEnd(newVal)
     }
+
+    const switchEditMode = (value: boolean) => {
+        setEditMode(() => value)
+    }
+
+    useImperativeHandle(ref, (): SequenceItemActions => {
+        return {switchEditMode}
+    })
 
     return (
         <>
@@ -118,7 +130,7 @@ export function SequenceItem({item, onChange, editable, editableMode}: SequenceI
             )}
         </>
     )
-}
+})
 
 type TimeBoxOptions = {
     label: string,

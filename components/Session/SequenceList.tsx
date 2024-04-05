@@ -1,8 +1,8 @@
 import {SequenceItemType, SequenceType} from "../../shared/types/SequenceType";
 import {FlatList, StyleSheet, View} from "react-native";
-import {SequenceItem} from "./SequenceItem";
+import {SequenceItem, SequenceItemActions} from "./SequenceItem";
 import {globalStyles, variables} from "../../shared/globalStyles";
-import {ReactNode} from "react";
+import {createRef, forwardRef, ReactNode, useImperativeHandle, useRef} from "react";
 import {ScrollList} from "../ScrollList/ScrollList";
 
 type SequenceListOptions = {
@@ -10,33 +10,44 @@ type SequenceListOptions = {
     style?: object[],
     onValueChange?: (index: number, newVal: SequenceItemType) => void,
     editable?: boolean
-    editableMode? : boolean
 }
 
-export function SequenceList({sequence, style, onValueChange, editable, editableMode}: SequenceListOptions) {
+export type SequenceListActions = {
+    switchEditMode: (index: number, value: boolean) => void
+}
+
+export const SequenceList = forwardRef<SequenceListActions, SequenceListOptions>(({sequence, style, onValueChange, editable}, ref) => {
     style = style || []
+
+    const sequenceItemsRef: SequenceItemActions[] = []
+
+    const setRef = (ref: SequenceItemActions) => {
+        sequenceItemsRef.push(ref)
+    }
 
     const items: ReactNode[] = []
 
+    const switchEditMode = (index: number, value: boolean) => {
+        sequenceItemsRef[index]?.switchEditMode(value)
+    }
+
+    useImperativeHandle(ref, (): SequenceListActions => {
+        return {switchEditMode}
+    })
+
     for (let index=0; index < sequence.length; index++) {
+
         items.push(<SequenceItem
             item={sequence[index]}
             onChange={(newVal) => {
                 if (onValueChange) onValueChange(index, newVal)
             }}
             editable={editable}
-            editableMode={editableMode}
+            ref={setRef}
         />)
     }
 
-    sequence.forEach((item) => {
-
-    })
-
-
     return (
-        
         <ScrollList items={items} style={style} />
     )
-}
-
+})

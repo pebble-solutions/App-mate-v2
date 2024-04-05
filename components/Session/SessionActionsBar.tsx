@@ -17,10 +17,21 @@ type ActionsBarOptions = {
     started?: boolean,
     style?: object[],
     sequence: SequenceType,
-    displayMode? :SessionProvidedBy 
+    displayMode?: SessionProvidedBy
 }
 
-export function SessionActionsBar({displayMode, onCreate, onStart, onEnd, onCancel, onValidate, onExit, started, style, sequence}: ActionsBarOptions) {
+export function SessionActionsBar({
+      displayMode,
+      onCreate,
+      onStart,
+      onEnd,
+      onCancel,
+      onValidate,
+      onExit,
+      started,
+      style,
+      sequence
+}: ActionsBarOptions) {
 
     style = style || []
     const [isStarted, setStarted] = useState(typeof started !== "undefined" ? started : false)
@@ -68,6 +79,8 @@ export function SessionActionsBar({displayMode, onCreate, onStart, onEnd, onCanc
             buttons)
     }
 
+    if (displayMode === "manual") style.push(localStyle.alignItemsCenter)
+
     return (
         <View style={[localStyle.actionsContainer, ...style]}>
             <View style={[localStyle.buttonContainer, localStyle.startContainer]}>
@@ -79,29 +92,20 @@ export function SessionActionsBar({displayMode, onCreate, onStart, onEnd, onCanc
                     icon={<View style={globalStyles.meContainer}><Ionicons name="close-outline" size={24} color={variables.color.danger} /></View>}
                 /> : null}
             </View>
-            {displayMode === "manual" && 
-                <View>
-                    <TouchableOpacity style={[localStyle.button, {backgroundColor: variables.color.lightGrey}]}
-                        onPress={() => onCreate()}
-                    >
-                        <Ionicons name="add" size={40} color={variables.color.white} />
-                        {/* <Text style={[globalStyles.textLight]}>Créer une session</Text> */}
-                    </TouchableOpacity>
-                </View> 
-            }
-
-            {/* {displayMode === "manual" ? <Text style={globalStyles.textLight}> Manual</Text> :  <Text style={globalStyles.textLight}> cron</Text>} */}
-
-            {displayMode === "cron" && <View style={[localStyle.swiperContainer]}>
-                <SwiperToggle
+            <View style={[localStyle.mainActionContainer]}>
+                {displayMode === "manual" ? <TouchableOpacity style={[localStyle.button, {backgroundColor: variables.color.lightGrey}]}
+                    onPress={() => onCreate()}
+                >
+                    <Ionicons name="add" size={40} color={variables.color.white} />
+                </TouchableOpacity> : <SwiperToggle
                     height={180}
                     sizeInterpolation={1.8}
                     initialValue={isStarted}
                     onToggle={toggleStatus}
                     onLabel="Démarré"
                     offLabel="Pause"
-                />
-            </View>}
+                />}
+            </View>
 
             <View style={[localStyle.buttonContainer, localStyle.endContainer]}>
                 {!isStarted && sequence.length ? <Button
@@ -124,7 +128,11 @@ const localStyle = StyleSheet.create({
         alignItems: "flex-end"
     },
 
-    swiperContainer: {
+    alignItemsCenter: {
+        alignItems: "center"
+    },
+
+    mainActionContainer: {
         flex:1,
         alignItems: "center"
     },

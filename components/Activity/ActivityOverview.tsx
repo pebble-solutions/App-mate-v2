@@ -71,13 +71,14 @@ export default function ActivityOverview({ activity,
                         {onNewPress && <Button
                             title={buttonTitle}
                             onPress={onNewPress}
-                            style={[styles.buttonLight]}
+                            appearance={"light"}
                             variant="xl"
                             titleStyle={[{ color: activity.color }]} />}
                         {onManualPress && <Button
                             title="Saisie Manuelle"
                             onPress={onManualPress}
-                            style={[globalStyles.msContainer, styles.buttonOutlined]}
+                            appearance={"lightOutlined"}
+                            style={[globalStyles.msContainer]}
                             variant="xl"
                             titleStyle={[{ color: "white" }]} />}
                     </View> : null}
@@ -97,16 +98,5 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-    },
-
-    buttonLight: {
-        backgroundColor: "white",
-    },
-
-    buttonOutlined:{
-        backgroundColor:"transparent",
-        borderWidth: 1,
-        borderColor: "white",
-        
     }
 })

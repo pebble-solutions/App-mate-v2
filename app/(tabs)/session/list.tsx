@@ -11,7 +11,7 @@ import {useAuthContext} from "../../../shared/contexts/AuthContext"
 import {router} from "expo-router";
 import FullscreenLoader from "../../../components/FullscreenLoader";
 import {ActivityType} from "../../../shared/types/ActivityType";
-import {SessionType} from "../../../shared/types/SessionType";
+import {SessionProvidedBy, SessionType} from "../../../shared/types/SessionType";
 
 export default function ListScreen() {
     const { activities, loading } = useActivityContext()
@@ -35,14 +35,14 @@ export default function ListScreen() {
     const width = Dimensions.get('window').width;
 
     const activeSessionsFromActivity = (sessions: SessionType[], activityId: string) => {
-        return sessions.filter(e => e.type_id === activityId && e.type.toLowerCase() === "activity" && e.is_active)
+        return sessions.filter(e => e.type_id === activityId && e.type.toLowerCase() === 'activity' && e.is_active)
     }
 
     // Action on new session button is pressed. If some session already exists on provided activity, the user will
     // choose between starting a new session or recovering the last one.
-    const newSessionHandler = (activity: ActivityType) => {
+    const newSessionHandler = (activity: ActivityType, provider?: SessionProvidedBy) => {
         const sessions = activeSessionsFromActivity(sessionContext.sessions, activity._id)
-        if (sessions.length) {
+        if (sessions.length && provider !== "manual") {
             Alert.alert("Session en cours", "Il y a déjà une session en cours sur" +
                 " cette activitée.", [
                 {
@@ -59,16 +59,11 @@ export default function ListScreen() {
             ])
         }
         else {
-            newSession(activity._id, sessionContext, statusContext, user, "cron")
+            newSession(activity._id, sessionContext, statusContext, user, provider || 'cron')
         }
     }
 
     const openSessionHandler = (session: SessionType) => openSession(session._id, sessionContext, statusContext)
-
-
-    const manualSessionHandler = (activity: ActivityType) => {
-        newSession(activity._id, sessionContext, statusContext, user, "manual")
-    }
 
     return (
         <SafeAreaView style={globalStyles.body}>
@@ -87,9 +82,9 @@ export default function ListScreen() {
                             user={user}
                             activity={item}
                             sessions={activeSessionsFromActivity(sessions, item._id)}
-                            onNewPress={() => newSessionHandler(item)}
+                            onNewPress={() => newSessionHandler(item, 'cron')}
                             onSessionPress={openSessionHandler}
-                            onManualPress={ ()=> manualSessionHandler(item)}
+                            onManualPress={ ()=> newSessionHandler(item, 'manual')}
                             buttonTitle="Démarrer"
                         />
                     )} />
