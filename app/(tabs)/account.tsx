@@ -1,5 +1,5 @@
 import { SafeAreaView, Text, View, StyleSheet } from "react-native";
-import { globalStyles } from "../../shared/globalStyles";
+import { globalStyles, variables } from "../../shared/globalStyles";
 import LoginForm from "../../components/Auth/LoginForm";
 import AccountOverview from "../../components/Auth/AccountOverview";
 import LogoutButton from "../../components/Auth/LogoutButton";
@@ -28,6 +28,6 @@ const styles = StyleSheet.create({
     },
     centeredContent: {
         width: "100%",
-        paddingHorizontal: 20,
+        paddingHorizontal: variables.contentPadding[3],
     },
 });

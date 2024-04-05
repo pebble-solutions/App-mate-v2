@@ -5,7 +5,7 @@ type TitleOptions = {
     title: string,
     size?: "sm" | "md" | "lg" | "xl",
     style?: any[],
-    center?: boolean, // Ajoutez une prop center
+    center?: boolean,
 }
 
 export default function Title({ title, size, style, center }: TitleOptions) {
@@ -13,7 +13,7 @@ export default function Title({ title, size, style, center }: TitleOptions) {
     style = style || []
 
     return (
-        <Text style={[localStyle.title, localStyle[size], center && localStyle.center, ...style]}>{title}</Text> // Appliquez les styles de centrage si la prop center est vraie
+        <Text style={[localStyle.title, localStyle[size], center && localStyle.center, ...style]}>{title}</Text>
     )
 }
 

@@ -14,7 +14,7 @@ export default function AccountOverview({ auth, user }: AccountOverviewOptions) 
 
     return (
         <View>
-            <Title title={user.displayName ?? ''} size="md" center /> 
+            {user.displayName && <Title title={user.displayName} size="md" center />}
             <Title title={user.email ?? ''} size="md" center />
         </View>
     );
