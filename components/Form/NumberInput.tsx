@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { TextInput , Text, View} from 'react-native';
+import { TextInput , View} from 'react-native';
 import { globalStyles } from "../../shared/globalStyles";
 import {NumberInputOptions} from "./types/InputOptions";
 
