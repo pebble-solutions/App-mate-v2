@@ -39,12 +39,9 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
             str = value ? "OUI" : "NON"
         }
         else if (type === "number") {
-            console.log(value, 'number')
             str = value ? value.toString() : '0'
         }
         else {
-            console.log(value, 'autre')
-
             str = value ? value.toString() : "Non-renseigné"
         }
         return str

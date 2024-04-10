@@ -79,7 +79,6 @@ const localStyle = StyleSheet.create({
         marginVertical: variables.contentMargin[1],
         borderRadius: variables.borderRadius[3],
         backgroundColor: "#cdcdcd",
-        width: "100%",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",

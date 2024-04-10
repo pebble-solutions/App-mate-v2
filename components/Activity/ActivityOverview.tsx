@@ -1,16 +1,10 @@
 import {globalStyles, variables} from "../../shared/globalStyles";
-import {getRGBGradientColors} from "../../shared/libs/color";
 import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {LinearGradient} from "expo-linear-gradient";
 import {ActivityType} from "../../shared/types/ActivityType";
-import {router} from "expo-router";
-import {Href} from "expo-router/build/link/href";
 import Button from "../Button";
-import { Activity } from "../../shared/classes/Activity";
 import ActivityGradient from "./ActivityGradient";
 import {SessionType} from "../../shared/types/SessionType";
 import {SessionCard} from "../Session/SessionCard";
-import { useState } from "react";
 import TextLoader from "../TextLoader";
 import { User } from "firebase/auth";
 
@@ -67,19 +61,19 @@ export default function ActivityOverview({ activity,
                     ) : 
                     sessionsLoading ? <TextLoader label="Chargement des sessions..." /> : null}
 
-                    {onNewPress || onManualPress ? <View style={[globalStyles.mv2Container, styles.buttonContainer]}>
+                    {onNewPress || onManualPress ? <View style={[globalStyles.mvContainer, styles.buttonContainer]}>
                         {onNewPress && <Button
                             title={buttonTitle}
                             onPress={onNewPress}
                             appearance={"light"}
-                            variant="xl"
+                            variant="lg"
                             titleStyle={[{ color: activity.color }]} />}
                         {onManualPress && <Button
                             title="Saisie Manuelle"
                             onPress={onManualPress}
                             appearance={"lightOutlined"}
                             style={[globalStyles.msContainer]}
-                            variant="xl"
+                            variant="lg"
                             titleStyle={[{ color: "white" }]} />}
                     </View> : null}
                 </>
@@ -97,6 +91,5 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flexDirection: 'row',
-        justifyContent: 'center',
     }
 })
