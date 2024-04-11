@@ -3,6 +3,7 @@ import {StyleSheet, Switch, Text, View} from 'react-native';
 import {globalStyles, variables} from "../../shared/globalStyles";
 import {InputOptions} from "./types/InputOptions";
 
+
 type BooleanInputOptions = Omit<InputOptions, 'value'> & {
     value?: boolean,
     trueLabel?: string,
@@ -34,7 +35,7 @@ const BooleanInput = ({value, onChange, trueLabel, falseLabel}: BooleanInputOpti
                 
                 />
 
-            {label && <Text>{label}</Text>}
+            {label && <Text style={localStyle.label}>{label}</Text>}
         </View>
     </View>
   );
@@ -47,5 +48,9 @@ const localStyle = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start"
-    }
+    },
+    label: {
+        color: "#ffffff90",
+        paddingHorizontal: variables.contentPadding[1],
+   }
 })

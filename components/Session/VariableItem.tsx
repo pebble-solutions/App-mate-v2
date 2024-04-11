@@ -38,6 +38,9 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
         else if (type === "boolean") {
             str = value ? "OUI" : "NON"
         }
+        else if (type === "number") {
+            str = value ? value.toString() : '0'
+        }
         else {
             str = value ? value.toString() : "Non-renseigné"
         }
@@ -87,7 +90,6 @@ export default function VariableItem({variable, theme, onChange}: VariableItemOp
                         value={updatedValue}
                         labelStyle={[globalStyles.textLight, globalStyles.textMd]}
                         onChange={handleChangeValue}
-                        id={variable.variable_id}
                     />
                     <CancelValidateButtons
                         onPress1={cancelChange}
