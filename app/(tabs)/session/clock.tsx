@@ -18,6 +18,7 @@ import {Session} from "../../../shared/classes/Session";
 import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 import {patchRequest} from "@pebble-solutions/api-request";
 import { dateToLiteral, secondsToTimeString } from "../../../shared/libs/date";
+import FullscreenLoader from "../../../components/FullscreenLoader";
 
 export default function ClockScreen() {
 
@@ -59,12 +60,20 @@ export default function ClockScreen() {
     const [started, setStarted] = useState(false)
     const [sequence, setSequence] = useState<SequenceType>([])
     const [currentItemIndex, setCurrentItemIndex] = useState<number | null>(null)
-    
+    const [initializing, setInitializing] = useState(true)
     
     // Initialize local sequence once current session is loaded
     useEffect(() => {
         if (currentSession) {
-            setSequence(currentSession.raw_datas.getSequence())
+            const sequence = currentSession.raw_datas.getSequence()
+            if (sequence.length) {
+                const last = sequence[sequence.length-1]
+                if (!last[1]) {
+                    setStarted(true)
+                }
+            }
+            setSequence(sequence)
+            setInitializing(false)
         }
     }, [currentSession]);
     
@@ -153,40 +162,42 @@ export default function ClockScreen() {
             </GradientHeader>
             
             <View style={[globalStyles.body, globalStyles.darkBg]}>
+                {initializing ? <FullscreenLoader message="Initialisation" /> : <>
+                    <View style={globalStyles.body}>
+                        <View style={[globalStyles.centeredContainer, globalStyles.mv4Container]}>
+                            <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{dateToLiteral(currentSession.start)}</Text>
+                            <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la session</Text>
+                            {currentSession.provided_by === "manual" ? <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>
+                                {secondsToTimeString(time, {hours: true, minutes: true, seconds: true})}
+                            </Text> : <StopWatch
+                                style={[globalStyles.textLight, globalStyles.textCenter]}
+                                started={started}
+                                initialTime={currentSession.raw_datas.getTime()}
+                                size={"xl"}
+                            />}
+                        </View>
 
-                <View style={globalStyles.body}>
-                    <View style={[globalStyles.centeredContainer, globalStyles.mv4Container]}>
-                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>{dateToLiteral(currentSession.start)}</Text>
-                        <Text style={[globalStyles.textLightGrey, globalStyles.textCenter]}>Durée de la session</Text>
-                        {currentSession.provided_by === "manual" ? <Text style={[globalStyles.textLight, globalStyles.textCenter, globalStyles.textLg]}>
-                            {secondsToTimeString(time, {hours: true, minutes: true, seconds: true})}
-                        </Text> : <StopWatch
-                            style={[globalStyles.textLight, globalStyles.textCenter]}
-                            started={started}
-                            initialTime={currentSession.raw_datas.getTime()}
-                            size={"xl"}
-                        />}
+                        <SequenceList
+                            sequence={sequence}
+                            editable={currentSession.provided_by === "manual"}
+                            onValueChange={handleSequenceChange}
+                            ref={sequenceListRef}
+                        />
                     </View>
 
-                    <SequenceList
+                    <SessionActionsBar
+                        displayMode={currentSession.provided_by}
+                        onCancel={cancel}
+                        onExit={exit}
+                        onValidate={validate}
+                        onEnd={stop}
+                        onStart={start}
+                        onCreate={createSequence}
+                        style={actionsBarStyles}
                         sequence={sequence}
-                        editable={currentSession.provided_by === "manual"}
-                        onValueChange={handleSequenceChange}
-                        ref={sequenceListRef}
+                        started={started}
                     />
-                </View>
-                
-                <SessionActionsBar 
-                    displayMode={currentSession.provided_by}
-                    onCancel={cancel}
-                    onExit={exit}
-                    onValidate={validate}
-                    onEnd={stop}
-                    onStart={start}
-                    onCreate={createSequence}
-                    style={actionsBarStyles}
-                    sequence={sequence}
-                />
+                </>}
 
             </View>
         </View>
