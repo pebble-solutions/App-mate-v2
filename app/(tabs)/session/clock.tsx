@@ -1,4 +1,4 @@
-import {View, Text, Alert, ViewStyle} from "react-native";
+import {View, Text, Alert, ViewStyle, StyleSheet} from "react-native";
 import {globalStyles} from "../../../shared/globalStyles";
 import Button from "../../../components/Button";
 import React, {useEffect, useRef, useState} from "react";
@@ -149,18 +149,7 @@ export default function ClockScreen() {
     return (
         <View style={globalStyles.mainContainer}>
             <GradientHeader activity={currentActivity}>
-                <Button
-                    title="Quitter"
-                    style={[globalStyles.transparentBg]}
-                    onPress={exit}
-                    titleStyle={[globalStyles.textLight]}
-                    icon={<AntDesign name="back" size={24} color="white" />}
-                    options={{
-                        displayTitle: false,
-                        disabled: started
-                    }}
-                />
-                <Title title={currentActivity.label} style={[globalStyles.textLight, globalStyles.textCenter]} size="lg" />
+                <Title title={currentActivity.label} style={[styles.headTitle]} center size="lg" />
             </GradientHeader>
             
             <View style={[globalStyles.body, globalStyles.darkBg]}>
@@ -203,3 +192,11 @@ export default function ClockScreen() {
         </View>
     )
 }
+
+
+const styles = StyleSheet.create({
+    headTitle: {
+        ...globalStyles.textLight,
+        ...globalStyles.w100
+    }
+})
