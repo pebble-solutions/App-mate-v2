@@ -66,9 +66,10 @@ export default function ClockScreen() {
     useEffect(() => {
         if (currentSession) {
             const sequence = currentSession.raw_datas.getSequence()
-            if (sequence.length) {
-                const last = sequence[sequence.length-1]
+            const last = sequence[sequence.length - 1]
+            if (last) {
                 if (!last[1]) {
+                    setCurrentItemIndex(currentSession.raw_datas.currentIndex - 1)
                     setStarted(true)
                 }
             }

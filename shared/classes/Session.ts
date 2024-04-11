@@ -43,7 +43,9 @@ export class Session implements SessionType {
             let sequence: SequenceItemType[] = []
 
             session.raw_datas.forEach((e: {start: string, end?: string}) => {
-                sequence.push([new Date(e.start), e.end ? new Date(e.end) : null])
+                const start = e.start.match(/Z$/) ? e.start : e.start+"Z"
+                const end = e.end ? e.end.match(/Z$/) ? e.end : e.end+"Z" : null
+                sequence.push([new Date(start), end ? new Date(end) : null])
             })
 
             this.raw_datas.addMany(sequence)
