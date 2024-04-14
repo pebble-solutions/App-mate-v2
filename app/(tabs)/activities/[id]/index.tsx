@@ -15,12 +15,16 @@ import { TextInput } from "react-native-gesture-handler";
 import SpinnerLoader from "../../../../components/ScreenCoverLoader";
 import { Activity } from "../../../../shared/classes/Activity";
 import Title from "../../../../components/Title";
+import {useRequestsContext} from "../../../../shared/contexts/RequestsContext";
 
 export default function ActivityScreen() {
     const { getActivityById, removeActivity, updateActivity } = useActivityContext();
     const { _id } = useLocalSearchParams<{ _id: string }>();
     const activity = _id ? getActivityById(_id) : null;
     const [isLoading, setIsLoading] = useState(false);
+    const { auth } = useRequestsContext()
+
+    const isManager = auth.tokenData?.roles.includes("manager")
 
     const { variables } = useVariableContext();
 
@@ -99,13 +103,14 @@ export default function ActivityScreen() {
 
             <View style={globalStyles.contentContainer}>
                 <View style={globalStyles.headerIcons}>
-                    <TouchableOpacity
+                    {isManager ? <TouchableOpacity
                         onPress={() => {
-                            router.push("/activities/"+activity._id+"/edit")
+                            router.push("/activities/" + activity._id + "/edit")
                         }}
                     >
-                        <Ionicons name="settings-outline" size={28} color="white" style={{ position: 'relative', left: 5, top: 19 }} />
-                    </TouchableOpacity>
+                        <Ionicons name="settings-outline" size={28} color="white"
+                                  style={{position: 'relative', left: 5, top: 19}}/>
+                    </TouchableOpacity> : <View></View>}
                     <TouchableOpacity
                         onPress={() => {
                             router.back();
@@ -134,7 +139,8 @@ export default function ActivityScreen() {
                         activity.variables.map((variable: ActivityVariableType, index: number) => (
                             <VariableCard
                                 key={index}
-                                displayRemoveIcon={true}
+                                displayRemoveIcon={isManager}
+                                displayMandatoryIcon={false}
                                 activityId={activity._id}
                                 variable={variable}
                             />
@@ -146,11 +152,12 @@ export default function ActivityScreen() {
                     {variables.map((variable: VariableType, index: number) => (
                         <VariableCard
                             key={index}
-                            displayAddIcon={true}
+                            displayAddIcon={isManager}
                             activityId={activity._id}
                             variable={variable}
                             grayedOut={activity.variables.some((v) => v.variable_id === variable._id)}
                             isChecked
+                            displayMandatoryIcon={false}
                         />
                     ))}
                 </View>

@@ -6,9 +6,13 @@ import { AntDesign } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useActivityContext } from "../../../shared/contexts/ActivityContext";
 import HeaderScreenTitle from "../../../components/HeaderScreenTitle";
+import {useRequestsContext} from "../../../shared/contexts/RequestsContext";
 
 export default function ActivitiesScreen() {
     const { activities } = useActivityContext();
+    const {auth} = useRequestsContext()
+
+    const isManager = auth.tokenData?.roles.includes("manager")
 
     const activeActivities = activities.filter(activity => activity.is_active);
     const inactiveActivities = activities.filter(activity => !activity.is_active);
@@ -22,7 +26,7 @@ export default function ActivitiesScreen() {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
                     <View>
-                        {index === 0 && <HeaderScreenTitle title="Activités" addButton />}
+                        {index === 0 && <HeaderScreenTitle title="Activités" addButton={isManager} />}
                         {index === activeActivities.length && <HeaderScreenTitle title="Activités terminées" grayedOut/>}
                         <View style={[globalStyles.mContainer, index >= activeActivities.length ? globalStyles.grayedOut : null]}>
                             <TouchableOpacity

@@ -15,6 +15,7 @@ type VariableCardOptions = {
     activityId: string,
     grayedOut?: boolean,
     isChecked?: boolean,
+    displayMandatoryIcon?: boolean
 }
 
 export default function VariableCard({
@@ -24,11 +25,14 @@ export default function VariableCard({
     activityId,
     grayedOut = false,
     isChecked = false,
+    displayMandatoryIcon
 }: VariableCardOptions) {
 
     const { linkVariableToActivity, removeVariableFromActivity, setVariableMandatory } = useActivityContext();
 
     const variableId = "_id" in variable ? variable._id : variable.variable_id
+
+    displayMandatoryIcon = typeof displayMandatoryIcon === "undefined" ? true : displayMandatoryIcon
 
     const linkVariable = () => {
         linkVariableToActivity(activityId, {...variable, _id: variableId});
@@ -49,15 +53,18 @@ export default function VariableCard({
                 <Text style={[globalStyles.cardDescription, globalStyles.textLight]}>{variable.description}</Text>
             </View>
             <View style={globalStyles.VariableCardIconsContainer}>
-                {variable.mandatory ? (
-                    <TouchableOpacity onPress={toggleMandatory}>
-                        <Ionicons name="shield-checkmark" size={23} color="white" style={{ marginHorizontal: 5 }} />
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity onPress={toggleMandatory}>
-                        <Ionicons name="shield-checkmark-outline" size={22} color="#00000030" style={{ marginHorizontal: 5 }} />
-                    </TouchableOpacity>
-                )}
+                {displayMandatoryIcon && <>{
+                    variable.mandatory ? (
+                        <TouchableOpacity onPress={toggleMandatory}>
+                            <Ionicons name="shield-checkmark" size={23} color="white" style={{marginHorizontal: 5}}/>
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity onPress={toggleMandatory}>
+                            <Ionicons name="shield-checkmark-outline" size={22} color="#00000030"
+                                      style={{marginHorizontal: 5}}/>
+                        </TouchableOpacity>
+                    )
+                }</>}
 
                 {grayedOut && isChecked && (
                     <Ionicons name="checkmark" size={20} color="white" style={{ position: 'absolute', right: 5 }} />
